@@ -1,7 +1,7 @@
 import React from "react";
 import { FiEye, FiEdit, FiMoreHorizontal, FiGlobe, FiLayers, FiWifi } from "react-icons/fi";
 
-export default function TemplateCard({ title, path, type, status = "Active" }) {
+export default function TemplateCard({ title, path, type, status = "Active", isAdmin = true }) {
 
     const getStatusColor = () => {
         switch (status.toLowerCase()) {
@@ -16,9 +16,11 @@ export default function TemplateCard({ title, path, type, status = "Active" }) {
 
             {/* Preview Section - Emulating the Image UI */}
             <div className="h-[250px] bg-muted/30 relative flex items-center justify-center border-b border-border p-6">
-                <div className="absolute top-4 right-4 text-muted-foreground/30">
-                    <FiWifi size={18} />
-                </div>
+                {isAdmin && (
+                    <div className="absolute top-4 right-4 text-muted-foreground/30">
+                        <FiWifi size={18} />
+                    </div>
+                )}
 
                 <div className="w-full h-full bg-card/80 rounded-2xl border border-border flex flex-col items-center p-4 shadow-sm relative overflow-hidden">
                     <div className="w-16 h-16 rounded-full bg-muted/50 mb-3 border border-border"></div>
@@ -51,14 +53,18 @@ export default function TemplateCard({ title, path, type, status = "Active" }) {
                         Preview
                     </button>
 
-                    <button className="flex-1 flex items-center justify-center gap-2 bg-foreground text-background py-3.5 rounded-xl text-xs font-bold uppercase tracking-widest hover:opacity-90 transition-all border border-foreground/10 shadow-sm">
-                        <FiEdit size={16} className="opacity-80" />
-                        Edit
-                    </button>
+                    {isAdmin && (
+                        <>
+                            <button className="flex-1 flex items-center justify-center gap-2 bg-foreground text-background py-3.5 rounded-xl text-xs font-bold uppercase tracking-widest hover:opacity-90 transition-all border border-foreground/10 shadow-sm">
+                                <FiEdit size={16} className="opacity-80" />
+                                Edit
+                            </button>
 
-                    <button className="px-4 flex items-center justify-center bg-secondary/50 text-foreground rounded-xl border border-border hover:bg-border transition-all">
-                        <FiMoreHorizontal size={18} />
-                    </button>
+                            <button className="px-4 flex items-center justify-center bg-secondary/50 text-foreground rounded-xl border border-border hover:bg-border transition-all">
+                                <FiMoreHorizontal size={18} />
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
 

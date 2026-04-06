@@ -5,7 +5,7 @@ import Content from "./Content";
 const Templates = ({ userData }) => {
     return (
         <Layout userData={userData} hideTopNav={true}>
-            <Content />
+            <Content userData={userData} />
         </Layout>
     );
 };

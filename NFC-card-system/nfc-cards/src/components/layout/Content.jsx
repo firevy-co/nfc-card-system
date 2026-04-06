@@ -17,7 +17,8 @@ import {
   FiShare2
 } from "react-icons/fi";
 
-export default function Content() {
+export default function Content({ userData }) {
+  const isAdmin = userData?.role === "Admin";
   const cards = [
     { title: "Professional Card #1", path: "/haydnprice", status: "Active", type: "share" },
     { title: "Leads Form #1", path: "/haydnprice/number01", status: "Synced" },
@@ -103,28 +104,32 @@ export default function Content() {
               Sort
             </button>
 
-            <button className="ml-2 flex items-center gap-3 bg-secondary text-foreground border border-border px-6 py-3.5 rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:bg-border transition-all">
-              <FiPlus className="text-primary" />
-              Add content
-            </button>
+            {isAdmin && (
+              <button className="ml-2 flex items-center gap-3 bg-secondary text-foreground border border-border px-6 py-3.5 rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:bg-border transition-all">
+                <FiPlus className="text-primary" />
+                Add content
+              </button>
+            )}
           </div>
         </div>
 
         {/* Improved Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {/* Add Content Placeholder */}
-          <div className="border-[3px] border-dashed border-border/60 rounded-[2.5rem] h-[450px] bg-card/20 flex flex-col items-center justify-center text-muted-foreground hover:border-primary/40 hover:bg-primary/5 cursor-pointer transition-all group relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          {isAdmin && (
+            <div className="border-[3px] border-dashed border-border/60 rounded-[2.5rem] h-[450px] bg-card/20 flex flex-col items-center justify-center text-muted-foreground hover:border-primary/40 hover:bg-primary/5 cursor-pointer transition-all group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
-            <div className="w-16 h-16 rounded-full bg-foreground text-background flex items-center justify-center mb-8 shadow-xl transform transition-transform">
-              <FiPlus size={28} />
+              <div className="w-16 h-16 rounded-full bg-foreground text-background flex items-center justify-center mb-8 shadow-xl transform transition-transform">
+                <FiPlus size={28} />
+              </div>
+
+              <h3 className="font-bold text-foreground text-xl mb-3">Add New Content</h3>
+              <p className="text-[11px] text-center px-10 leading-relaxed opacity-40 font-medium max-w-[280px]">
+                Create a Digital card, Link-in-bio, or Lead form here.
+              </p>
             </div>
-
-            <h3 className="font-bold text-foreground text-xl mb-3">Add New Content</h3>
-            <p className="text-[11px] text-center px-10 leading-relaxed opacity-40 font-medium max-w-[280px]">
-              Create a Digital card, Link-in-bio, or Lead form here.
-            </p>
-          </div>
+          )}
 
           {cards.map((card, index) => (
             <TemplateCard
@@ -133,6 +138,7 @@ export default function Content() {
               path={card.path}
               type={card.type}
               status={card.status}
+              isAdmin={isAdmin}
             />
           ))}
         </div>
