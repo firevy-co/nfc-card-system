@@ -1,0 +1,189 @@
+@import "tailwindcss";
+
+/* PREMIUM IDENTITY FONTS - RESTORED */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
+@layer base {
+  :root {
+    --primary: 6 182 212;
+    --background: 2 2 2;
+    --foreground: 248 250 252;
+    --card: 20 20 20;
+    --secondary: 28 28 28;
+    --muted: 8 8 8;
+    --border: 35 35 35;
+    --muted-foreground: 148 163 184;
+  }
+
+  .light {
+    --background: 255 255 255;
+    --foreground: 0 0 0;
+    --primary: 37 99 235;
+    --card: 255 255 255;
+    --secondary: 248 250 252;
+    --muted: 248 250 252;
+    --border: 235 235 235;
+    --muted-foreground: 100 116 139;
+  }
+
+  body {
+    background-color: rgb(var(--background));
+    color: rgb(var(--foreground));
+    @apply antialiased;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.011em;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+/* PREMIUM SHADOW SYSTEM FOR VISIBILITY */
+.shadow-premium {
+  box-shadow:
+    0 0 1px 1px rgba(255, 255, 255, 0.05),
+    /* Thin RIM light for contouring */
+    0 10px 25px -5px rgba(0, 0, 0, 0.8),
+    /* Main depth shadow */
+    0 0 40px -10px rgba(6, 182, 212, 0.08);
+  /* Ambient cyan glow */
+}
+
+.light .shadow-premium {
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(0, 0, 0, 0.03);
+}
+
+.inner-glow {
+  box-shadow:
+    inset 0 0 30px 0 rgba(255, 255, 255, 0.015),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.light .inner-glow {
+  box-shadow:
+    inset 0 0 30px 0 rgba(0, 0, 0, 0.01),
+    inset 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+body {
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+  @apply antialiased;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.011em;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Outfit', sans-serif;
+}
+
+@theme {
+  --color-primary: rgb(var(--primary));
+  --color-secondary: rgb(var(--secondary));
+  --color-accent: rgb(var(--accent));
+  --color-border: rgb(var(--border));
+  --color-muted-foreground: rgb(var(--muted-foreground));
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl;
+  }
+
+  .glass-card-hover {
+    @apply hover:bg-white/10 hover:border-white/20 transition-all duration-500;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent;
+  }
+
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+  }
+
+  @keyframes shake {
+
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+      transform: translateX(-4px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+      transform: translateX(4px);
+    }
+  }
+
+  .animate-shake {
+    animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+  }
+
+  .delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .delay-4000 {
+    animation-delay: 4s;
+  }
+
+  .shadow-premium {
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+
+  .shadow-glow-cyan {
+    box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.3), 0 0 10px -2px rgba(6, 182, 212, 0.2);
+  }
+
+  .shadow-glow-blue {
+    box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.3), 0 0 10px -2px rgba(59, 130, 246, 0.2);
+  }
+
+  .inner-glow {
+    box-shadow: inset 0 0 20px 0 rgba(255, 255, 255, 0.02);
+  }
+}
