@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Royal Jewelry",
+    "category": "Luxury",
+    "description": "Gold-accented elegant design for premium jewelry boutiques.",
+    "tags": [
+      "Elegance",
+      "Luxury",
+      "Boutique"
+    ],
+    "previewColor": "bg-amber-600",
+    "id": "jewelry_luxury",
+    "createdAt": "2026-04-07T11:09:53.731Z",
+    "lastModified": "2026-04-07T11:10:01.530Z"
+  }
+]
