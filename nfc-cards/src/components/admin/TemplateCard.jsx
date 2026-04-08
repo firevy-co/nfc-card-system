@@ -34,7 +34,7 @@ export default function TemplateCard({
     };
 
     return (
-        <div className="bg-card border border-border rounded-2xl sm:rounded-[2.55rem] transition-all duration-500 group hover:border-primary/40 hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden min-h-[220px] sm:min-h-[540px] relative">
+        <div className="bg-card border border-border rounded-xl sm:rounded-2xl transition-all duration-500 group hover:border-primary/40 hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden min-h-[220px] sm:min-h-[540px] relative">
 
             {/* Premium Preview Section: Micro-Scaled for 3-Column Grid */}
             <div className="h-[120px] sm:h-[260px] bg-secondary/10 relative flex items-center justify-center p-2 sm:p-8 overflow-hidden border-b border-border/50">
@@ -46,7 +46,7 @@ export default function TemplateCard({
                 </div>
 
                 {/* The "V1CE" Style White Card Frame (High-Density Scale) */}
-                <div className="w-[260px] sm:w-[320px] h-[220px] sm:h-[300px] bg-white rounded-2xl sm:rounded-[3rem] border border-border/10 shadow-2xl relative overflow-hidden transform scale-[0.55] sm:scale-[0.7] group-hover:scale-[0.6] sm:group-hover:scale-[0.78] transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] flex flex-col pt-2 sm:pt-4">
+                <div className="w-[260px] sm:w-[320px] h-[220px] sm:h-[300px] bg-white rounded-xl sm:rounded-2xl border border-border/10 shadow-2xl relative overflow-hidden transform scale-[0.55] sm:scale-[0.7] group-hover:scale-[0.6] sm:group-hover:scale-[0.78] transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] flex flex-col pt-2 sm:pt-4">
                     
                     {/* Brand Identifier */}
                     <div className="flex justify-center mb-1">
@@ -57,9 +57,9 @@ export default function TemplateCard({
 
                     {/* Miniature Template Surface */}
                     <div className="flex-1 w-full px-4 sm:px-8 pb-4 sm:pb-8 flex items-center justify-center relative overflow-hidden">
-                        <div className="w-full h-full rounded-xl sm:rounded-[2rem] bg-zinc-950/5 relative overflow-hidden flex items-center justify-center border border-black/5">
+                        <div className="w-full h-full rounded-lg sm:rounded-xl bg-zinc-950/5 relative overflow-hidden flex items-center justify-center border border-black/5">
                             <div className="origin-center" style={{ transform: 'scale(0.2)' }}>
-                                <div className="w-[375px] h-[667px] overflow-hidden relative rounded-[3rem]">
+                                <div className="w-[375px] h-[667px] overflow-hidden relative rounded-xl">
                                     <TemplateRenderer templateId={templateId} userData={previewData} />
                                 </div>
                             </div>
@@ -91,7 +91,7 @@ export default function TemplateCard({
                         <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
                             <button 
                                 onClick={() => navigate(`${baseRoute}/templates${path}`)}
-                                className="flex items-center justify-center gap-1.5 sm:gap-3 bg-foreground text-background py-2 sm:py-4 rounded-lg sm:rounded-2xl text-[6px] sm:text-[9px] font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] hover:brightness-125 transition-all shadow-lg active:scale-95"
+                                className="flex items-center justify-center gap-1.5 sm:gap-3 bg-foreground text-background py-2 sm:py-4 rounded-md sm:rounded-lg text-[6px] sm:text-[9px] font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] hover:brightness-125 transition-all shadow-lg active:scale-95"
                             >
                                 <FiEye size={10} className="sm:w-4 sm:h-4" />
                                 <span className="hidden sm:block">Preview</span>
@@ -100,7 +100,7 @@ export default function TemplateCard({
 
                             <button 
                                 onClick={onEdit}
-                                className="flex items-center justify-center gap-1.5 sm:gap-3 bg-secondary/50 text-foreground py-2 sm:py-4 rounded-lg sm:rounded-2xl text-[6px] sm:text-[9px] font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] hover:bg-secondary transition-all border border-border shadow-sm active:scale-95"
+                                className="flex items-center justify-center gap-1.5 sm:gap-3 bg-secondary/50 text-foreground py-2 sm:py-4 rounded-md sm:rounded-lg text-[6px] sm:text-[9px] font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] hover:bg-secondary transition-all border border-border shadow-sm active:scale-95"
                             >
                                 <FiEdit size={10} className="sm:w-4 sm:h-4" />
                                 <span className="hidden sm:block">Edit</span>
@@ -111,7 +111,7 @@ export default function TemplateCard({
                         {isAdmin && (
                             <button 
                                 onClick={onDelete}
-                                className="w-full flex items-center justify-center gap-1.5 bg-rose-500/10 text-rose-500 py-1.5 sm:py-3 rounded-md sm:rounded-2xl text-[5px] sm:text-[8px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] hover:bg-rose-500 hover:text-white transition-all border border-rose-500/20 active:scale-[0.98] group/del"
+                                className="w-full flex items-center justify-center gap-1.5 bg-rose-500/10 text-rose-500 py-1.5 sm:py-3 rounded-md sm:rounded-lg text-[5px] sm:text-[8px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] hover:bg-rose-500 hover:text-white transition-all border border-rose-500/20 active:scale-[0.98] group/del"
                             >
                                 <FiTrash2 size={8} className="sm:w-3.5 sm:h-3.5 group-hover/del:scale-110 transition-transform" />
                                 <span className="hidden sm:block">Retire Identity Node</span>

@@ -64,12 +64,12 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="relative w-[94%] sm:w-full max-w-[900px] max-h-[90vh] sm:max-h-[85vh] bg-card/60 backdrop-blur-3xl border border-border rounded-[2.5rem] sm:rounded-[3.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col"
+                        className="relative w-[94%] sm:w-full max-w-[900px] max-h-[90vh] sm:max-h-[85vh] bg-card/60 backdrop-blur-3xl border border-border rounded-2xl sm:rounded-3xl shadow-[0_40px_100px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col"
                     >
                         {/* Header */}
                         <div className="flex items-center justify-between p-6 sm:p-10 border-b border-border bg-card/10">
                             <div className="flex items-center gap-4 sm:gap-6">
-                                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-[2rem] bg-foreground text-background flex items-center justify-center shadow-xl">
+                                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-foreground text-background flex items-center justify-center shadow-xl">
                                     <FiLayout size={24} className="sm:w-7 sm:h-7" />
                                 </div>
                                 <div>
@@ -100,7 +100,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                             placeholder="e.g. Modern Agent"
                                             value={formData.name}
                                             onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                            className="w-full bg-secondary/30 border-2 border-border/40 rounded-2xl sm:rounded-3xl p-4 sm:p-6 text-sm sm:text-lg font-bold focus:border-primary/50 focus:ring-0 transition-all placeholder:text-muted-foreground/30"
+                                            className="w-full bg-secondary/30 border-2 border-border/40 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-sm sm:text-lg font-bold focus:border-primary/50 focus:ring-0 transition-all placeholder:text-muted-foreground/30"
                                         />
                                     </div>
 
@@ -112,7 +112,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                             <select 
                                                 value={formData.category}
                                                 onChange={(e) => setFormData({...formData, category: e.target.value})}
-                                                className="w-full bg-secondary/30 border-2 border-border/40 rounded-2xl sm:rounded-3xl p-4 sm:p-6 text-sm sm:text-lg font-bold focus:border-primary/50 appearance-none transition-all cursor-pointer"
+                                                className="w-full bg-secondary/30 border-2 border-border/40 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-sm sm:text-lg font-bold focus:border-primary/50 appearance-none transition-all cursor-pointer"
                                             >
                                                 {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
                                             </select>
@@ -130,7 +130,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                         <select 
                                             value={formData.templateId}
                                             onChange={(e) => setFormData({...formData, templateId: e.target.value})}
-                                            className="w-full bg-foreground text-background border-2 border-foreground/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-lg sm:text-xl font-black uppercase tracking-tighter focus:ring-0 appearance-none transition-all cursor-pointer shadow-2xl hover:brightness-125"
+                                            className="w-full bg-foreground text-background border-2 border-foreground/10 rounded-xl sm:rounded-2xl p-6 sm:p-8 text-lg sm:text-xl font-black uppercase tracking-tighter focus:ring-0 appearance-none transition-all cursor-pointer shadow-2xl hover:brightness-125"
                                         >
                                             {TEMPLATES.map(t => (
                                                 <option key={t.id} value={t.id} className="bg-card text-foreground font-bold p-2 sm:p-4 text-xs sm:text-base">
@@ -156,7 +156,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                             placeholder="Modern, clean, minimal..."
                                             value={formData.tags}
                                             onChange={(e) => setFormData({...formData, tags: e.target.value})}
-                                            className="w-full bg-secondary/30 border-2 border-border/40 rounded-2xl sm:rounded-3xl p-4 sm:p-6 pl-12 sm:pl-16 text-sm sm:text-lg font-bold focus:border-primary/50 focus:ring-0 transition-all placeholder:text-muted-foreground/30"
+                                            className="w-full bg-secondary/30 border-2 border-border/40 rounded-xl sm:rounded-2xl p-4 sm:p-6 pl-12 sm:pl-16 text-sm sm:text-lg font-bold focus:border-primary/50 focus:ring-0 transition-all placeholder:text-muted-foreground/30"
                                         />
                                     </div>
                                 </div>
@@ -168,7 +168,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                         <textarea
                                             rows={4}
                                             placeholder="Describe the aesthetic and purpose..."
-                                            className="w-full pl-12 pr-4 py-4 rounded-2xl bg-secondary/30 border-2 border-border/40 focus:border-primary/50 outline-none font-bold text-sm resize-none transition-all placeholder:text-muted-foreground/30"
+                                            className="w-full pl-12 pr-4 py-4 rounded-xl bg-secondary/30 border-2 border-border/40 focus:border-primary/50 outline-none font-bold text-sm resize-none transition-all placeholder:text-muted-foreground/30"
                                             value={formData.description}
                                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                         />
@@ -197,14 +197,14 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="flex-1 py-4 sm:py-5 rounded-2xl sm:rounded-[2.5rem] bg-secondary text-foreground font-black uppercase tracking-widest text-[9px] sm:text-[10px] border border-border hover:bg-border transition-all"
+                                className="flex-1 py-4 sm:py-5 rounded-xl sm:rounded-2xl bg-secondary text-foreground font-black uppercase tracking-widest text-[9px] sm:text-[10px] border border-border hover:bg-border transition-all"
                             >
                                 Abort
                             </button>
                             <button
                                 type="submit"
                                 form="template-form"
-                                className="flex-[2] flex-grow flex items-center justify-center gap-3 sm:gap-4 bg-foreground text-background py-4 sm:py-5 px-8 sm:px-12 rounded-2xl sm:rounded-[2.5rem] text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] hover:brightness-125 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.4)] active:scale-95 group"
+                                className="flex-[2] flex-grow flex items-center justify-center gap-3 sm:gap-4 bg-foreground text-background py-4 sm:py-5 px-8 sm:px-12 rounded-xl sm:rounded-2xl text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em] sm:tracking-[0.4em] hover:brightness-125 transition-all shadow-[0_20px_50px_rgba(0,0,0,0.4)] active:scale-95 group"
                             >
                                 <span className="group-hover:translate-x-1 transition-transform transform">
                                     {initialData ? "Synchronize" : "Initialize"}

@@ -149,20 +149,20 @@ export default function Content({ userData }) {
               placeholder="Search Nodes..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 sm:pl-14 pr-4 sm:pr-6 py-3 sm:py-4 rounded-xl sm:rounded-[2rem] bg-card/40 backdrop-blur-md border border-border focus:border-primary/50 outline-none transition-all font-bold text-xs sm:text-sm shadow-sm"
+              className="w-full pl-12 sm:pl-14 pr-4 sm:pr-6 py-3 sm:py-4 rounded-xl bg-card/40 backdrop-blur-md border border-border focus:border-primary/50 outline-none transition-all font-bold text-xs sm:text-sm shadow-sm"
             />
           </div>
 
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            <div className="flex items-center bg-secondary/30 p-1 rounded-xl sm:rounded-2xl border border-border shadow-inner">
-               <button className="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-foreground text-background shadow-lg transition-all"><FiGrid size={14} className="sm:w-[16px] sm:h-[16px]" /></button>
-               <button className="p-2 sm:p-3 rounded-lg sm:rounded-xl text-muted-foreground hover:text-foreground transition-all"><FiList size={14} className="sm:w-[16px] sm:h-[16px]" /></button>
+            <div className="flex items-center bg-secondary/30 p-1 rounded-lg sm:rounded-xl border border-border shadow-inner">
+               <button className="p-2 sm:p-3 rounded-md sm:rounded-lg bg-foreground text-background shadow-lg transition-all"><FiGrid size={14} className="sm:w-[16px] sm:h-[16px]" /></button>
+               <button className="p-2 sm:p-3 rounded-md sm:rounded-lg text-muted-foreground hover:text-foreground transition-all"><FiList size={14} className="sm:w-[16px] sm:h-[16px]" /></button>
             </div>
             
             {isAdmin && (
               <button
                 onClick={() => { setEditingTemplate(null); setIsModalOpen(true); }}
-                className="flex-1 lg:flex-none flex items-center justify-center gap-2 sm:gap-3 bg-foreground text-background px-4 sm:px-10 py-3 sm:py-4 rounded-xl sm:rounded-[2rem] font-black text-[8px] sm:text-[10px] uppercase tracking-[0.1em] sm:tracking-[0.2em] hover:brightness-125 transition-all shadow-2xl active:scale-95 group"
+                className="flex-1 lg:flex-none flex items-center justify-center gap-2 sm:gap-3 bg-foreground text-background px-4 sm:px-10 py-3 sm:py-4 rounded-xl font-black text-[8px] sm:text-[10px] uppercase tracking-[0.1em] sm:tracking-[0.2em] hover:brightness-125 transition-all shadow-2xl active:scale-95 group"
               >
                 <FiPlus className="group-hover:rotate-90 transition-transform duration-300" />
                 <span className="hidden xs:block">Add node</span>
@@ -181,10 +181,10 @@ export default function Content({ userData }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               onClick={() => { setEditingTemplate(null); setIsModalOpen(true); }}
-              className="border-[2px] sm:border-[3px] border-dashed border-border/40 rounded-2xl sm:rounded-[3.5rem] min-h-[160px] sm:min-h-[540px] bg-card/10 flex flex-col items-center justify-center text-muted-foreground hover:border-primary/40 hover:bg-primary/5 cursor-pointer transition-all group relative overflow-hidden active:scale-[0.98]"
+              className="border-[2px] sm:border-[3px] border-dashed border-border/40 rounded-xl sm:rounded-2xl min-h-[160px] sm:min-h-[540px] bg-card/10 flex flex-col items-center justify-center text-muted-foreground hover:border-primary/40 hover:bg-primary/5 cursor-pointer transition-all group relative overflow-hidden active:scale-[0.98]"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="w-8 h-8 sm:w-16 sm:h-16 rounded-xl sm:rounded-[2rem] bg-foreground text-background flex items-center justify-center mb-2 sm:mb-8 shadow-2xl group-hover:scale-110 transition-all duration-500">
+              <div className="w-8 h-8 sm:w-16 sm:h-16 rounded-lg sm:rounded-xl bg-foreground text-background flex items-center justify-center mb-2 sm:mb-8 shadow-2xl group-hover:scale-110 transition-all duration-500">
                 <FiPlus size={16} className="sm:w-7 sm:h-7" />
               </div>
               <h3 className="font-black text-foreground text-[8px] sm:text-xl mb-1 uppercase tracking-tighter hidden xs:block">New</h3>
