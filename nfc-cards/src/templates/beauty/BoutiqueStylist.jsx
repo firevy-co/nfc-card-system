@@ -41,7 +41,7 @@ const BoutiqueStylist = ({ userData }) => {
                   {displayName}
                </h1>
 
-               <div className="flex items-center gap-2 text-[#D35D92] bg-[#FFF0F5] px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-12">
+               <div className="flex items-center gap-2 text-[#D35D92] bg-[#FFF0F5] px-4 py-1.5 rounded-full text-[10px] font-black capitalize tracking-[0.2em] mb-12">
                   Makeup & Bridal Mastery
                </div>
             </div>
@@ -64,21 +64,21 @@ const BoutiqueStylist = ({ userData }) => {
                <div className="flex items-center gap-4 py-4 px-6 bg-[#FFF9FB] rounded-[2rem] border border-[#FFDDF0]">
                   <FiInstagram size={18} />
                   <div className="flex-1">
-                     <p className="text-[9px] font-black uppercase text-[#D35D92]/50 tracking-widest">Portfolio</p>
+                     <p className="text-[9px] font-black capitalize text-[#D35D92]/50 tracking-widest">Portfolio</p>
                      <p className="text-xs font-black">@AriaVogue_Official</p>
                   </div>
                </div>
                <div className="flex items-center gap-4 py-4 px-6 bg-[#FFF9FB] rounded-[2rem] border border-[#FFDDF0]">
                   <FiMapPin size={18} />
                   <div className="flex-1">
-                     <p className="text-[9px] font-black uppercase text-[#D35D92]/50 tracking-widest">Studio Location</p>
+                     <p className="text-[9px] font-black capitalize text-[#D35D92]/50 tracking-widest">Studio Location</p>
                      <p className="text-xs font-black italic">{address}</p>
                   </div>
                </div>
             </div>
 
             {/* PRIMARY CTA */}
-            <button className="w-full bg-[#8E44AD] hover:bg-[#D35D92] text-white font-black py-5 rounded-[2.5rem] flex items-center justify-center gap-3 transition-all uppercase tracking-[0.2em] text-[10px] shadow-lg shadow-[#8E44AD]/20">
+            <button className="w-full bg-[#8E44AD] hover:bg-[#D35D92] text-white font-black py-5 rounded-[2.5rem] flex items-center justify-center gap-3 transition-all capitalize tracking-[0.2em] text-[10px] shadow-lg shadow-[#8E44AD]/20">
                <FiUserPlus size={18} />
                Secure Your Booking
             </button>

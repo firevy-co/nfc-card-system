@@ -74,7 +74,7 @@ const TemplatePreview = ({ userData }) => {
             <div className="mb-8 flex flex-col xl:flex-row items-center justify-between gap-6">
                 <button
                     onClick={() => navigate(-1)}
-                    className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-all group"
+                    className="flex items-center gap-2 text-xs font-black capitalize tracking-[0.2em] text-muted-foreground hover:text-foreground transition-all group"
                 >
                     <FiArrowLeft className="group-hover:-translate-x-1 transition-transform" />
                     Back to Library
@@ -85,21 +85,21 @@ const TemplatePreview = ({ userData }) => {
                     <div className="flex bg-secondary/50 p-1.5 rounded-2xl border border-white/5 shadow-inner">
                         <button
                             onClick={() => { setDevice('mobile'); setIsLandscape(false); }}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${device === 'mobile' ? 'bg-primary text-background shadow-lg shadow-primary/20' : 'text-muted-foreground hover:text-foreground'}`}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black capitalize tracking-widest transition-all ${device === 'mobile' ? 'bg-primary text-background shadow-lg shadow-primary/20' : 'text-muted-foreground hover:text-foreground'}`}
                         >
                             <FiSmartphone size={14} />
                             Mobile
                         </button>
                         <button
                             onClick={() => { setDevice('tablet'); setIsLandscape(false); }}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${device === 'tablet' ? 'bg-primary text-background shadow-lg shadow-primary/20' : 'text-muted-foreground hover:text-foreground'}`}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black capitalize tracking-widest transition-all ${device === 'tablet' ? 'bg-primary text-background shadow-lg shadow-primary/20' : 'text-muted-foreground hover:text-foreground'}`}
                         >
                             <FiTablet size={14} />
                             Tablet
                         </button>
                         <button
                             onClick={() => { setDevice('desktop'); setIsLandscape(false); }}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${device === 'desktop' ? 'bg-primary text-background shadow-lg shadow-primary/20' : 'text-muted-foreground hover:text-foreground'}`}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[9px] font-black capitalize tracking-widest transition-all ${device === 'desktop' ? 'bg-primary text-background shadow-lg shadow-primary/20' : 'text-muted-foreground hover:text-foreground'}`}
                         >
                             <FiMonitor size={14} />
                             Desktop
@@ -114,7 +114,7 @@ const TemplatePreview = ({ userData }) => {
                             title="Rotate Device"
                         >
                             <FiRotateCw size={16} className={`transition-transform duration-500 ${isLandscape ? 'rotate-90' : 'rotate-0'}`} />
-                            <span className="text-[9px] font-black uppercase tracking-widest">Rotate</span>
+                            <span className="text-[9px] font-black capitalize tracking-widest">Rotate</span>
                         </button>
                     )}
                 </div>
@@ -122,7 +122,7 @@ const TemplatePreview = ({ userData }) => {
                 <button 
                     onClick={handleConfirm}
                     disabled={confirming}
-                    className="flex items-center gap-3 bg-primary text-background px-8 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20 disabled:opacity-50 disabled:scale-100"
+                    className="flex items-center gap-3 bg-primary text-background px-8 py-3.5 rounded-2xl text-[10px] font-black capitalize tracking-[0.3em] hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20 disabled:opacity-50 disabled:scale-100"
                 >
                     {confirming ? (
                         <>
@@ -174,11 +174,11 @@ const TemplatePreview = ({ userData }) => {
             {/* Device Info Badges */}
             {/* <div className="mt-8 flex justify-center gap-14 opacity-20 select-none font-bold">
                 <div className="text-center">
-                    <p className="text-[9px] uppercase tracking-[0.2em] mb-1">Canvas</p>
+                    <p className="text-[9px] capitalize tracking-[0.2em] mb-1">Canvas</p>
                     <p className="text-xs font-mono">{device === 'mobile' ? (isLandscape ? '667x375' : '375x667') : device === 'tablet' ? (isLandscape ? '1024x768' : '768x1024') : 'Responsive'}</p>
                 </div>
                 <div className="text-center">
-                    <p className="text-[9px] uppercase tracking-[0.2em] mb-1">Mode</p>
+                    <p className="text-[9px] capitalize tracking-[0.2em] mb-1">Mode</p>
                     <p className="text-xs font-mono">{isLandscape ? 'Landscape' : 'Portrait'}</p>
                 </div>
             </div> */}

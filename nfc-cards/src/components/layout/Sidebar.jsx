@@ -24,10 +24,10 @@ export default function Sidebar({ userData, isOpen, onClose }) {
   const handleLogout = () => signOut(auth);
 
   const linkStyle = ({ isActive }) =>
-    `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group
+    `flex items-center gap-4 px-8 py-4 transition-all duration-300 group capitalize font-bold tracking-widest text-[11px]
     ${isActive
-      ? "bg-foreground text-background shadow-lg font-bold"
-      : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+      ? "bg-white dark:bg-card text-blue-800 dark:text-blue-400 border-r-[3px] border-blue-700 dark:border-blue-500 shadow-[0_2px_10px_-2px_rgba(0,0,0,0.05)]"
+      : "text-slate-500 dark:text-muted-foreground hover:bg-slate-50 dark:hover:bg-muted/50 hover:text-slate-700 dark:hover:text-foreground border-r-[3px] border-transparent"
     }`;
 
   return (
@@ -50,18 +50,18 @@ export default function Sidebar({ userData, isOpen, onClose }) {
 
       {/* Logo Section */}
       <div className="p-8 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-foreground text-background flex items-center justify-center shadow-lg">
+        <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-500/20">
           <FiBox className="text-xl" />
         </div>
-        <h1 className="text-2xl font-bold tracking-tighter text-foreground uppercase select-none font-sans">
+        <h1 className="text-2xl font-black tracking-tighter text-gray-900 dark:text-foreground capitalize select-none font-sans">
           Firevy
         </h1>
       </div>
 
       {/* Navigation Section */}
-      <nav className="flex flex-col gap-2 px-4 flex-1 overflow-y-auto">
-        <div className="px-4 mb-2">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground opacity-50">Discovery</p>
+      <nav className="flex flex-col flex-1 overflow-y-auto py-2">
+        <div className="px-8 mb-2 mt-2">
+          <p className="text-[10px] font-bold capitalize tracking-[0.2em] text-muted-foreground opacity-60">Discovery</p>
         </div>
 
         {isAdmin && (
@@ -78,8 +78,8 @@ export default function Sidebar({ userData, isOpen, onClose }) {
 
         {isAdmin && (
           <>
-            <div className="px-4 mt-6 mb-2">
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground opacity-50">Administration</p>
+            <div className="px-8 mt-6 mb-2">
+              <p className="text-[10px] font-bold capitalize tracking-[0.2em] text-muted-foreground opacity-60">Administration</p>
             </div>
             <NavLink to="/admin/users" className={linkStyle}>
               <FiUsers className="text-lg" />
@@ -104,7 +104,7 @@ export default function Sidebar({ userData, isOpen, onClose }) {
 
           <button
             onClick={handleLogout}
-            className="flex-1 ml-2 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-destructive/10 text-destructive border border-destructive/20 hover:bg-destructive hover:text-white transition-all font-bold text-xs uppercase tracking-widest"
+            className="flex-1 ml-2 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-destructive/10 text-destructive border border-destructive/20 hover:bg-destructive hover:text-white transition-all font-bold text-xs capitalize tracking-widest"
           >
             <FiLogOut />
             <span>Logout</span>
@@ -120,7 +120,7 @@ export default function Sidebar({ userData, isOpen, onClose }) {
           </div>
 
           <div className="flex-1 min-w-0 relative z-10">
-            <p className="text-xs font-bold text-foreground truncate uppercase tracking-tight">
+            <p className="text-xs font-bold text-foreground truncate capitalize tracking-tight">
               {userData?.displayName || "Identity Holder"}
             </p>
             <p className="text-[10px] text-muted-foreground truncate opacity-70">

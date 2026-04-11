@@ -28,15 +28,15 @@ const Analytics = ({ user, userData }) => {
             <div>
                <div className="flex items-center gap-2 mb-1">
                   <Activity className="w-4 h-4 text-primary" />
-                  <span className="text-[10px] font-bold text-primary uppercase tracking-[0.3em]">Network Intelligence</span>
+                  <span className="text-[10px] font-bold text-primary capitalize tracking-[0.3em]">Network Intelligence</span>
                </div>
-               <h2 className="text-3xl font-bold text-foreground tracking-tight uppercase">System Analytics</h2>
+               <h2 className="text-3xl font-bold text-foreground tracking-tight capitalize">System Analytics</h2>
             </div>
             
             <div className="flex items-center gap-4 mt-4 md:mt-0">
                <div className="bg-card border border-border px-5 py-2.5 rounded-2xl flex items-center gap-3 shadow-sm">
                   <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
-                  <span className="text-[10px] font-bold text-foreground uppercase tracking-widest">Real-time Operational</span>
+                  <span className="text-[10px] font-bold text-foreground capitalize tracking-widest">Real-time Operational</span>
                </div>
             </div>
          </header>
@@ -62,14 +62,14 @@ const Analytics = ({ user, userData }) => {
                         </div>
                      )}
                      {stat.status && (
-                        <span className="text-[10px] font-bold px-2.5 py-1.5 rounded-full bg-blue-500/10 text-blue-500 border border-blue-500/20 uppercase tracking-widest">
+                        <span className="text-[10px] font-bold px-2.5 py-1.5 rounded-full bg-blue-500/10 text-blue-500 border border-blue-500/20 capitalize tracking-widest">
                            {stat.status}
                         </span>
                      )}
                   </div>
                   
                   <h4 className="text-3xl font-bold text-foreground tracking-tighter mb-1">{stat.value}</h4>
-                  <p className="text-[10px] font-bold uppercase text-muted-foreground tracking-[0.2em] opacity-60 group-hover:opacity-100 transition-opacity">{stat.label}</p>
+                  <p className="text-[10px] font-bold capitalize text-muted-foreground tracking-[0.2em] opacity-60 group-hover:opacity-100 transition-opacity">{stat.label}</p>
                </div>
             ))}
          </div>
@@ -79,12 +79,12 @@ const Analytics = ({ user, userData }) => {
             <div className="lg:col-span-2 bg-card border border-border p-8 rounded-[2.5rem] shadow-premium relative overflow-hidden group transition-all duration-500 hover:border-primary/20">
                <div className="flex items-center justify-between mb-12 relative z-10">
                   <div>
-                     <h3 className="text-xl font-bold text-foreground tracking-tight uppercase">Global Interaction Flow</h3>
+                     <h3 className="text-xl font-bold text-foreground tracking-tight capitalize">Global Interaction Flow</h3>
                      <p className="text-xs text-muted-foreground font-medium mt-1">NFC Node activations across the network (7-day window)</p>
                   </div>
                   <div className="flex bg-muted/40 p-1.5 rounded-2xl border border-border">
-                     <button className="px-6 py-2.5 rounded-xl bg-primary text-white text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-primary/20 transition-all">Periodic</button>
-                     <button className="px-6 py-2.5 rounded-xl text-muted-foreground text-[10px] font-bold uppercase tracking-widest hover:text-foreground transition-all">Cumulative</button>
+                     <button className="px-6 py-2.5 rounded-xl bg-primary text-white text-[10px] font-bold capitalize tracking-widest shadow-lg shadow-primary/20 transition-all">Periodic</button>
+                     <button className="px-6 py-2.5 rounded-xl text-muted-foreground text-[10px] font-bold capitalize tracking-widest hover:text-foreground transition-all">Cumulative</button>
                   </div>
                </div>
 
@@ -122,7 +122,7 @@ const Analytics = ({ user, userData }) => {
                         <circle cx="800" cy="50" r="8" fill="#6366F1" />
                      </g>
                   </svg>
-                  <div className="mt-8 flex justify-between text-[10px] font-bold text-muted-foreground uppercase tracking-[0.3em] opacity-40 border-t border-border pt-8">
+                  <div className="mt-8 flex justify-between text-[10px] font-bold text-muted-foreground capitalize tracking-[0.3em] opacity-40 border-t border-border pt-8">
                      <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
                   </div>
                </div>
@@ -131,7 +131,7 @@ const Analytics = ({ user, userData }) => {
 
             <div className="bg-card border border-border p-8 rounded-[2.5rem] shadow-premium flex flex-col relative overflow-hidden transition-all duration-500 hover:border-primary/20">
                <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-xl font-bold text-foreground tracking-tight uppercase">Top Architecture</h3>
+                  <h3 className="text-xl font-bold text-foreground tracking-tight capitalize">Top Architecture</h3>
                   <button className="p-2.5 rounded-xl bg-secondary hover:bg-border transition-all"><ArrowUpRight className="w-4 h-4" /></button>
                </div>
                
@@ -143,8 +143,8 @@ const Analytics = ({ user, userData }) => {
                   ].map((tmpl, i) => (
                      <div key={i} className="group cursor-pointer">
                         <div className="flex items-center justify-between mb-2">
-                           <h4 className="text-xs font-bold text-foreground tracking-widest uppercase">{tmpl.name}</h4>
-                           <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest opacity-50">{tmpl.scans}</span>
+                           <h4 className="text-xs font-bold text-foreground tracking-widest capitalize">{tmpl.name}</h4>
+                           <span className="text-[10px] text-muted-foreground font-bold capitalize tracking-widest opacity-50">{tmpl.scans}</span>
                         </div>
                         <div className="w-full h-2 bg-muted rounded-full overflow-hidden border border-border shadow-inner">
                            <div className={`h-full ${tmpl.color} rounded-full transition-all duration-1000 group-hover:brightness-125`} style={{ width: `${tmpl.val}%` }}></div>
@@ -153,7 +153,7 @@ const Analytics = ({ user, userData }) => {
                   ))}
                </div>
                
-               <button className="w-full py-4 rounded-2xl bg-secondary/50 border border-border text-foreground font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-primary hover:text-white hover:border-primary transition-all mt-10 relative z-10">
+               <button className="w-full py-4 rounded-2xl bg-secondary/50 border border-border text-foreground font-bold text-[10px] capitalize tracking-[0.2em] hover:bg-primary hover:text-white hover:border-primary transition-all mt-10 relative z-10">
                   Enumerate All Modules
                </button>
             </div>
@@ -162,7 +162,7 @@ const Analytics = ({ user, userData }) => {
          {/* --- GEOGRAPHIC & RECENT ACTIVITY --- */}
          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="bg-card border border-border p-8 rounded-[2.5rem] shadow-premium relative overflow-hidden min-h-[480px]">
-               <h3 className="text-xl font-bold text-foreground tracking-tight uppercase mb-8">Geospatial Presence</h3>
+               <h3 className="text-xl font-bold text-foreground tracking-tight capitalize mb-8">Geospatial Presence</h3>
                <div className="relative h-64 bg-muted/20 rounded-3xl mb-10 flex items-center justify-center border border-border/50 overflow-hidden group">
                   <div className="w-full h-full opacity-10 absolute flex items-center justify-center p-8 transition-transform duration-1000 group-hover:scale-105">
                      <svg className="w-full h-full fill-foreground" viewBox="0 0 1000 500">
@@ -205,7 +205,7 @@ const Analytics = ({ user, userData }) => {
                      { name: 'Other Regions', val: '12%', color: 'border-muted/20 bg-muted/5' }
                   ].map((geo, i) => (
                      <div key={i} className={`p-4 rounded-2xl border ${geo.color} flex justify-between items-center group transition-all`}>
-                        <span className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest">{geo.name}</span>
+                        <span className="text-[10px] font-bold capitalize text-muted-foreground tracking-widest">{geo.name}</span>
                         <span className="text-sm font-bold text-foreground">{geo.val}</span>
                      </div>
                   ))}
@@ -214,8 +214,8 @@ const Analytics = ({ user, userData }) => {
 
             <div className="bg-card border border-border p-8 rounded-[2.5rem] shadow-premium relative overflow-hidden transition-all duration-500 hover:border-primary/20">
                <div className="flex items-center justify-between mb-10">
-                  <h3 className="text-xl font-bold text-foreground tracking-tight uppercase">Network Audit Log</h3>
-                  <button className="text-[10px] font-bold text-destructive uppercase tracking-widest hover:brightness-125 transition-all">Format Log</button>
+                  <h3 className="text-xl font-bold text-foreground tracking-tight capitalize">Network Audit Log</h3>
+                  <button className="text-[10px] font-bold text-destructive capitalize tracking-widest hover:brightness-125 transition-all">Format Log</button>
                </div>
                
                <div className="space-y-4 relative z-10">
@@ -230,17 +230,17 @@ const Analytics = ({ user, userData }) => {
                            <ev.icon className={`w-full h-full ${ev.iconColor}`} />
                         </div>
                         <div className="flex-1 min-w-0">
-                           <h4 className="text-xs font-bold text-foreground tracking-widest uppercase truncate">{ev.name}</h4>
+                           <h4 className="text-xs font-bold text-foreground tracking-widest capitalize truncate">{ev.name}</h4>
                            <p className="text-[10px] text-muted-foreground font-medium opacity-60 truncate">{ev.event}</p>
                         </div>
-                        <div className="text-[9px] font-bold text-muted-foreground uppercase opacity-40 shrink-0">
+                        <div className="text-[9px] font-bold text-muted-foreground capitalize opacity-40 shrink-0">
                            {ev.time}
                         </div>
                      </div>
                   ))}
                </div>
                
-               <button className="w-full text-center mt-12 text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground hover:text-primary transition-all flex items-center justify-center gap-3 group">
+               <button className="w-full text-center mt-12 text-[10px] font-bold capitalize tracking-[0.3em] text-muted-foreground hover:text-primary transition-all flex items-center justify-center gap-3 group">
                   <Clock className="w-4 h-4 opacity-50 transition-all" />
                   Request Full Network History
                </button>

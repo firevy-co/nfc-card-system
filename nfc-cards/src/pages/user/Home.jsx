@@ -20,13 +20,13 @@ export const Home = ({ userData }) => {
                             <FiShield className="text-white text-4xl" />
                         </div>
                         <div className="space-y-2">
-                            <h2 className="text-5xl font-black tracking-tighter uppercase font-['Outfit']">Identity Node</h2>
-                            <div className="flex items-center justify-center gap-2 text-primary font-black text-[10px] uppercase tracking-[0.4em] opacity-60">
+                            <h2 className="text-5xl font-black tracking-tighter capitalize font-['Outfit']">Identity Node</h2>
+                            <div className="flex items-center justify-center gap-2 text-primary font-black text-[10px] capitalize tracking-[0.4em] opacity-60">
                             <FiGlobe />
                             <span>Synchronized Protocol</span>
                             </div>
                         </div>
-                        <p className="text-muted-foreground text-[11px] font-black uppercase tracking-[0.2em] mt-6 bg-secondary/50 px-6 py-2 rounded-full inline-block border border-border">
+                        <p className="text-muted-foreground text-[11px] font-black capitalize tracking-[0.2em] mt-6 bg-secondary/50 px-6 py-2 rounded-full inline-block border border-border">
                             {userData?.email || "Resolving Identity..."}
                         </p>
                     </header>
@@ -38,13 +38,13 @@ export const Home = ({ userData }) => {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-4 pt-4 relative z-10">
-                        <button className="flex-1 flex items-center justify-center gap-3 px-8 py-5 rounded-2xl bg-secondary text-foreground font-black text-[10px] uppercase tracking-[0.2em] hover:bg-border border border-border transition-all shadow-sm">
+                        <button className="flex-1 flex items-center justify-center gap-3 px-8 py-5 rounded-2xl bg-secondary text-foreground font-black text-[10px] capitalize tracking-[0.2em] hover:bg-border border border-border transition-all shadow-sm">
                             <FiEdit3 size={16} />
                             Metadata Audit
                         </button>
                         <button 
                             onClick={handleLogout}
-                            className="flex-1 flex items-center justify-center gap-3 px-8 py-5 rounded-2xl bg-destructive text-white font-black uppercase tracking-[0.2em] text-[10px] hover:shadow-2xl hover:shadow-destructive/20 hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-destructive/10"
+                            className="flex-1 flex items-center justify-center gap-3 px-8 py-5 rounded-2xl bg-destructive text-white font-black capitalize tracking-[0.2em] text-[10px] hover:shadow-2xl hover:shadow-destructive/20 hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-destructive/10"
                         >
                             <FiLogOut size={16} />
                             Terminate Session
@@ -53,7 +53,7 @@ export const Home = ({ userData }) => {
                 </div>
                 
                 <footer className="mt-16 opacity-30 pointer-events-none select-none">
-                    <span className="text-[10px] font-black uppercase tracking-[0.6em] text-muted-foreground">Firevy Platform Orchestration © 2026</span>
+                    <span className="text-[10px] font-black capitalize tracking-[0.6em] text-muted-foreground">Firevy Platform Orchestration © 2026</span>
                 </footer>
             </div>
         </Layout>

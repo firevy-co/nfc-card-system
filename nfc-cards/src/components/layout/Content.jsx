@@ -162,7 +162,7 @@ export default function Content({ userData }) {
             {isAdmin && (
               <button
                 onClick={() => { setEditingTemplate(null); setIsModalOpen(true); }}
-                className="flex-1 lg:flex-none flex items-center justify-center gap-2 sm:gap-3 bg-foreground text-background px-4 sm:px-10 py-3 sm:py-4 rounded-xl font-black text-[8px] sm:text-[10px] uppercase tracking-[0.1em] sm:tracking-[0.2em] hover:brightness-125 transition-all shadow-2xl active:scale-95 group"
+                className="flex-1 lg:flex-none flex items-center justify-center gap-2 sm:gap-3 bg-foreground text-background px-4 sm:px-10 py-3 sm:py-4 rounded-xl font-black text-[8px] sm:text-[10px] capitalize tracking-[0.1em] sm:tracking-[0.2em] hover:brightness-125 transition-all shadow-2xl active:scale-95 group"
               >
                 <FiPlus className="group-hover:rotate-90 transition-transform duration-300" />
                 <span className="hidden xs:block">Add node</span>
@@ -210,8 +210,8 @@ export default function Content({ userData }) {
                   <div className="w-8 h-8 sm:w-16 sm:h-16 rounded-lg sm:rounded-xl bg-foreground text-background flex items-center justify-center mb-2 sm:mb-8 shadow-2xl group-hover:scale-110 transition-all duration-500">
                     <FiPlus size={16} className="sm:w-7 sm:h-7" />
                   </div>
-                  <h3 className="font-black text-foreground text-[8px] sm:text-xl mb-1 uppercase tracking-tighter hidden xs:block">New</h3>
-                  <p className="text-[7px] text-center px-2 leading-relaxed opacity-40 font-bold uppercase tracking-widest hidden sm:block">
+                  <h3 className="font-black text-foreground text-[8px] sm:text-xl mb-1 capitalize tracking-tighter hidden xs:block">New</h3>
+                  <p className="text-[7px] text-center px-2 leading-relaxed opacity-40 font-bold capitalize tracking-widest hidden sm:block">
                     Initialize node
                   </p>
                 </motion.div>

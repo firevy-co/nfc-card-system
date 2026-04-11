@@ -34,11 +34,11 @@ const DigitalCreator = ({ userData }) => {
                   <FiVideo size={40} className="text-[#1E90FF]" />
                </div>
 
-               <h1 className="text-4xl font-black text-white italic tracking-tighter uppercase leading-none mb-1">
+               <h1 className="text-4xl font-black text-white italic tracking-tighter capitalize leading-none mb-1">
                   {displayName}
                </h1>
 
-               <div className="flex items-center gap-2 text-[#1E90FF]/60 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.4em] mb-12">
+               <div className="flex items-center gap-2 text-[#1E90FF]/60 px-4 py-1.5 rounded-full text-[10px] font-black capitalize tracking-[0.4em] mb-12">
                   Digital Media Alchemist
                </div>
             </div>
@@ -47,16 +47,16 @@ const DigitalCreator = ({ userData }) => {
             <div className="grid grid-cols-2 gap-4 mb-10">
                <button className="h-20 bg-[#111] border border-white/5 hover:border-[#1E90FF] flex flex-col items-center justify-center group transition-all">
                   <FiTwitter size={24} className="text-zinc-500 group-hover:text-[#1E90FF]" />
-                  <span className="text-[8px] font-black uppercase mt-2 opacity-50 group-hover:opacity-100">Live Feed</span>
+                  <span className="text-[8px] font-black capitalize mt-2 opacity-50 group-hover:opacity-100">Live Feed</span>
                </button>
                <button className="h-20 bg-[#111] border border-white/5 hover:border-[#8E44AD] flex flex-col items-center justify-center group transition-all">
                   <FiTwitch size={24} className="text-zinc-500 group-hover:text-[#8E44AD]" />
-                  <span className="text-[8px] font-black uppercase mt-2 opacity-50 group-hover:opacity-100">Twitch</span>
+                  <span className="text-[8px] font-black capitalize mt-2 opacity-50 group-hover:opacity-100">Twitch</span>
                </button>
             </div>
 
             {/* ACTION STACK */}
-            <button className="w-full bg-[#1E90FF] hover:bg-[#1C86EE] text-white font-black py-5 flex items-center justify-center gap-3 transition-all uppercase tracking-[0.3em] text-[10px] mb-8">
+            <button className="w-full bg-[#1E90FF] hover:bg-[#1C86EE] text-white font-black py-5 flex items-center justify-center gap-3 transition-all capitalize tracking-[0.3em] text-[10px] mb-8">
                <FiZap size={18} />
                Collaborate Now
             </button>
@@ -66,14 +66,14 @@ const DigitalCreator = ({ userData }) => {
                <div className="group flex items-center gap-5 p-4 border border-white/5 bg-[#111] hover:border-[#1E90FF]/30 transition-all">
                   <FiGlobe className="text-[#1E90FF]" />
                   <div className="flex-1 overflow-hidden">
-                     <p className="text-[10px] font-bold text-zinc-600 truncate uppercase">Digital HQ</p>
+                     <p className="text-[10px] font-bold text-zinc-600 truncate capitalize">Digital HQ</p>
                      <p className="text-[11px] font-bold truncate text-[#1E90FF]">{website}</p>
                   </div>
                </div>
                <div className="group flex items-center gap-5 p-4 border border-white/5 bg-[#111] hover:border-[#1E90FF]/30 transition-all">
                   <FiMessageCircle className="text-[#1E90FF]" />
                   <div className="flex-1 overflow-hidden">
-                     <p className="text-[10px] font-bold text-zinc-600 truncate uppercase">Private Node</p>
+                     <p className="text-[10px] font-bold text-zinc-600 truncate capitalize">Private Node</p>
                      <p className="text-[11px] font-bold truncate text-[#1E90FF]">{email}</p>
                   </div>
                </div>

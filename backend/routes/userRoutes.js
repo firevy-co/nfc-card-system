@@ -9,10 +9,10 @@ const userController = require('../controllers/userController');
 router.get('/', userController.getAllUsers);
 
 /**
- * IDENTITY PIPELINE: PUT /api/users
+ * IDENTITY PIPELINE: PUT /api/users/:uid
  * Performs a deep update of participant credentials (Email, Name, Role).
  */
-router.put('/', userController.updateUserDetails);
+router.put('/:uid', userController.updateUserDetails);
 
 /**
  * IDENTITY PIPELINE: POST /api/users/onboard

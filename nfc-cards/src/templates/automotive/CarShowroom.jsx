@@ -20,8 +20,8 @@ const CarShowroom = ({ userData }) => {
           <div className="w-24 h-24 rounded-3xl bg-[#FF0000] text-black mx-auto mb-10 flex items-center justify-center p-2 shadow-2xl transform transition-transform group-hover:scale-110 group-hover:-rotate-3">
              <FiHexagon size={40} />
           </div>
-          <h2 className="text-4xl font-black italic tracking-tighter mb-2 text-white uppercase">{displayName || "AUTO VELOCITY"}</h2>
-          <div className="flex items-center justify-center gap-2 px-6 py-2 rounded-full bg-white/5 text-[#FF0000] text-[10px] font-black uppercase tracking-[0.3em] mb-4 border border-white/10 group-hover:bg-red-600 group-hover:text-white transition-all">
+          <h2 className="text-4xl font-black italic tracking-tighter mb-2 text-white capitalize">{displayName || "AUTO VELOCITY"}</h2>
+          <div className="flex items-center justify-center gap-2 px-6 py-2 rounded-full bg-white/5 text-[#FF0000] text-[10px] font-black capitalize tracking-[0.3em] mb-4 border border-white/10 group-hover:bg-red-600 group-hover:text-white transition-all">
              <FiActivity size={12} className="animate-pulse" />
              {role || "Sales Manager"}
           </div>
@@ -31,11 +31,11 @@ const CarShowroom = ({ userData }) => {
         <div className="flex gap-4 mb-14 overflow-x-auto pb-4 hide-scrollbar">
            <div className="min-w-[120px] p-6 rounded-[2rem] bg-white/5 border border-white/5 flex flex-col items-center gap-4 group/item hover:border-red-600 transition-all">
               <FiFastForward size={24} className="opacity-40 group-hover/item:opacity-100 group-hover/item:scale-110 transition-all" />
-              <p className="text-[10px] font-black uppercase tracking-widest text-[#FF0000]/50 group-hover/item:text-white transition-all">Supercars</p>
+              <p className="text-[10px] font-black capitalize tracking-widest text-[#FF0000]/50 group-hover/item:text-white transition-all">Supercars</p>
            </div>
            <div className="min-w-[120px] p-6 rounded-[2rem] bg-white/5 border border-white/5 flex flex-col items-center gap-4 group/item hover:border-red-600 transition-all">
               <FiBox size={24} className="opacity-40 group-hover/item:opacity-100 group-hover/item:scale-110 transition-all" />
-              <p className="text-[10px] font-black uppercase tracking-widest text-[#FF0000]/50 group-hover/item:text-white transition-all">Vintage</p>
+              <p className="text-[10px] font-black capitalize tracking-widest text-[#FF0000]/50 group-hover/item:text-white transition-all">Vintage</p>
            </div>
         </div>
 
@@ -46,7 +46,7 @@ const CarShowroom = ({ userData }) => {
                  <FiPhone size={20} />
               </div>
               <div>
-                 <p className="text-[8px] font-black text-white/40 uppercase tracking-widest mb-0.5">Showroom Node</p>
+                 <p className="text-[8px] font-black text-white/40 capitalize tracking-widest mb-0.5">Showroom Node</p>
                  <p className="font-black text-sm tracking-widest text-white italic">{phone}</p>
               </div>
            </a>
@@ -56,7 +56,7 @@ const CarShowroom = ({ userData }) => {
                  <FiMail size={20} />
               </div>
               <div>
-                 <p className="text-[8px] font-black text-white/40 uppercase tracking-widest mb-0.5">Client Portal</p>
+                 <p className="text-[8px] font-black text-white/40 capitalize tracking-widest mb-0.5">Client Portal</p>
                  <p className="font-black text-sm tracking-widest truncate max-w-[150px] text-white italic">{email || "resolving..."}</p>
               </div>
            </a>
@@ -64,7 +64,7 @@ const CarShowroom = ({ userData }) => {
 
         {/* Velocity Branding */}
         <footer className="mt-16 text-center opacity-30 select-none pointer-events-none">
-           <p className="text-[8px] font-black uppercase tracking-[0.6em] text-white italic underline underline-offset-8 decoration-[#FF0000]">V-Core Automotive Protocol © 2026</p>
+           <p className="text-[8px] font-black capitalize tracking-[0.6em] text-white italic underline underline-offset-8 decoration-[#FF0000]">V-Core Automotive Protocol © 2026</p>
         </footer>
       </div>
     </div>

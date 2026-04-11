@@ -19,8 +19,8 @@ const ServicePortfolio = ({ userData }) => {
           <div className="w-20 h-20 rounded-2xl bg-primary/20 mx-auto mb-8 flex items-center justify-center p-2 border border-primary/30">
              <FiLayout size={32} className="text-primary" />
           </div>
-          <h2 className="text-3xl font-black tracking-tighter mb-2 text-foreground uppercase">{displayName || "SERVICE HUB"}</h2>
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.4em]">{role || "Operations Lead"}</p>
+          <h2 className="text-3xl font-black tracking-tighter mb-2 text-foreground capitalize">{displayName || "SERVICE HUB"}</h2>
+          <p className="text-[10px] font-bold text-muted-foreground capitalize tracking-[0.4em]">{role || "Operations Lead"}</p>
         </header>
 
         {/* Service List Identity */}
@@ -40,7 +40,7 @@ const ServicePortfolio = ({ userData }) => {
                  <FiWifi size={18} className="group-hover/link:text-background" />
               </div>
               <div>
-                 <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest mb-0.5">Cellular Bridge</p>
+                 <p className="text-[8px] font-bold text-muted-foreground capitalize tracking-widest mb-0.5">Cellular Bridge</p>
                  <p className="font-bold text-sm tracking-widest">{phone}</p>
               </div>
            </a>
@@ -50,7 +50,7 @@ const ServicePortfolio = ({ userData }) => {
                  <FiMail size={18} className="group-hover/link:text-background" />
               </div>
               <div>
-                 <p className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest mb-0.5">Cloud Relay</p>
+                 <p className="text-[8px] font-bold text-muted-foreground capitalize tracking-widest mb-0.5">Cloud Relay</p>
                  <p className="font-bold text-sm tracking-widest truncate max-w-[150px]">{email || "resolving..."}</p>
               </div>
            </a>
@@ -60,7 +60,7 @@ const ServicePortfolio = ({ userData }) => {
         <footer className="mt-16 text-center opacity-40 select-none pointer-events-none">
            <div className="flex items-center justify-center gap-2 mb-6">
               <FiSettings size={14} className="opacity-20 translate-y-0.5" />
-              <p className="text-[8px] font-black uppercase tracking-[0.6em]">Modular Identity System</p>
+              <p className="text-[8px] font-black capitalize tracking-[0.6em]">Modular Identity System</p>
            </div>
         </footer>
       </div>

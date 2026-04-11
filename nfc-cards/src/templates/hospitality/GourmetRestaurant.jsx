@@ -31,11 +31,11 @@ const GourmetRestaurant = ({ userData }) => {
                   <FiCoffee size={24} className="text-[#D1B16B]" />
                </div>
 
-               <h1 className="text-3xl font-black text-[#1A1A1A] tracking-tighter uppercase leading-none mb-1">
+               <h1 className="text-3xl font-black text-[#1A1A1A] tracking-tighter capitalize leading-none mb-1">
                   {displayName}
                </h1>
 
-               <div className="flex items-center gap-2 text-[#D1B16B] rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-12">
+               <div className="flex items-center gap-2 text-[#D1B16B] rounded-full text-[10px] font-black capitalize tracking-[0.3em] mb-12">
                   Fine Dining & Parisian Bistro
                </div>
             </div>
@@ -46,13 +46,13 @@ const GourmetRestaurant = ({ userData }) => {
                   <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-[#D1B16B] transition-colors group-hover:bg-[#1A1A1A] group-hover:text-white">
                      <FiMenu size={20} />
                   </div>
-                  <span className="text-[9px] font-black uppercase tracking-widest">Le Menu</span>
+                  <span className="text-[9px] font-black capitalize tracking-widest">Le Menu</span>
                </button>
                <button className="h-28 bg-[#FDFCF8] hover:bg-[#D1B16B] hover:text-white rounded-[2.5rem] border border-[#EDECE4] transition-all flex flex-col items-center justify-center gap-3 group">
                   <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-[#D1B16B] transition-colors group-hover:bg-[#1A1A1A] group-hover:text-white">
                      <FiCalendar size={20} />
                   </div>
-                  <span className="text-[9px] font-black uppercase tracking-widest">Bookings</span>
+                  <span className="text-[9px] font-black capitalize tracking-widest">Bookings</span>
                </button>
             </div>
 
@@ -61,7 +61,7 @@ const GourmetRestaurant = ({ userData }) => {
                <div className="absolute top-[-20%] right-[-10%] w-32 h-32 bg-[#D1B16B]/10 rounded-full blur-3xl transition-all group-hover:bg-[#D1B16B]/20"></div>
                <div className="flex items-center gap-3 mb-6">
                   <FiClock className="text-[#D1B16B]" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[#D1B16B]">Service Hours</span>
+                  <span className="text-[10px] font-black capitalize tracking-widest text-[#D1B16B]">Service Hours</span>
                </div>
                <div className="space-y-4">
                   <div className="flex justify-between items-center text-xs">
@@ -80,14 +80,14 @@ const GourmetRestaurant = ({ userData }) => {
                <div className="flex items-center gap-4 px-4 py-4 bg-[#FDFCF8] rounded-3xl border border-[#EDECE4] hover:border-[#D1B16B] transition-colors transition-all group">
                   <FiGlobe className="text-[#D1B16B] group-hover:text-[#1A1A1A] transition-colors" />
                   <div className="flex-1">
-                     <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest leading-none mb-1">Our Portal</p>
+                     <p className="text-[8px] text-zinc-400 font-black capitalize tracking-widest leading-none mb-1">Our Portal</p>
                      <p className="text-xs font-bold">{website}</p>
                   </div>
                </div>
                <div className="flex items-center gap-4 px-4 py-4 bg-[#FDFCF8] rounded-3xl border border-[#EDECE4] hover:border-[#D1B16B] transition-colors transition-all group">
                   <FiMapPin className="text-[#D1B16B] group-hover:text-[#1A1A1A] transition-colors" />
                   <div className="flex-1">
-                     <p className="text-[8px] text-zinc-400 font-black uppercase tracking-widest leading-none mb-1">Localiser</p>
+                     <p className="text-[8px] text-zinc-400 font-black capitalize tracking-widest leading-none mb-1">Localiser</p>
                      <p className="text-xs font-bold">{address}</p>
                   </div>
                </div>

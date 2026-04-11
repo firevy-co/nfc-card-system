@@ -16,15 +16,15 @@ const ClassicExecutive = ({ userData }) => {
         {/* Header: Photo & Identity */}
         <header className="flex flex-col items-center mb-10 relative z-10">
           <div className="w-24 h-24 rounded-[2rem] bg-gradient-to-br from-primary to-indigo-600 mb-6 flex items-center justify-center p-1 shadow-xl">
-             <div className="w-full h-full bg-secondary border border-white/10 rounded-[1.8rem] flex items-center justify-center text-3xl font-black uppercase overflow-hidden">
+             <div className="w-full h-full bg-secondary border border-white/10 rounded-[1.8rem] flex items-center justify-center text-3xl font-black capitalize overflow-hidden">
                 {/* Fallback to initials */}
                 {displayName?.charAt(0) || "U"}
              </div>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight mb-2 text-foreground font-['Outfit'] uppercase">
+          <h1 className="text-3xl font-bold tracking-tight mb-2 text-foreground font-['Outfit'] capitalize">
             {displayName || "Identity Holder"}
           </h1>
-          <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary text-background text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-primary/20">
+          <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary text-background text-[10px] font-black capitalize tracking-[0.2em] shadow-lg shadow-primary/20">
              {role || "System Architect"}
           </div>
         </header>
@@ -36,7 +36,7 @@ const ClassicExecutive = ({ userData }) => {
                  <FiPhone size={18} />
               </div>
               <div>
-                 <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-0.5">Cellular Node</p>
+                 <p className="text-[10px] font-bold text-muted-foreground capitalize tracking-widest mb-0.5">Cellular Node</p>
                  <p className="font-bold text-sm">{phone}</p>
               </div>
            </a>
@@ -46,7 +46,7 @@ const ClassicExecutive = ({ userData }) => {
                  <FiMail size={18} />
               </div>
               <div>
-                 <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-0.5">Cloud Mailbox</p>
+                 <p className="text-[10px] font-bold text-muted-foreground capitalize tracking-widest mb-0.5">Cloud Mailbox</p>
                  <p className="font-bold text-sm truncate max-w-[180px]">{email || "resolving..."}</p>
               </div>
            </a>
@@ -56,20 +56,20 @@ const ClassicExecutive = ({ userData }) => {
                  <FiGlobe size={18} />
               </div>
               <div>
-                 <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-0.5">Network Site</p>
+                 <p className="text-[10px] font-bold text-muted-foreground capitalize tracking-widest mb-0.5">Network Site</p>
                  <p className="font-bold text-sm">firevy.co/network</p>
               </div>
            </div>
         </div>
 
         {/* CTA Section */}
-        <button className="w-full mt-10 py-5 rounded-3xl bg-primary text-background font-black text-[10px] uppercase tracking-[0.3em] hover:scale-[1.02] active:scale-95 transition-all shadow-2xl shadow-primary/30 flex items-center justify-center gap-3">
+        <button className="w-full mt-10 py-5 rounded-3xl bg-primary text-background font-black text-[10px] capitalize tracking-[0.3em] hover:scale-[1.02] active:scale-95 transition-all shadow-2xl shadow-primary/30 flex items-center justify-center gap-3">
            <FiWifi className="text-sm" />
            Synchronize Identity
         </button>
 
         <footer className="mt-10 text-center opacity-30 select-none pointer-events-none">
-           <p className="text-[8px] font-black uppercase tracking-[0.6em]">Firevy Protocol 2026</p>
+           <p className="text-[8px] font-black capitalize tracking-[0.6em]">Firevy Protocol 2026</p>
         </footer>
       </div>
     </div>

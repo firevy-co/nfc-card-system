@@ -31,43 +31,23 @@ function App() {
         setUser(authenticatedUser);
         console.log(`[AUTH HUB]: Synchronizing Identity for ${authenticatedUser.email}`);
 
-        const { isOffline } = await import('./firebase.config');
-        if (isOffline) {
-          setUserData({ ...authenticatedUser, onboarded: true });
-          setLoading(false);
-          return;
-        }
-
         try {
           const { doc, getDoc, setDoc, updateDoc, serverTimestamp } = await import('firebase/firestore');
           const { db } = await import('./firebase.config');
           const userRef = doc(db, "users", authenticatedUser.uid);
           const userSnap = await getDoc(userRef);
 
-          // ROLE CLEARANCE DETERMINATION
-          const isAdminEmail = authenticatedUser.email === 'abc@gmail.com';
-          const priorityRole = isAdminEmail ? 'Admin' : 'User';
-
           if (userSnap.exists()) {
             const currentData = userSnap.data();
             console.log(`[CLEARANCE]: Current role detected as ${currentData.role}`);
-
-            // PRIORITY SYNC: Self-heal role if admin email is detected but role is still regular user
-            if (isAdminEmail && currentData.role !== 'Admin') {
-              console.warn(`[SECURITY UPGRADE]: Escalating ${authenticatedUser.email} to Admin clearance...`);
-              await updateDoc(userRef, { role: 'Admin' });
-              setUserData({ ...currentData, role: 'Admin' });
-              console.log("[CLEARANCE]: Admin priority synchronized successfully.");
-            } else {
-              setUserData(currentData);
-            }
+            setUserData(currentData);
           } else {
-            console.log("[IDENTITY]: New Node detected. Initializing with " + priorityRole + " clearance.");
+            console.log("[IDENTITY]: New Node detected. Initializing with User clearance.");
             const newUser = {
               uid: authenticatedUser.uid,
               displayName: authenticatedUser.displayName || 'Architect',
               email: authenticatedUser.email,
-              role: priorityRole,
+              role: 'User',
               createdAt: serverTimestamp(),
               status: 'Active'
             };
@@ -76,7 +56,7 @@ function App() {
           }
         } catch (error) {
           console.error("[CRITICAL]: Identity Synchronization Failed:", error);
-          setUserData({ role: authenticatedUser.email === 'abc@gmail.com' ? 'Admin' : 'User', email: authenticatedUser.email, syncError: true });
+          setUserData({ role: 'User', email: authenticatedUser.email, syncError: true });
         }
       } else {
         setUser(null);

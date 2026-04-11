@@ -19,32 +19,9 @@ let auth;
 let db;
 
 try {
-    if (isOffline) {
-        console.warn("[IDENTITY SYSTEM]: Entering STANDBY MODE (Local Mock).");
-        app = { name: "[DEFAULT]", options: {} };
-        // Simple mock of Firebase Auth
-        auth = { 
-            currentUser: null, 
-            onAuthStateChanged: (cb) => {
-                const stored = localStorage.getItem('mockUser');
-                const user = stored ? JSON.parse(stored) : null;
-                cb(user);
-                return () => {};
-            }, 
-            signOut: async () => { 
-                localStorage.removeItem('mockUser'); 
-                window.location.reload(); 
-            } 
-        };
-        // Mock Firestore
-        db = {
-            collection: () => ({ doc: () => ({ get: async () => ({ exists: () => true, data: () => ({ role: 'Admin', onboarded: true }) }) }) })
-        };
-    } else {
-        app = initializeApp(firebaseConfig);
-        auth = getAuth(app);
-        db = getFirestore(app);
-    }
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
 } catch (error) {
     console.error("Firebase Init Error:", error);
 }

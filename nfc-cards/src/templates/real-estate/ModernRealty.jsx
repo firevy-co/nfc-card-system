@@ -32,18 +32,18 @@ const ModernRealty = ({ userData }) => {
                />
                <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent"></div>
                <div className="absolute bottom-4 left-6">
-                  <div className="flex items-center gap-2 text-white bg-blue-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider mb-2">
+                  <div className="flex items-center gap-2 text-white bg-blue-600 px-3 py-1 rounded-full text-[10px] font-bold capitalize tracking-wider mb-2">
                      <FiHome size={10} />
                      PREMIUM LISTINGS
                   </div>
-                  <h1 className="text-xl font-bold text-white tracking-tight leading-none uppercase">
+                  <h1 className="text-xl font-bold text-white tracking-tight leading-none capitalize">
                      {displayName}
                   </h1>
                </div>
             </div>
 
             <div className="p-6">
-               <p className="text-[11px] text-zinc-500 font-medium tracking-wide uppercase mb-6">
+               <p className="text-[11px] text-zinc-500 font-medium tracking-wide capitalize mb-6">
                   CURATING EXTRAORDINARY SPACES • REAL ESTATE EXCELLENCE
                </p>
 
@@ -51,11 +51,11 @@ const ModernRealty = ({ userData }) => {
                <div className="grid grid-cols-2 gap-3 mb-6">
                   <div className="relative rounded-2xl overflow-hidden h-24">
                      <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750" className="w-full h-full object-cover" alt="Luxury Villa" />
-                     <div className="absolute bottom-2 left-2 text-white text-[8px] font-black uppercase bg-black/40 px-2 py-0.5 rounded-md backdrop-blur-sm">Luxe Villa</div>
+                     <div className="absolute bottom-2 left-2 text-white text-[8px] font-black capitalize bg-black/40 px-2 py-0.5 rounded-md backdrop-blur-sm">Luxe Villa</div>
                   </div>
                   <div className="relative rounded-2xl overflow-hidden h-24">
                      <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858" className="w-full h-full object-cover" alt="Modern Loft" />
-                     <div className="absolute bottom-2 left-2 text-white text-[8px] font-black uppercase bg-black/40 px-2 py-0.5 rounded-md backdrop-blur-sm">Modern Loft</div>
+                     <div className="absolute bottom-2 left-2 text-white text-[8px] font-black capitalize bg-black/40 px-2 py-0.5 rounded-md backdrop-blur-sm">Modern Loft</div>
                   </div>
                </div>
 
@@ -66,7 +66,7 @@ const ModernRealty = ({ userData }) => {
                         <FiGlobe size={18} />
                      </div>
                      <div className="flex-1">
-                        <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest">Digital Portfolio</p>
+                        <p className="text-[9px] text-zinc-400 font-bold capitalize tracking-widest">Digital Portfolio</p>
                         <p className="text-sm font-semibold">{website}</p>
                      </div>
                      <FiArrowRight className="text-zinc-300 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
@@ -77,7 +77,7 @@ const ModernRealty = ({ userData }) => {
                         <FiPhone size={18} />
                      </div>
                      <div className="flex-1">
-                        <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest">Connect Directly</p>
+                        <p className="text-[9px] text-zinc-400 font-bold capitalize tracking-widest">Connect Directly</p>
                         <p className="text-sm font-semibold">{phone}</p>
                      </div>
                      <FiArrowRight className="text-zinc-300 group-hover:text-green-600 group-hover:translate-x-1 transition-all" />
@@ -88,7 +88,7 @@ const ModernRealty = ({ userData }) => {
                         <FiMapPin size={18} />
                      </div>
                      <div className="flex-1">
-                        <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest">Our Office</p>
+                        <p className="text-[9px] text-zinc-400 font-bold capitalize tracking-widest">Our Office</p>
                         <p className="text-sm font-semibold">{address}</p>
                      </div>
                      <FiArrowRight className="text-zinc-300 group-hover:text-zinc-900 group-hover:translate-x-1 transition-all" />
@@ -96,7 +96,7 @@ const ModernRealty = ({ userData }) => {
                </div>
 
                {/* PRIMARY CTA */}
-               <button className="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-3 shadow-lg shadow-blue-500/20 transition-all uppercase tracking-widest text-xs">
+               <button className="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-3 shadow-lg shadow-blue-500/20 transition-all capitalize tracking-widest text-xs">
                   <FiUserPlus size={18} />
                   Book Viewing
                </button>

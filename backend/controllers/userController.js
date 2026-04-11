@@ -6,17 +6,13 @@ const { auth, db, isOffline, admin } = require('../config/firebase');
  */
 let mockUsersCache = [
     { uid: 'abc-01', displayName: 'abc@gmail.com', email: 'abc@gmail.com', role: 'User', status: 'Standby' },
-    { uid: 'hem-02', displayName: 'hemanshu@gmail.com', email: 'hemanshu@gmail.com', role: 'Admin', status: 'Standby' },
+    { uid: 'hem-02', displayName: 'hemanshu@gmail.com', email: 'hemanshu@gmail.com', role: 'User', status: 'Standby' },
 ];
 
 /**
  * IDENTITY AUDIT: Fetching ALL network participants.
  */
 exports.getAllUsers = async (req, res) => {
-    // STANDBY HANDSHAKE: Serve participants from architectural cache if cloud is disconnected
-    if (isOffline) {
-        return res.json(mockUsersCache);
-    }
 
     try {
         const listUsersResult = await auth.listUsers(100);
@@ -46,27 +42,33 @@ exports.getAllUsers = async (req, res) => {
  * IDENTITY AUDIT: Full participant profile update (Email, Name, Role).
  */
 exports.updateUserDetails = async (req, res) => {
-    const { uid, displayName, email, role } = req.body;
-    
-    // STANDBY HANDSHAKE: Persist simulated re-architecture in memory cache
-    if (isOffline) {
-        const index = mockUsersCache.findIndex(u => u.uid === uid);
-        if (index !== -1) {
-            mockUsersCache[index] = { ...mockUsersCache[index], displayName, email, role };
-            return res.json({ message: "MOCK: Identity successfully re-architected in standby mode." });
-        }
-        return res.status(404).json({ error: "Architect Identity not found in cache" });
-    }
+    const { uid } = req.params;
+    const { displayName, email, role } = req.body;
 
     try {
-        await auth.updateUser(uid, { email, displayName });
+        try {
+            const authPayload = {};
+            if (email) authPayload.email = email;
+            if (displayName !== undefined && displayName !== null) authPayload.displayName = displayName;
+            
+            if (Object.keys(authPayload).length > 0) {
+                await auth.updateUser(uid, authPayload);
+            }
+        } catch (authError) {
+            console.warn(`[IDENTITY SYNC]: Core Auth sync skipped/failed for ${uid}: ${authError.message}`);
+        }
+
         await db.collection('users').doc(uid).set({ 
-            displayName, email, role,
+            displayName: displayName || '', 
+            email, 
+            role,
             isAdmin: role === 'Admin',
             updatedAt: admin.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
+
         res.json({ message: `Identity ${uid} credentials successfully re-architected.` });
     } catch (error) {
+        console.error("Database Update Error:", error);
         res.status(500).json({ error: error.message });
     }
 };
@@ -76,12 +78,6 @@ exports.updateUserDetails = async (req, res) => {
  */
 exports.deleteUser = async (req, res) => {
     const { uid } = req.params;
-
-    // STANDBY HANDSHAKE: Persist simulated purge in memory cache
-    if (isOffline) {
-        mockUsersCache = mockUsersCache.filter(u => u.uid !== uid);
-        return res.json({ message: "MOCK: Identity purged from standby cache." });
-    }
 
     try {
         // [PURGE] Stage 1: Core Authentication
@@ -106,14 +102,6 @@ exports.deleteUser = async (req, res) => {
 exports.updateUserRole = async (req, res) => {
     // ... existing implementation ...
     const { uid, role } = req.body;
-    if (isOffline) {
-        const index = mockUsersCache.findIndex(u => u.uid === uid);
-        if (index !== -1) {
-            mockUsersCache[index].role = role;
-            return res.json({ message: "MOCK: Clearance level updated in standby mode." });
-        }
-        return res.status(404).json({ error: "Identity not found" });
-    }
 
     try {
         await db.collection('users').doc(uid).set({ 
@@ -134,11 +122,6 @@ exports.updateUserRole = async (req, res) => {
 exports.completeProfile = async (req, res) => {
     const { uid, ...profileData } = req.body;
 
-    if (isOffline) {
-        console.log(`[STANDBY]: Profile sync intercepted for ${uid}`);
-        return res.json({ message: "STANDBY: Profile synchronized to memory only." });
-    }
-
     try {
         // [CORE STORAGE]: Store the Business Identity in a dedicated collection
         await db.collection('companyDetails').doc(uid).set({
@@ -146,8 +129,9 @@ exports.completeProfile = async (req, res) => {
             updatedAt: admin.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
 
-        // [AUTH SYNC]: Unlock the participant in the main users list
+        // [AUTH SYNC]: Unlock the participant in the main users list with full profile
         await db.collection('users').doc(uid).set({
+            ...profileData,
             onboarded: true,
             status: 'Active',
             updatedAt: admin.firestore.FieldValue.serverTimestamp()

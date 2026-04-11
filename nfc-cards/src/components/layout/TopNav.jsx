@@ -25,13 +25,13 @@ const TopNav = ({ title = "My Templates", showActions = true, onMenuToggle, isMe
                 </button>
 
                 <div className="flex flex-col min-w-0">
-                    <div className="hidden sm:flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] opacity-60">
+                    <div className="hidden sm:flex items-center gap-2 text-[10px] font-black text-muted-foreground capitalize tracking-[0.2em] opacity-60">
                         <FiShield className="text-primary" />
                         <span>Identity Network</span>
                         <FiChevronRight className="mt-0.5" />
                         <span className="text-foreground truncate">{title}</span>
                     </div>
-                    <h2 className="text-base sm:text-2xl font-black text-foreground tracking-tighter uppercase truncate font-['Plus_Jakarta_Sans'] leading-none">
+                    <h2 className="text-base sm:text-2xl font-black text-foreground tracking-tighter capitalize truncate font-['Plus_Jakarta_Sans'] leading-none">
                         {isMenuOpen ? "Navigation Hub" : "Identity Studio"}
                     </h2>
                 </div>
@@ -44,7 +44,7 @@ const TopNav = ({ title = "My Templates", showActions = true, onMenuToggle, isMe
                         <div className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-primary rounded-full border-2 border-card shadow-sm"></div>
                     </div>
 
-                    <button className="flex items-center justify-center gap-2 bg-foreground text-background px-4 sm:px-8 py-2.5 sm:py-4 rounded-xl sm:rounded-2xl font-black text-[9px] sm:text-[10px] uppercase tracking-widest hover:brightness-125 transition-all shadow-xl active:scale-95 shrink-0">
+                    <button className="flex items-center justify-center gap-2 bg-foreground text-background px-4 sm:px-8 py-2.5 sm:py-4 rounded-xl sm:rounded-2xl font-black text-[9px] sm:text-[10px] capitalize tracking-widest hover:brightness-125 transition-all shadow-xl active:scale-95 shrink-0">
                         <FiShare2 className="text-sm sm:text-base shrink-0" />
                         <span className="hidden sm:block">Broadcast</span>
                         <span className="sm:hidden">Share</span>

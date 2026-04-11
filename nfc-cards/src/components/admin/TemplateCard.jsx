@@ -75,7 +75,7 @@ export default function TemplateCard({
                         {title}
                     </h3>
                     <div className="px-1.5 py-0.5 rounded-md bg-secondary/40 border border-border">
-                        <span className="text-[5px] sm:text-[7px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60">
+                        <span className="text-[5px] sm:text-[7px] font-black capitalize tracking-[0.2em] text-muted-foreground opacity-60">
                             {category?.substring(0, 10)}
                         </span>
                     </div>
@@ -91,7 +91,7 @@ export default function TemplateCard({
                         <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
                             <button 
                                 onClick={() => navigate(`${baseRoute}/templates${path}`)}
-                                className="flex items-center justify-center gap-1.5 sm:gap-3 bg-foreground text-background py-2 sm:py-4 rounded-md sm:rounded-lg text-[6px] sm:text-[9px] font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] hover:brightness-125 transition-all shadow-lg active:scale-95"
+                                className="flex items-center justify-center gap-1.5 sm:gap-3 bg-foreground text-background py-2 sm:py-4 rounded-md sm:rounded-lg text-[6px] sm:text-[9px] font-black capitalize tracking-[0.1em] sm:tracking-[0.2em] hover:brightness-125 transition-all shadow-lg active:scale-95"
                             >
                                 <FiEye size={10} className="sm:w-4 sm:h-4" />
                                 <span className="hidden sm:block">Preview</span>
@@ -100,7 +100,7 @@ export default function TemplateCard({
 
                             <button 
                                 onClick={onEdit}
-                                className="flex items-center justify-center gap-1.5 sm:gap-3 bg-secondary/50 text-foreground py-2 sm:py-4 rounded-md sm:rounded-lg text-[6px] sm:text-[9px] font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] hover:bg-secondary transition-all border border-border shadow-sm active:scale-95"
+                                className="flex items-center justify-center gap-1.5 sm:gap-3 bg-secondary/50 text-foreground py-2 sm:py-4 rounded-md sm:rounded-lg text-[6px] sm:text-[9px] font-black capitalize tracking-[0.1em] sm:tracking-[0.2em] hover:bg-secondary transition-all border border-border shadow-sm active:scale-95"
                             >
                                 <FiEdit size={10} className="sm:w-4 sm:h-4" />
                                 <span className="hidden sm:block">Edit</span>
@@ -111,7 +111,7 @@ export default function TemplateCard({
                         {isAdmin && (
                             <button 
                                 onClick={onDelete}
-                                className="w-full flex items-center justify-center gap-1.5 bg-rose-500/10 text-rose-500 py-1.5 sm:py-3 rounded-md sm:rounded-lg text-[5px] sm:text-[8px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] hover:bg-rose-500 hover:text-white transition-all border border-rose-500/20 active:scale-[0.98] group/del"
+                                className="w-full flex items-center justify-center gap-1.5 bg-rose-500/10 text-rose-500 py-1.5 sm:py-3 rounded-md sm:rounded-lg text-[5px] sm:text-[8px] font-black capitalize tracking-[0.2em] sm:tracking-[0.3em] hover:bg-rose-500 hover:text-white transition-all border border-rose-500/20 active:scale-[0.98] group/del"
                             >
                                 <FiTrash2 size={8} className="sm:w-3.5 sm:h-3.5 group-hover/del:scale-110 transition-transform" />
                                 <span className="hidden sm:block">Retire Identity Node</span>

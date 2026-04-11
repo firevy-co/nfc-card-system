@@ -91,7 +91,7 @@ const TemplateRenderer = ({ templateId, userData }) => {
               <p className="text-xs text-gray-400 font-medium leading-relaxed">
                 The design blueprint <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-600">"{templateId}"</span> is not yet linked to a visual template.
               </p>
-              <p className="text-[10px] text-gray-300 uppercase tracking-widest font-bold">
+              <p className="text-[10px] text-gray-300 capitalize tracking-widest font-bold">
                 Select a valid Architecture Blueprint in the template settings.
               </p>
             </div>

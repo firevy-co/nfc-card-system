@@ -91,7 +91,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                     <h2 className="text-lg font-bold text-foreground leading-none tracking-tight">
                                         {initialData ? 'Edit Template' : 'New Template'}
                                     </h2>
-                                    <p className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider mt-1">Identity Studio</p>
+                                    <p className="text-[10px] text-muted-foreground font-semibold capitalize tracking-wider mt-1">Identity Studio</p>
                                 </div>
                             </div>
                             <button
@@ -111,7 +111,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                 {/* Name + Category */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     <div className="space-y-2">
-                                        <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                                        <label className="text-[11px] font-bold capitalize tracking-wider text-muted-foreground flex items-center gap-1.5">
                                             <FiFileText size={12} /> Template Name
                                         </label>
                                         <input
@@ -123,7 +123,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                                        <label className="text-[11px] font-bold capitalize tracking-wider text-muted-foreground flex items-center gap-1.5">
                                             <FiTag size={12} /> Industry
                                         </label>
                                         <div className="relative">
@@ -142,13 +142,13 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                 {/* ── Template Picker ── */}
                                 <div className="space-y-3">
                                     <div className="flex items-center justify-between">
-                                        <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                                        <label className="text-[11px] font-bold capitalize tracking-wider text-muted-foreground flex items-center gap-1.5">
                                             <FiBox size={12} /> Design Blueprint
                                         </label>
                                         <button
                                             type="button"
                                             onClick={() => setShowPicker(p => !p)}
-                                            className="text-[10px] font-bold text-muted-foreground hover:text-foreground uppercase tracking-wider flex items-center gap-1 transition-colors"
+                                            className="text-[10px] font-bold text-muted-foreground hover:text-foreground capitalize tracking-wider flex items-center gap-1 transition-colors"
                                         >
                                             {showPicker ? 'Close Grid' : 'Browse All'}
                                             <FiEye size={11} />
@@ -213,7 +213,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
 
                                 {/* Tags */}
                                 <div className="space-y-2">
-                                    <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                                    <label className="text-[11px] font-bold capitalize tracking-wider text-muted-foreground flex items-center gap-1.5">
                                         <FiHash size={12} /> Tags
                                     </label>
                                     <div className="relative">
@@ -230,7 +230,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
 
                                 {/* Description */}
                                 <div className="space-y-2">
-                                    <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                                    <label className="text-[11px] font-bold capitalize tracking-wider text-muted-foreground flex items-center gap-1.5">
                                         <FiFileText size={12} /> Description
                                     </label>
                                     <textarea
@@ -244,7 +244,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
 
                                 {/* Accent Colors */}
                                 <div className="space-y-3 pt-4 border-t border-border">
-                                    <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Accent Color</label>
+                                    <label className="text-[11px] font-bold capitalize tracking-wider text-muted-foreground">Accent Color</label>
                                     <div className="flex flex-wrap gap-3">
                                         {['bg-primary', 'bg-blue-600', 'bg-emerald-500', 'bg-orange-500', 'bg-rose-500', 'bg-zinc-900'].map(color => (
                                             <button
@@ -266,7 +266,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                 {/* Preview header */}
                                 <div className="flex items-center justify-between px-6 py-4 border-b border-border">
                                     <div>
-                                        <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">Live Preview</p>
+                                        <p className="text-[11px] font-bold capitalize tracking-widest text-muted-foreground">Live Preview</p>
                                         <p className="text-xs font-semibold text-foreground mt-0.5">{selectedTemplate.name}</p>
                                     </div>
                                     <span className="text-[9px] font-mono bg-secondary text-foreground px-2 py-1 rounded-md border border-border">{formData.templateId}</span>
@@ -302,7 +302,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                     </p>
                                     <div className="flex flex-wrap gap-1.5 mt-3">
                                         {(selectedTemplate.tags || []).map(tag => (
-                                            <span key={tag} className="text-[9px] font-bold uppercase tracking-wider bg-secondary text-foreground px-2 py-1 rounded-md border border-border">
+                                            <span key={tag} className="text-[9px] font-bold capitalize tracking-wider bg-secondary text-foreground px-2 py-1 rounded-md border border-border">
                                                 {tag}
                                             </span>
                                         ))}

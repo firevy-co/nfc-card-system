@@ -19,24 +19,24 @@ const CreativeAgency = ({ userData }) => {
           <div className="w-16 h-16 rounded-full bg-[#FF0055] text-white mb-8 flex items-center justify-center p-2 shadow-xl transform group-hover:-rotate-12 transition-transform">
              <FiZap size={28} />
           </div>
-          <h2 className="text-4xl font-black uppercase leading-[0.8] mb-4 text-[#FF0055]">{displayName || "BOLD AGENCY"}</h2>
+          <h2 className="text-4xl font-black capitalize leading-[0.8] mb-4 text-[#FF0055]">{displayName || "BOLD AGENCY"}</h2>
           <div className="h-2 w-20 bg-[#FF0055] mb-4"></div>
-          <p className="text-[10px] font-black text-[#FF0055]/50 uppercase tracking-[0.4em]">{role || "Creative Director"}</p>
+          <p className="text-[10px] font-black text-[#FF0055]/50 capitalize tracking-[0.4em]">{role || "Creative Director"}</p>
         </header>
 
         {/* Agency Capability Matrix */}
         <div className="flex gap-4 mb-14 relative z-10 overflow-x-auto pb-4 hide-scrollbar">
            <div className="min-w-[120px] p-6 rounded-3xl bg-[#FF0055] text-white flex flex-col items-center gap-3">
               <FiMonitor size={20} />
-              <span className="text-[8px] font-bold uppercase tracking-widest text-[#FF0055]/30 group-hover:text-white transition-colors">UI Design</span>
+              <span className="text-[8px] font-bold capitalize tracking-widest text-[#FF0055]/30 group-hover:text-white transition-colors">UI Design</span>
            </div>
            <div className="min-w-[120px] p-6 rounded-3xl bg-[#FF0055]/5 border-2 border-[#FF0055] flex flex-col items-center gap-3">
               <FiCamera size={20} />
-              <span className="text-[8px] font-bold uppercase tracking-widest">Brand Hub</span>
+              <span className="text-[8px] font-bold capitalize tracking-widest">Brand Hub</span>
            </div>
            <div className="min-w-[120px] p-6 rounded-3xl bg-[#FF0055]/5 border-2 border-[#FF0055] flex flex-col items-center gap-3">
               <FiEdit3 size={20} />
-              <span className="text-[8px] font-bold uppercase tracking-widest">Strategy</span>
+              <span className="text-[8px] font-bold capitalize tracking-widest">Strategy</span>
            </div>
         </div>
 
@@ -47,7 +47,7 @@ const CreativeAgency = ({ userData }) => {
                  <FiWifi size={18} />
               </div>
               <div>
-                 <p className="text-[8px] font-bold opacity-50 uppercase tracking-widest mb-0.5">Cellular Hub</p>
+                 <p className="text-[8px] font-bold opacity-50 capitalize tracking-widest mb-0.5">Cellular Hub</p>
                  <p className="font-black text-sm tracking-widest">{phone}</p>
               </div>
            </a>
@@ -57,7 +57,7 @@ const CreativeAgency = ({ userData }) => {
                  <FiGlobe size={18} />
               </div>
               <div>
-                 <p className="text-[8px] font-black opacity-50 uppercase tracking-widest mb-0.5">Cloud Relay</p>
+                 <p className="text-[8px] font-black opacity-50 capitalize tracking-widest mb-0.5">Cloud Relay</p>
                  <p className="font-black text-sm tracking-widest truncate max-w-[150px]">{email || "resolving..."}</p>
               </div>
            </a>
@@ -67,7 +67,7 @@ const CreativeAgency = ({ userData }) => {
         <footer className="mt-16 text-center opacity-30 select-none pointer-events-none">
            <div className="flex items-center justify-center gap-2 mb-6">
               <FiShare2 size={14} className="opacity-40 translate-y-0.5" />
-              <p className="text-[8px] font-black uppercase tracking-[0.6em] text-[#FF0055]">Agency Core System © 2026</p>
+              <p className="text-[8px] font-black capitalize tracking-[0.6em] text-[#FF0055]">Agency Core System © 2026</p>
            </div>
         </footer>
       </div>

@@ -18,19 +18,6 @@ const Login = () => {
         setError('');
 
         try {
-            if (import.meta.env.VITE_FIREBASE_API_KEY === 'YOUR_API_KEY' || !import.meta.env.VITE_FIREBASE_API_KEY) {
-                // STANDBY LOGIN: Allow local authentication
-                const mockUser = {
-                    uid: 'mock-admin-uid',
-                    email: email,
-                    displayName: 'Standby User',
-                    role: email === 'abc@gmail.com' ? 'Admin' : 'User',
-                    onboarded: true
-                };
-                localStorage.setItem('mockUser', JSON.stringify(mockUser));
-                window.location.reload(); 
-                return;
-            }
 
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
