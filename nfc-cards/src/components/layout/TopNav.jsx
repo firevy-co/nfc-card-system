@@ -4,26 +4,23 @@ import { motion } from "framer-motion";
 
 const TopNav = ({ title = "My Templates", showActions = true, onMenuToggle, isMenuOpen }) => {
     return (
-        <header className="h-16 sm:h-24 bg-white border-b border-border flex items-center justify-between px-4 sm:px-10 shrink-0 sticky top-0 z-[50] transition-all duration-300 shadow-sm">
+        <header className="h-16 sm:h-24 bg-card border-b border-border flex items-center justify-between px-4 sm:px-10 shrink-0 sticky top-0 z-[50] transition-all duration-300 shadow-sm">
             <div className="flex items-center gap-2 sm:gap-8 min-w-0">
-                {/* ADVANCED HAMBURGER MICRO-ANIMATOR (High Visibility Matrix) */}
-                <button 
+                <button
                     onClick={onMenuToggle}
-                    className="lg:hidden w-11 h-11 rounded-xl bg-neutral-950 text-white flex flex-col items-center justify-center gap-1.5 transition-all active:scale-90 shadow-xl border border-white/10 shrink-0"
+                    className="lg:hidden w-11 h-11 rounded-xl bg-foreground text-background flex flex-col items-center justify-center gap-1.5 transition-all active:scale-90 shadow-xl border border-border shrink-0"
                     aria-label="Access Command Hub"
                 >
-                    <motion.span 
+                    <motion.span
                         animate={isMenuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-                        className="w-5 h-[2px] bg-white rounded-full transition-all duration-300"
+                        className="w-5 h-[2px] bg-background rounded-full transition-all duration-300"
                     />
                     {!isMenuOpen && (
-                        <motion.span 
-                            className="w-3.5 h-[1.5px] bg-white/70 rounded-full flex self-start ml-3"
-                        />
+                        <motion.span className="w-3.5 h-[1.5px] bg-background/70 rounded-full flex self-start ml-3" />
                     )}
-                    <motion.span 
+                    <motion.span
                         animate={isMenuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-                        className="w-5 h-[2px] bg-white rounded-full transition-all duration-300"
+                        className="w-5 h-[2px] bg-background rounded-full transition-all duration-300"
                     />
                 </button>
 
@@ -34,7 +31,6 @@ const TopNav = ({ title = "My Templates", showActions = true, onMenuToggle, isMe
                         <FiChevronRight className="mt-0.5" />
                         <span className="text-foreground truncate">{title}</span>
                     </div>
-                    
                     <h2 className="text-base sm:text-2xl font-black text-foreground tracking-tighter uppercase truncate font-['Plus_Jakarta_Sans'] leading-none">
                         {isMenuOpen ? "Navigation Hub" : "Identity Studio"}
                     </h2>
@@ -45,7 +41,7 @@ const TopNav = ({ title = "My Templates", showActions = true, onMenuToggle, isMe
                 <div className="flex items-center gap-2 sm:gap-4">
                     <div className="relative cursor-pointer p-2.5 rounded-xl bg-secondary hover:bg-border transition-all border border-border group hidden xs:block">
                         <FiBell size={16} className="text-muted-foreground group-hover:text-foreground transition-colors sm:w-[20px] sm:h-[20px]" />
-                        <div className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-primary rounded-full border-2 border-white shadow-sm"></div>
+                        <div className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-primary rounded-full border-2 border-card shadow-sm"></div>
                     </div>
 
                     <button className="flex items-center justify-center gap-2 bg-foreground text-background px-4 sm:px-8 py-2.5 sm:py-4 rounded-xl sm:rounded-2xl font-black text-[9px] sm:text-[10px] uppercase tracking-widest hover:brightness-125 transition-all shadow-xl active:scale-95 shrink-0">

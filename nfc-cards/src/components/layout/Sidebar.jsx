@@ -32,7 +32,7 @@ export default function Sidebar({ userData, isOpen, onClose }) {
 
   return (
     <aside className={`
-            fixed inset-y-0 left-0 z-[999] w-[280px] h-screen bg-white border-r border-border flex flex-col 
+            fixed inset-y-0 left-0 z-[999] w-[280px] h-screen bg-card border-r border-border flex flex-col 
             transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]
             lg:relative lg:translate-x-0 lg:z-0 lg:w-[300px]
             ${isOpen ? 'translate-x-0 shadow-[0_0_100px_rgba(0,0,0,0.4)]' : '-translate-x-full'}

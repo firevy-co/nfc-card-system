@@ -175,49 +175,74 @@ export default function Content({ userData }) {
         {/* IDENTITY GRID: High-Density 3-Column Mobile Setup */}
         <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-3 2xl:grid-cols-4 gap-2 sm:gap-10">
           
-          {/* Functional Add Content Placeholder (Optimized for High Density) */}
-          {isAdmin && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              onClick={() => { setEditingTemplate(null); setIsModalOpen(true); }}
-              className="border-[2px] sm:border-[3px] border-dashed border-border/40 rounded-xl sm:rounded-2xl min-h-[160px] sm:min-h-[540px] bg-card/10 flex flex-col items-center justify-center text-muted-foreground hover:border-primary/40 hover:bg-primary/5 cursor-pointer transition-all group relative overflow-hidden active:scale-[0.98]"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <div className="w-8 h-8 sm:w-16 sm:h-16 rounded-lg sm:rounded-xl bg-foreground text-background flex items-center justify-center mb-2 sm:mb-8 shadow-2xl group-hover:scale-110 transition-all duration-500">
-                <FiPlus size={16} className="sm:w-7 sm:h-7" />
-              </div>
-              <h3 className="font-black text-foreground text-[8px] sm:text-xl mb-1 uppercase tracking-tighter hidden xs:block">New</h3>
-              <p className="text-[7px] text-center px-2 leading-relaxed opacity-40 font-bold uppercase tracking-widest hidden sm:block">
-                Initialize node
-              </p>
-            </motion.div>
-          )}
+          {loading ? (
+            Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="bg-card/50 border-[2px] sm:border-[3px] border-border/20 rounded-xl sm:rounded-[2rem] p-3 sm:p-5 min-h-[220px] sm:min-h-[540px] flex flex-col justify-between animate-pulse shadow-sm">
+                <div className="space-y-3 sm:space-y-6">
+                  {/* Image Placeholder */}
+                  <div className="w-full h-24 sm:h-64 bg-muted/50 rounded-lg sm:rounded-[1.5rem]"></div>
+                  
+                  {/* Title & Tag Placeholder */}
+                  <div className="space-y-2 sm:space-y-4 px-1 sm:px-2">
+                    <div className="w-3/4 h-3 sm:h-6 bg-muted/50 rounded-full"></div>
+                    <div className="w-1/2 h-2 sm:h-4 bg-muted/50 rounded-full"></div>
+                  </div>
+                </div>
 
-          <AnimatePresence mode="popLayout">
-            {filteredTemplates.map((template, idx) => (
-              <motion.div
-                key={template.id || idx}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.4, delay: idx * 0.05 }}
-              >
-                <TemplateCard
-                  templateId={template.id}
-                  title={template.name}
-                  path={`/${template.id}`}
-                  category={template.category}
-                  tags={template.tags}
-                  description={template.description}
-                  isAdmin={isAdmin}
-                  onDelete={() => handleDeleteNode(template.id)}
-                  onEdit={() => handleEditNode(template)}
-                />
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                {/* Actions Placeholder */}
+                <div className="flex items-center gap-2 mt-auto pt-4 sm:pt-6 px-1 sm:px-2 border-t border-border/10">
+                  <div className="flex-1 h-6 sm:h-12 bg-muted/50 rounded-md sm:rounded-xl"></div>
+                  <div className="w-6 h-6 sm:w-12 sm:h-12 bg-muted/50 rounded-md sm:rounded-xl shrink-0"></div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <>
+              {/* Functional Add Content Placeholder (Optimized for High Density) */}
+              {isAdmin && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  onClick={() => { setEditingTemplate(null); setIsModalOpen(true); }}
+                  className="border-[2px] sm:border-[3px] border-dashed border-border/40 rounded-xl sm:rounded-2xl min-h-[160px] sm:min-h-[540px] bg-card/10 flex flex-col items-center justify-center text-muted-foreground hover:border-primary/40 hover:bg-primary/5 cursor-pointer transition-all group relative overflow-hidden active:scale-[0.98]"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="w-8 h-8 sm:w-16 sm:h-16 rounded-lg sm:rounded-xl bg-foreground text-background flex items-center justify-center mb-2 sm:mb-8 shadow-2xl group-hover:scale-110 transition-all duration-500">
+                    <FiPlus size={16} className="sm:w-7 sm:h-7" />
+                  </div>
+                  <h3 className="font-black text-foreground text-[8px] sm:text-xl mb-1 uppercase tracking-tighter hidden xs:block">New</h3>
+                  <p className="text-[7px] text-center px-2 leading-relaxed opacity-40 font-bold uppercase tracking-widest hidden sm:block">
+                    Initialize node
+                  </p>
+                </motion.div>
+              )}
+
+              <AnimatePresence mode="popLayout">
+                {filteredTemplates.map((template, idx) => (
+                  <motion.div
+                    key={template.id || idx}
+                    layout
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.4, delay: idx * 0.05 }}
+                  >
+                    <TemplateCard
+                      templateId={template.templateId || template.id}
+                      title={template.name}
+                      path={`/${template.id}`}
+                      category={template.category}
+                      tags={template.tags}
+                      description={template.description}
+                      isAdmin={isAdmin}
+                      onDelete={() => handleDeleteNode(template.id)}
+                      onEdit={() => handleEditNode(template)}
+                    />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </>
+          )}
         </div>
       </div>
 

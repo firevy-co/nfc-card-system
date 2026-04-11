@@ -4,7 +4,7 @@
   PREMIUM DESIGN SYSTEM - FIREVY IDENTITY NETWORK
   CURATED TYPOGRAPHY & SOPHISTICATED COLOR PALETTE
 */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@100;200;300;400;500;600;700;800;900&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
@@ -73,6 +73,10 @@
     letter-spacing: -0.02em;
     font-weight: 700;
   }
+
+  .font-luxury {
+    font-family: 'Cormorant Garamond', serif;
+  }
 }
 
 @layer utilities {
@@ -108,5 +112,22 @@
 
   .hover-lift:hover {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(var(--foreground), 0.1);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--foreground), 0.2);
   }
 }

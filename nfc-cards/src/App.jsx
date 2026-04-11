@@ -17,6 +17,7 @@ const Home = lazy(() => import('./pages/user/Home').then(module => ({ default: m
 
 // --- AUTH & SECURITY CONTROLLER ---
 import CheckAuth from './components/Auth/CheckAuth';
+import AppSkeleton from './components/layout/AppSkeleton';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -88,11 +89,7 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  const Spinner = () => (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="w-10 h-10 border-4 border-cyan-500/10 border-t-cyan-500 rounded-full animate-spin"></div>
-    </div>
-  );
+  const Spinner = () => <AppSkeleton />;
 
   return (
     <ThemeProvider>

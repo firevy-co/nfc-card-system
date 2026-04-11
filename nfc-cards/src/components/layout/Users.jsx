@@ -248,9 +248,34 @@ const Users = ({ userData }) => {
                         </thead>
                         <tbody className="divide-y divide-border/30">
                             {loading ? (
-                                <tr>
-                                    <td colSpan="4" className="px-10 py-32 text-center text-muted-foreground font-black tracking-[0.25em] uppercase animate-pulse opacity-30">Scanning Cloud Decentralized Identity Registry...</td>
-                                </tr>
+                                Array.from({ length: 5 }).map((_, i) => (
+                                    <tr key={i} className="animate-pulse border-b border-border/30">
+                                        <td className="px-10 py-8">
+                                            <div className="flex items-center gap-5">
+                                                <div className="w-12 h-12 rounded-2xl bg-muted/60"></div>
+                                                <div className="flex flex-col gap-3">
+                                                    <div className="w-32 h-4 bg-muted/60 rounded-full"></div>
+                                                    <div className="w-48 h-3 bg-muted/60 rounded-full"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="px-10 py-8">
+                                            <div className="w-24 h-6 bg-muted/60 rounded-xl"></div>
+                                        </td>
+                                        <td className="px-10 py-8">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-2 h-2 rounded-full bg-muted/60"></div>
+                                                <div className="w-24 h-3 bg-muted/60 rounded-full"></div>
+                                            </div>
+                                        </td>
+                                        <td className="px-10 py-8 text-right">
+                                            <div className="flex items-center justify-end gap-3">
+                                                <div className="w-10 h-10 rounded-xl bg-muted/60"></div>
+                                                <div className="w-10 h-10 rounded-xl bg-muted/60"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
                             ) : filteredUsers.length > 0 ? (
                                 filteredUsers.map((user) => (
                                     <tr key={user.uid} className="hover:bg-muted/20 transition-all group">

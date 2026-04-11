@@ -82,13 +82,18 @@ const TemplateRenderer = ({ templateId, userData }) => {
         return <DigitalCreator userData={userData} />;
       default:
         return (
-          <div className="min-h-[400px] flex items-center justify-center text-muted-foreground p-10 text-center">
-            <div className="max-w-md space-y-6">
-              <div className="w-16 h-16 bg-muted/30 border border-border rounded-full mx-auto flex items-center justify-center mb-6">
-                <span className="text-xl font-black">?</span>
+          <div className="min-h-[400px] flex items-center justify-center bg-gray-50 p-10 text-center">
+            <div className="max-w-xs space-y-4">
+              <div className="w-14 h-14 bg-gray-100 border border-gray-200 rounded-2xl mx-auto flex items-center justify-center">
+                <span className="text-2xl">🎨</span>
               </div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-40">Protocol Error: Unrecognized Template Identifier</p>
-              <h2 className="text-2xl font-black text-foreground tracking-tighter uppercase">Template Design Not Found</h2>
+              <h2 className="text-base font-bold text-gray-800">No Preview Available</h2>
+              <p className="text-xs text-gray-400 font-medium leading-relaxed">
+                The design blueprint <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-600">"{templateId}"</span> is not yet linked to a visual template.
+              </p>
+              <p className="text-[10px] text-gray-300 uppercase tracking-widest font-bold">
+                Select a valid Architecture Blueprint in the template settings.
+              </p>
             </div>
           </div>
         );

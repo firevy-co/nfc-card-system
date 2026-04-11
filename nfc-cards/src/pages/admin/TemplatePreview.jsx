@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Layout from '../../components/layout/layout';
 import TemplateRenderer from '../../templates/TemplateRenderer';
 import { FiArrowLeft, FiCheckCircle, FiSmartphone, FiTablet, FiMonitor, FiRotateCw } from 'react-icons/fi';
+import { TEMPLATES } from '../../templates/templateRegistry';
 
 /**
  * TEMPLATE PREVIEW PAGE
@@ -15,6 +16,20 @@ const TemplatePreview = ({ userData }) => {
     const [device, setDevice] = useState('mobile');
     const [isLandscape, setIsLandscape] = useState(false);
     const [confirming, setConfirming] = useState(false);
+
+    // Resolve the actual blueprint templateId from localStorage → registry → fallback to url id
+    const resolveTemplateId = () => {
+        const localCache = JSON.parse(localStorage.getItem('identity_nodes') || '[]');
+        const localNode = localCache.find(n => n.id === id);
+        if (localNode?.templateId) return localNode.templateId;
+
+        const registryNode = TEMPLATES.find(t => t.id === id);
+        if (registryNode) return registryNode.id; // registry templates use their own id as the blueprint
+
+        return id; // fallback
+    };
+
+    const blueprintId = resolveTemplateId();
 
     const handleConfirm = async () => {
         if (!userData?.uid) return;
@@ -151,7 +166,7 @@ const TemplatePreview = ({ userData }) => {
                     </div>
 
                     <div className="w-full h-full overflow-y-auto hide-scrollbar bg-black">
-                        <TemplateRenderer templateId={id} userData={userData} />
+                        <TemplateRenderer templateId={blueprintId} userData={userData} />
                     </div>
                 </div>
             </div>

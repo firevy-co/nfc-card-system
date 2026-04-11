@@ -1,14 +1,11 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import AppSkeleton from '../layout/AppSkeleton';
 
 const ProtectedRoute = ({ children, user, userData, loading, adminOnly = false }) => {
     // 1. IS APP BOOTING? (Loading state from Firebase handshake)
     if (loading) {
-        return (
-            <div className="min-h-screen bg-background flex items-center justify-center">
-                <div className="w-10 h-10 border-4 border-cyan-500/10 border-t-cyan-500 rounded-full animate-spin"></div>
-            </div>
-        );
+        return <AppSkeleton />;
     }
 
     // 2. IS USER AUTHENTICATED?
