@@ -6,3 +6,9 @@ build/
 .vscode/
 .idea/
 .DS_Store
+
+# Firebase Admin Credentials - NEVER push these to GitHub
+backend/serviceAccountKey.json
+serviceAccountKey.json
+*serviceAccount*.json
+*firebase-adminsdk*.json
