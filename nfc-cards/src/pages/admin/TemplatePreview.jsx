@@ -4,6 +4,7 @@ import Layout from '../../components/layout/layout';
 import TemplateRenderer from '../../templates/TemplateRenderer';
 import { FiArrowLeft, FiCheckCircle, FiSmartphone, FiTablet, FiMonitor, FiRotateCw } from 'react-icons/fi';
 import { TEMPLATES } from '../../templates/templateRegistry';
+import toast from 'react-hot-toast';
 
 /**
  * TEMPLATE PREVIEW PAGE
@@ -44,11 +45,11 @@ const TemplatePreview = ({ userData }) => {
                 lastTemplateUpdate: new Date().toISOString()
             });
 
-            window.alert('Template identity synchronized successfully!');
+            toast.success('Template identity synchronized successfully!');
             navigate(userData.role === 'Admin' ? '/admin/analytics' : '/user/home');
         } catch (error) {
             console.error("Template selection failed:", error);
-            window.alert('Failed to synchronize template. Please try again.');
+            toast.error('Failed to synchronize template. Please try again.');
         } finally {
             setConfirming(false);
         }
@@ -70,7 +71,7 @@ const TemplatePreview = ({ userData }) => {
     };
 
     return (
-        <Layout userData={userData} title="Template Preview" showTopNavActions={false}>
+        <Layout userData={userData} title="Template Preview" showTopNavActions={false} hideSidebar={true}>
             <div className="mb-8 flex flex-col xl:flex-row items-center justify-between gap-6">
                 <button
                     onClick={() => navigate(-1)}

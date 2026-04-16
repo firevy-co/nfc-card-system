@@ -9,7 +9,7 @@ const CarShowroom = ({ userData }) => {
   const { displayName, email, role, phone = "+1 (888) VMAX-DRV" } = userData || {};
 
   return (
-    <div className="min-h-screen bg-[#050505] text-[#FF0000] p-6 flex flex-col items-center pt-20 font-['Outfit']">
+    <div className="min-h-screen bg-[#050505] text-[#FF0000] p-6 flex flex-col items-center pt-20 font-['Mulish']">
       <div className="w-full max-w-sm bg-gradient-to-br from-[#111] to-[#000] border border-white/5 rounded-[3rem] p-10 shadow-[0_40px_100px_rgba(255,0,0,0.1)] relative overflow-hidden group">
         
         {/* Speedline Decoration */}

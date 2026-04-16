@@ -78,27 +78,26 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.97, y: 12 }}
                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                        className="relative w-full max-w-[1100px] max-h-[92vh] bg-white border border-border rounded-2xl shadow-2xl overflow-hidden flex flex-col"
-                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                        className="relative w-full max-w-[1100px] max-h-[92vh] bg-white dark:bg-white border border-slate-100 dark:border-slate-100 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col"
                     >
                         {/* ── Header ── */}
-                        <div className="flex items-center justify-between px-7 py-5 border-b border-border bg-card   shrink-0">
+                        <div className="flex items-center justify-between px-7 py-6 border-b border-slate-100 dark:border-slate-100 bg-slate-50 dark:bg-slate-50 shrink-0">
                             <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-xl bg-foreground text-background flex items-center justify-center shadow">
+                                <div className="w-10 h-10 rounded-xl bg-[#7BB9D4] text-white flex items-center justify-center shadow-lg">
                                     <FiLayout size={20} />
                                 </div>
                                 <div>
-                                    <h2 className="text-lg font-bold text-foreground leading-none tracking-tight">
-                                        {initialData ? 'Edit Template' : 'New Template'}
+                                    <h2 className="text-xl font-black text-black dark:text-black leading-none tracking-tight">
+                                        {initialData ? 'Edit Identity Node' : 'New Identity Node'}
                                     </h2>
-                                    <p className="text-[10px] text-muted-foreground font-semibold capitalize tracking-wider mt-1">Identity Studio</p>
+                                    <p className="text-[10px] text-black/40 dark:text-black/40 font-black capitalize tracking-[0.2em] mt-1 opacity-60">Identity Studio</p>
                                 </div>
                             </div>
                             <button
                                 onClick={onClose}
-                                className="w-9 h-9 rounded-full flex items-center justify-center text-muted-foreground hover:bg-secondary hover:text-foreground transition-all"
+                                className="w-10 h-10 rounded-full flex items-center justify-center text-black/40 hover:bg-slate-100 hover:text-black transition-all"
                             >
-                                <FiX size={18} />
+                                <FiX size={20} />
                             </button>
                         </div>
 
@@ -106,66 +105,66 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                         <div className="flex flex-col lg:flex-row flex-1 min-h-0 overflow-hidden">
 
                             {/* LEFT — Form */}
-                            <div className="flex-1 overflow-y-auto p-7 sm:p-8 custom-scrollbar space-y-6 border-r border-border bg-card">
+                            <div className="flex-1 overflow-y-auto p-7 sm:p-10 custom-scrollbar space-y-8 border-r border-black/5 dark:border-white/10">
 
                                 {/* Name + Category */}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                    <div className="space-y-2">
-                                        <label className="text-[11px] font-bold capitalize tracking-wider text-muted-foreground flex items-center gap-1.5">
-                                            <FiFileText size={12} /> Template Name
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-black capitalize tracking-[0.2em] text-muted-foreground ml-1 flex items-center gap-1.5 opacity-60">
+                                            <FiFileText size={12} /> Designation
                                         </label>
                                         <input
                                             type="text"
                                             placeholder="e.g. Modern Agent"
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                            className="w-full bg-card border border-border rounded-xl px-4 py-3 text-sm font-medium text-foreground focus:border-primary/50 focus:ring-2 focus:ring-primary/10 transition-all placeholder:text-muted-foreground/40 outline-none"
+                                            className="w-full bg-slate-50 dark:bg-slate-50 border border-slate-200 dark:border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-black dark:text-black focus:border-[#7BB9D4]/50 focus:ring-4 focus:ring-[#7BB9D4]/5 transition-all placeholder:text-black/20 outline-none"
                                         />
                                     </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[11px] font-bold capitalize tracking-wider text-muted-foreground flex items-center gap-1.5">
-                                            <FiTag size={12} /> Industry
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-black capitalize tracking-[0.2em] text-muted-foreground ml-1 flex items-center gap-1.5 opacity-60">
+                                            <FiTag size={12} /> Industry Group
                                         </label>
                                         <div className="relative">
                                             <select
                                                 value={formData.category}
                                                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                                className="w-full bg-card border border-border rounded-xl px-4 py-3 text-sm font-medium text-foreground focus:border-primary/50 appearance-none transition-all cursor-pointer outline-none"
+                                                className="w-full bg-slate-50 dark:bg-slate-50 border border-slate-200 dark:border-slate-200 rounded-2xl px-5 py-4 text-sm font-black text-black dark:text-black focus:border-[#7BB9D4]/50 appearance-none transition-all cursor-pointer outline-none capitalize tracking-widest"
                                             >
-                                                {categories.map(cat => <option key={cat} value={cat} className="bg-card text-foreground">{cat}</option>)}
+                                                {categories.map(cat => <option key={cat} value={cat} className="bg-background text-foreground">{cat}</option>)}
                                             </select>
-                                            <FiChevronRight size={14} className="absolute right-4 top-1/2 -translate-y-1/2 rotate-90 pointer-events-none text-muted-foreground" />
+                                            <FiChevronRight size={14} className="absolute right-5 top-1/2 -translate-y-1/2 rotate-90 pointer-events-none text-muted-foreground opacity-60" />
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* ── Template Picker ── */}
-                                <div className="space-y-3">
+                                <div className="space-y-4">
                                     <div className="flex items-center justify-between">
-                                        <label className="text-[11px] font-bold capitalize tracking-wider text-muted-foreground flex items-center gap-1.5">
+                                        <label className="text-[10px] font-black capitalize tracking-[0.2em] text-muted-foreground ml-1 flex items-center gap-1.5 opacity-60">
                                             <FiBox size={12} /> Design Blueprint
                                         </label>
                                         <button
                                             type="button"
                                             onClick={() => setShowPicker(p => !p)}
-                                            className="text-[10px] font-bold text-muted-foreground hover:text-foreground capitalize tracking-wider flex items-center gap-1 transition-colors"
+                                            className="text-[10px] font-black text-muted-foreground hover:text-foreground capitalize tracking-widest flex items-center gap-2 transition-colors opacity-60 hover:opacity-100"
                                         >
-                                            {showPicker ? 'Close Grid' : 'Browse All'}
-                                            <FiEye size={11} />
+                                            {showPicker ? 'Close Library' : 'Browse All Blueprints'}
+                                            <FiEye size={12} />
                                         </button>
                                     </div>
 
                                     {/* Selected badge */}
                                     <div
                                         onClick={() => setShowPicker(p => !p)}
-                                        className="w-full flex items-center gap-4 bg-card border-2 border-border rounded-xl px-4 py-3.5 cursor-pointer hover:border-primary/50 transition-all group"
+                                        className="w-full flex items-center gap-5 bg-slate-50 dark:bg-slate-50 border-2 border-slate-200 dark:border-slate-200 rounded-2xl px-5 py-4 cursor-pointer hover:border-[#7BB9D4]/40 transition-all group active:scale-[0.99]"
                                     >
-                                        <div className={`w-8 h-8 rounded-lg ${selectedTemplate.previewColor || 'bg-muted'} flex-shrink-0 shadow-sm`} />
+                                        <div className={`w-10 h-10 rounded-xl ${selectedTemplate.previewColor || 'bg-muted'} flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform`} />
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-bold text-foreground truncate">{selectedTemplate.name}</p>
-                                            <p className="text-[10px] text-muted-foreground font-mono">{selectedTemplate.id}</p>
+                                            <p className="text-base font-black text-foreground truncate">{selectedTemplate.name}</p>
+                                            <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest opacity-50">{selectedTemplate.id}</p>
                                         </div>
-                                        <FiChevronRight size={14} className={`text-muted-foreground transition-transform ${showPicker ? 'rotate-90' : ''}`} />
+                                        <FiChevronRight size={16} className={`text-muted-foreground transition-transform duration-500 ${showPicker ? 'rotate-90' : ''}`} />
                                     </div>
 
                                     {/* Grid Picker */}
@@ -177,7 +176,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                                 exit={{ opacity: 0, height: 0 }}
                                                 className="overflow-hidden"
                                             >
-                                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2">
+                                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-3">
                                                     {TEMPLATES.map(t => (
                                                         <button
                                                             key={t.id}
@@ -186,21 +185,21 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                                                 setFormData({ ...formData, templateId: t.id });
                                                                 setShowPicker(false);
                                                             }}
-                                                            className={`flex items-center gap-3 p-3 rounded-xl border-2 text-left transition-all ${formData.templateId === t.id
-                                                                ? 'border-foreground bg-secondary hover:bg-secondary'
-                                                                : 'border-border hover:border-foreground/30 bg-card hover:bg-secondary/50'
+                                                            className={`flex items-center gap-4 p-4 rounded-2xl border-2 text-left transition-all ${formData.templateId === t.id
+                                                                ? 'border-foreground bg-foreground/5 shadow-inner'
+                                                                : 'border-black/5 dark:border-white/5 hover:border-foreground/20 bg-transparent hover:bg-black/5 dark:hover:bg-white/5'
                                                                 }`}
                                                         >
-                                                            <div className={`w-7 h-7 rounded-lg ${t.previewColor} flex-shrink-0 shadow-sm`} />
-                                                            <div className="min-w-0">
-                                                                <p className={`text-[11px] font-bold truncate ${formData.templateId === t.id ? 'text-foreground' : 'text-muted-foreground'}`}>
+                                                            <div className={`w-8 h-8 rounded-lg ${t.previewColor} flex-shrink-0 shadow-md group-hover:scale-110 transition-transform`} />
+                                                            <div className="min-w-0 flex-1">
+                                                                <p className={`text-[11px] font-black truncate capitalize ${formData.templateId === t.id ? 'text-foreground' : 'text-muted-foreground opacity-70'}`}>
                                                                     {t.name}
                                                                 </p>
-                                                                <p className="text-[9px] text-muted-foreground/60 font-mono truncate">{t.id}</p>
+                                                                <p className="text-[8px] text-muted-foreground/40 font-bold uppercase tracking-tighter truncate">{t.id}</p>
                                                             </div>
                                                             {formData.templateId === t.id && (
-                                                                <div className="ml-auto shrink-0 w-4 h-4 rounded-full bg-foreground flex items-center justify-center">
-                                                                    <FiCheck size={9} className="text-background" />
+                                                                <div className="shrink-0 w-5 h-5 rounded-full bg-foreground flex items-center justify-center shadow-lg">
+                                                                    <FiCheck size={10} className="text-background" />
                                                                 </div>
                                                             )}
                                                         </button>
@@ -212,80 +211,86 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                 </div>
 
                                 {/* Tags */}
-                                <div className="space-y-2">
-                                    <label className="text-[11px] font-bold capitalize tracking-wider text-muted-foreground flex items-center gap-1.5">
-                                        <FiHash size={12} /> Tags
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black capitalize tracking-[0.2em] text-muted-foreground ml-1 flex items-center gap-1.5 opacity-60">
+                                        <FiHash size={12} /> Meta Tags
                                     </label>
                                     <div className="relative">
-                                        <FiHash size={13} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
+                                        <FiHash size={14} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground/30" />
                                         <input
                                             type="text"
                                             placeholder="Modern, clean, minimal..."
                                             value={formData.tags}
                                             onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                                            className="w-full bg-card border border-border rounded-xl px-4 pl-10 py-3 text-sm font-medium text-foreground focus:border-primary/50 transition-all placeholder:text-muted-foreground/40 outline-none"
+                                            className="w-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl px-5 pl-12 py-4 text-sm font-bold text-foreground focus:border-primary/50 transition-all placeholder:text-muted-foreground/30 outline-none"
                                         />
                                     </div>
                                 </div>
 
                                 {/* Description */}
-                                <div className="space-y-2">
-                                    <label className="text-[11px] font-bold capitalize tracking-wider text-muted-foreground flex items-center gap-1.5">
-                                        <FiFileText size={12} /> Description
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black capitalize tracking-[0.2em] text-muted-foreground ml-1 flex items-center gap-1.5 opacity-60">
+                                        <FiFileText size={12} /> Architectural Vision
                                     </label>
                                     <textarea
                                         rows={3}
-                                        placeholder="Describe the purpose of this template..."
-                                        className="w-full bg-card border border-border rounded-xl px-4 py-3 text-sm font-medium text-foreground focus:border-primary/50 transition-all placeholder:text-muted-foreground/40 outline-none resize-none"
+                                        placeholder="Outline the core objective of this design protocol..."
+                                        className="w-full bg-slate-50 dark:bg-slate-50 border border-slate-200 dark:border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-black dark:text-black focus:border-[#7BB9D4]/50 transition-all placeholder:text-black/20 outline-none resize-none"
                                         value={formData.description}
                                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                     />
                                 </div>
 
                                 {/* Accent Colors */}
-                                <div className="space-y-3 pt-4 border-t border-border">
-                                    <label className="text-[11px] font-bold capitalize tracking-wider text-muted-foreground">Accent Color</label>
-                                    <div className="flex flex-wrap gap-3">
+                                <div className="space-y-4 pt-6 border-t border-black/5 dark:border-white/10">
+                                    <label className="text-[10px] font-black capitalize tracking-[0.2em] text-muted-foreground ml-1 opacity-60">System Accent</label>
+                                    <div className="flex flex-wrap gap-4">
                                         {['bg-primary', 'bg-blue-600', 'bg-emerald-500', 'bg-orange-500', 'bg-rose-500', 'bg-zinc-900'].map(color => (
                                             <button
                                                 key={color}
                                                 type="button"
                                                 onClick={() => setFormData({ ...formData, previewColor: color })}
-                                                className={`w-8 h-8 rounded-full ${color} border-2 transition-all ${formData.previewColor === color
-                                                    ? 'border-foreground ring-2 ring-foreground/20 scale-110 shadow-md'
-                                                    : 'border-transparent opacity-40 hover:opacity-90'
+                                                className={`w-10 h-10 rounded-2xl ${color} border-2 transition-all relative ${formData.previewColor === color
+                                                    ? 'border-foreground ring-4 ring-foreground/10 scale-110 shadow-xl'
+                                                    : 'border-transparent opacity-30 hover:opacity-100 hover:scale-105'
                                                     }`}
-                                            />
+                                            >
+                                                {formData.previewColor === color && (
+                                                    <div className="absolute inset-0 flex items-center justify-center">
+                                                        <FiCheck className="text-white drop-shadow-md" size={16} />
+                                                    </div>
+                                                )}
+                                            </button>
                                         ))}
                                     </div>
                                 </div>
                             </div>
 
                             {/* RIGHT — Live Preview */}
-                            <div className="hidden lg:flex w-[380px] xl:w-[420px] flex-col bg-card border-l border-border shrink-0">
+                            <div className="hidden lg:flex w-[400px] xl:w-[450px] flex-col bg-slate-50 dark:bg-slate-50 border-l border-slate-100 dark:border-slate-100 shrink-0">
                                 {/* Preview header */}
-                                <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+                                <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 dark:border-slate-100">
                                     <div>
-                                        <p className="text-[11px] font-bold capitalize tracking-widest text-muted-foreground">Live Preview</p>
-                                        <p className="text-xs font-semibold text-foreground mt-0.5">{selectedTemplate.name}</p>
+                                        <p className="text-[10px] font-black capitalize tracking-[0.2em] text-muted-foreground opacity-60">Pulse Preview</p>
+                                        <p className="text-sm font-black text-foreground mt-1 capitalize">{selectedTemplate.name}</p>
                                     </div>
-                                    <span className="text-[9px] font-mono bg-secondary text-foreground px-2 py-1 rounded-md border border-border">{formData.templateId}</span>
+                                    <span className="text-[9px] font-black uppercase tracking-widest bg-foreground text-background px-3 py-1.5 rounded-full shadow-lg">{formData.templateId}</span>
                                 </div>
 
                                 {/* Scaled template render */}
-                                <div className="flex-1 overflow-hidden flex items-center justify-center p-6 bg-secondary/10">
-                                    <div className="w-full h-full bg-card rounded-2xl shadow-xl border border-border overflow-hidden relative">
+                                <div className="flex-1 overflow-hidden flex items-center justify-center p-10 bg-black/5 dark:bg-white/5">
+                                    <div className="w-full max-w-[280px] aspect-[9/18.5] bg-white dark:bg-zinc-900 rounded-[2.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] border-[6px] border-black/10 dark:border-white/10 overflow-hidden relative group">
                                         {/* Phone chrome notch */}
-                                        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-16 h-1.5 bg-secondary rounded-full z-10" />
+                                        <div className="absolute top-4 left-1/2 -translate-x-1/2 w-16 h-3 bg-black/5 dark:bg-white/10 rounded-full z-10" />
                                         {/* Scaled content */}
-                                        <div className="absolute inset-0 overflow-hidden" style={{ paddingTop: '20px' }}>
+                                        <div className="absolute inset-0 overflow-hidden" style={{ paddingTop: '30px' }}>
                                             <div
                                                 className="origin-top-left"
                                                 style={{ transform: 'scale(0.38)', width: '375px', height: '667px', minHeight: '667px' }}
                                             >
                                                 <Suspense fallback={
-                                                    <div className="w-full h-full flex items-center justify-center bg-card">
-                                                        <div className="w-6 h-6 border-2 border-border border-t-foreground rounded-full animate-spin" />
+                                                    <div className="w-full h-full flex items-center justify-center bg-background">
+                                                        <div className="w-8 h-8 border-4 border-black/5 dark:border-white/10 border-t-foreground rounded-full animate-spin" />
                                                     </div>
                                                 }>
                                                     <TemplateRenderer templateId={formData.templateId} userData={previewUserData} />
@@ -296,13 +301,13 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                 </div>
 
                                 {/* Template info */}
-                                <div className="px-6 pb-5 pt-2">
-                                    <p className="text-xs text-muted-foreground font-medium leading-relaxed">
+                                <div className="px-8 pb-10 pt-4">
+                                    <p className="text-[11px] text-muted-foreground font-bold leading-relaxed opacity-60">
                                         {selectedTemplate.description || 'Select a blueprint to see a live preview.'}
                                     </p>
-                                    <div className="flex flex-wrap gap-1.5 mt-3">
+                                    <div className="flex flex-wrap gap-2 mt-5">
                                         {(selectedTemplate.tags || []).map(tag => (
-                                            <span key={tag} className="text-[9px] font-bold capitalize tracking-wider bg-secondary text-foreground px-2 py-1 rounded-md border border-border">
+                                            <span key={tag} className="text-[8px] font-black capitalize tracking-[0.2em] bg-black/5 dark:bg-white/10 text-muted-foreground px-3 py-1.5 rounded-xl border border-black/5 dark:border-white/10 opacity-70">
                                                 {tag}
                                             </span>
                                         ))}
@@ -312,21 +317,21 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                         </div>
 
                         {/* ── Footer ── */}
-                        <div className="px-7 py-5 border-t border-border bg-card flex items-center gap-3 shrink-0">
+                        <div className="px-8 py-6 border-t border-slate-100 dark:border-slate-100 bg-slate-50 dark:bg-slate-50 flex items-center gap-4 shrink-0">
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="flex-1 py-3 rounded-xl bg-secondary text-foreground font-bold text-sm border border-border hover:brightness-110 transition-all"
+                                className="flex-1 py-4 rounded-2xl bg-white dark:bg-white text-black dark:text-black font-black text-[10px] capitalize tracking-[0.2em] border border-slate-200 dark:border-slate-200 hover:bg-slate-50 transition-all active:scale-[0.98]"
                             >
                                 Cancel
                             </button>
                             <button
                                 type="button"
                                 onClick={handleSubmit}
-                                className="flex-[2] flex items-center justify-center gap-2 bg-foreground text-background py-3 px-8 rounded-xl text-sm font-bold hover:brightness-125 transition-all shadow-md active:scale-[0.98]"
+                                className="flex-[2] flex items-center justify-center gap-3 bg-[#7BB9D4] text-white py-4 px-10 rounded-2xl text-[10px] font-black capitalize tracking-[0.2em] hover:brightness-105 transition-all shadow-xl shadow-[#7BB9D4]/20 active:scale-[0.98]"
                             >
-                                {initialData ? 'Save Changes' : 'Create Template'}
-                                <FiCheck size={16} />
+                                {initialData ? 'Update Infrastructure' : 'Initialize Protocol'}
+                                <FiCheck size={18} />
                             </button>
                         </div>
                     </motion.div>

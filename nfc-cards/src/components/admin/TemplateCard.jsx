@@ -18,8 +18,11 @@ export default function TemplateCard({
     description,
     category,
     tags = [],
+    userData,
     onDelete,
-    onEdit
+    onEdit,
+    onSelect,
+    isSelected = false
 }) {
     const navigate = useNavigate();
     const location = useLocation();
@@ -27,101 +30,120 @@ export default function TemplateCard({
     const baseRoute = location.pathname.startsWith('/admin') ? '/admin' : '/user';
 
     const previewData = {
-        displayName: title,
-        email: "hello@identity.co",
-        role: category || "Design Lead",
-        phone: "+x (xxx) xxx-xxxx"
+        displayName: userData?.displayName || title,
+        email: userData?.email || "hello@identity.co",
+        role: userData?.businessName || userData?.role || category || "Design Lead",
+        phone: userData?.phone || "+x (xxx) xxx-xxxx",
+        socialLinks: userData?.socialLinks || {}
     };
 
     return (
-        <div className="bg-card border border-border rounded-xl sm:rounded-2xl transition-all duration-500 group hover:border-primary/40 hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden min-h-[220px] sm:min-h-[540px] relative">
+        <div className={`h-full rounded-[2.5rem] backdrop-blur-xl border transition-all duration-700 group flex flex-col overflow-hidden relative ${isSelected
+            ? 'border-primary/50 bg-primary/[0.03] shadow-[0_20px_50px_-12px_rgba(var(--foreground),0.15)] ring-1 ring-primary/20'
+            : 'border-black/5 dark:border-white/80 bg-white shadow-xl dark:bg-white/5 hover:border-primary/30 hover:shadow-2xl'
+            }`}>
+            {/* ACTIVE SELECTION GLOW */}
+            {isSelected && (
+                <div className="absolute inset-0 bg-primary/[0.02] pointer-events-none z-0"></div>
+            )}
 
-            {/* Premium Preview Section: Micro-Scaled for 3-Column Grid */}
-            <div className="h-[120px] sm:h-[260px] bg-secondary/10 relative flex items-center justify-center p-2 sm:p-8 overflow-hidden border-b border-border/50">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-30"></div>
+            {/* Premium Preview Section */}
+            <div className="h-[280px] sm:h-[340px] bg-black/5 dark:bg-white/5 relative flex items-center justify-center p-6 sm:p-12 overflow-hidden border-b border-black/5 dark:border-white/10 group-hover:bg-black/10 dark:group-hover:bg-white/10 transition-colors">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.03] to-transparent opacity-50 z-0"></div>
 
-                {/* NFC/Wifi Status Marker (Desktop Only) */}
-                <div className="absolute top-5 right-8 opacity-40 hidden sm:block">
-                    <FiWifi size={14} className="text-foreground" />
+                {/* Floating Status Badge (Admin only or Top right) */}
+                <div className="absolute top-6 right-6 z-20">
+                    <div className={`px-3 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest backdrop-blur-md border ${isSelected
+                        ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+                        : 'bg-white/20 dark:bg-white/10 text-muted-foreground border-black/5 dark:border-white/10'
+                        }`}>
+                        {isSelected ? 'Active Node' : category || 'Premium'}
+                    </div>
                 </div>
 
-                {/* The "V1CE" Style White Card Frame (High-Density Scale) */}
-                <div className="w-[260px] sm:w-[320px] h-[220px] sm:h-[300px] bg-white rounded-xl sm:rounded-2xl border border-border/10 shadow-2xl relative overflow-hidden transform scale-[0.55] sm:scale-[0.7] group-hover:scale-[0.6] sm:group-hover:scale-[0.78] transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] flex flex-col pt-2 sm:pt-4">
-                    
-                    {/* Brand Identifier */}
-                    <div className="flex justify-center mb-1">
-                        <div className="w-4 h-4 sm:w-6 sm:h-6 rounded-full bg-white border border-border/10 shadow-sm flex items-center justify-center z-20">
-                            <span className="text-[6px] sm:text-[8px] font-black text-black tracking-tighter">{title.charAt(0)}</span>
-                        </div>
-                    </div>
+                {/* The Device Frame Preview */}
+                <div className="w-[180px] h-[320px] bg-white dark:bg-zinc-900 rounded-[2rem] border-[6px] border-black/10 dark:border-white/10 shadow-2xl relative overflow-hidden transform scale-[0.8] group-hover:scale-[0.85] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col z-10">
+                    {/* Device Notch */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-4 bg-black/5 dark:bg-white/10 rounded-b-xl z-30"></div>
 
-                    {/* Miniature Template Surface */}
-                    <div className="flex-1 w-full px-4 sm:px-8 pb-4 sm:pb-8 flex items-center justify-center relative overflow-hidden">
-                        <div className="w-full h-full rounded-lg sm:rounded-xl bg-zinc-950/5 relative overflow-hidden flex items-center justify-center border border-black/5">
-                            <div className="origin-center" style={{ transform: 'scale(0.2)' }}>
-                                <div className="w-[375px] h-[667px] overflow-hidden relative rounded-xl">
-                                    <TemplateRenderer templateId={templateId} userData={previewData} />
-                                </div>
+                    {/* Inner Content Scale */}
+                    <div className="flex-1 w-full relative overflow-hidden flex items-center justify-center">
+                        <div className="origin-center" style={{ transform: 'scale(0.24)' }}>
+                            <div className="w-[375px] h-[667px] overflow-hidden relative">
+                                <TemplateRenderer templateId={templateId} userData={previewData} />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Info & Content Section: Optimized for Mobile Density */}
-            <div className="p-3 sm:p-8 flex-1 flex flex-col">
-                <div className="flex flex-col sm:flex-row justify-between items-start mb-2 sm:mb-4 gap-1">
-                    <h3 className="font-black text-foreground text-[10px] sm:text-xl tracking-tight leading-none group-hover:text-primary transition-colors line-clamp-1">
+            {/* Info Section */}
+            <div className="p-6 sm:p-8 flex-1 flex flex-col relative z-10">
+                <div className="mb-6">
+                    <h3 className="font-black text-foreground text-xl tracking-tighter leading-none mb-2 capitalize">
                         {title}
                     </h3>
-                    <div className="px-1.5 py-0.5 rounded-md bg-secondary/40 border border-border">
-                        <span className="text-[5px] sm:text-[7px] font-black capitalize tracking-[0.2em] text-muted-foreground opacity-60">
-                            {category?.substring(0, 10)}
-                        </span>
-                    </div>
+                    <p className="text-[12px] text-muted-foreground font-semibold leading-relaxed opacity-60 line-clamp-2">
+                        {description || "A professional digital identity presence optimized for high-conversion networking."}
+                    </p>
                 </div>
 
-                <p className="hidden sm:block text-[11px] text-muted-foreground line-clamp-2 mb-8 font-semibold leading-relaxed opacity-50">
-                    {description || "A professional digital presence for your identity network."}
-                </p>
-
-                {/* Interaction Grid (Responsive Density) */}
-                <div className="mt-auto">
-                    <div className="flex flex-col gap-1.5 sm:gap-3">
-                        <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
-                            <button 
+                {/* Actions Grid */}
+                <div className="mt-auto flex flex-col gap-3">
+                    {isAdmin ? (
+                        <div className="grid grid-cols-2 gap-3">
+                            <button
                                 onClick={() => navigate(`${baseRoute}/templates${path}`)}
-                                className="flex items-center justify-center gap-1.5 sm:gap-3 bg-foreground text-background py-2 sm:py-4 rounded-md sm:rounded-lg text-[6px] sm:text-[9px] font-black capitalize tracking-[0.1em] sm:tracking-[0.2em] hover:brightness-125 transition-all shadow-lg active:scale-95"
+                                className="flex items-center justify-center gap-2 bg-foreground text-background py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:brightness-110 hover:scale-[1.02] transition-all shadow-lg active:scale-95"
                             >
-                                <FiEye size={10} className="sm:w-4 sm:h-4" />
-                                <span className="hidden sm:block">Preview</span>
-                                <span className="sm:hidden">Look</span>
+                                <FiEye size={16} />
+                                Preview
                             </button>
-
-                            <button 
+                            <button
                                 onClick={onEdit}
-                                className="flex items-center justify-center gap-1.5 sm:gap-3 bg-secondary/50 text-foreground py-2 sm:py-4 rounded-md sm:rounded-lg text-[6px] sm:text-[9px] font-black capitalize tracking-[0.1em] sm:tracking-[0.2em] hover:bg-secondary transition-all border border-border shadow-sm active:scale-95"
+                                className="flex items-center justify-center gap-2 bg-white/5 dark:bg-white/10 text-foreground py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-black/10 dark:hover:bg-white/20 transition-all border border-black/5 dark:border-white/10 active:scale-95"
                             >
-                                <FiEdit size={10} className="sm:w-4 sm:h-4" />
-                                <span className="hidden sm:block">Edit</span>
-                                <span className="sm:hidden">Tune</span>
+                                <FiEdit size={14} />
+                                Edit Node
+                            </button>
+                            <button
+                                onClick={onDelete}
+                                className="col-span-2 flex items-center justify-center gap-2 bg-red-500/10 text-red-500 py-3 rounded-2xl text-[9px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all border border-red-500/20 active:scale-95"
+                            >
+                                <FiTrash2 size={14} />
+                                Retire Identity Node
                             </button>
                         </div>
-                        
-                        {isAdmin && (
-                            <button 
-                                onClick={onDelete}
-                                className="w-full flex items-center justify-center gap-1.5 bg-rose-500/10 text-rose-500 py-1.5 sm:py-3 rounded-md sm:rounded-lg text-[5px] sm:text-[8px] font-black capitalize tracking-[0.2em] sm:tracking-[0.3em] hover:bg-rose-500 hover:text-white transition-all border border-rose-500/20 active:scale-[0.98] group/del"
+                    ) : (
+                        <div className="grid grid-cols-5 gap-3">
+                            <button
+                                onClick={() => navigate(`${baseRoute}/templates${path}`)}
+                                className="col-span-2 flex items-center justify-center gap-2 bg-white/5 dark:bg-white/10 text-muted-foreground py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:text-foreground hover:bg-black/10 dark:hover:bg-white/20 transition-all border border-black/5 dark:border-white/10 shadow-sm active:scale-95"
                             >
-                                <FiTrash2 size={8} className="sm:w-3.5 sm:h-3.5 group-hover/del:scale-110 transition-transform" />
-                                <span className="hidden sm:block">Retire Identity Node</span>
-                                <span className="sm:hidden">Retire</span>
+                                <FiEye size={16} />
+                                View
                             </button>
-                        )}
-                    </div>
+                            <button
+                                onClick={onSelect}
+                                disabled={isSelected}
+                                className={`col-span-3 flex items-center justify-center gap-2 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg active:scale-95 ${isSelected
+                                    ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 cursor-default'
+                                    : 'bg-foreground text-background hover:brightness-110 active:scale-95'
+                                    }`}
+                            >
+                                {isSelected ? (
+                                    <>
+                                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                                        Active
+                                    </>
+                                ) : (
+                                    'Select Node'
+                                )}
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
-
         </div>
     );
 }

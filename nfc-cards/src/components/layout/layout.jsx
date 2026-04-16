@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import TopNav from './TopNav';
+import AdminNav from './AdminNav';
+import UserNav from './UserNav';
 
 /**
  * GLOBAL ORCHESTRATION LAYOUT
@@ -15,10 +17,21 @@ const Layout = ({
   showTopNavActions = true
 }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const isAdmin = userData?.role === "Admin";
+
+  const actualHideSidebar = true; // Floating Nav replaces sidebar
+  const actualHideTopNav = true; // Floating Nav replaces TopNav
 
   return (
-    <div className="flex bg-background text-foreground min-h-screen overflow-hidden transition-colors duration-500 font-['Plus_Jakarta_Sans']">
-      {!hideSidebar && userData?.role === "Admin" && (
+    <div className="flex bg-background text-foreground min-h-screen overflow-hidden transition-colors duration-500 font-['Mulish']">
+      
+      {isAdmin ? (
+        <AdminNav userData={userData} />
+      ) : (
+        <UserNav userData={userData} />
+      )}
+
+      {!actualHideSidebar && (
         <Sidebar 
           userData={userData} 
           isOpen={isSidebarOpen} 
@@ -35,7 +48,7 @@ const Layout = ({
       )}
 
       <div className="flex-1 flex flex-col min-w-0 h-screen relative">
-        {!hideTopNav && (
+        {!actualHideTopNav && (
           <TopNav 
             title={title || "Identity Node"} 
             showActions={showTopNavActions} 
@@ -44,7 +57,7 @@ const Layout = ({
           />
         )}
 
-        <main className={`flex-1 overflow-y-auto animate-in fade-in slide-in-from-bottom-4 duration-700 bg-muted/10 ${hideTopNav || userData?.role !== "Admin" ? 'p-0' : 'p-4 sm:p-6 lg:p-10'}`}>
+        <main className={`flex-1 overflow-y-auto animate-in fade-in slide-in-from-bottom-4 duration-700 bg-muted/10 ${actualHideTopNav ? 'p-0 pt-28' : 'p-4 sm:p-6 lg:p-10'}`}>
           <div className="max-w-[1600px] mx-auto">
             {children}
           </div>

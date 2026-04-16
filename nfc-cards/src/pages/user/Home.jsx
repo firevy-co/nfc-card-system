@@ -1,61 +1,224 @@
-import React from 'react';
-import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase.config';
+import React, { useEffect, useState } from 'react';
+import { auth, db } from '../../firebase.config';
+import { doc, onSnapshot } from 'firebase/firestore';
 import Layout from '../../components/layout/layout';
-import { FiLogOut, FiEdit3, FiGlobe, FiShield } from 'react-icons/fi';
+import {
+    FiCheckCircle, FiClock, FiUsers
+} from 'react-icons/fi';
+import toast from 'react-hot-toast';
+import {
+    LineChart, Line, PieChart, Pie, Cell, ResponsiveContainer
+} from "recharts";
 
-export const Home = ({ userData }) => {
-    const handleLogout = () => signOut(auth);
+export const Home = () => {
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        if (!auth.currentUser) return;
+        const userRef = doc(db, "users", auth.currentUser.uid);
+        const unsubscribe = onSnapshot(userRef, (docSnap) => {
+            if (docSnap.exists()) {
+                setUserData({ uid: auth.currentUser.uid, ...docSnap.data() });
+            }
+        });
+        return () => unsubscribe();
+    }, []);
+
+    if (!userData) return <div className="text-white p-10 font-bold">Loading Identity Hub...</div>;
+
+    // --- EXACT ADMIN PROTOCOL DATA ---
+    const COLORS = { emerald: "#10b981", blue: "#3b82f6", pink: "#ec4899" };
+    const trendData = [
+        { day: "Mon", active: 4, pause: 2 },
+        { day: "Tue", active: 12, pause: 5 },
+        { day: "Wed", active: 8, pause: 4 },
+        { day: "Thu", active: 18, pause: 8 },
+        { day: "Fri", active: 14, pause: 7 },
+    ];
+    const identityData = [
+        { name: "Completed", value: 215, color: COLORS.emerald },
+        { name: "In Progress", value: 68, color: COLORS.pink },
+        { name: "Upcoming", value: 143, color: COLORS.blue },
+    ];
 
     return (
-        <Layout userData={userData} title="Home Center">
-            <div className="min-h-[80vh] flex flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-8 duration-700">
-                <div className="bg-card border border-border p-14 rounded-[3.5rem] shadow-premium max-w-2xl w-full text-center space-y-10 relative overflow-hidden group">
-                    {/* Visual Identity Elements */}
-                    <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2 group-hover:bg-primary/10 transition-all duration-700"></div>
-                    <div className="absolute bottom-0 left-0 w-48 h-48 bg-indigo-500/5 blur-3xl rounded-full -translate-x-1/2 translate-y-1/2 group-hover:bg-indigo-500/10 transition-all duration-700"></div>
+        <Layout userData={userData} title="Dashboard">
+            <div className="p-6 lg:p-12 font-['Mulish'] min-h-screen">
 
-                    <header className="relative z-10">
-                        <div className="w-24 h-24 bg-gradient-to-br from-primary to-indigo-600 rounded-[2rem] mx-auto mb-8 flex items-center justify-center shadow-2xl shadow-primary/30 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
-                            <FiShield className="text-white text-4xl" />
+                {/* --- HEADER (EXACT ADMIN STYLE) --- */}
+                <div className="flex justify-between items-center mb-10">
+                    <h1 className="text-2xl font-black tracking-tight text-black">
+                        Identity Management Overview
+                    </h1>
+                    <button className="bg-black text-white px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all shadow-xl active:scale-95">
+                        + New Node
+                    </button>
+                </div>
+
+                {/* --- TOP CARDS (EXACT ADMIN STYLE) --- */}
+                <div className="grid md:grid-cols-3 gap-8 mb-10">
+                    <MetricCard title="Active Projects" value="426" color="bg-emerald-500" />
+                    <MetricCard title="Total Tasks" value="1,234" color="bg-blue-500" />
+                    <MetricCard title="Team Members" value="102" color="bg-pink-500" />
+                </div>
+
+                {/* --- MAIN ANALYTICS GRID (EXACT ADMIN STYLE) --- */}
+                <div className="grid md:grid-cols-3 gap-8 mb-10">
+                    {/* TASK PROGRESS */}
+                    <div className="bg-white border border-zinc-100 p-8 rounded-[2.5rem] shadow-sm">
+                        <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-2">Task Progress</h3>
+                        <h1 className="text-4xl font-black text-black mb-10">70%</h1>
+                        <div className="space-y-6">
+                            <Progress label="Development" value={87} color="bg-pink-500" />
+                            <Progress label="Design" value={36} color="bg-blue-500" />
+                            <Progress label="Testing" value={78} color="bg-emerald-500" />
                         </div>
-                        <div className="space-y-2">
-                            <h2 className="text-5xl font-black tracking-tighter capitalize font-['Outfit']">Identity Node</h2>
-                            <div className="flex items-center justify-center gap-2 text-primary font-black text-[10px] capitalize tracking-[0.4em] opacity-60">
-                            <FiGlobe />
-                            <span>Synchronized Protocol</span>
+                    </div>
+
+                    {/* PROJECT STATUS */}
+                    <div className="bg-white border border-zinc-100 p-8 rounded-[2.5rem] shadow-sm flex flex-col items-center">
+                        <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-10 w-full text-left">Project Status</h3>
+                        <div className="relative">
+                            <PieChart width={180} height={180}>
+                                <Pie
+                                    data={identityData}
+                                    dataKey="value"
+                                    innerRadius={60}
+                                    outerRadius={85}
+                                    stroke="none"
+                                    paddingAngle={5}
+                                >
+                                    {identityData.map((entry, index) => (
+                                        <Cell key={index} fill={entry.color} />
+                                    ))}
+                                </Pie>
+                            </PieChart>
+                            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                <span className="text-2xl font-black text-black">426</span>
+                                <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">Active</span>
                             </div>
                         </div>
-                        <p className="text-muted-foreground text-[11px] font-black capitalize tracking-[0.2em] mt-6 bg-secondary/50 px-6 py-2 rounded-full inline-block border border-border">
-                            {userData?.email || "Resolving Identity..."}
-                        </p>
-                    </header>
-
-                    <div className="py-10 border-y border-border/50 relative z-10">
-                        <p className="text-sm font-medium text-muted-foreground leading-relaxed max-w-md mx-auto">
-                            Welcome to your digital orchestration hub. You are currently established as a secure participant within the <span className="text-foreground font-black">Firevy Network Architecture</span>.
-                        </p>
+                        <div className="mt-10 flex gap-4 text-[9px] font-black text-zinc-400 uppercase tracking-widest">
+                            <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-emerald-500" />Done</div>
+                            <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-pink-500" />Live</div>
+                            <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-blue-500" />Next</div>
+                        </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-4 pt-4 relative z-10">
-                        <button className="flex-1 flex items-center justify-center gap-3 px-8 py-5 rounded-2xl bg-secondary text-foreground font-black text-[10px] capitalize tracking-[0.2em] hover:bg-border border border-border transition-all shadow-sm">
-                            <FiEdit3 size={16} />
-                            Metadata Audit
-                        </button>
-                        <button 
-                            onClick={handleLogout}
-                            className="flex-1 flex items-center justify-center gap-3 px-8 py-5 rounded-2xl bg-destructive text-white font-black capitalize tracking-[0.2em] text-[10px] hover:shadow-2xl hover:shadow-destructive/20 hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-destructive/10"
-                        >
-                            <FiLogOut size={16} />
-                            Terminate Session
-                        </button>
+                    {/* PRODUCTIVITY TREND */}
+                    <div className="bg-white border border-zinc-100 p-8 rounded-[2.5rem] shadow-sm">
+                        <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-4">Productivity Trend</h3>
+                        <div className="h-[200px] w-full mt-4">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={trendData}>
+                                    <Line type="monotone" dataKey="active" stroke={COLORS.blue} strokeWidth={3} dot={{ r: 4, fill: COLORS.blue }} />
+                                    <Line type="monotone" dataKey="pause" stroke={COLORS.pink} strokeWidth={3} dot={{ r: 4, fill: COLORS.pink }} />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </div>
+                        <div className="flex justify-between mt-8">
+                            <div>
+                                <p className="text-lg font-black text-black">126h 58m</p>
+                                <p className="text-emerald-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1">↑ 14% <span className="text-zinc-300">Pulse</span></p>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-lg font-black text-black">9h 45m</p>
+                                <p className="text-rose-500 text-[10px] font-bold uppercase tracking-widest flex items-center justify-end gap-1">↓ 21% <span className="text-zinc-300">Delay</span></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <footer className="mt-16 opacity-30 pointer-events-none select-none">
-                    <span className="text-[10px] font-black capitalize tracking-[0.6em] text-muted-foreground">Firevy Platform Orchestration © 2026</span>
-                </footer>
+
+                {/* --- EXTRA SECTION (EXACT ADMIN STYLE) --- */}
+                <div className="grid md:grid-cols-2 gap-10 mb-14">
+                    {/* ACTIVITY */}
+                    <div className="bg-white border border-zinc-100 p-10 rounded-[3rem] shadow-sm transition-all">
+                        <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-8">Recent Activity</h3>
+                        <div className="space-y-6">
+                            {[
+                                { label: "Task Protocol Completed", time: "2m ago" },
+                                { label: "New Node Member Added", time: "12m ago" },
+                                { label: "Blueprint Project Updated", time: "45m ago" },
+                                { label: "Architecture Deadline Reached", time: "1h ago" },
+                            ].map((item, i) => (
+                                <div key={i} className="flex items-center justify-between p-4 rounded-2xl hover:bg-black/5 transition-all group">
+                                    <div className="flex items-center gap-5">
+                                        <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                                            <FiCheckCircle size={18} />
+                                        </div>
+                                        <p className="text-xs font-bold text-black group-hover:translate-x-1 transition-transform">{item.label}</p>
+                                    </div>
+                                    <span className="text-[10px] font-bold text-zinc-300 uppercase tracking-tighter">{item.time}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* TEAM OVERVIEW (EXACT ADMIN STYLE) */}
+                    <div className="bg-white border border-zinc-100 p-10 rounded-[3rem] shadow-sm transition-all flex flex-col justify-between">
+                        <div>
+                            <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-8">Team Overview</h3>
+                            <div className="flex items-center gap-6 p-6 bg-zinc-50 rounded-[2rem] border border-zinc-100">
+                                <div className="w-16 h-16 rounded-[1.5rem] bg-blue-500/10 text-blue-500 flex items-center justify-center shadow-inner">
+                                    <FiUsers size={32} />
+                                </div>
+                                <div>
+                                    <p className="text-3xl font-black text-black tracking-tighter">102 Members</p>
+                                    <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest opacity-60 mt-1">
+                                        Synchronized Team Nodes
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-12 flex items-center justify-between px-2">
+                            <div className="flex items-center gap-3 text-zinc-300">
+                                <FiClock size={16} />
+                                <span className="text-[10px] font-bold uppercase tracking-widest opacity-40">
+                                    Last Sync: 5 mins ago
+                                </span>
+                            </div>
+                            <button className="text-[10px] font-black text-primary uppercase tracking-[0.2em] hover:brightness-110 active:scale-95 transition-all">
+                                View Audit Log
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                {/* --- FOOTER --- */}
+
             </div>
         </Layout>
     );
 };
+
+/* --- SHARED CLASSIC COMPONENTS (EXACT ADMIN STYLE) --- */
+
+const MetricCard = ({ title, value, color }) => (
+    <div className="bg-white border border-zinc-100 p-8 rounded-[2.5rem] shadow-sm flex justify-between items-center group hover:scale-[1.02] transition-all duration-300" >
+        <div>
+            <p className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-2 opacity-50">{title}</p>
+            <h2 className="text-3xl font-black text-black tracking-tighter">{value}</h2>
+        </div>
+        <div className={`w-14 h-14 rounded-2xl ${color} shadow-lg flex items-center justify-center p-3 opacity-80 group-hover:opacity-100 transition-opacity`}>
+            <div className="w-full h-full bg-white/20 rounded-lg border border-white/10" />
+        </div>
+    </div >
+);
+
+const Progress = ({ label, value, color }) => (
+    <div className="group cursor-default">
+        <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] mb-2.5">
+            <span className="text-zinc-400 group-hover:text-black transition-colors">{label}</span>
+            <span className="text-black">{value}%</span>
+        </div>
+        <div className="w-full bg-zinc-50 h-2.5 rounded-full overflow-hidden border border-zinc-100 p-0.5 shadow-inner">
+            <div
+                className={`h-full rounded-full ${color} shadow-lg transition-all duration-1000 ease-out group-hover:brightness-110`}
+                style={{ width: `${value}%` }}
+            />
+        </div>
+    </div>
+);

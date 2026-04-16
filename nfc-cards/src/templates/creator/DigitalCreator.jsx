@@ -21,7 +21,7 @@ const DigitalCreator = ({ userData }) => {
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-[#050505] flex justify-center items-start py-10 px-4 text-white font-['Plus_Jakarta_Sans']">
+      <div className="min-h-screen bg-[#050505] flex justify-center items-start py-10 px-4 text-white font-['Mulish']">
          <div className="w-full max-w-sm bg-gradient-to-t from-[#111] to-[#000] rounded-none shadow-2xl overflow-hidden border-2 border-[#1E90FF] p-8 relative">
             
             {/* RETRO GLITCH DECORATION */}

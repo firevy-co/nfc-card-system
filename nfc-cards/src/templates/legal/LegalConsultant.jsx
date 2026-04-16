@@ -21,7 +21,7 @@ const LegalConsultant = ({ userData }) => {
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-[#0f172a] flex justify-center items-start py-10 px-4 text-white font-['Plus_Jakarta_Sans']">
+      <div className="min-h-screen bg-[#0f172a] flex justify-center items-start py-10 px-4 text-white font-['Mulish']">
          <div className="w-full max-w-sm bg-[#1e293b] rounded-[3rem] shadow-2xl overflow-hidden border border-slate-700 p-8 relative">
             
             {/* HERITAGE LOGO */}

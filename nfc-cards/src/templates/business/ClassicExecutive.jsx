@@ -9,7 +9,7 @@ const ClassicExecutive = ({ userData }) => {
   const { displayName, email, role, phone = "+1 (234) 567-890" } = userData || {};
 
   return (
-    <div className="min-h-screen bg-card text-foreground flex flex-col items-center p-6 font-['Plus_Jakarta_Sans']">
+    <div className="min-h-screen bg-card text-foreground flex flex-col items-center p-6 font-['Mulish']">
       <div className="w-full max-w-sm bg-secondary/30 border border-white/5 rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden backdrop-blur-xl group">
         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full translate-x-12 -translate-y-12 blur-3xl group-hover:bg-primary/20 transition-all duration-700"></div>
 
@@ -21,7 +21,7 @@ const ClassicExecutive = ({ userData }) => {
                 {displayName?.charAt(0) || "U"}
              </div>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight mb-2 text-foreground font-['Outfit'] capitalize">
+          <h1 className="text-3xl font-bold tracking-tight mb-2 text-foreground font-['Mulish'] capitalize">
             {displayName || "Identity Holder"}
           </h1>
           <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary text-background text-[10px] font-black capitalize tracking-[0.2em] shadow-lg shadow-primary/20">

@@ -22,7 +22,7 @@ const BoutiqueStylist = ({ userData }) => {
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-[#FFF0F5] flex justify-center items-start py-8 px-4 text-[#D35D92] font-['Plus_Jakarta_Sans']">
+      <div className="min-h-screen bg-[#FFF0F5] flex justify-center items-start py-8 px-4 text-[#D35D92] font-['Mulish']">
          <div className="w-full max-w-sm bg-white rounded-[4rem] shadow-2xl overflow-hidden border border-[#FFDDF0] p-8 relative">
             
             {/* FLOATING DECORATIONS */}

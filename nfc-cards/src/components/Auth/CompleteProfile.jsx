@@ -12,7 +12,8 @@ import {
     FiInstagram,
     FiTwitter,
     FiFacebook,
-    FiBriefcase
+    FiBriefcase,
+    FiArrowLeft
 } from "react-icons/fi";
 
 const CompleteProfile = ({ userData }) => {
@@ -151,34 +152,45 @@ const CompleteProfile = ({ userData }) => {
     }
 
     const inputWithIcon =
-        "w-full pl-12 pr-4 py-3 rounded-lg bg-gray-100 border border-gray-200 text-sm outline-none focus:ring-2 focus:ring-blue-500";
+        "w-full pl-12 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-[#003636] border border-gray-100 dark:border-[#005a5a]/30 text-sm font-bold text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-[#7BB9D4] focus:border-[#7BB9D4]/50 transition-all";
 
     return (
         <Layout userData={userData} title="Complete Profile" hideSidebar={true}>
             <div className="max-w-3xl sm:max-w-7xl mx-auto py-12 px-6">
+                <div className="mb-8">
+                     <button
+                        onClick={() => navigate(-1)}
+                        className="flex items-center gap-2 text-gray-400 hover:text-[#7BB9D4] transition-colors font-bold group mb-4"
+                     >
+                        <FiArrowLeft className="group-hover:-translate-x-1 transition-transform" />
+                        <span className="text-[10px] uppercase tracking-widest font-black">Back to Dashboard</span>
+                     </button>
+                     <h2 className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter leading-none">Complete Your Profile</h2>
+                     <p className="text-gray-500 mt-2 font-bold opacity-60 dark:text-white/40">Finalize your professional identity to activate your digital ecosystem.</p>
+                </div>
 
                 <form
                     onSubmit={handleSubmit}
-                    className="bg-white p-8 rounded-xl shadow space-y-10"
+                    className="bg-white dark:bg-[#004242] p-10 rounded-[2.5rem] shadow-2xl shadow-gray-200/50 dark:shadow-none space-y-12 border border-gray-100 dark:border-[#005a5a]/30"
                 >
 
                     {/* Personal Section */}
 
                     <div>
 
-                        <div className="flex justify-between mb-4">
-                            <h3 className="font-semibold text-gray-700">
+                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-white/5 pb-4">
+                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-white">
                                 Personal & Professional
                             </h3>
-                            <span className="text-xs text-blue-500 font-semibold">
-                                REQUIRED
+                            <span className="text-[9px] text-[#7BB9D4] font-black uppercase tracking-widest">
+                                REQUIRED STAGE
                             </span>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-4">
+                        <div className="grid md:grid-cols-2 gap-6">
 
                             <div className="relative">
-                                <FiBriefcase className="absolute left-4 top-3.5 text-gray-400" />
+                                <FiBriefcase className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     required
                                     type="text"
@@ -190,7 +202,7 @@ const CompleteProfile = ({ userData }) => {
                             </div>
 
                             <div className="relative">
-                                <FiBriefcase className="absolute left-4 top-3.5 text-gray-400" />
+                                <FiBriefcase className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     type="text"
                                     value={formData.businessName}
@@ -209,19 +221,19 @@ const CompleteProfile = ({ userData }) => {
 
                     <div>
 
-                        <div className="flex justify-between mb-4">
-                            <h3 className="font-semibold text-gray-700">
+                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-white/5 pb-4">
+                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-white">
                                 Contact Details
                             </h3>
-                            <span className="text-xs text-gray-400 font-semibold">
-                                GLOBAL
+                            <span className="text-[9px] text-gray-400 dark:text-white/40 font-black uppercase tracking-widest">
+                                GLOBAL NODES
                             </span>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-4">
+                        <div className="grid md:grid-cols-2 gap-6">
 
                             <div className="relative">
-                                <FiMail className="absolute left-4 top-3.5 text-gray-400" />
+                                <FiMail className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     required
                                     type="email"
@@ -233,7 +245,7 @@ const CompleteProfile = ({ userData }) => {
                             </div>
 
                             <div className="relative">
-                                <FiPhone className="absolute left-4 top-3.5 text-gray-400" />
+                                <FiPhone className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     required
                                     type="tel"
@@ -253,21 +265,21 @@ const CompleteProfile = ({ userData }) => {
 
                     <div>
 
-                        <div className="flex justify-between mb-4">
-                            <h3 className="font-semibold text-gray-700">
+                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-white/5 pb-4">
+                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-white">
                                 Location
                             </h3>
-                            <span className="text-xs text-gray-400">
-                                OPTIONAL
+                            <span className="text-[9px] text-gray-400 dark:text-white/40 font-black uppercase tracking-widest">
+                                SPATIAL REGISTRY
                             </span>
                         </div>
 
-                        <div className="grid md:grid-cols-3 gap-4">
+                        <div className="grid md:grid-cols-3 gap-6">
 
                             <select
                                 value={formData.countryCode}
                                 onChange={handleCountryChange}
-                                className="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-200 text-sm"
+                                className="w-full px-5 py-3.5 rounded-xl bg-gray-50 dark:bg-[#003636] border border-gray-100 dark:border-[#005a5a]/30 text-sm font-bold text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-[#7BB9D4] appearance-none cursor-pointer transition-all"
                             >
                                 <option value="">Country</option>
                                 {locationData.countries.map((c) => (
@@ -281,7 +293,7 @@ const CompleteProfile = ({ userData }) => {
                                 value={formData.stateCode}
                                 onChange={handleStateChange}
                                 disabled={!formData.countryCode}
-                                className="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-200 text-sm"
+                                className="w-full px-5 py-3.5 rounded-xl bg-gray-50 dark:bg-[#003636] border border-gray-100 dark:border-[#005a5a]/30 text-sm font-bold text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-[#7BB9D4] appearance-none disabled:opacity-40 cursor-pointer transition-all"
                             >
                                 <option value="">State</option>
                                 {locationData.states.map((s) => (
@@ -295,7 +307,7 @@ const CompleteProfile = ({ userData }) => {
                                 value={formData.city}
                                 onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                                 disabled={!formData.stateCode}
-                                className="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-200 text-sm"
+                                className="w-full px-5 py-3.5 rounded-xl bg-gray-50 dark:bg-[#003636] border border-gray-100 dark:border-[#005a5a]/30 text-sm font-bold text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-[#7BB9D4] appearance-none disabled:opacity-40 cursor-pointer transition-all"
                             >
                                 <option value="">City</option>
                                 {locationData.cities.map((c) => (
@@ -312,17 +324,17 @@ const CompleteProfile = ({ userData }) => {
 
                     <div>
 
-                        <div className="flex justify-between mb-4">
-                            <h3 className="font-semibold text-gray-700">
+                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-white/5 pb-4">
+                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-white">
                                 Digital Ecosystem
                             </h3>
-                            <span className="text-xs text-gray-400">
-                                OPTIONAL
+                            <span className="text-[9px] text-gray-400 dark:text-white/40 font-black uppercase tracking-widest">
+                                BROADCAST NODES
                             </span>
                         </div>
 
-                        <div className="relative mb-4">
-                            <FiGlobe className="absolute left-4 top-3.5 text-gray-400" />
+                        <div className="relative mb-6">
+                            <FiGlobe className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                             <input
                                 type="text"
                                 value={formData.website}
@@ -332,10 +344,10 @@ const CompleteProfile = ({ userData }) => {
                             />
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-4">
+                        <div className="grid md:grid-cols-2 gap-6">
 
                             <div className="relative">
-                                <FiLinkedin className="absolute left-4 top-3.5 text-gray-400" />
+                                <FiLinkedin className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     type="text"
                                     value={formData.linkedin}
@@ -346,7 +358,7 @@ const CompleteProfile = ({ userData }) => {
                             </div>
 
                             <div className="relative">
-                                <FiInstagram className="absolute left-4 top-3.5 text-gray-400" />
+                                <FiInstagram className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     type="text"
                                     value={formData.instagram}
@@ -357,7 +369,7 @@ const CompleteProfile = ({ userData }) => {
                             </div>
 
                             <div className="relative">
-                                <FiTwitter className="absolute left-4 top-3.5 text-gray-400" />
+                                <FiTwitter className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     type="text"
                                     value={formData.twitter}
@@ -368,7 +380,7 @@ const CompleteProfile = ({ userData }) => {
                             </div>
 
                             <div className="relative">
-                                <FiFacebook className="absolute left-4 top-3.5 text-gray-400" />
+                                <FiFacebook className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     type="text"
                                     value={formData.facebook}
@@ -385,12 +397,12 @@ const CompleteProfile = ({ userData }) => {
 
                     {/* Buttons */}
 
-                    <div className="flex justify-between pt-6">
+                    <div className="flex justify-between items-center pt-8 border-t border-gray-50 dark:border-white/5">
 
                         <button
                             type="button"
                             onClick={() => navigate(-1)}
-                            className="text-blue-500 text-sm font-medium"
+                            className="text-gray-400 hover:text-[#7BB9D4] text-[10px] font-black uppercase tracking-widest transition-colors"
                         >
                             Save For Later
                         </button>
@@ -398,9 +410,9 @@ const CompleteProfile = ({ userData }) => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700"
+                            className="bg-[#7BB9D4] text-white px-10 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-[#7BB9D4]/30 hover:scale-[1.02] transition-all disabled:opacity-50"
                         >
-                            {loading ? "Saving..." : "Continue"}
+                            {loading ? "Synchronizing..." : "Continue"}
                         </button>
 
                     </div>

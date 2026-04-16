@@ -20,7 +20,7 @@ const ModernRealty = ({ userData }) => {
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-zinc-50 flex justify-center items-start py-8 px-4 text-zinc-900 font-['Plus_Jakarta_Sans']">
+      <div className="min-h-screen bg-zinc-50 flex justify-center items-start py-8 px-4 text-zinc-900 font-['Mulish']">
          <div className="w-full max-w-sm bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-zinc-200">
             
             {/* HERO SECTION */}

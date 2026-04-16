@@ -22,7 +22,7 @@ const EliteTrainer = ({ userData }) => {
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-[#050505] flex justify-center items-start py-8 px-4 text-white font-['Plus_Jakarta_Sans']">
+      <div className="min-h-screen bg-[#050505] flex justify-center items-start py-8 px-4 text-white font-['Mulish']">
          <div className="w-full max-w-sm bg-gradient-to-br from-[#111] to-[#000] rounded-[3.5rem] shadow-2xl overflow-hidden border border-[#222] p-8 relative">
             
             {/* POWER STRIPE DECORATION */}

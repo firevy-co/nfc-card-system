@@ -9,7 +9,7 @@ const CreativeAgency = ({ userData }) => {
   const { displayName, email, role, phone = "+1 (800) DESIGN-IO" } = userData || {};
 
   return (
-    <div className="min-h-screen bg-[#FFF0F3] text-[#FF0055] p-6 flex flex-col items-center pt-20 font-['Outfit']">
+    <div className="min-h-screen bg-[#FFF0F3] text-[#FF0055] p-6 flex flex-col items-center pt-20 font-['Mulish']">
       <div className="w-full max-w-sm bg-white border-4 border-[#FF0055] rounded-[3rem] p-10 shadow-[20px_20px_0_rgba(255,0,85,0.1)] relative overflow-hidden group">
         
         {/* Floating Design Elements */}
