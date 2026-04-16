@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Suspense } from 'react';
-import { FiX, FiCheck, FiLayout, FiTag, FiHash, FiFileText, FiBox, FiChevronRight, FiEye } from 'react-icons/fi';
+import { FiX, FiCheck, FiLayout, FiTag, FiHash, FiFileText, FiBox, FiChevronRight, FiEye, FiSearch } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TEMPLATES } from '../../templates/templateRegistry';
 import TemplateRenderer from '../../templates/TemplateRenderer';
@@ -14,6 +14,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
         templateId: 'real_estate'
     });
     const [showPicker, setShowPicker] = useState(false);
+    const [searchTemplate, setSearchTemplate] = useState('');
 
     useEffect(() => {
         if (initialData) {
@@ -36,9 +37,10 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
             });
         }
         setShowPicker(false);
+        setSearchTemplate('');
     }, [initialData, isOpen]);
 
-    const categories = ['Business', 'Medical', 'Legal', 'Real Estate', 'Hospitality', 'Fitness', 'Creator', 'Beauty', 'Construction', 'Other'];
+    const categories = Array.from(new Set(TEMPLATES.map(t => t.category || 'Other'))).sort();
     const selectedTemplate = TEMPLATES.find(t => t.id === formData.templateId) || TEMPLATES[0];
 
     const previewUserData = {
@@ -80,7 +82,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                         className="relative w-full max-w-[1100px] max-h-[92vh] bg-white dark:bg-white border border-slate-100 dark:border-slate-100 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col"
                     >
-                        {/* ── Header ── */}
+                        {/* Header */}
                         <div className="flex items-center justify-between px-7 py-6 border-b border-slate-100 dark:border-slate-100 bg-slate-50 dark:bg-slate-50 shrink-0">
                             <div className="flex items-center gap-4">
                                 <div className="w-10 h-10 rounded-xl bg-[#7BB9D4] text-white flex items-center justify-center shadow-lg">
@@ -101,10 +103,10 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                             </button>
                         </div>
 
-                        {/* ── Body: Two-column layout ── */}
+                        {/* Body */}
                         <div className="flex flex-col lg:flex-row flex-1 min-h-0 overflow-hidden">
 
-                            {/* LEFT — Form */}
+                            {/* LEFT - Form */}
                             <div className="flex-1 overflow-y-auto p-7 sm:p-10 custom-scrollbar space-y-8 border-r border-black/5 dark:border-white/10">
 
                                 {/* Name + Category */}
@@ -138,7 +140,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                     </div>
                                 </div>
 
-                                {/* ── Template Picker ── */}
+                                {/* Template Picker */}
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between">
                                         <label className="text-[10px] font-black capitalize tracking-[0.2em] text-muted-foreground ml-1 flex items-center gap-1.5 opacity-60">
@@ -154,7 +156,6 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                         </button>
                                     </div>
 
-                                    {/* Selected badge */}
                                     <div
                                         onClick={() => setShowPicker(p => !p)}
                                         className="w-full flex items-center gap-5 bg-slate-50 dark:bg-slate-50 border-2 border-slate-200 dark:border-slate-200 rounded-2xl px-5 py-4 cursor-pointer hover:border-[#7BB9D4]/40 transition-all group active:scale-[0.99]"
@@ -167,7 +168,6 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                         <FiChevronRight size={16} className={`text-muted-foreground transition-transform duration-500 ${showPicker ? 'rotate-90' : ''}`} />
                                     </div>
 
-                                    {/* Grid Picker */}
                                     <AnimatePresence>
                                         {showPicker && (
                                             <motion.div
@@ -176,34 +176,72 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                                 exit={{ opacity: 0, height: 0 }}
                                                 className="overflow-hidden"
                                             >
-                                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-3">
-                                                    {TEMPLATES.map(t => (
-                                                        <button
-                                                            key={t.id}
-                                                            type="button"
-                                                            onClick={() => {
-                                                                setFormData({ ...formData, templateId: t.id });
-                                                                setShowPicker(false);
-                                                            }}
-                                                            className={`flex items-center gap-4 p-4 rounded-2xl border-2 text-left transition-all ${formData.templateId === t.id
-                                                                ? 'border-foreground bg-foreground/5 shadow-inner'
-                                                                : 'border-black/5 dark:border-white/5 hover:border-foreground/20 bg-transparent hover:bg-black/5 dark:hover:bg-white/5'
-                                                                }`}
-                                                        >
-                                                            <div className={`w-8 h-8 rounded-lg ${t.previewColor} flex-shrink-0 shadow-md group-hover:scale-110 transition-transform`} />
-                                                            <div className="min-w-0 flex-1">
-                                                                <p className={`text-[11px] font-black truncate capitalize ${formData.templateId === t.id ? 'text-foreground' : 'text-muted-foreground opacity-70'}`}>
-                                                                    {t.name}
-                                                                </p>
-                                                                <p className="text-[8px] text-muted-foreground/40 font-bold uppercase tracking-tighter truncate">{t.id}</p>
+                                                <div className="pt-6 relative">
+                                                    <div className="absolute left-4 top-10 text-black/20 z-10">
+                                                        <FiSearch size={14} />
+                                                    </div>
+                                                    <input 
+                                                        type="text" 
+                                                        placeholder="Quick Search Blueprints..."
+                                                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-10 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:border-[#7BB9D4] mb-6"
+                                                        onChange={(e) => setSearchTemplate(e.target.value)}
+                                                        value={searchTemplate}
+                                                    />
+
+                                                    <div className="max-h-[400px] overflow-y-auto custom-scrollbar space-y-8 pb-4 pr-1">
+                                                        {Object.entries(
+                                                            TEMPLATES
+                                                            .filter(t => 
+                                                                t.name.toLowerCase().includes(searchTemplate.toLowerCase()) || 
+                                                                t.category.toLowerCase().includes(searchTemplate.toLowerCase()) ||
+                                                                t.id.toLowerCase().includes(searchTemplate.toLowerCase())
+                                                            )
+                                                            .reduce((acc, t) => {
+                                                                const cat = t.category || 'Other';
+                                                                if (!acc[cat]) acc[cat] = [];
+                                                                acc[cat].push(t);
+                                                                return acc;
+                                                            }, {})
+                                                        ).sort(([a], [b]) => a.localeCompare(b)).map(([category, templates]) => (
+                                                        <div key={category} className="space-y-4">
+                                                            <div className="flex items-center gap-4">
+                                                                <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-black/20 dark:text-black/20 whitespace-nowrap font-['Mulish']">
+                                                                    {category}
+                                                                </h3>
+                                                                <div className="h-px w-full bg-slate-100" />
                                                             </div>
-                                                            {formData.templateId === t.id && (
-                                                                <div className="shrink-0 w-5 h-5 rounded-full bg-foreground flex items-center justify-center shadow-lg">
-                                                                    <FiCheck size={10} className="text-background" />
-                                                                </div>
-                                                            )}
-                                                        </button>
+                                                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                                                {templates.map(t => (
+                                                                    <button
+                                                                        key={t.id}
+                                                                        type="button"
+                                                                        onClick={() => {
+                                                                            setFormData({ ...formData, templateId: t.id });
+                                                                            setShowPicker(false);
+                                                                        }}
+                                                                        className={`flex items-center gap-4 p-4 rounded-2xl border-2 text-left transition-all ${formData.templateId === t.id
+                                                                            ? 'border-black bg-slate-50 shadow-inner'
+                                                                            : 'border-slate-100 bg-transparent hover:border-[#7BB9D4]/40 hover:bg-slate-50'
+                                                                            }`}
+                                                                    >
+                                                                        <div className={`w-8 h-8 rounded-lg ${t.previewColor} flex-shrink-0 shadow-md group-hover:scale-110 transition-transform`} />
+                                                                        <div className="min-w-0 flex-1">
+                                                                            <p className={`text-[11px] font-black truncate capitalize ${formData.templateId === t.id ? 'text-black' : 'text-black/60'}`}>
+                                                                                {t.name}
+                                                                            </p>
+                                                                            <p className="text-[8px] text-black/20 font-bold uppercase tracking-tighter truncate">{t.id}</p>
+                                                                        </div>
+                                                                        {formData.templateId === t.id && (
+                                                                            <div className="shrink-0 w-5 h-5 rounded-full bg-black flex items-center justify-center shadow-lg">
+                                                                                <FiCheck size={10} className="text-white" />
+                                                                            </div>
+                                                                        )}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        </div>
                                                     ))}
+                                                    </div>
                                                 </div>
                                             </motion.div>
                                         )}
@@ -266,7 +304,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                 </div>
                             </div>
 
-                            {/* RIGHT — Live Preview */}
+                            {/* RIGHT - Live Preview */}
                             <div className="hidden lg:flex w-[400px] xl:w-[450px] flex-col bg-slate-50 dark:bg-slate-50 border-l border-slate-100 dark:border-slate-100 shrink-0">
                                 {/* Preview header */}
                                 <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 dark:border-slate-100">
@@ -316,7 +354,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                             </div>
                         </div>
 
-                        {/* ── Footer ── */}
+                        {/* Footer */}
                         <div className="px-8 py-6 border-t border-slate-100 dark:border-slate-100 bg-slate-50 dark:bg-slate-50 flex items-center gap-4 shrink-0">
                             <button
                                 type="button"

@@ -46,8 +46,8 @@ const AdminNav = ({ userData }) => {
 
         {/* LOGO SECTION */}
         <div className="flex items-center gap-3">
-          <span className={`font-extrabold text-xl tracking-tighter hidden sm:block ${theme === 'dark' ? 'text-white' : 'text-black'
-            }`}>Firevy</span>
+          <span className={`text-2xl hidden sm:block font-black ${theme === 'dark' ? 'text-white' : 'text-black'
+            }`}>Cardyn</span>
         </div>
 
         {/* CENTER NAVIGATION PILLS */}

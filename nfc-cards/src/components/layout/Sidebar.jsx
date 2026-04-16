@@ -55,8 +55,8 @@ export default function Sidebar({ userData, isOpen, onClose }) {
         <div className="w-11 h-11 rounded-2xl bg-foreground text-background flex items-center justify-center shadow-2xl group transition-transform hover:scale-110">
           <FiBox className="text-xl" />
         </div>
-        <h1 className="text-3xl font-black tracking-tighter text-foreground capitalize select-none font-['Mulish']">
-          Firevy
+        <h1 className="text-3xl tracking-tighter text-foreground capitalize select-none font-['Luckiest_Guy']">
+          Cardyn
         </h1>
       </div>
 

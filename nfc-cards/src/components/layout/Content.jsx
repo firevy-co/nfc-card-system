@@ -33,8 +33,8 @@ export default function Content({ userData }) {
 
   const categories = [
     "All",
-    ...new Set(localTemplates.map((t) => t.category))
-  ].filter(Boolean);
+    ...new Set(TEMPLATES.map((t) => t.category))
+  ].sort((a, b) => a === "All" ? -1 : a.localeCompare(b));
 
   // FETCH: Sync with Cloud Orchestrator (with Local Persistence Deduplication)
   const fetchTemplates = async () => {

@@ -29,7 +29,7 @@ const UserNav = ({ userData }) => {
 
         {/* LOGO SECTION */}
         <div className="flex items-center gap-3">
-          <span className={`font-extrabold text-xl tracking-tighter hidden sm:block ${theme === 'dark' ? 'text-white' : 'text-black'
+          <span className={`text-2xl hidden sm:block font-['Luckiest_Guy'] ${theme === 'dark' ? 'text-white' : 'text-black'
             }`}>Cardyn</span>
         </div>
 
