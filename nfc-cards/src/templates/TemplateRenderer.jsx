@@ -104,8 +104,39 @@ const ExpertNode = lazy(() => import('./service/ExpertNode'));
 const SkillFlow = lazy(() => import('./service/SkillFlow'));
 const PrimeService = lazy(() => import('./service/PrimeService'));
 
-const TemplateRenderer = ({ templateId, userData }) => {
+const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
   
+  // NORMALIZE USER DATA - Bridging discrepancies between Form fields and Template expectations
+  const userData = rawUserData ? {
+    ...rawUserData,
+    // Contact Mapping
+    phone: rawUserData.phone || rawUserData.mobileNumber || "",
+    email: rawUserData.email || rawUserData.omailAddress || "",
+    
+    // Identity & Role Mapping
+    displayName: rawUserData.displayName || "Unauthorized Entity",
+    role: rawUserData.role || rawUserData.businessName || "Authorized Member",
+    
+    // Location Synthesis (Building 'address' from City, State, Country nodes)
+    address: rawUserData.address || [
+      rawUserData.city,
+      rawUserData.state,
+      rawUserData.country
+    ].filter(Boolean).join(', ') || "Global Satellite Node",
+    
+    // Website & Bio
+    website: rawUserData.website || "",
+    bio: rawUserData.bio || rawUserData.description || "",
+    
+    // Social Integrity
+    linkedin: rawUserData.linkedin || "",
+    instagram: rawUserData.instagram || "",
+    facebook: rawUserData.facebook || "",
+    twitter: rawUserData.twitter || "",
+    youtube: rawUserData.youtube || "",
+    github: rawUserData.github || ""
+  } : {};
+
   const renderTemplate = () => {
     switch (templateId) {
       // --- BUSINESS ---

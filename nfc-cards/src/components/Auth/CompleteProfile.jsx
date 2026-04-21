@@ -4,17 +4,7 @@ import { auth } from "../../firebase.config";
 import Layout from "../layout/layout";
 import { Country, State, City } from "country-state-city";
 
-import {
-    FiMail,
-    FiPhone,
-    FiGlobe,
-    FiLinkedin,
-    FiInstagram,
-    FiTwitter,
-    FiFacebook,
-    FiBriefcase,
-    FiArrowLeft
-} from "react-icons/fi";
+import * as FiIcons from "react-icons/fi";
 
 const CompleteProfile = ({ userData }) => {
     const navigate = useNavigate();
@@ -48,28 +38,29 @@ const CompleteProfile = ({ userData }) => {
 
     useEffect(() => {
         if (userData) {
-            setFormData((prev) => ({ ...prev, ...userData }));
+            setTimeout(() => {
+                setFormData((prev) => ({ ...prev, ...userData }));
 
-            if (userData.countryCode) {
-                const states = State.getStatesOfCountry(userData.countryCode);
-
-                setLocationData((prev) => ({
-                    ...prev,
-                    states,
-                }));
-
-                if (userData.stateCode) {
-                    const cities = City.getCitiesOfState(
-                        userData.countryCode,
-                        userData.stateCode
-                    );
-
+                if (userData.countryCode) {
+                    const states = State.getStatesOfCountry(userData.countryCode);
                     setLocationData((prev) => ({
                         ...prev,
-                        cities,
+                        states,
                     }));
+
+                    if (userData.stateCode) {
+                        const cities = City.getCitiesOfState(
+                            userData.countryCode,
+                            userData.stateCode
+                        );
+
+                        setLocationData((prev) => ({
+                            ...prev,
+                            cities,
+                        }));
+                    }
                 }
-            }
+            }, 0);
         }
     }, [userData]);
 
@@ -152,34 +143,22 @@ const CompleteProfile = ({ userData }) => {
     }
 
     const inputWithIcon =
-        "w-full pl-12 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-[#003636] border border-gray-100 dark:border-[#005a5a]/30 text-sm font-bold text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-[#7BB9D4] focus:border-[#7BB9D4]/50 transition-all";
+        "w-full pl-12 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-emerald-50/50 border border-gray-100 dark:border-emerald-100/50 text-sm font-bold text-gray-900 dark:text-emerald-900 outline-none focus:ring-2 focus:ring-[#7BB9D4] focus:border-[#7BB9D4]/50 transition-all";
 
     return (
-        <Layout userData={userData} title="Complete Profile" hideSidebar={true}>
+        <Layout userData={userData} title="Complete Profile" hideSidebar={true} hideTopNav={true}>
             <div className="max-w-3xl sm:max-w-7xl mx-auto py-12 px-6">
-                <div className="mb-8">
-                     <button
-                        onClick={() => navigate(-1)}
-                        className="flex items-center gap-2 text-gray-400 hover:text-[#7BB9D4] transition-colors font-bold group mb-4"
-                     >
-                        <FiArrowLeft className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="text-[10px] uppercase tracking-widest font-black">Back to Dashboard</span>
-                     </button>
-                     <h2 className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter leading-none">Complete Your Profile</h2>
-                     <p className="text-gray-500 mt-2 font-bold opacity-60 dark:text-white/40">Finalize your professional identity to activate your digital ecosystem.</p>
-                </div>
-
                 <form
                     onSubmit={handleSubmit}
-                    className="bg-white dark:bg-[#004242] p-10 rounded-[2.5rem] shadow-2xl shadow-gray-200/50 dark:shadow-none space-y-12 border border-gray-100 dark:border-[#005a5a]/30"
+                    className="bg-white dark:bg-white/90 p-10 rounded-[2.5rem] shadow-2xl shadow-gray-200/50 dark:shadow-emerald-900/5 space-y-12 border border-gray-100 dark:border-emerald-100"
                 >
 
                     {/* Personal Section */}
 
                     <div>
 
-                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-white/5 pb-4">
-                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-white">
+                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-emerald-100 pb-4">
+                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-emerald-800">
                                 Personal & Professional
                             </h3>
                             <span className="text-[9px] text-[#7BB9D4] font-black uppercase tracking-widest">
@@ -190,7 +169,7 @@ const CompleteProfile = ({ userData }) => {
                         <div className="grid md:grid-cols-2 gap-6">
 
                             <div className="relative">
-                                <FiBriefcase className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
+                                <FiIcons.FiBriefcase className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     required
                                     type="text"
@@ -202,7 +181,7 @@ const CompleteProfile = ({ userData }) => {
                             </div>
 
                             <div className="relative">
-                                <FiBriefcase className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
+                                <FiIcons.FiBriefcase className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     type="text"
                                     value={formData.businessName}
@@ -221,11 +200,11 @@ const CompleteProfile = ({ userData }) => {
 
                     <div>
 
-                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-white/5 pb-4">
-                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-white">
+                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-emerald-100 pb-4">
+                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-emerald-800">
                                 Contact Details
                             </h3>
-                            <span className="text-[9px] text-gray-400 dark:text-white/40 font-black uppercase tracking-widest">
+                            <span className="text-[9px] text-gray-400 dark:text-emerald-950/40 font-black uppercase tracking-widest">
                                 GLOBAL NODES
                             </span>
                         </div>
@@ -233,7 +212,7 @@ const CompleteProfile = ({ userData }) => {
                         <div className="grid md:grid-cols-2 gap-6">
 
                             <div className="relative">
-                                <FiMail className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
+                                <FiIcons.FiMail className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     required
                                     type="email"
@@ -245,7 +224,7 @@ const CompleteProfile = ({ userData }) => {
                             </div>
 
                             <div className="relative">
-                                <FiPhone className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
+                                <FiIcons.FiPhone className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     required
                                     type="tel"
@@ -265,11 +244,11 @@ const CompleteProfile = ({ userData }) => {
 
                     <div>
 
-                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-white/5 pb-4">
-                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-white">
+                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-emerald-100 pb-4">
+                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-emerald-800">
                                 Location
                             </h3>
-                            <span className="text-[9px] text-gray-400 dark:text-white/40 font-black uppercase tracking-widest">
+                            <span className="text-[9px] text-gray-400 dark:text-emerald-950/40 font-black uppercase tracking-widest">
                                 SPATIAL REGISTRY
                             </span>
                         </div>
@@ -279,7 +258,7 @@ const CompleteProfile = ({ userData }) => {
                             <select
                                 value={formData.countryCode}
                                 onChange={handleCountryChange}
-                                className="w-full px-5 py-3.5 rounded-xl bg-gray-50 dark:bg-[#003636] border border-gray-100 dark:border-[#005a5a]/30 text-sm font-bold text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-[#7BB9D4] appearance-none cursor-pointer transition-all"
+                                className="w-full px-5 py-3.5 rounded-xl bg-gray-50 dark:bg-emerald-50/50 border border-gray-100 dark:border-emerald-100/50 text-sm font-bold text-gray-900 dark:text-emerald-900 outline-none focus:ring-2 focus:ring-[#7BB9D4] appearance-none cursor-pointer transition-all"
                             >
                                 <option value="">Country</option>
                                 {locationData.countries.map((c) => (
@@ -293,7 +272,7 @@ const CompleteProfile = ({ userData }) => {
                                 value={formData.stateCode}
                                 onChange={handleStateChange}
                                 disabled={!formData.countryCode}
-                                className="w-full px-5 py-3.5 rounded-xl bg-gray-50 dark:bg-[#003636] border border-gray-100 dark:border-[#005a5a]/30 text-sm font-bold text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-[#7BB9D4] appearance-none disabled:opacity-40 cursor-pointer transition-all"
+                                className="w-full px-5 py-3.5 rounded-xl bg-gray-50 dark:bg-emerald-50/50 border border-gray-100 dark:border-emerald-100/50 text-sm font-bold text-gray-900 dark:text-emerald-900 outline-none focus:ring-2 focus:ring-[#7BB9D4] appearance-none disabled:opacity-40 cursor-pointer transition-all"
                             >
                                 <option value="">State</option>
                                 {locationData.states.map((s) => (
@@ -307,7 +286,7 @@ const CompleteProfile = ({ userData }) => {
                                 value={formData.city}
                                 onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                                 disabled={!formData.stateCode}
-                                className="w-full px-5 py-3.5 rounded-xl bg-gray-50 dark:bg-[#003636] border border-gray-100 dark:border-[#005a5a]/30 text-sm font-bold text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-[#7BB9D4] appearance-none disabled:opacity-40 cursor-pointer transition-all"
+                                className="w-full px-5 py-3.5 rounded-xl bg-gray-50 dark:bg-emerald-50/50 border border-gray-100 dark:border-emerald-100/50 text-sm font-bold text-gray-900 dark:text-emerald-900 outline-none focus:ring-2 focus:ring-[#7BB9D4] appearance-none disabled:opacity-40 cursor-pointer transition-all"
                             >
                                 <option value="">City</option>
                                 {locationData.cities.map((c) => (
@@ -324,17 +303,17 @@ const CompleteProfile = ({ userData }) => {
 
                     <div>
 
-                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-white/5 pb-4">
-                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-white">
+                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-emerald-100 pb-4">
+                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-emerald-800">
                                 Digital Ecosystem
                             </h3>
-                            <span className="text-[9px] text-gray-400 dark:text-white/40 font-black uppercase tracking-widest">
+                            <span className="text-[9px] text-gray-400 dark:text-emerald-950/40 font-black uppercase tracking-widest">
                                 BROADCAST NODES
                             </span>
                         </div>
 
                         <div className="relative mb-6">
-                            <FiGlobe className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
+                            <FiIcons.FiGlobe className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                             <input
                                 type="text"
                                 value={formData.website}
@@ -347,7 +326,7 @@ const CompleteProfile = ({ userData }) => {
                         <div className="grid md:grid-cols-2 gap-6">
 
                             <div className="relative">
-                                <FiLinkedin className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
+                                <FiIcons.FiLinkedin className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     type="text"
                                     value={formData.linkedin}
@@ -358,7 +337,7 @@ const CompleteProfile = ({ userData }) => {
                             </div>
 
                             <div className="relative">
-                                <FiInstagram className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
+                                <FiIcons.FiInstagram className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     type="text"
                                     value={formData.instagram}
@@ -369,7 +348,7 @@ const CompleteProfile = ({ userData }) => {
                             </div>
 
                             <div className="relative">
-                                <FiTwitter className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
+                                <FiIcons.FiTwitter className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     type="text"
                                     value={formData.twitter}
@@ -380,7 +359,7 @@ const CompleteProfile = ({ userData }) => {
                             </div>
 
                             <div className="relative">
-                                <FiFacebook className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
+                                <FiIcons.FiFacebook className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
                                 <input
                                     type="text"
                                     value={formData.facebook}
@@ -397,16 +376,7 @@ const CompleteProfile = ({ userData }) => {
 
                     {/* Buttons */}
 
-                    <div className="flex justify-between items-center pt-8 border-t border-gray-50 dark:border-white/5">
-
-                        <button
-                            type="button"
-                            onClick={() => navigate(-1)}
-                            className="text-gray-400 hover:text-[#7BB9D4] text-[10px] font-black uppercase tracking-widest transition-colors"
-                        >
-                            Save For Later
-                        </button>
-
+                    <div className="flex justify-end items-center pt-8 border-t border-gray-50 dark:border-emerald-100">
                         <button
                             type="submit"
                             disabled={loading}
@@ -414,7 +384,6 @@ const CompleteProfile = ({ userData }) => {
                         >
                             {loading ? "Synchronizing..." : "Continue"}
                         </button>
-
                     </div>
 
                 </form>

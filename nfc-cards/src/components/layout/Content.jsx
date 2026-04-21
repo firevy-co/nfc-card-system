@@ -31,10 +31,25 @@ export default function Content({ userData }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const categories = [
+  const allCategories = [
     "All",
     ...new Set(TEMPLATES.map((t) => t.category))
   ].sort((a, b) => a === "All" ? -1 : a.localeCompare(b));
+
+  // Determine if we should show restricted categories based on user's business role
+  const matchedCategory = (!isAdmin && userData && (userData.businessName || userData.companyName))
+    ? TEMPLATES.find(t => {
+        const userQuery = (userData.businessName || userData.companyName).toLowerCase();
+        return t.category.toLowerCase().includes(userQuery) ||
+               userQuery.includes(t.category.toLowerCase()) ||
+               t.tags?.some(tag => userQuery.includes(tag.toLowerCase()));
+      })?.category
+    : null;
+
+  const categories = allCategories.filter(c => {
+    if (isAdmin || !matchedCategory) return true;
+    return c === "All" || c === matchedCategory;
+  });
 
   // FETCH: Sync with Cloud Orchestrator (with Local Persistence Deduplication)
   const fetchTemplates = async () => {
@@ -271,7 +286,7 @@ export default function Content({ userData }) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-14 p-8 border border-black/5 dark:border-white/10 rounded-[2.5rem] bg-white/50 dark:bg-white/5 backdrop-blur-xl shadow-xl relative overflow-hidden group"
+            className="mb-14 p-8 border border-black/5 dark:border-white/10 rounded-[2.5rem] bg-white/50 dark:bg-white/5 backdrop-blur-xl shadow-[0_0_50px_rgba(0,0,0,0.06)] relative overflow-hidden group"
           >
             <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform">
               <FiLink size={120} className="text-foreground" />

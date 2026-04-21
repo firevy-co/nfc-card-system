@@ -19,31 +19,33 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
     const [searchTemplate, setSearchTemplate] = useState('');
 
     useEffect(() => {
-        if (initialData) {
-            setFormData({
-                name: initialData.name || '',
-                category: initialData.category || 'Business',
-                description: initialData.description || '',
-                tags: (initialData.tags || []).join(', '),
-                previewColor: initialData.previewColor || 'bg-primary',
-                templateId: initialData.templateId || 'real_estate',
-                logo: initialData.logo || '',
-                logoType: initialData.logoType || 'url'
-            });
-        } else {
-            setFormData({
-                name: '',
-                category: 'Business',
-                description: '',
-                tags: '',
-                previewColor: 'bg-primary',
-                templateId: 'real_estate',
-                logo: '',
-                logoType: 'url'
-            });
-        }
-        setShowPicker(false);
-        setSearchTemplate('');
+        setTimeout(() => {
+            if (initialData) {
+                setFormData({
+                    name: initialData.name || '',
+                    category: initialData.category || 'Business',
+                    description: initialData.description || '',
+                    tags: (initialData.tags || []).join(', '),
+                    previewColor: initialData.previewColor || 'bg-primary',
+                    templateId: initialData.templateId || 'real_estate',
+                    logo: initialData.logo || '',
+                    logoType: initialData.logoType || 'url'
+                });
+            } else {
+                setFormData({
+                    name: '',
+                    category: 'Business',
+                    description: '',
+                    tags: '',
+                    previewColor: 'bg-primary',
+                    templateId: 'real_estate',
+                    logo: '',
+                    logoType: 'url'
+                });
+            }
+            setShowPicker(false);
+            setSearchTemplate('');
+        }, 0);
     }, [initialData, isOpen]);
 
     const categories = Array.from(new Set(TEMPLATES.map(t => t.category || 'Other'))).sort();

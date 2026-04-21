@@ -1,103 +1,67 @@
-import React from "react";
-import {
-   FiShare2,
-   FiLayers,
-   FiMapPin,
-   FiPhone,
-   FiMail,
-   FiGlobe,
-   FiUserPlus,
-   FiHardDrive,
-   FiCheckSquare,
-} from "react-icons/fi";
+import * as FiIcons from 'react-icons/fi';
+import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
 
 const ArchConstruction = ({ userData }) => {
    const {
-      displayName = "Ironwood Build & Design",
-      website = "www.ironwoodbuilds.com",
-      email = "projects@ironwood.com",
-      phone = "+1 555-CONSTRUCT",
-      address = "45 Industrial Way, Seattle",
+      displayName,
+      website,
+      email,
+      phone,
+      address,
+      linkedin,
+      instagram,
+      facebook,
+      twitter
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-[#F4F4F4] flex justify-center items-start py-8 px-4 text-[#1A1A1A] font-['Mulish']">
-         <div className="w-full max-w-sm bg-white rounded-none shadow-2xl overflow-hidden border-t-[12px] border-orange-500 p-0 relative">
-            
-            {/* RAW INDUSTRIAL HEADER */}
-            <div className="p-8 bg-zinc-900 text-white">
-               <div className="flex justify-between items-start mb-8">
-                  <div className="w-12 h-12 bg-orange-500 flex items-center justify-center">
-                     <FiLayers size={24} className="text-white" />
-                  </div>
-                  <div className="text-right">
-                     <p className="text-[10px] font-black capitalize tracking-[0.2em] text-orange-500">Project ID</p>
-                     <p className="text-xs font-mono font-bold">#IW-2024-99</p>
-                  </div>
-               </div>
+      <div className="min-h-screen bg-[#020617] flex justify-center items-start py-8 px-4 text-white font-['Mulish']">
+         <div className="w-full max-w-sm bg-[#1e293b]/20 border border-white/5 rounded-[2.5rem] p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden group">
 
-               <h1 className="text-3xl font-black tracking-tighter capitalize leading-none mb-2">
-                  {displayName}
+            {/* RAW INDUSTRIAL HEADER */}
+            <div className="flex flex-col items-center text-center mb-10 mt-6 relative z-10">
+               <div className="w-16 h-16 bg-cyan-400 text-black rounded-2xl flex items-center justify-center mb-8 shadow-xl shadow-cyan-400/20 transform group-hover:scale-110 transition-transform overflow-hidden">
+                  {userData?.logo ? (
+                    <img src={userData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
+                  ) : (
+                    <FiIcons.FiLayers size={32} />
+                  )}
+               </div>
+               <h1 className="text-3xl font-black tracking-tighter leading-none mb-2 uppercase text-center">
+                  {displayName || 'Architectural Hub'}
                </h1>
-               <div className="h-1 w-20 bg-orange-500 mb-6"></div>
-               <p className="text-[10px] font-bold text-zinc-400 capitalize tracking-widest">
-                  Industrial Architecture • General Contracting
+               <p className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.4em] opacity-80 mt-2">
+                  Building The Future
                </p>
             </div>
 
-            {/* PROJECT LOG */}
-            <div className="p-8">
-               <div className="grid grid-cols-1 gap-4 mb-8">
-                  <div className="flex items-center gap-4 p-4 bg-zinc-50 border-l-4 border-zinc-300">
-                     <FiCheckSquare className="text-orange-500" />
-                     <span className="text-xs font-bold capitalize tracking-wide">Design Phase Complete</span>
-                  </div>
-                  <div className="flex items-center gap-4 p-4 bg-zinc-50 border-l-4 border-zinc-300">
-                     <FiCheckSquare className="text-orange-500" />
-                     <span className="text-xs font-bold capitalize tracking-wide">Structural Integrity Verified</span>
-                  </div>
-               </div>
-
-               {/* CONTACT GRID - RUGGED DESIGN */}
-               <div className="grid grid-cols-2 gap-px bg-zinc-200 border border-zinc-200 mb-8">
-                  <div className="bg-white p-6 flex flex-col gap-2">
-                     <FiGlobe size={18} className="text-orange-500" />
-                     <p className="text-[8px] font-black capitalize text-zinc-400">Portal</p>
-                     <p className="text-[10px] font-bold truncate">{website}</p>
-                  </div>
-                  <div className="bg-white p-6 flex flex-col gap-2">
-                     <FiPhone size={18} className="text-orange-500" />
-                     <p className="text-[8px] font-black capitalize text-zinc-400">Direct</p>
-                     <p className="text-[10px] font-bold truncate">{phone}</p>
-                  </div>
-                  <div className="bg-white p-6 flex flex-col gap-2 col-span-2">
-                     <FiMapPin size={18} className="text-orange-500" />
-                     <p className="text-[8px] font-black capitalize text-zinc-400">Site HQ</p>
-                     <p className="text-[10px] font-bold truncate">{address}</p>
-                  </div>
-               </div>
-
-               {/* ENGINEER CTA */}
-               <button className="w-full bg-zinc-900 text-white font-black py-5 flex items-center justify-center gap-3 capitalize tracking-[0.2em] text-[10px] hover:bg-orange-500 transition-colors">
-                  <FiUserPlus size={16} />
+            {/* Action Buttons */}
+            <div className="flex flex-col gap-3 mb-10 w-full">
+               <button className="w-full bg-white text-black py-4 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:bg-white/90 transition-all">
                   Initiate Consultation
                </button>
             </div>
 
-            {/* BARCODE DECORATION */}
-            <div className="px-8 pb-8 flex justify-between items-end opacity-20">
-               <div className="flex gap-1 h-8 items-end">
-                  {[2,4,1,3,1,5,2].map((h, i) => (
-                     <div key={i} className="bg-black w-0.5" style={{ height: `${h * 10}%` }}></div>
-                  ))}
-               </div>
-               <span className="text-[8px] font-mono">SPEC-77-ALPHA</span>
+            {/* CONTACT LINKS */}
+            <div className="space-y-3 relative z-10">
+               <StandardContactLink icon={FiIcons.FiGlobe} value={website} href={website} />
+               <StandardContactLink icon={FiIcons.FiMail} value={email} href={`mailto:${email}`} />
+               <StandardContactLink icon={FiIcons.FiPhone} value={phone} href={`tel:${phone}`} />
+               <StandardContactLink icon={FiIcons.FiMapPin} value={address} />
+               
+               {/* Social Uplinks */}
+               <StandardContactLink icon={FiIcons.FiLinkedin} value={linkedin} href={linkedin} />
+               <StandardContactLink icon={FiIcons.FiInstagram} value={instagram} href={instagram} />
+               <StandardContactLink icon={FiIcons.FiTwitter} value={twitter} href={twitter} />
             </div>
 
+            <StandardMapPreview address={address} />
 
-          <div className="mt-8 mb-2 text-center">
-            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
-          </div>
+            <StandardSaveContactButton />
+
+            <footer className="mt-12 text-center opacity-20">
+               <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-[0.5em] text-gray-300 hover:text-white transition-colors uppercase">Powered by Cardyn</a>
+            </footer>
          </div>
       </div>
    );

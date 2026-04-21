@@ -40,8 +40,8 @@ export default function TemplateCard({
 
     return (
         <div className={`h-full rounded-[2.5rem] backdrop-blur-xl border transition-all duration-700 group flex flex-col overflow-hidden relative ${isSelected
-            ? 'border-primary/50 bg-primary/[0.03] shadow-[0_20px_50px_-12px_rgba(var(--foreground),0.15)] ring-1 ring-primary/20'
-            : 'border-black/5 dark:border-white/80 bg-white shadow-xl dark:bg-white/5 hover:border-primary/30 hover:shadow-2xl'
+            ? 'border-primary/50 bg-primary/[0.03] shadow-[0_0_50px_rgba(0,0,0,0.12)] ring-1 ring-primary/20'
+            : 'border-black/5 dark:border-white/80 bg-white shadow-[0_0_30px_rgba(0,0,0,0.06)] dark:bg-white/5 hover:border-primary/30 hover:shadow-[0_0_50px_rgba(0,0,0,0.1)]'
             }`}>
             {/* ACTIVE SELECTION GLOW */}
             {isSelected && (

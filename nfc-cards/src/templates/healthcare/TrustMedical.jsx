@@ -1,45 +1,45 @@
-import React from 'react';
-import { FiPlusSquare, FiPhone, FiMail, FiMapPin, FiCalendar } from 'react-icons/fi';
+import * as FiIcons from 'react-icons/fi';
+import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
 
 const TrustMedical = ({ userData }) => {
-  const { displayName, email, role, mobileNumber, city, country } = userData || {};
+  const { displayName, email, role, phone, website, address, linkedin, instagram, facebook, twitter } = userData || {};
   return (
-    <div className="min-h-screen bg-blue-50 flex items-center justify-center p-6 font-['Mulish']">
-      <div className="w-full max-w-sm bg-white rounded-[3rem] p-10 shadow-[0_40px_80px_-20px_rgba(37,99,235,0.1)] border border-blue-100/50">
-        <div className="flex items-center gap-4 mb-10">
-           <div className="w-16 h-16 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-xl shadow-blue-600/20">
-              <FiPlusSquare size={32} />
+    <div className="min-h-screen bg-[#020617] text-white flex items-start justify-center py-16 px-6 font-['Mulish']">
+      <div className="w-full max-w-sm bg-[#1e293b]/20 border border-white/5 rounded-[2.5rem] p-10 shadow-2xl backdrop-blur-xl relative overflow-hidden group">
+        
+        <div className="flex flex-col items-center text-center mb-10">
+           <div className="w-16 h-16 rounded-2xl bg-cyan-400 text-black mb-8 flex items-center justify-center p-2 shadow-xl shadow-cyan-400/20 transform group-hover:scale-110 transition-transform">
+              <FiIcons.FiPlusSquare size={32} />
            </div>
-           <div>
-              <h1 className="text-xl font-black text-slate-900 tracking-tight">{displayName || 'Trust Medical'}</h1>
-              <p className="text-blue-600 text-[10px] font-black uppercase tracking-widest mt-1">{role || 'General Practitioner'}</p>
-           </div>
+           <h1 className="text-2xl font-black text-white tracking-tight leading-none">{displayName || 'Medical Node'}</h1>
+           <p className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.4em] mt-3 opacity-80">{role || 'Practitioner'}</p>
         </div>
         
-        <div className="space-y-4">
-           <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-              <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3">Professional Contact</p>
-              <div className="space-y-4">
-                 <a href={`tel:${mobileNumber}`} className="flex items-center gap-3 group">
-                    <FiPhone size={16} className="text-blue-500" />
-                    <span className="text-sm font-bold text-slate-700 group-hover:text-blue-600 transition-colors">{mobileNumber || '+1 (800) HEALTH'}</span>
-                 </a>
-                 <a href={`mailto:${email}`} className="flex items-center gap-3 group">
-                    <FiMail size={16} className="text-blue-500" />
-                    <span className="text-sm font-bold text-slate-700 group-hover:text-blue-600 transition-colors truncate">{email || 'care@trustmed.com'}</span>
-                 </a>
-                 <div className="flex items-center gap-3">
-                    <FiMapPin size={16} className="text-blue-500" />
-                    <span className="text-sm font-bold text-slate-700">{[city, country].filter(Boolean).join(', ') || 'Medical Plaza'}</span>
-                 </div>
-              </div>
-           </div>
-           
-           <button className="w-full py-5 bg-blue-600 text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-blue-700 transition-all shadow-xl shadow-blue-600/20">
-              <FiCalendar size={16} /> Book Appointment
-           </button>
+        <div className="space-y-3 relative z-10">
+           <StandardContactLink icon={FiIcons.FiGlobe} value={website} href={website} />
+           <StandardContactLink icon={FiIcons.FiMail} value={email} href={`mailto:${email}`} />
+           <StandardContactLink icon={FiIcons.FiPhone} value={phone} href={`tel:${phone}`} />
+           <StandardContactLink icon={FiIcons.FiMapPin} value={address} />
+           <StandardContactLink icon={FiIcons.FiLinkedin} value={linkedin} href={linkedin} />
+           <StandardContactLink icon={FiIcons.FiInstagram} value={instagram} href={instagram} />
+           <StandardContactLink icon={FiIcons.FiFacebook} value={facebook} href={facebook} />
+           <StandardContactLink icon={FiIcons.FiTwitter} value={twitter} href={twitter} />
         </div>
-        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-10 text-[7px] text-center text-slate-300 font-bold uppercase tracking-[0.5em] hover:opacity-70 transition-opacity">Powered by Cardyn</a>
+
+        <div className="flex flex-col gap-3 mt-10">
+            <button className="w-full bg-white text-black py-4 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:bg-white/90 transition-all">
+                Book Appointment
+            </button>
+        </div>
+
+        {/* Map Preview */}
+        <StandardMapPreview address={address} />
+
+        <StandardSaveContactButton />
+
+        <footer className="mt-12 text-center opacity-20">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-[0.5em] text-gray-300 hover:text-white transition-colors uppercase">Powered by Cardyn</a>
+        </footer>
       </div>
     </div>
   );

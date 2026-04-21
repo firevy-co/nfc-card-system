@@ -1,160 +1,89 @@
 import React from "react";
-import {
-   FiGlobe,
-   FiMail,
-   FiPhone,
-   FiMapPin,
-   FiShare2,
-   FiCamera,
-   FiUsers,
-   FiEdit2,
-   FiChevronRight
-} from "react-icons/fi";
+import * as FiIcons from 'react-icons/fi';
+import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
 
 const HospitalCard = ({ userData }) => {
    const {
-      hospitalName = "City Central Hospital",
-      tagline = "LEADING EXCELLENCE IN HEALTHCARE",
-      website = "citycentral.com/chen",
-      email = "s.chen@citycentral.org",
-      phone = "+1 (555) 012-3456",
-      location = "San Francisco, CA",
-      image = "https://images.unsplash.com/photo-1586773860418-d37222d8fce3"
+      displayName,
+      website,
+      email,
+      phone,
+      address,
+      linkedin,
+      instagram
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-gray-100 flex justify-center py-10 px-4">
-         <div className="w-full max-w-sm bg-[#F4F6F7] rounded-3xl shadow-xl p-6">
+      <div className="min-h-screen bg-gray-100 flex justify-center py-10 px-4 font-['Mulish']">
+         <div className="w-full max-w-sm bg-[#F4F6F7] rounded-[3rem] shadow-xl p-8 relative overflow-hidden">
 
             {/* IMAGE */}
-            <div className="flex justify-center relative">
-               <div className="w-24 h-24 rounded-full overflow-hidden shadow-md">
-                  <img
-                     src={image}
-                     alt="hospital"
-                     className="w-full h-full object-cover"
-                  />
+            <div className="flex justify-center relative mb-8">
+               <div className="w-28 h-28 rounded-full overflow-hidden shadow-2xl border-4 border-white">
+                  {userData?.logo ? (
+                    <img src={userData.logo} alt="hospital" className="w-full h-full object-contain p-2" />
+                  ) : (
+                    <img
+                       src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3"
+                       alt="hospital"
+                       className="w-full h-full object-cover"
+                    />
+                  )}
                </div>
-
-               <div className="absolute bottom-0 right-[34%] bg-teal-600 p-2 rounded-full text-white shadow">
-                  <FiEdit2 size={14} />
+               <div className="absolute bottom-0 right-[32%] bg-teal-600 p-2.5 rounded-full text-white shadow-xl border-2 border-white">
+                  <FiIcons.FiAward size={16} />
                </div>
             </div>
 
             {/* TITLE */}
-            <div className="text-center mt-4">
-               <h1 className="text-xl font-bold text-gray-800">
-                  {hospitalName}
+            <div className="text-center mb-8">
+               <h1 className="text-2xl font-black text-gray-800 tracking-tight leading-none">
+                  {displayName || "City Central Hospital"}
                </h1>
-               <p className="text-xs text-teal-600 font-semibold tracking-wide mt-1">
-                  {tagline}
+               <p className="text-[10px] text-teal-600 font-black uppercase tracking-[0.3em] mt-3 opacity-80 uppercase">
+                  Leading Excellence In Healthcare
                </p>
             </div>
 
             {/* TAGS */}
-            <div className="flex justify-center gap-2 mt-4">
-               <span className="px-3 py-1 text-xs bg-teal-200 text-teal-800 rounded-full">
+            <div className="flex justify-center gap-2 mb-10 flex-wrap">
+               <span className="px-3 py-1.5 text-[8px] font-black bg-teal-600/10 text-teal-700 rounded-full border border-teal-600/10 tracking-widest uppercase">
                   SURGERY
                </span>
-               <span className="px-3 py-1 text-xs bg-teal-200 text-teal-800 rounded-full">
+               <span className="px-3 py-1.5 text-[8px] font-black bg-teal-600/10 text-teal-700 rounded-full border border-teal-600/10 tracking-widest uppercase">
                   PEDIATRICS
                </span>
-               <span className="px-3 py-1 text-xs bg-teal-200 text-teal-800 rounded-full">
+               <span className="px-3 py-1.5 text-[8px] font-black bg-teal-600/10 text-teal-700 rounded-full border border-teal-600/10 tracking-widest uppercase">
                   ER
                </span>
             </div>
 
             {/* ACTION BUTTONS */}
-            <div className="flex gap-3 mt-6">
-               <button className="flex-1 bg-teal-700 text-white py-3 rounded-full font-medium shadow">
+            <div className="flex gap-3 mb-10">
+               <button className="flex-1 bg-teal-700 text-white py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-teal-700/20 active:scale-95 transition-all">
                   Book Consult
-               </button>
-
-               <button className="flex-1 bg-gray-300 text-gray-700 py-3 rounded-full font-medium">
-                  View Papers
                </button>
             </div>
 
             {/* CONTACT LIST */}
-            <div className="mt-6 space-y-3">
+            <div className="space-y-3 mb-10">
+               <StandardContactLink icon={FiIcons.FiGlobe} value={website} href={website} />
+               <StandardContactLink icon={FiIcons.FiMail} value={email} href={`mailto:${email}`} />
+               <StandardContactLink icon={FiIcons.FiPhone} value={phone} href={`tel:${phone}`} />
+               <StandardContactLink icon={FiIcons.FiMapPin} value={address} />
 
-               {/* WEBSITE */}
-               <div className="flex items-center justify-between bg-white p-4 rounded-xl shadow-sm">
-                  <div className="flex items-center gap-3">
-                     <FiGlobe className="text-teal-700" />
-                     <div>
-                        <p className="text-xs text-gray-400">WEBSITE</p>
-                        <p className="text-sm font-medium text-gray-700">
-                           {website}
-                        </p>
-                     </div>
-                  </div>
-                  <FiChevronRight className="text-gray-400" />
-               </div>
-
-               {/* EMAIL */}
-               <div className="flex items-center justify-between bg-white p-4 rounded-xl shadow-sm">
-                  <div className="flex items-center gap-3">
-                     <FiMail className="text-teal-700" />
-                     <div>
-                        <p className="text-xs text-gray-400">EMAIL</p>
-                        <p className="text-sm font-medium text-gray-700">
-                           {email}
-                        </p>
-                     </div>
-                  </div>
-                  <FiChevronRight className="text-gray-400" />
-               </div>
-
-               {/* PHONE */}
-               <div className="flex items-center justify-between bg-white p-4 rounded-xl shadow-sm">
-                  <div className="flex items-center gap-3">
-                     <FiPhone className="text-teal-700" />
-                     <div>
-                        <p className="text-xs text-gray-400">PHONE</p>
-                        <p className="text-sm font-medium text-gray-700">
-                           {phone}
-                        </p>
-                     </div>
-                  </div>
-                  <FiChevronRight className="text-gray-400" />
-               </div>
-
-               {/* LOCATION */}
-               <div className="flex items-center justify-between bg-white p-4 rounded-xl shadow-sm">
-                  <div className="flex items-center gap-3">
-                     <FiMapPin className="text-teal-700" />
-                     <div>
-                        <p className="text-xs text-gray-400">LOCATION</p>
-                        <p className="text-sm font-medium text-gray-700">
-                           {location}
-                        </p>
-                     </div>
-                  </div>
-                  <FiChevronRight className="text-gray-400" />
-               </div>
-
+               {/* Medical Socials */}
+               <StandardContactLink icon={FiIcons.FiLinkedin} value={linkedin} href={linkedin} />
+               <StandardContactLink icon={FiIcons.FiInstagram} value={instagram} href={instagram} />
             </div>
 
-            {/* BOTTOM ICONS */}
-            <div className="flex justify-center gap-6 mt-6">
-               <button className="bg-gray-200 p-3 rounded-full">
-                  <FiShare2 />
-               </button>
+            <StandardMapPreview address={address} />
 
-               <button className="bg-gray-200 p-3 rounded-full">
-                  <FiCamera />
-               </button>
+            <StandardSaveContactButton />
 
-               <button className="bg-gray-200 p-3 rounded-full">
-                  <FiUsers />
-               </button>
-            </div>
-
-
-          <div className="mt-8 mb-2 text-center">
-            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
-          </div>
+            <footer className="mt-12 text-center opacity-20">
+               <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-[0.5em] text-gray-400 hover:text-teal-700 transition-colors uppercase">Powered by Cardyn</a>
+            </footer>
          </div>
       </div>
    );

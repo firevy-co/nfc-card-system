@@ -35,7 +35,7 @@ const Inquiry = ({ userData }) => {
     // Fetch messages for selected inquiry
     useEffect(() => {
         if (!selectedInquiry) {
-            setMessages([]);
+            setTimeout(() => setMessages([]), 0);
             return;
         }
 

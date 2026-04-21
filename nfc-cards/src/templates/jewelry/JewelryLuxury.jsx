@@ -1,147 +1,103 @@
 import React from "react";
 import {
-   FiShare2,
-   FiCamera,
    FiMapPin,
    FiPhone,
    FiMail,
    FiGlobe,
-   FiUserPlus,
+   FiInstagram,
+   FiLinkedin,
+   FiFacebook,
 } from "react-icons/fi";
+import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
 
 const JewelryLuxury = ({ userData }) => {
    const {
-      displayName = "Aurelia Fine Jewelry",
-      website = "www.aureliafinejewelry.fr",
-      email = "concierge@aurelia.fr",
-      phone = "+33 1 42 68 00 00",
-      address = "Place Vendôme, Paris",
+      displayName,
+      website,
+      email,
+      phone,
+      address,
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-black flex justify-center items-start py-10 px-4 text-white">
-         <div className="w-full max-w-sm">
+    <div className="min-h-screen bg-[#020617] flex justify-center items-start py-16 px-4 text-white font-['Mulish']">
+         <div className="w-full max-w-sm bg-[#1e293b]/20 border border-white/5 rounded-[2.5rem] p-8 shadow-2xl backdrop-blur-xl">
 
             {/* LOGO */}
             <div className="flex flex-col items-center text-center">
-               <div className="w-24 h-24 border-2 border-cyan-400 rounded-full flex items-center justify-center mb-4">
-                  💎
+               <div className="w-24 h-24 border-2 border-cyan-400 rounded-full flex items-center justify-center mb-6 overflow-hidden">
+                  {userData?.logo ? (
+                    <img src={userData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
+                  ) : (
+                    <span className="text-4xl">💎</span>
+                  )}
                </div>
 
-               <h1 className="text-xl font-semibold tracking-wide">
-                  {displayName}
+               <h1 className="text-2xl font-black tracking-tight leading-none">
+                  {displayName || "Maison De Luxe"}
                </h1>
 
-               <p className="text-xs tracking-[3px] text-gray-400 mt-1">
-                  MAISON DE LUXE • PARIS
+               <p className="text-[10px] tracking-[0.4em] text-cyan-400 font-black mt-3 uppercase opacity-80">
+                  ESTABLISHED EXCELLENCE
                </p>
 
                {/* TAG BUTTONS */}
-               <div className="flex gap-2 mt-4 flex-wrap justify-center">
-                  <span className="bg-cyan-500/20 text-cyan-300 text-xs px-3 py-1 rounded-full">
+               <div className="flex gap-2 mt-6 flex-wrap justify-center">
+                  <span className="bg-cyan-500/10 text-cyan-400 text-[8px] tracking-widest px-3 py-1.5 rounded-full border border-cyan-500/10 font-black">
                      BESPOKE DESIGNS
                   </span>
-                  <span className="bg-cyan-500/20 text-cyan-300 text-xs px-3 py-1 rounded-full">
+                  <span className="bg-cyan-500/10 text-cyan-400 text-[8px] tracking-widest px-3 py-1.5 rounded-full border border-cyan-500/10 font-black">
                      FINE DIAMONDS
-                  </span>
-                  <span className="bg-cyan-500/20 text-cyan-300 text-xs px-3 py-1 rounded-full">
-                     EXPERT CRAFTSMANSHIP
                   </span>
                </div>
             </div>
 
             {/* PRODUCT GRID */}
-            <div className="grid grid-cols-2 gap-4 mt-8">
+            <div className="grid grid-cols-2 gap-3 mt-10">
                <img
                   src="https://images.unsplash.com/photo-1605100804763-247f67b3557e"
-                  className="rounded-xl object-cover h-32 w-full"
+                  className="rounded-2xl object-cover h-32 w-full border border-white/5 shadow-lg"
                />
 
                <img
                   src="https://images.unsplash.com/photo-1611652022419-a9419f74343d"
-                  className="rounded-xl object-cover h-32 w-full"
-               />
-
-               <img
-                  src="https://images.unsplash.com/photo-1588444837495-c6cfeb53f32d"
-                  className="rounded-xl object-cover h-32 w-full col-span-2"
+                  className="rounded-2xl object-cover h-32 w-full border border-white/5 shadow-lg"
                />
             </div>
 
             {/* ACTION BUTTONS */}
-            <div className="grid grid-cols-2 gap-4 mt-6">
-               <button className="bg-[#0b1b2b] py-3 rounded-xl flex items-center justify-center gap-2">
-                  <FiShare2 />
-                  OUR COLLECTION
-               </button>
-
-               <button className="bg-[#0b1b2b] py-3 rounded-xl flex items-center justify-center gap-2">
-                  <FiCamera />
-                  BOOK APPOINTMENT
-               </button>
+            <div className="flex flex-col gap-3 mt-10">
+                <button className="w-full bg-white text-black py-4 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:bg-white/90 transition-all">
+                    View Collection
+                </button>
             </div>
 
             {/* CONTACT CARDS */}
-            <div className="space-y-3 mt-6">
+            <div className="space-y-3 mt-10">
+               <p className="text-[10px] text-gray-500 font-black tracking-[0.4em] uppercase mb-4 text-center">
+                  Get In Touch
+               </p>
 
-               <div className="bg-[#0b1b2b] p-4 rounded-xl flex items-center gap-3">
-                  <FiGlobe className="text-cyan-400" />
-                  <div>
-                     <p className="text-xs text-gray-400">WEBSITE</p>
-                     <p className="text-sm">{website}</p>
-                  </div>
-               </div>
+               <StandardContactLink icon={FiGlobe} value={website} href={website} />
+               <StandardContactLink icon={FiMail} value={email} href={`mailto:${email}`} />
+               <StandardContactLink icon={FiPhone} value={phone} href={`tel:${phone}`} />
+               <StandardContactLink icon={FiMapPin} value={address} />
 
-               <div className="bg-[#0b1b2b] p-4 rounded-xl flex items-center gap-3">
-                  <FiMail className="text-cyan-400" />
-                  <div>
-                     <p className="text-xs text-gray-400">EMAIL</p>
-                     <p className="text-sm">{email}</p>
-                  </div>
-               </div>
-
-               <div className="bg-[#0b1b2b] p-4 rounded-xl flex items-center gap-3">
-                  <FiPhone className="text-cyan-400" />
-                  <div>
-                     <p className="text-xs text-gray-400">PHONE</p>
-                     <p className="text-sm">{phone}</p>
-                  </div>
-               </div>
-
-               <div className="bg-[#0b1b2b] p-4 rounded-xl flex items-center gap-3">
-                  <FiMapPin className="text-cyan-400" />
-                  <div>
-                     <p className="text-xs text-gray-400">ATELIER</p>
-                     <p className="text-sm">{address}</p>
-                  </div>
-               </div>
-
+               {/* Luxury Social Matrix */}
+               <StandardContactLink icon={FiLinkedin} value={userData?.linkedin} href={userData?.linkedin} />
+               <StandardContactLink icon={FiInstagram} value={userData?.instagram} href={userData?.instagram} />
+               <StandardContactLink icon={FiFacebook} value={userData?.facebook} href={userData?.facebook} />
             </div>
 
-            {/* SOCIAL ACTIONS */}
-            <div className="flex justify-center gap-6 mt-6">
-               <button className="bg-[#0b1b2b] p-3 rounded-full">
-                  <FiShare2 />
-               </button>
-
-               <button className="bg-[#0b1b2b] p-3 rounded-full">
-                  <FiCamera />
-               </button>
-
-               <button className="bg-[#0b1b2b] p-3 rounded-full">
-                  <FiMail />
-               </button>
-            </div>
+            {/* Map Preview */}
+            <StandardMapPreview address={address} />
 
             {/* SAVE CONTACT */}
-            <button className="mt-6 w-full bg-cyan-300 text-black font-semibold py-4 rounded-xl flex items-center justify-center gap-2">
-               <FiUserPlus />
-               SAVE CONTACT
-            </button>
+            <StandardSaveContactButton />
 
 
-          <div className="mt-8 mb-2 text-center">
-            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
+          <div className="mt-12 mb-2 text-center opacity-20">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[8px] font-black tracking-[0.5em] text-gray-300 hover:text-white transition-colors uppercase">Powered by Cardyn</a>
           </div>
          </div>
       </div>

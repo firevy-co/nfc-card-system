@@ -1,33 +1,51 @@
 import React from 'react';
-import { FiPhone, FiMail, FiGlobe, FiMapPin, FiLinkedin, FiTwitter } from 'react-icons/fi';
+import { FiPhone, FiMail, FiGlobe, FiMapPin, FiLinkedin, FiTwitter, FiGithub } from 'react-icons/fi';
+import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
 
 const ExecutiveMinimal = ({ userData }) => {
-  const { displayName, email, role, mobileNumber, website, companyName, city, country } = userData || {};
+  const { displayName, email, role, phone, website, companyName, address } = userData || {};
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 font-['Mulish']">
+    <div className="min-h-screen bg-[#020617] text-white flex justify-center items-center p-6 font-['Mulish']">
       <div className="w-full max-w-sm">
-        <div className="h-2 bg-black rounded-t-3xl" />
-        <div className="bg-white border border-gray-100 rounded-b-3xl p-8 shadow-xl">
-          <div className="mb-8">
-            <div className="w-20 h-20 rounded-2xl bg-black flex items-center justify-center text-white text-3xl font-black mb-6 overflow-hidden">
+        <div className="bg-[#1e293b]/20 border border-white/5 rounded-[2.5rem] p-8 shadow-2xl backdrop-blur-xl relative overflow-hidden group">
+          <div className="mb-10 text-center flex flex-col items-center">
+            <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-cyan-400 text-3xl font-black mb-6 overflow-hidden">
               {userData?.logo ? (
                 <img src={userData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
               ) : (
                 displayName?.charAt(0) || 'E'
               )}
             </div>
-            <h1 className="text-2xl font-black text-black tracking-tight capitalize">{displayName || 'Executive Name'}</h1>
-            <p className="text-sm font-bold text-gray-400 mt-1">{role || 'Business Executive'}</p>
-            <p className="text-xs font-bold text-gray-300 mt-0.5">{companyName || 'Company Name'}</p>
+            <h1 className="text-2xl font-black text-white tracking-tight capitalize leading-none">{displayName || 'Anonymous Identity'}</h1>
+            <p className="text-[10px] font-black text-cyan-400 mt-3 uppercase tracking-[0.3em] opacity-80">{role || 'Consultant'}</p>
+            <p className="text-[8px] font-black text-gray-500 mt-1 uppercase tracking-[0.2em]">{companyName}</p>
           </div>
+
           <div className="space-y-3">
-            {mobileNumber && <a href={`tel:${mobileNumber}`} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-all"><FiPhone size={16} className="text-black" /><span className="text-sm font-bold text-gray-700">{mobileNumber}</span></a>}
-            {email && <a href={`mailto:${email}`} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-all"><FiMail size={16} className="text-black" /><span className="text-sm font-bold text-gray-700 truncate">{email}</span></a>}
-            {website && <a href={website} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-all"><FiGlobe size={16} className="text-black" /><span className="text-sm font-bold text-gray-700">{website}</span></a>}
-            {(city || country) && <div className="flex items-center gap-3 p-3 rounded-xl"><FiMapPin size={16} className="text-black" /><span className="text-sm font-bold text-gray-700">{[city, country].filter(Boolean).join(', ')}</span></div>}
+             <StandardContactLink icon={FiGlobe} value={website} href={website} />
+             <StandardContactLink icon={FiMail} value={email} href={`mailto:${email}`} />
+             <StandardContactLink icon={FiPhone} value={phone} href={`tel:${phone}`} />
+             <StandardContactLink icon={FiMapPin} value={address} />
+
+             {/* Dynamic Social Uplinks */}
+             <StandardContactLink icon={FiLinkedin} value={userData?.linkedin} href={userData?.linkedin} />
+             <StandardContactLink icon={FiTwitter} value={userData?.twitter} href={userData?.twitter} />
+             <StandardContactLink icon={FiGithub} value={userData?.github} href={userData?.github} />
           </div>
-          <button className="w-full mt-8 py-4 bg-black text-white rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-gray-900 transition-all">Save Contact</button>
-          <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-center text-[8px] text-gray-200 font-black tracking-widest mt-6 uppercase hover:opacity-70 transition-opacity">Powered by Cardyn</a>
+
+          <div className="flex flex-col gap-3 mt-10">
+              <button className="w-full bg-white text-black py-4 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:bg-white/90 transition-all">
+                  Our Portfolio
+              </button>
+          </div>
+
+          <StandardMapPreview address={address} />
+
+          <StandardSaveContactButton />
+
+          <footer className="mt-12 text-center opacity-20">
+             <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-widest uppercase hover:opacity-100 transition-opacity tracking-[0.5em]">Powered by Cardyn</a>
+          </footer>
         </div>
       </div>
     </div>

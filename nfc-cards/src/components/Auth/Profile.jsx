@@ -39,24 +39,26 @@ const Profile = ({ userData }) => {
 
     // Synchronize local form state with global user data
     useEffect(() => {
-        if (userData) {
-            setFormData((prev) => ({
-                ...prev,
-                ...userData,
-                displayName: userData.displayName || user?.displayName || ""
-            }));
+        if (userData && !isEditing) {
+            setTimeout(() => {
+                setFormData((prev) => ({
+                    ...prev,
+                    ...userData,
+                    displayName: userData.displayName || user?.displayName || ""
+                }));
 
-            if (userData.countryCode) {
-                const states = State.getStatesOfCountry(userData.countryCode);
-                setLocationData((prev) => ({ ...prev, states }));
+                if (userData.countryCode) {
+                    const states = State.getStatesOfCountry(userData.countryCode);
+                    setLocationData((prev) => ({ ...prev, states }));
 
-                if (userData.stateCode) {
-                    const cities = City.getCitiesOfState(userData.countryCode, userData.stateCode);
-                    setLocationData((prev) => ({ ...prev, cities }));
+                    if (userData.stateCode) {
+                        const cities = City.getCitiesOfState(userData.countryCode, userData.stateCode);
+                        setLocationData((prev) => ({ ...prev, cities }));
+                    }
                 }
-            }
+            }, 0);
         }
-    }, [userData, isEditing]);
+    }, [userData, isEditing, user?.displayName]);
 
     const handleCountryChange = (e) => {
         const countryCode = e.target.value;

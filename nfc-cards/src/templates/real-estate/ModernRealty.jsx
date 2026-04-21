@@ -1,117 +1,103 @@
 import React from "react";
 import {
-   FiShare2,
    FiHome,
    FiMapPin,
    FiPhone,
    FiMail,
    FiGlobe,
-   FiUserPlus,
-   FiArrowRight,
+   FiInstagram,
+   FiLinkedin,
 } from "react-icons/fi";
+import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
 
 const ModernRealty = ({ userData }) => {
    const {
-      displayName = "Apex Reality Group",
-      website = "www.apexrealty.com",
-      email = "listings@apexrealty.com",
-      phone = "+1 555-REALEST",
-      address = "123 Skyline Terrace, New York",
+      displayName,
+      website,
+      email,
+      phone,
+      address,
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-zinc-50 flex justify-center items-start py-8 px-4 text-zinc-900 font-['Mulish']">
-         <div className="w-full max-w-sm bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-zinc-200">
+      <div className="min-h-screen bg-[#020617] flex justify-center items-start py-8 px-4 text-white font-['Mulish']">
+         <div className="w-full max-w-sm bg-[#1e293b]/20 border border-white/5 rounded-[2.5rem] shadow-2xl backdrop-blur-xl overflow-hidden">
             
             {/* HERO SECTION */}
-            <div className="relative h-48 bg-zinc-900">
+            <div className="relative h-56 bg-zinc-900">
                <img 
                   src="https://images.unsplash.com/photo-1560518883-ce09059eeffa" 
-                  className="w-full h-full object-cover opacity-70"
+                  className="w-full h-full object-cover opacity-60"
                   alt="Modern House"
                />
-               <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent"></div>
-               <div className="absolute bottom-4 left-6 flex items-end gap-3">
+               <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent"></div>
+               <div className="absolute bottom-6 left-8 flex items-end gap-3 translate-y-2">
                   {userData?.logo && (
-                     <div className="w-12 h-12 bg-white rounded-xl shadow-lg p-1 flex items-center justify-center shrink-0">
+                     <div className="w-14 h-14 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10 shadow-lg p-2 flex items-center justify-center shrink-0">
                         <img src={userData.logo} className="w-full h-full object-contain" alt="Logo" />
                      </div>
                   )}
                   <div>
-                     <div className="flex items-center gap-2 text-white bg-blue-600 px-3 py-1 rounded-full text-[10px] font-bold capitalize tracking-wider mb-2 w-max">
+                     <div className="flex items-center gap-2 text-cyan-400 bg-cyan-400/10 border border-cyan-400/20 px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest mb-2 w-max">
                         <FiHome size={10} />
                         PREMIUM LISTINGS
                      </div>
-                     <h1 className="text-xl font-bold text-white tracking-tight leading-none capitalize">
-                        {displayName}
+                     <h1 className="text-2xl font-black text-white tracking-tight leading-none capitalize">
+                        {displayName || "Agency Name"}
                      </h1>
                   </div>
                </div>
             </div>
 
-            <div className="p-6">
-               <p className="text-[11px] text-zinc-500 font-medium tracking-wide capitalize mb-6">
-                  CURATING EXTRAORDINARY SPACES • REAL ESTATE EXCELLENCE
+            <div className="p-8">
+               <p className="text-[10px] text-gray-500 font-black tracking-[0.4em] uppercase mb-8 opacity-60 text-center">
+                  REAL ESTATE EXCELLENCE
                </p>
 
                {/* FEATURED PROPERTIES */}
-               <div className="grid grid-cols-2 gap-3 mb-6">
-                  <div className="relative rounded-2xl overflow-hidden h-24">
+               <div className="grid grid-cols-2 gap-3 mb-10">
+                  <div className="relative rounded-[1.5rem] overflow-hidden h-28 border border-white/5 shadow-xl">
                      <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750" className="w-full h-full object-cover" alt="Luxury Villa" />
-                     <div className="absolute bottom-2 left-2 text-white text-[8px] font-black capitalize bg-black/40 px-2 py-0.5 rounded-md backdrop-blur-sm">Luxe Villa</div>
+                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+                        <span className="text-white text-[8px] font-black uppercase tracking-widest">Luxe Villa</span>
+                     </div>
                   </div>
-                  <div className="relative rounded-2xl overflow-hidden h-24">
+                  <div className="relative rounded-[1.5rem] overflow-hidden h-28 border border-white/5 shadow-xl">
                      <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858" className="w-full h-full object-cover" alt="Modern Loft" />
-                     <div className="absolute bottom-2 left-2 text-white text-[8px] font-black capitalize bg-black/40 px-2 py-0.5 rounded-md backdrop-blur-sm">Modern Loft</div>
+                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+                        <span className="text-white text-[8px] font-black uppercase tracking-widest">Modern Loft</span>
+                     </div>
                   </div>
+               </div>
+
+               {/* Action Buttons */}
+               <div className="flex flex-col gap-3 mb-10">
+                  <button className="w-full bg-white text-black py-4 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:bg-white/90 transition-all">
+                      View Listings
+                  </button>
                </div>
 
                {/* CONTACT STACK */}
                <div className="space-y-3">
-                  <div className="group bg-zinc-50 hover:bg-blue-50 p-4 rounded-2xl transition-all border border-transparent hover:border-blue-100 flex items-center gap-4">
-                     <div className="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
-                        <FiGlobe size={18} />
-                     </div>
-                     <div className="flex-1">
-                        <p className="text-[9px] text-zinc-400 font-bold capitalize tracking-widest">Digital Portfolio</p>
-                        <p className="text-sm font-semibold">{website}</p>
-                     </div>
-                     <FiArrowRight className="text-zinc-300 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
-                  </div>
-
-                  <div className="group bg-zinc-50 hover:bg-green-50 p-4 rounded-2xl transition-all border border-transparent hover:border-green-100 flex items-center gap-4">
-                     <div className="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-green-600 transition-colors group-hover:bg-green-600 group-hover:text-white">
-                        <FiPhone size={18} />
-                     </div>
-                     <div className="flex-1">
-                        <p className="text-[9px] text-zinc-400 font-bold capitalize tracking-widest">Connect Directly</p>
-                        <p className="text-sm font-semibold">{phone}</p>
-                     </div>
-                     <FiArrowRight className="text-zinc-300 group-hover:text-green-600 group-hover:translate-x-1 transition-all" />
-                  </div>
-
-                  <div className="group bg-zinc-50 hover:bg-zinc-100 p-4 rounded-2xl transition-all border border-transparent hover:border-zinc-200 flex items-center gap-4">
-                     <div className="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-zinc-600 transition-colors group-hover:bg-zinc-900 group-hover:text-white">
-                        <FiMapPin size={18} />
-                     </div>
-                     <div className="flex-1">
-                        <p className="text-[9px] text-zinc-400 font-bold capitalize tracking-widest">Our Office</p>
-                        <p className="text-sm font-semibold">{address}</p>
-                     </div>
-                     <FiArrowRight className="text-zinc-300 group-hover:text-zinc-900 group-hover:translate-x-1 transition-all" />
-                  </div>
+                  <StandardContactLink icon={FiGlobe} value={website} href={website} />
+                  <StandardContactLink icon={FiMail} value={email} href={`mailto:${email}`} />
+                  <StandardContactLink icon={FiPhone} value={phone} href={`tel:${phone}`} />
+                  <StandardContactLink icon={FiMapPin} value={address} />
+                  
+                  {/* Dynamic Socials */}
+                  <StandardContactLink icon={FiLinkedin} value={userData?.linkedin} href={userData?.linkedin} />
+                  <StandardContactLink icon={FiInstagram} value={userData?.instagram} href={userData?.instagram} />
                </div>
 
-               {/* PRIMARY CTA */}
-               <button className="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-3 shadow-lg shadow-blue-500/20 transition-all capitalize tracking-widest text-xs">
-                  <FiUserPlus size={18} />
-                  Book Viewing
-               </button>
+               {/* Map Preview */}
+               <StandardMapPreview address={address} />
+
+               <StandardSaveContactButton />
 
             </div>
 
-          <div className="mt-8 mb-2 text-center">
-            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
+          <div className="mt-10 mb-2 text-center opacity-20">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[8px] font-black tracking-[0.5em] text-gray-300 hover:text-white transition-colors uppercase">Powered by Cardyn</a>
           </div>
          </div>
       </div>

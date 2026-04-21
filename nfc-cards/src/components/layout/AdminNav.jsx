@@ -28,9 +28,9 @@ const AdminNav = ({ userData }) => {
   // Force Light Mode for Admin
   useEffect(() => {
     if (theme === 'dark') {
-      toggleTheme();
+      setTimeout(() => toggleTheme(), 0);
     }
-  }, [theme, toggleTheme]);
+  }, [theme]);
 
   const handleLogout = () => {
     signOut(auth).then(() => navigate('/login'));

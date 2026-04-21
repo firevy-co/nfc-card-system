@@ -1,108 +1,86 @@
-import React from "react";
-import {
-   FiShare2,
-   FiZap,
-   FiActivity,
-   FiMapPin,
-   FiPhone,
-   FiMail,
-   FiGlobe,
-   FiUserPlus,
-   FiInstagram,
-   FiYoutube,
-} from "react-icons/fi";
+import * as FiIcons from 'react-icons/fi';
+import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
 
 const EliteTrainer = ({ userData }) => {
    const {
-      displayName = "Elite Performance Lab",
-      website = "www.elitetrainer.com",
-      email = "coach@elitetrainer.com",
-      phone = "+44 20 7946 0000",
-      address = "Gymbox, London",
+      displayName,
+      website,
+      email,
+      phone,
+      address,
+      linkedin,
+      instagram,
+      youtube,
+      twitter
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-[#050505] flex justify-center items-start py-8 px-4 text-white font-['Mulish']">
-         <div className="w-full max-w-sm bg-gradient-to-br from-[#111] to-[#000] rounded-[3.5rem] shadow-2xl overflow-hidden border border-[#222] p-8 relative">
+      <div className="min-h-screen bg-[#020617] flex justify-center items-start py-16 px-4 text-white font-['Mulish']">
+         <div className="w-full max-w-sm bg-[#1e293b]/20 border border-white/5 rounded-[2.5rem] shadow-2xl backdrop-blur-xl p-8 relative overflow-hidden group">
             
             {/* POWER STRIPE DECORATION */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-lime-500/10 rounded-full blur-[80px]"></div>
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-lime-500/10 rounded-full blur-[80px]"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-400/10 rounded-full blur-[80px]"></div>
 
             {/* COACH HEADER */}
             <div className="flex flex-col items-center text-center mt-4">
-               <div className="w-24 h-24 bg-[#111] border-2 border-lime-500 rounded-3xl flex items-center justify-center mb-6 rotate-3 hover:rotate-0 transition-transform duration-500 shadow-lg shadow-lime-500/20 overflow-hidden">
+               <div className="w-24 h-24 bg-cyan-400/10 border border-cyan-400/20 rounded-3xl flex items-center justify-center mb-6 transform group-hover:rotate-0 transition-transform duration-500 shadow-xl shadow-cyan-400/10 overflow-hidden">
                   {userData?.logo ? (
                      <img src={userData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
                   ) : (
-                     <FiZap size={32} className="text-lime-500 fill-lime-500/10" />
+                     <FiIcons.FiZap size={32} className="text-cyan-400" />
                   )}
                </div>
 
-               <h1 className="text-4xl font-black text-white tracking-tight capitalize leading-none mb-1 italic">
-                  {displayName}
+               <h1 className="text-3xl font-black text-white tracking-tight leading-none mb-1 italic uppercase text-center">
+                  {displayName || 'Performance Lab'}
                </h1>
 
-               <div className="flex items-center gap-2 text-lime-500 rounded-full text-[10px] font-black capitalize tracking-[0.4em] mb-10 italic">
-                  Level 4 • Tactical Trainer
+               <div className="text-cyan-400 text-[10px] font-black capitalize tracking-[0.4em] mb-10 opacity-80 mt-2">
+                  TACTICAL PERFORMANCE COACH
                </div>
             </div>
 
             {/* METRICS STACK */}
-            <div className="grid grid-cols-2 gap-4 mb-8">
-               <div className="p-5 bg-[#111] rounded-3xl border border-[#222] flex flex-col items-center gap-2 group transition-all hover:bg-lime-500">
-                  <span className="text-[9px] font-black capitalize tracking-widest text-zinc-500 group-hover:text-black">Availability</span>
-                  <span className="text-sm font-black group-hover:text-black">10 spots left</span>
+            <div className="grid grid-cols-2 gap-3 mb-8 font-black">
+               <div className="p-4 bg-white/5 rounded-2xl border border-white/5 flex flex-col items-center gap-1 group transition-all">
+                  <span className="text-[7px] uppercase tracking-widest text-gray-500">Availability</span>
+                  <span className="text-xs text-white">PRO READY</span>
                </div>
-               <div className="p-5 bg-[#111] rounded-3xl border border-[#222] flex flex-col items-center gap-2 group transition-all hover:bg-lime-500">
-                  <span className="text-[9px] font-black capitalize tracking-widest text-zinc-500 group-hover:text-black">Specialty</span>
-                  <span className="text-sm font-black group-hover:text-black">HYROX Pro</span>
+               <div className="p-4 bg-white/5 rounded-2xl border border-white/5 flex flex-col items-center gap-1 group transition-all">
+                  <span className="text-[7px] uppercase tracking-widest text-gray-500">Specialty</span>
+                  <span className="text-xs text-white">ELITE PERFORMANCE</span>
                </div>
-            </div>
-
-            {/* SOCIAL FEED CTA */}
-            <div className="flex gap-4 mb-10">
-               <button className="flex-1 h-14 bg-white text-black rounded-full shadow-lg flex items-center justify-center gap-3 font-black text-[10px] capitalize tracking-widest hover:bg-lime-500 transition-colors">
-                  <FiInstagram size={20} />
-                  @Coach_Elite
-               </button>
-               <button className="w-14 h-14 bg-[#111] rounded-full border border-[#222] flex items-center justify-center text-white hover:text-red-500 transition-colors group">
-                  <FiYoutube size={24} className="group-hover:scale-110 transition-transform" />
-               </button>
             </div>
 
             {/* ACTION STACK */}
-            <button className="w-full h-16 bg-lime-500 hover:bg-lime-600 text-black font-black flex items-center justify-center gap-3 capitalize tracking-widest text-xs rounded-3xl mb-8 transform active:scale-95 transition-all shadow-xl shadow-lime-500/20">
-               <FiActivity size={20} />
-               Start Protocol
-            </button>
-
-            {/* CONTACT MINIMALIST STACK */}
-            <div className="space-y-4 mb-4">
-               <div className="group flex items-center gap-5 p-4 bg-[#111] rounded-[2rem] border border-[#222] transition-all hover:border-lime-500/40">
-                  <div className="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-zinc-400 group-hover:text-lime-500">
-                     <FiGlobe size={20} />
-                  </div>
-                  <div className="flex-1">
-                     <p className="text-[8px] text-zinc-600 font-black capitalize tracking-widest leading-none mb-1">Elite Portal</p>
-                     <p className="text-xs font-bold font-mono tracking-tighter">{website}</p>
-                  </div>
-               </div>
-               <div className="group flex items-center gap-5 p-4 bg-[#111] rounded-[2rem] border border-[#222] transition-all hover:border-lime-500/40">
-                  <div className="w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center text-zinc-400 group-hover:text-lime-500">
-                     <FiPhone size={20} />
-                  </div>
-                  <div className="flex-1">
-                     <p className="text-[8px] text-zinc-600 font-black capitalize tracking-widest leading-none mb-1">Urgent Wire</p>
-                     <p className="text-xs font-bold font-mono tracking-tighter">{phone}</p>
-                  </div>
-               </div>
+            <div className="flex flex-col gap-3 mb-10">
+               <button className="w-full bg-white text-black py-4 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:bg-white/90 transition-all flex items-center justify-center gap-3">
+                  <FiIcons.FiActivity size={18} />
+                  Start Enrollment
+               </button>
             </div>
 
+            {/* CONTACT MINIMALIST STACK */}
+            <div className="space-y-3 relative z-10">
+               <StandardContactLink icon={FiIcons.FiGlobe} value={website} href={website} />
+               <StandardContactLink icon={FiIcons.FiMail} value={email} href={`mailto:${email}`} />
+               <StandardContactLink icon={FiIcons.FiPhone} value={phone} href={`tel:${phone}`} />
+               <StandardContactLink icon={FiIcons.FiMapPin} value={address} />
 
-          <div className="mt-8 mb-2 text-center">
-            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
-          </div>
+               {/* Social Uplinks */}
+               <StandardContactLink icon={FiIcons.FiLinkedin} value={linkedin} href={linkedin} />
+               <StandardContactLink icon={FiIcons.FiInstagram} value={instagram} href={instagram} />
+               <StandardContactLink icon={FiIcons.FiYoutube} value={youtube} href={youtube} />
+               <StandardContactLink icon={FiIcons.FiTwitter} value={twitter} href={twitter} />
+            </div>
+
+            <StandardMapPreview address={address} />
+
+            <StandardSaveContactButton />
+
+            <footer className="mt-12 text-center opacity-20">
+                <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-[0.5em] text-gray-300 hover:text-white transition-colors uppercase">Powered by Cardyn</a>
+            </footer>
          </div>
       </div>
    );

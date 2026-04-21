@@ -1,79 +1,69 @@
 import React from 'react';
-import { FiMonitor, FiCamera, FiEdit3, FiGlobe, FiWifi, FiShare2, FiZap } from 'react-icons/fi';
+import { FiMonitor, FiCamera, FiEdit3, FiGlobe, FiWifi, FiZap, FiMail, FiPhone, FiMapPin, FiInstagram, FiLinkedin } from 'react-icons/fi';
+import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
 
-/**
- * CREATIVE AGENCY TEMPLATE
- * Bold, high-energy layout with vibrant rose/pink accents and asymmetrical design.
- */
 const CreativeAgency = ({ userData }) => {
-  const { displayName, email, role, phone = "+1 (800) DESIGN-IO" } = userData || {};
+  const { displayName, email, role, phone, website, address } = userData || {};
 
   return (
-    <div className="min-h-screen bg-[#FFF0F3] text-[#FF0055] p-6 flex flex-col items-center pt-20 font-['Mulish']">
-      <div className="w-full max-w-sm bg-white border-4 border-[#FF0055] rounded-[3rem] p-10 shadow-[20px_20px_0_rgba(255,0,85,0.1)] relative overflow-hidden group">
+    <div className="min-h-screen bg-[#020617] text-white p-6 flex flex-col items-center justify-center font-['Mulish']">
+      <div className="w-full max-w-sm bg-[#1e293b]/20 border border-white/5 rounded-[2.5rem] p-10 shadow-2xl backdrop-blur-xl relative overflow-hidden group">
         
         {/* Floating Design Elements */}
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#FF0055]/5 rounded-full transform rotate-12 group-hover:rotate-45 transition-transform duration-1000"></div>
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-cyan-400/10 rounded-full transform rotate-12 group-hover:rotate-45 transition-transform duration-1000 blur-3xl"></div>
 
-        <header className="mb-14 text-left relative z-10">
-          <div className="w-16 h-16 rounded-full bg-[#FF0055] text-white mb-8 flex items-center justify-center p-2 shadow-xl transform group-hover:-rotate-12 transition-transform">
+        <header className="mb-10 text-center flex flex-col items-center relative z-10">
+          <div className="w-16 h-16 rounded-2xl bg-cyan-400 text-black mb-8 flex items-center justify-center p-2 shadow-xl shadow-cyan-400/20 transform group-hover:scale-110 transition-transform">
              <FiZap size={28} />
           </div>
-          <h2 className="text-4xl font-black capitalize leading-[0.8] mb-4 text-[#FF0055]">{displayName || "BOLD AGENCY"}</h2>
-          <div className="h-2 w-20 bg-[#FF0055] mb-4"></div>
-          <p className="text-[10px] font-black text-[#FF0055]/50 capitalize tracking-[0.4em]">{role || "Creative Director"}</p>
+          <h2 className="text-3xl font-black capitalize leading-tight mb-2 text-white">{displayName || "Studio Identity"}</h2>
+          <p className="text-[10px] font-black text-cyan-400 capitalize tracking-[0.4em] opacity-80 mt-2">{role || "Creative Partner"}</p>
         </header>
 
         {/* Agency Capability Matrix */}
-        <div className="flex gap-4 mb-14 relative z-10 overflow-x-auto pb-4 hide-scrollbar">
-           <div className="min-w-[120px] p-6 rounded-3xl bg-[#FF0055] text-white flex flex-col items-center gap-3">
-              <FiMonitor size={20} />
-              <span className="text-[8px] font-bold capitalize tracking-widest text-[#FF0055]/30 group-hover:text-white transition-colors">UI Design</span>
+        <div className="grid grid-cols-3 gap-3 mb-10 relative z-10 w-full font-black">
+           <div className="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center gap-3">
+              <FiMonitor size={18} className="text-cyan-400" />
+              <span className="text-[7px] uppercase tracking-widest text-gray-500">UI Design</span>
            </div>
-           <div className="min-w-[120px] p-6 rounded-3xl bg-[#FF0055]/5 border-2 border-[#FF0055] flex flex-col items-center gap-3">
-              <FiCamera size={20} />
-              <span className="text-[8px] font-bold capitalize tracking-widest">Brand Hub</span>
+           <div className="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center gap-3">
+              <FiCamera size={18} className="text-cyan-400" />
+              <span className="text-[7px] uppercase tracking-widest text-gray-500">Branding</span>
            </div>
-           <div className="min-w-[120px] p-6 rounded-3xl bg-[#FF0055]/5 border-2 border-[#FF0055] flex flex-col items-center gap-3">
-              <FiEdit3 size={20} />
-              <span className="text-[8px] font-bold capitalize tracking-widest">Strategy</span>
+           <div className="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center gap-3">
+              <FiEdit3 size={18} className="text-cyan-400" />
+              <span className="text-[7px] uppercase tracking-widest text-gray-500">Strategy</span>
            </div>
         </div>
 
         {/* Action Controls */}
-        <div className="space-y-4 relative z-10">
-           <a href={`tel:${phone}`} className="flex items-center gap-6 bg-[#FF0055] p-5 rounded-[2rem] text-white hover:brightness-125 transition-all group/link shadow-xl shadow-[#FF0055]/20">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover/link:bg-white group-hover/link:text-[#FF0055] transition-all">
-                 <FiWifi size={18} />
-              </div>
-              <div>
-                 <p className="text-[8px] font-bold opacity-50 capitalize tracking-widest mb-0.5">Cellular Hub</p>
-                 <p className="font-black text-sm tracking-widest">{phone}</p>
-              </div>
-           </a>
+        <div className="space-y-3 relative z-10">
+           <StandardContactLink icon={FiGlobe} value={website} href={website} />
+           <StandardContactLink icon={FiMail} value={email} href={`mailto:${email}`} />
+           <StandardContactLink icon={FiPhone} value={phone} href={`tel:${phone}`} />
+           <StandardContactLink icon={FiMapPin} value={address} />
 
-           <a href={`mailto:${email}`} className="flex items-center gap-6 bg-white p-5 rounded-[2rem] border-2 border-[#FF0055] text-[#FF0055] hover:bg-[#FF0055] hover:text-white transition-all group/link">
-              <div className="w-10 h-10 rounded-full bg-[#FF0055]/10 flex items-center justify-center group-hover/link:bg-white/20 transition-all">
-                 <FiGlobe size={18} />
-              </div>
-              <div>
-                 <p className="text-[8px] font-black opacity-50 capitalize tracking-widest mb-0.5">Cloud Relay</p>
-                 <p className="font-black text-sm tracking-widest truncate max-w-[150px]">{email || "resolving..."}</p>
-              </div>
-           </a>
+           {/* Dynamic Social Uplinks */}
+           <StandardContactLink icon={FiLinkedin} value={userData?.linkedin} href={userData?.linkedin} />
+           <StandardContactLink icon={FiInstagram} value={userData?.instagram} href={userData?.instagram} />
         </div>
 
-        {/* Footer */}
-        <footer className="mt-16 text-center opacity-30 select-none pointer-events-none">
-           <div className="flex items-center justify-center gap-2 mb-6">
-              <FiShare2 size={14} className="opacity-40 translate-y-0.5" />
-              <p className="text-[8px] font-black capitalize tracking-[0.6em] text-[#FF0055]">Agency Core System © 2026</p>
-           </div>
-        </footer>
+        {/* Action Buttons */}
+        <div className="flex flex-col gap-3 mt-10">
+            <button className="w-full bg-white text-black py-4 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:bg-white/90 transition-all">
+                View Showcase
+            </button>
+        </div>
 
-          <div className="mt-8 mb-2 text-center">
-            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
-          </div>
+        {/* Map Preview */}
+        <StandardMapPreview address={address} />
+
+        <StandardSaveContactButton />
+
+        {/* Footer */}
+        <footer className="mt-12 text-center opacity-20">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black capitalize tracking-[0.5em] hover:opacity-100 transition-opacity">Powered by Cardyn</a>
+        </footer>
       </div>
     </div>
   );
