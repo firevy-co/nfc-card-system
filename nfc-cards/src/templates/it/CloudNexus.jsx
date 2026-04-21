@@ -32,7 +32,7 @@ const CloudNexus = ({ userData }) => {
               <FiGlobe size={14} /> Open Portal
            </a>
         </div>
-        <p className="text-center text-[7px] text-white/20 font-black tracking-[0.5em] pb-8 uppercase">Firevy Cloud Fabric</p>
+        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-center text-[7px] text-white/20 font-black tracking-[0.5em] pb-8 uppercase hover:opacity-70 transition-opacity">Powered by Cardyn</a>
       </div>
     </div>
   );

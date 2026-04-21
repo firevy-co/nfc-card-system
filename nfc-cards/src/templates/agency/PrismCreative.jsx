@@ -33,7 +33,7 @@ const PrismCreative = ({ userData }) => {
            </a>
         </div>
         <div className="pb-10 text-center opacity-10">
-           <p className="text-[7px] font-black tracking-[0.8em] uppercase">Firevy Prism v3.0</p>
+           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[7px] font-black tracking-[0.8em] uppercase hover:opacity-70 transition-opacity">Powered by Cardyn</a>
         </div>
       </div>
     </div>

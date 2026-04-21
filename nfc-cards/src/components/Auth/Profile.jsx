@@ -16,6 +16,8 @@ const Profile = ({ userData }) => {
         businessName: "",
         omailAddress: "",
         mobileNumber: "",
+        logo: "",
+        logoType: "url",
         country: "",
         countryCode: "",
         state: "",
@@ -118,6 +120,17 @@ const Profile = ({ userData }) => {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
 
+    const handleLogoUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData({ ...formData, logo: reader.result, logoType: 'file' });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     // SHARED STYLES - FORCED WHITE BACKGROUNDS FOR EVERYTHING (DARK SESSION REQUIREMENT)
     const cardClasses = `bg-white dark:bg-white border border-slate-100 dark:border-slate-100 rounded-[2.5rem] p-6 md:p-8 shadow-xl relative overflow-hidden transition-all duration-500`;
     const inputClasses = `w-full bg-slate-50/50 dark:bg-slate-50/50 border border-slate-200/60 dark:border-slate-200/60 rounded-xl px-5 py-3.5 text-sm font-bold text-foreground dark:text-black outline-none focus:ring-4 focus:ring-[#7BB9D4]/10 transition-all placeholder:opacity-30`;
@@ -152,11 +165,110 @@ const Profile = ({ userData }) => {
                 </header>
 
                 <div className="space-y-8">
+                    {/* IDENTITY BRANDING (LOGO) */}
+                    <div className={cardClasses}>
+                        <div className="flex items-center justify-between mb-8 border-b border-black/[0.03] dark:border-black/[0.05] pb-4">
+                            <div className="flex items-center gap-4">
+                                <div className="p-2 rounded-lg bg-[#7BB9D4]/10 text-[#7BB9D4]">
+                                    <FiActivity className="w-5 h-5" />
+                                </div>
+                                <h3 className="text-xl font-black text-foreground dark:text-black tracking-tight">Identity Branding</h3>
+                            </div>
+                            {isEditing && (
+                                <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-lg">
+                                    <button 
+                                        onClick={() => handleInputChange('logoType', 'url')}
+                                        className={`px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-md transition-all ${formData.logoType === 'url' ? 'bg-white shadow-sm text-black' : 'text-black/30'}`}
+                                    >URL</button>
+                                    <button 
+                                        onClick={() => handleInputChange('logoType', 'file')}
+                                        className={`px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-md transition-all ${formData.logoType === 'file' ? 'bg-white shadow-sm text-black' : 'text-black/30'}`}
+                                    >FILE</button>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="flex flex-col md:flex-row items-center gap-10">
+                            <div className="relative group">
+                                <div className="w-40 h-40 rounded-[2.5rem] bg-slate-50 border-4 border-white shadow-2xl flex items-center justify-center overflow-hidden transition-transform duration-500 hover:scale-105">
+                                    {formData.logo ? (
+                                        <img src={formData.logo} alt="Identity Logo" className="w-full h-full object-contain p-4" />
+                                    ) : (
+                                        <div className="text-center p-4">
+                                            <FiActivity size={32} className="text-slate-200 mx-auto mb-2" />
+                                            <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest leading-none">Insignia<br/>Required</p>
+                                        </div>
+                                    )}
+                                </div>
+                                {isEditing && formData.logo && (
+                                    <button 
+                                        onClick={() => handleInputChange('logo', '')}
+                                        className="absolute -top-3 -right-3 w-8 h-8 bg-rose-500 text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-all z-20"
+                                    >
+                                        <FiX size={16} />
+                                    </button>
+                                )}
+                            </div>
+
+                            <div className="flex-1 w-full space-y-4">
+                                {isEditing ? (
+                                    <>
+                                        {formData.logoType === 'url' ? (
+                                            <div className="space-y-1">
+                                                <label className={labelClasses}>Logo Authority URL</label>
+                                                <input 
+                                                    type="text" 
+                                                    value={formData.logo} 
+                                                    onChange={(e) => handleInputChange('logo', e.target.value)} 
+                                                    className={inputClasses} 
+                                                    placeholder="Paste secure image URL..." 
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className="space-y-1">
+                                                <label className={labelClasses}>Local Asset Upload</label>
+                                                <div className="relative">
+                                                    <input 
+                                                        type="file" 
+                                                        accept="image/*" 
+                                                        onChange={handleLogoUpload} 
+                                                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+                                                    />
+                                                    <div className="w-full bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl px-4 py-8 text-center transition-all group-hover:border-[#7BB9D4]/40">
+                                                        <FiEdit3 size={24} className="mx-auto text-slate-300 mb-2" />
+                                                        <p className="text-[10px] font-black text-black/40 uppercase tracking-widest">{formData.logo ? 'Update Insignia' : 'Choose Regional File'}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </>
+                                ) : (
+                                    <div className="space-y-2">
+                                        <h4 className="text-lg font-black text-black tracking-tight">Active Identity Insignia</h4>
+                                        <p className="text-[11px] font-bold text-zinc-400 dark:text-black/40 leading-relaxed max-w-sm">This logo acts as your global identity mark and is automatically propagated to all connected Identity Nodes across the network.</p>
+                                        <div className="pt-4 flex items-center gap-3">
+                                            <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border transition-all ${formData.logo ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' : 'bg-rose-500/10 border-rose-500/20 text-rose-500'}`}>
+                                                {formData.logo ? 'Status: Active' : 'Status: Pending Sync'}
+                                            </div>
+                                            {formData.logo && (
+                                                <div className="px-4 py-1.5 rounded-full bg-slate-50 border border-slate-100 text-[9px] font-black uppercase tracking-widest text-zinc-400">
+                                                    Format: {formData.logoType}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
                     {/* AVATAR & PRIMARY INFO */}
                     <div className={cardClasses}>
                         <div className="absolute top-0 right-0 w-64 h-64 bg-[#7BB9D4]/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
                         <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
-                            <img src={userData?.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData?.displayName || 'User'}`} className="w-32 h-32 rounded-full object-cover border-4 border-white dark:border-white shadow-xl" alt="Identity" />
+                            <div className="w-32 h-32 rounded-full flex items-center justify-center bg-slate-50 border-4 border-white dark:border-white shadow-xl text-4xl font-black text-[#7BB9D4]">
+                                {userData?.displayName?.charAt(0) || 'U'}
+                            </div>
                             <div className="flex-1 space-y-4 w-full text-center md:text-left">
                                 {isEditing ? (
                                     <div className="space-y-1">

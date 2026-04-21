@@ -31,8 +31,12 @@ const EliteTrainer = ({ userData }) => {
 
             {/* COACH HEADER */}
             <div className="flex flex-col items-center text-center mt-4">
-               <div className="w-24 h-24 bg-[#111] border-2 border-lime-500 rounded-3xl flex items-center justify-center mb-6 rotate-3 hover:rotate-0 transition-transform duration-500 shadow-lg shadow-lime-500/20">
-                  <FiZap size={32} className="text-lime-500 fill-lime-500/10" />
+               <div className="w-24 h-24 bg-[#111] border-2 border-lime-500 rounded-3xl flex items-center justify-center mb-6 rotate-3 hover:rotate-0 transition-transform duration-500 shadow-lg shadow-lime-500/20 overflow-hidden">
+                  {userData?.logo ? (
+                     <img src={userData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
+                  ) : (
+                     <FiZap size={32} className="text-lime-500 fill-lime-500/10" />
+                  )}
                </div>
 
                <h1 className="text-4xl font-black text-white tracking-tight capitalize leading-none mb-1 italic">
@@ -95,6 +99,10 @@ const EliteTrainer = ({ userData }) => {
                </div>
             </div>
 
+
+          <div className="mt-8 mb-2 text-center">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
+          </div>
          </div>
       </div>
    );

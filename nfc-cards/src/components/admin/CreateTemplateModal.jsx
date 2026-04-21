@@ -11,7 +11,9 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
         description: '',
         tags: '',
         previewColor: 'bg-primary',
-        templateId: 'real_estate'
+        templateId: 'real_estate',
+        logo: '',
+        logoType: 'url' // 'url' or 'file'
     });
     const [showPicker, setShowPicker] = useState(false);
     const [searchTemplate, setSearchTemplate] = useState('');
@@ -24,7 +26,9 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                 description: initialData.description || '',
                 tags: (initialData.tags || []).join(', '),
                 previewColor: initialData.previewColor || 'bg-primary',
-                templateId: initialData.templateId || 'real_estate'
+                templateId: initialData.templateId || 'real_estate',
+                logo: initialData.logo || '',
+                logoType: initialData.logoType || 'url'
             });
         } else {
             setFormData({
@@ -33,7 +37,9 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                 description: '',
                 tags: '',
                 previewColor: 'bg-primary',
-                templateId: 'real_estate'
+                templateId: 'real_estate',
+                logo: '',
+                logoType: 'url'
             });
         }
         setShowPicker(false);
@@ -50,6 +56,18 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
         phone: '+x (xxx) xxx-xxxx',
         website: 'www.yoursite.com',
         address: 'Your City, Country',
+        logo: formData.logo
+    };
+
+    const handleLogoUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData({ ...formData, logo: reader.result, logoType: 'file' });
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     const handleSubmit = (e) => {
@@ -108,6 +126,69 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
 
                             {/* LEFT - Form */}
                             <div className="flex-1 overflow-y-auto p-7 sm:p-10 custom-scrollbar space-y-8 border-r border-black/5 dark:border-white/10">
+
+                                {/* Identity Branding */}
+                                <div className="space-y-6">
+                                    <div className="flex items-center justify-between">
+                                        <label className="text-[10px] font-black capitalize tracking-[0.2em] text-muted-foreground ml-1 flex items-center gap-1.5 opacity-60">
+                                            <FiTag size={12} /> Identity Branding
+                                        </label>
+                                        <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-lg">
+                                            <button 
+                                                onClick={() => setFormData({...formData, logoType: 'url'})}
+                                                className={`px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-md transition-all ${formData.logoType === 'url' ? 'bg-white shadow-sm text-black' : 'text-black/30'}`}
+                                            >URL</button>
+                                            <button 
+                                                onClick={() => setFormData({...formData, logoType: 'file'})}
+                                                className={`px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-md transition-all ${formData.logoType === 'file' ? 'bg-white shadow-sm text-black' : 'text-black/30'}`}
+                                            >FILE</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="flex items-center gap-6 p-6 bg-slate-50 border border-slate-200 rounded-[2rem]">
+                                        <div className="relative group">
+                                            <div className="w-20 h-20 rounded-2xl bg-white border border-slate-200 flex items-center justify-center overflow-hidden shadow-inner">
+                                                {formData.logo ? (
+                                                    <img src={formData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
+                                                ) : (
+                                                    <FiBox size={24} className="text-slate-200" />
+                                                )}
+                                            </div>
+                                            {formData.logo && (
+                                                <button 
+                                                    onClick={() => setFormData({...formData, logo: ''})}
+                                                    className="absolute -top-2 -right-2 w-6 h-6 bg-rose-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 opacity-0 group-hover:opacity-100 transition-all"
+                                                >
+                                                    <FiX size={12} />
+                                                </button>
+                                            )}
+                                        </div>
+                                        <div className="flex-1 space-y-3">
+                                            {formData.logoType === 'url' ? (
+                                                <input
+                                                    type="text"
+                                                    placeholder="Paste Image URL..."
+                                                    value={formData.logo}
+                                                    onChange={(e) => setFormData({ ...formData, logo: e.target.value })}
+                                                    className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-xs font-bold text-black focus:border-[#7BB9D4]/50 transition-all outline-none"
+                                                />
+                                            ) : (
+                                                <div className="relative">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={handleLogoUpload}
+                                                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                                    />
+                                                    <div className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-xs font-black text-black/40 text-center uppercase tracking-widest hover:border-[#7BB9D4]/50 transition-all">
+                                                        {formData.logo ? 'Change Image' : 'Choose Local File'}
+                                                    </div>
+                                                </div>
+                                            )}
+                                            <p className="text-[9px] text-black/20 font-black uppercase tracking-widest ml-1">Company or Personal Insignia</p>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 {/* Name + Category */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

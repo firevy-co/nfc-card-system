@@ -27,6 +27,10 @@ const CorporateGlass = ({ userData }) => {
           </div>
           <button className="w-full mt-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl shadow-blue-500/30 hover:scale-[1.02] transition-all">Connect Now</button>
         </div>
+
+          <div className="mt-8 mb-2 text-center">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
+          </div>
       </div>
     </div>
   );

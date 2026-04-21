@@ -54,25 +54,21 @@ const Settings = ({ userData }) => {
             <TopNav title="System Configuration" />
             <AdminNav userData={userData} />
 
-            <main className="flex-1 p-6 lg:p-12 mt-20 max-w-5xl mx-auto w-full">
+            <main className="flex-1 p-6 lg:p-12 mt-20 max-w-[1600px] mx-auto w-full">
                 <header className="mb-14 animate-in fade-in slide-in-from-top-4 duration-1000">
                     <div className="flex items-center gap-3 mb-3">
-                        <div className="w-1.5 h-6 bg-primary rounded-full"></div>
+                        <div className="w-1 h-1 bg-black rounded-full shadow-lg"></div>
                         <span className="text-[10px] font-black text-black uppercase tracking-[0.4em] opacity-40">Operational Backend</span>
                     </div>
-                    <h2 className="text-5xl font-black text-black tracking-tighter capitalize">Settings Hub</h2>
+                    <h2 className="text-4xl font-black text-black tracking-tighter capitalize">Settings Hub</h2>
                 </header>
 
                 <div className="space-y-6">
                     {/* --- ACCOUNT BRIEF --- */}
                     <div className="bg-white border border-zinc-100 rounded-[3rem] p-10 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.03)] flex flex-col md:flex-row md:items-center justify-between gap-8">
                         <div className="flex items-center gap-8">
-                            <div className="w-24 h-24 rounded-[2.5rem] overflow-hidden border-4 border-zinc-50 shadow-xl">
-                                <img
-                                    src={userData?.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData?.displayName || 'Admin'}`}
-                                    className="w-full h-full object-cover"
-                                    alt="Admin Profile"
-                                />
+                            <div className="w-24 h-24 rounded-[2.5rem] flex items-center justify-center bg-zinc-50 border-4 border-zinc-50 shadow-xl text-3xl font-black text-black">
+                                {userData?.displayName?.charAt(0) || 'A'}
                             </div>
                             <div>
                                 <h3 className="text-2xl font-black tracking-tighter text-black">{userData?.displayName || 'System Architect'}</h3>

@@ -28,7 +28,7 @@ const ModernLeader = ({ userData }) => {
           <a href={website} className="flex items-center justify-center gap-3 bg-slate-900 text-white py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:brightness-125 transition-all">
              Visit Portal
           </a>
-          <p className="text-[9px] text-center text-slate-300 font-bold uppercase tracking-[0.3em] pt-4">Firevy Authorized Identity</p>
+          <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[9px] text-center text-slate-300 font-bold uppercase tracking-[0.3em] pt-4 hover:opacity-70 transition-opacity">Powered by Cardyn</a>
         </div>
       </div>
     </div>

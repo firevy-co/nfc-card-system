@@ -27,7 +27,7 @@ const PixelProperty = ({ userData }) => {
            </div>
         </div>
         <div className="bg-black/40 p-6 text-center">
-           <p className="text-[7px] text-white/10 font-black tracking-[0.8em] uppercase italic">Pixel Framework v2.0 · Firevy</p>
+           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[7px] text-white/10 font-black tracking-[0.8em] uppercase italic hover:opacity-70 transition-opacity">Powered by Cardyn</a>
         </div>
       </div>
     </div>

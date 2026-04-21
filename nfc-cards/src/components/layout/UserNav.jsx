@@ -9,6 +9,7 @@ import {
 import { auth } from '../../firebase.config';
 import { signOut } from 'firebase/auth';
 import { useTheme } from '../../context/ThemeContext';
+import NotificationCenter from './NotificationCenter';
 
 const UserNav = ({ userData }) => {
   const navigate = useNavigate();
@@ -66,25 +67,14 @@ const UserNav = ({ userData }) => {
             <FiSettings size={20} />
           </button>
 
-          <div className="relative">
-            <button className={`p-2.5 rounded-full transition-all ${theme === 'dark' ? 'text-zinc-400 hover:text-white hover:bg-white/10' : 'text-zinc-500 hover:text-black hover:bg-black/10'
-              }`}>
-              <FiBell size={20} />
-              <div className={`absolute top-3 right-3 w-2 h-2 bg-emerald-500 rounded-full ring-4 ${theme === 'dark' ? 'ring-zinc-950' : 'ring-white'
-                }`}></div>
-            </button>
-          </div>
+          <NotificationCenter isAdmin={false} theme={theme} />
 
           <div
             onClick={() => navigate(userData?.role === 'Admin' ? '/admin/profile' : '/user/profile')}
-            className={`w-10 h-10 rounded-full ml-3 border-2 p-0.5 overflow-hidden transition-all cursor-pointer ${theme === 'dark' ? 'border-white/10 hover:border-white/30 hover:scale-110' : 'border-black/10 hover:border-black/30 hover:scale-110'
+            className={`w-10 h-10 rounded-full ml-3 border-2 flex items-center justify-center overflow-hidden transition-all cursor-pointer font-black text-sm ${theme === 'dark' ? 'border-white/10 bg-white/5 text-white hover:border-white/30 hover:scale-110' : 'border-black/10 bg-black/5 text-black hover:border-black/30 hover:scale-110'
               }`}
           >
-            <img
-              src={userData?.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData?.displayName || 'User'}`}
-              alt="Profile"
-              className="w-full h-full rounded-full object-cover transition-all"
-            />
+            {userData?.displayName?.charAt(0) || "U"}
           </div>
         </div>
       </div>

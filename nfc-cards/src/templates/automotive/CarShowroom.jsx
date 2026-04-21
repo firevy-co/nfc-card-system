@@ -66,6 +66,10 @@ const CarShowroom = ({ userData }) => {
         <footer className="mt-16 text-center opacity-30 select-none pointer-events-none">
            <p className="text-[8px] font-black capitalize tracking-[0.6em] text-white italic underline underline-offset-8 decoration-[#FF0000]">V-Core Automotive Protocol © 2026</p>
         </footer>
+
+          <div className="mt-8 mb-2 text-center">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
+          </div>
       </div>
     </div>
   );

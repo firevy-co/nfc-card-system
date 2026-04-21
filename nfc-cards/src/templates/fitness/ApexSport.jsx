@@ -24,7 +24,7 @@ const ApexSport = ({ userData }) => {
               <FiTarget size={14} /> Peak Dashboard
            </a>
         </div>
-        <p className="mt-16 text-[7px] text-slate-200 font-black tracking-[1em] uppercase">Firevy Apex Protocol</p>
+        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-16 text-[7px] text-slate-200 font-black tracking-[1em] uppercase hover:opacity-70 transition-opacity">Powered by Cardyn</a>
       </div>
     </div>
   );

@@ -29,7 +29,7 @@ const VividStudio = ({ userData }) => {
           <a href={website} className="mt-12 block text-center bg-black text-white py-5 rounded-2xl font-black text-[11px] uppercase tracking-[0.3em] hover:bg-[#ff3366] transition-all overflow-hidden group relative">
              <span className="relative z-10 transition-transform group-hover:scale-110 inline-block">View Portfolio</span>
           </a>
-          <p className="text-center text-[7px] text-gray-200 font-black tracking-[0.6em] mt-10 uppercase">Firevy Creative Studio</p>
+          <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-center text-[7px] text-gray-200 font-black tracking-[0.6em] mt-10 uppercase hover:opacity-70 transition-opacity">Powered by Cardyn</a>
         </div>
       </div>
     </div>

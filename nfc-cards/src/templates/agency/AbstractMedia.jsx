@@ -39,8 +39,12 @@ const AbstractMedia = ({ userData }) => {
         </div>
         <div className="mt-8 px-6 flex justify-between items-center text-[8px] font-black text-black/20 uppercase tracking-[0.3em]">
            <span>Protocol 714</span>
-           <span>Firevy Media Framework</span>
+           <span>Cardyn Media Framework</span>
         </div>
+
+          <div className="mt-8 mb-2 text-center">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
+          </div>
       </div>
     </div>
   );

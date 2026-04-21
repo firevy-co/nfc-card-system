@@ -28,7 +28,7 @@ const GlowStudio = ({ userData }) => {
               <p className="text-[8px] font-black uppercase tracking-[0.4em]">Glow Portfolio</p>
            </div>
         </div>
-        <p className="mt-12 text-[7px] font-black tracking-[0.6em] text-rose-200 uppercase italic">Glow Framework · Firevy</p>
+        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-12 text-[7px] font-black tracking-[0.6em] text-rose-200 uppercase italic hover:opacity-70 transition-opacity">Powered by Cardyn</a>
       </div>
     </div>
   );

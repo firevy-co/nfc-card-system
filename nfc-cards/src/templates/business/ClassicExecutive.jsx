@@ -69,7 +69,7 @@ const ClassicExecutive = ({ userData }) => {
         </button>
 
         <footer className="mt-10 text-center opacity-30 select-none pointer-events-none">
-           <p className="text-[8px] font-black capitalize tracking-[0.6em]">Firevy Protocol 2026</p>
+           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black capitalize tracking-[0.6em] hover:opacity-70 transition-opacity">Powered by Cardyn</a>
         </footer>
       </div>
     </div>

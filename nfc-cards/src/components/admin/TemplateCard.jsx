@@ -34,7 +34,8 @@ export default function TemplateCard({
         email: userData?.email || "hello@identity.co",
         role: userData?.businessName || userData?.role || category || "Design Lead",
         phone: userData?.phone || "+x (xxx) xxx-xxxx",
-        socialLinks: userData?.socialLinks || {}
+        socialLinks: userData?.socialLinks || {},
+        logo: userData?.logo
     };
 
     return (

@@ -26,7 +26,7 @@ const VelocityElite = ({ userData }) => {
               <FiTriangle className="rotate-90" size={14} /> Open Showroom
            </a>
         </div>
-        <p className="text-center text-[7px] text-slate-300 font-bold tracking-[0.8em] mt-8 uppercase">Firevy Velocity Hub</p>
+        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-center text-[7px] text-slate-300 font-bold tracking-[0.8em] mt-8 uppercase hover:opacity-70 transition-opacity">Powered by Cardyn</a>
       </div>
     </div>
   );

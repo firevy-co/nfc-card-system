@@ -29,7 +29,7 @@ const TaskGrid = ({ userData }) => {
         <a href={website} className="block w-full py-5 text-center bg-slate-900 text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.4em] hover:brightness-125 transition-all shadow-xl shadow-slate-900/10">Browse Portfolio</a>
         
         <div className="mt-12 text-center opacity-20">
-           <p className="text-[7px] font-black tracking-[0.5em] text-slate-900 uppercase italic">Task Framework · Firevy</p>
+           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[7px] font-black tracking-[0.5em] text-slate-900 uppercase italic hover:opacity-70 transition-opacity">Powered by Cardyn</a>
         </div>
       </div>
     </div>

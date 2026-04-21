@@ -29,6 +29,10 @@ const SovereignLaw = ({ userData }) => {
            <p className="text-[7px] font-black tracking-[0.6em] text-white italic">Sovereign Framework v1.0</p>
            <FiHexagon size={16} />
         </div>
+
+          <div className="mt-8 mb-2 text-center">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
+          </div>
       </div>
     </div>
   );

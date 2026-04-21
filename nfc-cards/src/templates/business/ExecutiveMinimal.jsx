@@ -9,8 +9,12 @@ const ExecutiveMinimal = ({ userData }) => {
         <div className="h-2 bg-black rounded-t-3xl" />
         <div className="bg-white border border-gray-100 rounded-b-3xl p-8 shadow-xl">
           <div className="mb-8">
-            <div className="w-20 h-20 rounded-2xl bg-black flex items-center justify-center text-white text-3xl font-black mb-6">
-              {displayName?.charAt(0) || 'E'}
+            <div className="w-20 h-20 rounded-2xl bg-black flex items-center justify-center text-white text-3xl font-black mb-6 overflow-hidden">
+              {userData?.logo ? (
+                <img src={userData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
+              ) : (
+                displayName?.charAt(0) || 'E'
+              )}
             </div>
             <h1 className="text-2xl font-black text-black tracking-tight capitalize">{displayName || 'Executive Name'}</h1>
             <p className="text-sm font-bold text-gray-400 mt-1">{role || 'Business Executive'}</p>
@@ -23,7 +27,7 @@ const ExecutiveMinimal = ({ userData }) => {
             {(city || country) && <div className="flex items-center gap-3 p-3 rounded-xl"><FiMapPin size={16} className="text-black" /><span className="text-sm font-bold text-gray-700">{[city, country].filter(Boolean).join(', ')}</span></div>}
           </div>
           <button className="w-full mt-8 py-4 bg-black text-white rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-gray-900 transition-all">Save Contact</button>
-          <p className="text-center text-[8px] text-gray-200 font-black tracking-widest mt-6 uppercase">Powered by Firevy NFC</p>
+          <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-center text-[8px] text-gray-200 font-black tracking-widest mt-6 uppercase hover:opacity-70 transition-opacity">Powered by Cardyn</a>
         </div>
       </div>
     </div>

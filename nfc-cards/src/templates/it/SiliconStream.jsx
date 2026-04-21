@@ -31,7 +31,7 @@ const SiliconStream = ({ userData }) => {
         </div>
         
         <div className="mt-12 text-center">
-           <p className="text-[8px] font-black uppercase tracking-[0.4em] text-slate-300">Silicon Protocol · Firevy</p>
+           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black uppercase tracking-[0.4em] text-slate-300 hover:opacity-70 transition-opacity">Powered by Cardyn</a>
         </div>
       </div>
     </div>

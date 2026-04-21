@@ -38,7 +38,7 @@ const StreamNode = ({ userData }) => {
               </a>
            </div>
         </div>
-        <p className="text-center text-[7px] text-white/10 font-black tracking-[1em] pb-8 uppercase italic">Firevy Stream Protocol v1.0</p>
+        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-center text-[7px] text-white/10 font-black tracking-[1em] pb-8 uppercase italic hover:opacity-70 transition-opacity">Powered by Cardyn</a>
       </div>
     </div>
   );

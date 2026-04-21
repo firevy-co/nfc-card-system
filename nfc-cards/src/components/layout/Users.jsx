@@ -261,16 +261,14 @@ const Users = ({ userData }) => {
                         </thead>
                         <tbody className="divide-y divide-black/5 dark:divide-white/5">
                             {loading ? (
-                                Array.from({ length: 5 }).map((_, i) => (
-                                    <tr key={i} className="animate-pulse border-b border-black/5 dark:border-white/5">
-                                        <td className="px-10 py-10"><div className="w-48 h-10 bg-black/5 dark:bg-white/5 rounded-2xl" /></td>
-                                        <td className="px-10 py-10"><div className="w-32 h-6 bg-black/5 dark:bg-white/5 rounded-xl" /></td>
-                                        <td className="px-10 py-10"><div className="w-40 h-6 bg-black/5 dark:bg-white/5 rounded-xl" /></td>
-                                        <td className="px-10 py-10"><div className="w-24 h-8 bg-black/5 dark:bg-white/5 rounded-full" /></td>
-                                        <td className="px-10 py-10"><div className="w-20 h-6 bg-black/5 dark:bg-white/5 rounded-full" /></td>
-                                        <td className="px-10 py-10 text-right"><div className="w-24 h-10 bg-black/5 dark:bg-white/5 rounded-2xl ml-auto" /></td>
-                                    </tr>
-                                ))
+                                <tr>
+                                    <td colSpan="6" className="px-10 py-32 text-center">
+                                        <div className="flex flex-col items-center gap-6 opacity-40">
+                                            <div className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                                            <p className="font-black uppercase tracking-[0.3em] text-[10px]">Accessing Registry...</p>
+                                        </div>
+                                    </td>
+                                </tr>
                             ) : filteredUsers.length > 0 ? (
                                 filteredUsers.map((user) => (
                                     <tr key={user.uid} className="hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-all border-b border-black/5 dark:border-white/5 last:border-0">

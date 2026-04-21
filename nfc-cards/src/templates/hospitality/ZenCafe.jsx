@@ -26,7 +26,7 @@ const ZenCafe = ({ userData }) => {
            <div className="w-2 h-2 rounded-full bg-[#83a493]" />
            <div className="w-2 h-2 rounded-full bg-[#d9c49d]" />
         </div>
-        <p className="mt-4 text-[7px] font-black tracking-[0.6em] text-[#444440]/20 uppercase">Firevy Zen Framework</p>
+        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-4 text-[7px] font-black tracking-[0.6em] text-[#444440]/20 uppercase hover:opacity-70 transition-opacity">Powered by Cardyn</a>
       </div>
     </div>
   );

@@ -315,26 +315,19 @@ export default function Content({ userData }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-10">
 
           {loading ? (
-            Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="bg-white/90 dark:bg-white/[0.03] border border-black/5 dark:border-white/10 rounded-[3rem] p-8 sm:p-12 min-h-[450px] sm:min-h-[580px] flex flex-col justify-between animate-pulse shadow-xl shadow-black/[0.02]">
-                <div className="space-y-8 sm:space-y-10">
-                  {/* Image Placeholder: Scaled for high density */}
-                  <div className="w-full h-56 sm:h-96 bg-black/[0.05] dark:bg-white/[0.05] rounded-[2rem] sm:rounded-[2.5rem] border border-black/5 dark:border-white/5"></div>
-
-                  {/* Title & Tag Placeholder */}
-                  <div className="space-y-4 sm:space-y-5 px-2 sm:px-4">
-                    <div className="w-4/5 h-6 sm:h-10 bg-black/[0.05] dark:bg-white/[0.05] rounded-full"></div>
-                    <div className="w-1/2 h-4 sm:h-6 bg-black/[0.05] dark:bg-white/[0.05] rounded-full opacity-60"></div>
-                  </div>
-                </div>
-
-                {/* Actions Placeholder: Mirroring the premium button layout */}
-                <div className="flex items-center gap-5 mt-auto pt-8 sm:pt-10 px-2 sm:px-4 border-t border-black/5 dark:border-white/10">
-                  <div className="flex-1 h-12 sm:h-16 bg-black/[0.05] dark:bg-white/[0.05] rounded-2xl"></div>
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-black/[0.05] dark:bg-white/[0.05] rounded-2xl shrink-0"></div>
+            <div className="col-span-full py-64 flex flex-col items-center justify-center gap-8 relative overflow-hidden">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-black/[0.02] rounded-full blur-[100px] pointer-events-none"></div>
+              <div className="relative">
+                <div className="w-16 h-16 border-[3px] border-black/5 border-t-black rounded-full animate-spin"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 bg-black rounded-full animate-pulse"></div>
                 </div>
               </div>
-            ))
+              <div className="text-center space-y-2 relative z-10">
+                <p className="font-black uppercase tracking-[0.5em] text-[10px] text-black/80">Retrieving Identity Nodes</p>
+                <p className="font-bold uppercase tracking-[0.3em] text-[8px] text-black/20">Accessing Global Encrypted Buffer</p>
+              </div>
+            </div>
           ) : (
             <>
               {/* Functional Add Content Placeholder (Optimized for High Density) */}

@@ -35,6 +35,10 @@ const UrbanDwell = ({ userData }) => {
               <div className="w-8 h-[2px] bg-slate-900" />
            </div>
         </div>
+
+          <div className="mt-8 mb-2 text-center">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
+          </div>
       </div>
     </div>
   );

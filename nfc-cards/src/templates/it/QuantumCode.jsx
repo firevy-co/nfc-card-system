@@ -44,7 +44,7 @@ const QuantumCode = ({ userData }) => {
           </div>
         </div>
         <div className="mt-10 flex justify-between items-center opacity-30">
-           <p className="text-[7px] text-white font-bold uppercase tracking-[0.3em]">Firevy SysOps v2.0</p>
+           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[7px] text-white font-bold uppercase tracking-[0.3em] hover:opacity-70 transition-opacity">Powered by Cardyn</a>
            <div className="flex gap-1">
              <div className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse" />
              <div className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse delay-75" />

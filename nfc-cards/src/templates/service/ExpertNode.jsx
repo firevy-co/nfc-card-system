@@ -26,7 +26,7 @@ const ExpertNode = ({ userData }) => {
            </a>
            <a href={website} className="block w-full py-5 text-center bg-white text-black rounded-3xl font-black text-[12px] uppercase tracking-[0.3em] hover:bg-amber-500 transition-all shadow-xl shadow-white/5 mt-4">Initialize Session</a>
         </div>
-        <p className="mt-16 text-center text-[7px] text-white/10 font-black tracking-[0.8em] uppercase">Firevy Expert Protocol</p>
+        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-16 text-center text-[7px] text-white/10 font-black tracking-[0.8em] uppercase hover:opacity-70 transition-opacity">Powered by Cardyn</a>
       </div>
     </div>
   );

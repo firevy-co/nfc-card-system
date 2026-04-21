@@ -28,7 +28,7 @@ const LuxeHotel = ({ userData }) => {
               Book Stay
            </a>
         </div>
-        <p className="mt-12 text-[7px] text-white/20 font-bold uppercase tracking-[0.8em]">Firevy Hospitality Elite</p>
+        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-12 text-[7px] text-white/20 font-bold uppercase tracking-[0.8em] hover:opacity-70 transition-opacity">Powered by Cardyn</a>
       </div>
     </div>
   );

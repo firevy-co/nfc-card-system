@@ -26,7 +26,7 @@ const PinnacleAuto = ({ userData }) => {
               <FiMail size={18} className="text-white group-hover/link:text-black" />
               <span className="text-sm font-bold text-white group-hover/link:text-black truncate px-4">{email || 'Email'}</span>
            </a>
-           <p className="text-center text-[7px] text-white/20 font-black tracking-[0.8em] pt-8 uppercase">Firevy Pinnacle v1.2</p>
+           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-center text-[7px] text-white/20 font-black tracking-[0.8em] pt-8 uppercase hover:opacity-70 transition-opacity">Powered by Cardyn</a>
         </div>
       </div>
     </div>

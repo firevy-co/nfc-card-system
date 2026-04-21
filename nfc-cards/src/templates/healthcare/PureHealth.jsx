@@ -33,7 +33,7 @@ const PureHealth = ({ userData }) => {
               <div className="w-2 h-2 rounded-full bg-emerald-600" />
               <div className="w-2 h-2 rounded-full bg-emerald-600" />
            </div>
-           <p className="mt-4 text-[7px] font-black tracking-[0.6em] uppercase text-emerald-900/20">Firevy Vital Control</p>
+           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-4 text-[7px] font-black tracking-[0.6em] uppercase text-emerald-900/20 hover:opacity-70 transition-opacity">Powered by Cardyn</a>
         </div>
       </div>
     </div>

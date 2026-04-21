@@ -21,6 +21,10 @@ const BoldEntrepreneur = ({ userData }) => {
           {(city || country) && <div className="flex items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/5"><FiMapPin size={16} className="text-yellow-400" /><span className="text-sm font-bold text-white">{[city, country].filter(Boolean).join(', ')}</span></div>}
           <button className="w-full mt-2 py-5 bg-yellow-400 text-black rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-yellow-300 transition-all shadow-2xl shadow-yellow-400/20">Make Contact</button>
         </div>
+
+          <div className="mt-8 mb-2 text-center">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
+          </div>
       </div>
     </div>
   );

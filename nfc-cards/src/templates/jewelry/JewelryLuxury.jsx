@@ -139,6 +139,10 @@ const JewelryLuxury = ({ userData }) => {
                SAVE CONTACT
             </button>
 
+
+          <div className="mt-8 mb-2 text-center">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
+          </div>
          </div>
       </div>
    );

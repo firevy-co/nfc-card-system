@@ -31,14 +31,21 @@ const ModernRealty = ({ userData }) => {
                   alt="Modern House"
                />
                <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent"></div>
-               <div className="absolute bottom-4 left-6">
-                  <div className="flex items-center gap-2 text-white bg-blue-600 px-3 py-1 rounded-full text-[10px] font-bold capitalize tracking-wider mb-2">
-                     <FiHome size={10} />
-                     PREMIUM LISTINGS
+               <div className="absolute bottom-4 left-6 flex items-end gap-3">
+                  {userData?.logo && (
+                     <div className="w-12 h-12 bg-white rounded-xl shadow-lg p-1 flex items-center justify-center shrink-0">
+                        <img src={userData.logo} className="w-full h-full object-contain" alt="Logo" />
+                     </div>
+                  )}
+                  <div>
+                     <div className="flex items-center gap-2 text-white bg-blue-600 px-3 py-1 rounded-full text-[10px] font-bold capitalize tracking-wider mb-2 w-max">
+                        <FiHome size={10} />
+                        PREMIUM LISTINGS
+                     </div>
+                     <h1 className="text-xl font-bold text-white tracking-tight leading-none capitalize">
+                        {displayName}
+                     </h1>
                   </div>
-                  <h1 className="text-xl font-bold text-white tracking-tight leading-none capitalize">
-                     {displayName}
-                  </h1>
                </div>
             </div>
 
@@ -102,6 +109,10 @@ const ModernRealty = ({ userData }) => {
                </button>
 
             </div>
+
+          <div className="mt-8 mb-2 text-center">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
+          </div>
          </div>
       </div>
    );

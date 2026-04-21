@@ -35,6 +35,10 @@ const CreatorMatrix = ({ userData }) => {
            <p className="text-[7px] font-black tracking-[0.8em] text-white italic transition-all group-hover:tracking-[1.2em]">Matrix Protocol v9.0</p>
            <FiLayout size={16} />
         </div>
+
+          <div className="mt-8 mb-2 text-center">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
+          </div>
       </div>
     </div>
   );

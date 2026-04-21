@@ -28,7 +28,7 @@ const NeonInfluence = ({ userData }) => {
            </div>
         </div>
         
-        <p className="mt-12 text-[7px] text-white/10 font-black tracking-[1em] uppercase pb-8">Firevy Neon Protocol v4</p>
+        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-12 text-[7px] text-white/10 font-black tracking-[1em] uppercase pb-8 hover:opacity-70 transition-opacity">Powered by Cardyn</a>
       </div>
     </div>
   );

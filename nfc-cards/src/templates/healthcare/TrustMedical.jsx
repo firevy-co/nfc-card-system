@@ -39,7 +39,7 @@ const TrustMedical = ({ userData }) => {
               <FiCalendar size={16} /> Book Appointment
            </button>
         </div>
-        <p className="mt-10 text-[7px] text-center text-slate-300 font-bold uppercase tracking-[0.5em]">Firevy Healthcare Protocol</p>
+        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-10 text-[7px] text-center text-slate-300 font-bold uppercase tracking-[0.5em] hover:opacity-70 transition-opacity">Powered by Cardyn</a>
       </div>
     </div>
   );

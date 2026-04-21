@@ -36,7 +36,7 @@ const JusticePartners = ({ userData }) => {
               <FiBriefcase size={16} /> Consult Counsel
            </button>
         </div>
-        <p className="mt-12 text-[7px] text-center text-[#c5a176] font-bold uppercase tracking-[0.6em] font-sans">Firevy Judicial Registry</p>
+        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-12 text-[7px] text-center text-[#c5a176] font-bold uppercase tracking-[0.6em] font-sans hover:opacity-70 transition-opacity">Powered by Cardyn</a>
       </div>
     </div>
   );

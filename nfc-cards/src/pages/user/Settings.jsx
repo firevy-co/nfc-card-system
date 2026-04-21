@@ -70,12 +70,8 @@ const UserSettings = ({ userData }) => {
                         <div className="absolute top-0 right-0 w-64 h-64 bg-[#7BB9D4]/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
                         <div className="flex items-center gap-8 relative z-10">
-                            <div className="w-24 h-24 rounded-[2.5rem] overflow-hidden border-4 border-slate-50 shadow-xl">
-                                <img
-                                    src={userData?.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${userData?.displayName || 'User'}`}
-                                    className="w-full h-full object-cover"
-                                    alt="User Profile"
-                                />
+                            <div className="w-24 h-24 rounded-[2.5rem] flex items-center justify-center bg-slate-50 border-4 border-slate-50 shadow-xl text-3xl font-black text-[#7BB9D4]">
+                                {userData?.displayName?.charAt(0) || 'U'}
                             </div>
                             <div>
                                 <h3 className="text-2xl font-black tracking-tighter text-black dark:text-black">{userData?.displayName || 'Digital Resident'}</h3>

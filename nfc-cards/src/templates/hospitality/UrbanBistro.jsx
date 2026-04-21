@@ -30,7 +30,7 @@ const UrbanBistro = ({ userData }) => {
         </div>
         
         <div className="mt-12 text-center opacity-20">
-           <p className="text-[7px] font-black tracking-[0.5em] text-[#2c3e50] uppercase italic">Urban Bistro Registry · Firevy</p>
+           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[7px] font-black tracking-[0.5em] text-[#2c3e50] uppercase italic hover:opacity-70 transition-opacity">Powered by Cardyn</a>
         </div>
       </div>
     </div>

@@ -23,12 +23,14 @@ const Layout = ({
   const actualHideTopNav = true; // Floating Nav replaces TopNav
 
   return (
-    <div className="flex bg-background text-foreground min-h-screen overflow-hidden transition-colors duration-500 font-['Mulish']">
+    <div className={`flex bg-background text-foreground min-h-screen overflow-hidden transition-colors duration-500 font-['Mulish'] ${isAdmin ? 'light' : ''}`}>
       
-      {isAdmin ? (
-        <AdminNav userData={userData} />
-      ) : (
-        <UserNav userData={userData} />
+      {!hideTopNav && (
+        isAdmin ? (
+          <AdminNav userData={userData} />
+        ) : (
+          <UserNav userData={userData} />
+        )
       )}
 
       {!actualHideSidebar && (
@@ -57,7 +59,7 @@ const Layout = ({
           />
         )}
 
-        <main className={`flex-1 overflow-y-auto animate-in fade-in slide-in-from-bottom-4 duration-700 bg-muted/10 ${actualHideTopNav ? 'p-0 pt-28' : 'p-4 sm:p-6 lg:p-10'}`}>
+        <main className={`flex-1 overflow-y-auto animate-in fade-in slide-in-from-bottom-4 duration-700 bg-muted/10 ${hideTopNav ? 'p-0' : (actualHideTopNav ? 'p-0 pt-28' : 'p-4 sm:p-6 lg:p-10')}`}>
           <div className="max-w-[1600px] mx-auto">
             {children}
           </div>

@@ -62,7 +62,7 @@ const Analytics = ({ user, userData }) => {
             <div className="grid md:grid-cols-3 gap-6">
 
                {/* TASK PROGRESS */}
-               <div className="bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm transition-all">
+               <div className="bg-white dark:bg-white backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm transition-all">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">Task Progress</h3>
                   <h1 className="text-4xl font-black text-foreground mb-6">70%</h1>
 
@@ -74,7 +74,7 @@ const Analytics = ({ user, userData }) => {
                </div>
 
                {/* PROJECT STATUS */}
-               <div className="bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm flex flex-col items-center transition-all">
+               <div className="bg-white dark:bg-white backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm flex flex-col items-center transition-all">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-6 w-full text-left">Project Status</h3>
 
                   <div className="relative">
@@ -106,7 +106,7 @@ const Analytics = ({ user, userData }) => {
                </div>
 
                {/* PRODUCTIVITY TREND */}
-               <div className="bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm transition-all">
+               <div className="bg-white dark:bg-white backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm transition-all">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">Productivity Trend</h3>
 
                   <div className="h-[200px] w-full mt-4">
@@ -149,7 +149,7 @@ const Analytics = ({ user, userData }) => {
             <div className="grid md:grid-cols-2 gap-6 mt-8">
 
                {/* ACTIVITY */}
-               <div className="bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm transition-all">
+               <div className="bg-white dark:bg-white backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm transition-all">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-6">Recent Activity</h3>
 
                   <div className="space-y-4">
@@ -173,7 +173,7 @@ const Analytics = ({ user, userData }) => {
                </div>
 
                {/* TEAM */}
-               <div className="bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm transition-all">
+               <div className="bg-white dark:bg-white backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm transition-all">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-6">Team Overview</h3>
 
                   <div className="flex items-center gap-5 p-4 bg-black/5 dark:bg-white/5 rounded-[1.5rem] border border-black/5 dark:border-white/5">
@@ -212,7 +212,7 @@ export default Analytics;
 /* COMPONENTS */
 
 const Card = ({ title, value, color }) => (
-   <div className="bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm flex justify-between items-center group hover:scale-[1.02] transition-all duration-300" >
+   <div className="bg-white dark:bg-white backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm flex justify-between items-center group hover:scale-[1.02] transition-all duration-300" >
       <div>
          <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mb-1 opacity-60">{title}</p>
          <h2 className="text-3xl font-black text-foreground tracking-tighter">{value}</h2>

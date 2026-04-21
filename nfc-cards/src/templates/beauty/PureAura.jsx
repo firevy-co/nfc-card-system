@@ -21,7 +21,7 @@ const PureAura = ({ userData }) => {
               {email || 'Message'}
            </a>
         </div>
-        <p className="mt-16 text-[7px] font-black tracking-[0.8em] text-slate-200 uppercase">Firevy Aura Registry</p>
+        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-16 text-[7px] font-black tracking-[0.8em] text-slate-200 uppercase hover:opacity-70 transition-opacity">Powered by Cardyn</a>
       </div>
     </div>
   );

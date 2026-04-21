@@ -33,7 +33,7 @@ const PulseWorkout = ({ userData }) => {
               <FiCalendar size={18} /> Book Session
            </button>
            
-           <p className="text-center text-[7px] text-white/10 font-bold tracking-[0.8em] pt-8 uppercase italic">Firevy Pulse Protocol</p>
+           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-center text-[7px] text-white/10 font-bold tracking-[0.8em] pt-8 uppercase italic hover:opacity-70 transition-opacity">Powered by Cardyn</a>
         </div>
       </div>
     </div>

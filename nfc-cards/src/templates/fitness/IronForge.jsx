@@ -33,6 +33,10 @@ const IronForge = ({ userData }) => {
            <p className="text-[7px] font-black tracking-[0.8em] text-white">Iron Framework v4</p>
            <FiSquare size={16} className="rotate-45" />
         </div>
+
+          <div className="mt-8 mb-2 text-center">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
+          </div>
       </div>
     </div>
   );

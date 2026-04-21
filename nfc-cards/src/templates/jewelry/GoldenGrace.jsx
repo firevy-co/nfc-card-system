@@ -20,9 +20,13 @@ const GoldenGrace = ({ userData }) => {
         
         <div className="mt-12 flex items-center gap-1 opacity-20">
           <div className="w-8 h-px bg-black" />
-          <span className="text-[7px] font-black uppercase tracking-[0.5em]">Firevy Luxe</span>
+          <span className="text-[7px] font-black uppercase tracking-[0.5em]">Cardyn Luxe</span>
           <div className="w-8 h-px bg-black" />
         </div>
+
+          <div className="mt-8 mb-2 text-center">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-300 hover:text-gray-500 transition-colors uppercase font-mulish">Powered by Cardyn</a>
+          </div>
       </div>
     </div>
   );
