@@ -1,392 +1,342 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
-import { auth } from "../../firebase.config";
 import Layout from "../layout/layout";
 import { Country, State, City } from "country-state-city";
+import * as Fi from "react-icons/fi";
 
-import * as FiIcons from "react-icons/fi";
+const IconCard = ({ icon: Icon, label, field, onClick }) => (
+    <div
+        onClick={() => onClick(field)}
+        className="p-4 rounded-xl border bg-gray-50 hover:bg-gray-100 cursor-pointer flex flex-col items-center justify-center transition-all active:scale-95"
+    >
+        <Icon size={18} />
+        <span className="text-xs mt-2">{label}</span>
+    </div>
+);
+
+const Section = ({ title, children }) => (
+    <div className="bg-white border rounded-xl p-5 shadow-sm">
+        <h3 className="text-sm font-semibold mb-4 opacity-60 uppercase tracking-widest">{title}</h3>
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+            {children}
+        </div>
+    </div>
+);
 
 const CompleteProfile = ({ userData }) => {
     const navigate = useNavigate();
     const isAdmin = userData?.role === "Admin";
 
-    const [loading, setLoading] = useState(false);
+    const [activeField, setActiveField] = useState(null);
+    const [theme, setTheme] = useState("#0f172a");
 
     const [formData, setFormData] = useState({
-        companyName: "",
-        businessName: "",
-        omailAddress: "",
-        mobileNumber: "",
+        label: "",
+        name: "",
+        job: "",
+        company: "",
+        businessRole: "",
+        bio: "",
+        email: "",
+        phone: "",
+        website: "",
+        address: "",
+        logo: "",
+        logoType: "file",
         country: "",
         countryCode: "",
         state: "",
         stateCode: "",
         city: "",
-        website: "",
         linkedin: "",
-        github: "",
-        instagram: "",
         twitter: "",
-        facebook: "",
-    });
-
-    const [locationData, setLocationData] = useState({
-        countries: Country.getAllCountries(),
-        states: [],
-        cities: [],
+        instagram: "",
+        youtube: "",
+        tiktok: "",
+        discord: "",
+        telegram: "",
+        whatsapp: "",
+        paypal: "",
+        cashapp: "",
+        venmo: "",
     });
 
     useEffect(() => {
         if (userData) {
             setTimeout(() => {
                 setFormData((prev) => ({ ...prev, ...userData }));
-
-                if (userData.countryCode) {
-                    const states = State.getStatesOfCountry(userData.countryCode);
-                    setLocationData((prev) => ({
-                        ...prev,
-                        states,
-                    }));
-
-                    if (userData.stateCode) {
-                        const cities = City.getCitiesOfState(
-                            userData.countryCode,
-                            userData.stateCode
-                        );
-
-                        setLocationData((prev) => ({
-                            ...prev,
-                            cities,
-                        }));
-                    }
-                }
             }, 0);
         }
     }, [userData]);
 
-    const handleCountryChange = (e) => {
-        const countryCode = e.target.value;
-
-        const country = locationData.countries.find(
-            (c) => c.isoCode === countryCode
-        );
-
-        const states = State.getStatesOfCountry(countryCode);
-
-        setFormData({
-            ...formData,
-            country: country ? country.name : "",
-            countryCode,
-            state: "",
-            stateCode: "",
-            city: "",
-        });
-
-        setLocationData({
-            ...locationData,
-            states,
-            cities: [],
-        });
-    };
-
-    const handleStateChange = (e) => {
-        const stateCode = e.target.value;
-
-        const state = locationData.states.find((s) => s.isoCode === stateCode);
-
-        const cities = City.getCitiesOfState(formData.countryCode, stateCode);
-
-        setFormData({
-            ...formData,
-            state: state ? state.name : "",
-            stateCode,
-            city: "",
-        });
-
-        setLocationData({
-            ...locationData,
-            cities,
-        });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-
-        try {
-            const response = await fetch(
-                "http://localhost:4000/api/users/onboard",
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        uid: userData.uid,
-                        ...formData,
-                    }),
-                }
-            );
-
-            if (response.ok) {
-                navigate("/user/home");
-            } else {
-                throw new Error("API error");
-            }
-        } catch (error) {
-            console.error("Profile update error:", error);
+    const handleLogoUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData({ ...formData, logo: reader.result });
+            };
+            reader.readAsDataURL(file);
         }
-
-        setLoading(false);
     };
 
-    if (isAdmin) {
-        return <Navigate to="/admin/analytics" />;
-    }
+    const handleSave = async () => {
+        await fetch("http://localhost:4000/api/users/onboard", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ uid: userData.uid, ...formData }),
+        });
+        navigate("/user/home");
+    };
 
-    const inputWithIcon =
-        "w-full pl-12 pr-4 py-3 rounded-xl bg-gray-50 dark:bg-emerald-50/50 border border-gray-100 dark:border-emerald-100/50 text-sm font-bold text-gray-900 dark:text-emerald-900 outline-none focus:ring-2 focus:ring-[#7BB9D4] focus:border-[#7BB9D4]/50 transition-all";
+    if (isAdmin) return <Navigate to="/admin/analytics" />;
 
     return (
-        <Layout userData={userData} title="Complete Profile" hideSidebar={true} hideTopNav={true}>
-            <div className="max-w-3xl sm:max-w-7xl mx-auto py-12 px-6">
-                <form
-                    onSubmit={handleSubmit}
-                    className="bg-white dark:bg-white/90 p-10 rounded-[2.5rem] shadow-2xl shadow-gray-200/50 dark:shadow-emerald-900/5 space-y-12 border border-gray-100 dark:border-emerald-100"
-                >
+        <Layout userData={userData} hideSidebar hideTopNav>
+            <div className="max-w-7xl mx-auto p-6 space-y-6">
 
-                    {/* Personal Section */}
+                {/* LABEL */}
+                <div className="bg-white p-5 rounded-xl border shadow-sm">
+                    <h3 className="text-sm mb-3 font-semibold opacity-60">Label this card</h3>
+                    <input
+                        className="w-full p-3 rounded-lg bg-gray-50 border border-transparent focus:border-black/5 outline-none font-bold"
+                        placeholder="Work"
+                        value={formData.label}
+                        onChange={(e) =>
+                            setFormData({ ...formData, label: e.target.value })
+                        }
+                    />
+                </div>
 
-                    <div>
+                {/* CARD + IMAGE */}
+                <div className="bg-white p-6 rounded-xl border shadow-sm grid md:grid-cols-2 gap-6">
 
-                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-emerald-100 pb-4">
-                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-emerald-800">
-                                Personal & Professional
-                            </h3>
-                            <span className="text-[9px] text-[#7BB9D4] font-black uppercase tracking-widest">
-                                REQUIRED STAGE
-                            </span>
-                        </div>
-
-                        <div className="grid md:grid-cols-2 gap-6">
-
-                            <div className="relative">
-                                <FiIcons.FiBriefcase className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
-                                <input
-                                    required
-                                    type="text"
-                                    value={formData.companyName}
-                                    onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                                    placeholder="Company Name"
-                                    className={inputWithIcon}
-                                />
+                    <div
+                        className="rounded-xl p-6 text-white shadow-xl"
+                        style={{ background: theme }}
+                    >
+                        <p className="text-xs opacity-60 font-black tracking-widest">CARDYN</p>
+                        <div className="flex flex-col items-center justify-center h-32">
+                            <div className="w-16 h-16 rounded-full border border-white/20 bg-white/10 flex items-center justify-center overflow-hidden mb-3">
+                                {formData.logo ? (
+                                    <img src={formData.logo} alt="Logo" className="w-full h-full object-cover" />
+                                ) : (
+                                    <Fi.FiUser size={30} />
+                                )}
                             </div>
-
-                            <div className="relative">
-                                <FiIcons.FiBriefcase className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
-                                <input
-                                    type="text"
-                                    value={formData.businessName}
-                                    onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-                                    placeholder="Business Role"
-                                    className={inputWithIcon}
-                                />
-                            </div>
-
+                            <h3 className="text-lg font-black">{formData.name || "Your Name"}</h3>
+                            <p className="text-sm opacity-70">
+                                {formData.job || "Your Role"}
+                            </p>
                         </div>
-
                     </div>
 
-
-                    {/* Contact */}
-
-                    <div>
-
-                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-emerald-100 pb-4">
-                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-emerald-800">
-                                Contact Details
-                            </h3>
-                            <span className="text-[9px] text-gray-400 dark:text-emerald-950/40 font-black uppercase tracking-widest">
-                                GLOBAL NODES
-                            </span>
+                    <div className="space-y-4">
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => setFormData({ ...formData, logoType: 'file' })}
+                                className={`px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${formData.logoType === 'file' ? 'bg-black text-white' : 'bg-gray-100 text-black'}`}
+                            >
+                                Upload
+                            </button>
+                            <button
+                                onClick={() => setFormData({ ...formData, logoType: 'url' })}
+                                className={`px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${formData.logoType === 'url' ? 'bg-black text-white' : 'bg-gray-100 text-black'}`}
+                            >
+                                Remote URL
+                            </button>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-6">
-
-                            <div className="relative">
-                                <FiIcons.FiMail className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
+                        {formData.logoType === 'file' ? (
+                            <div className="relative border-2 border-dashed p-10 text-center rounded-lg cursor-pointer hover:border-black/20 transition-all bg-gray-50/50">
                                 <input
-                                    required
-                                    type="email"
-                                    value={formData.omailAddress}
-                                    onChange={(e) => setFormData({ ...formData, omailAddress: e.target.value })}
-                                    placeholder="Email Address"
-                                    className={inputWithIcon}
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleLogoUpload}
+                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                 />
+                                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
+                                    {formData.logo ? "Logo Loaded" : "+ Click to Dispatch Logo"}
+                                </span>
                             </div>
-
-                            <div className="relative">
-                                <FiIcons.FiPhone className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
-                                <input
-                                    required
-                                    type="tel"
-                                    value={formData.mobileNumber}
-                                    onChange={(e) => setFormData({ ...formData, mobileNumber: e.target.value })}
-                                    placeholder="Mobile Number"
-                                    className={inputWithIcon}
-                                />
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    {/* Location */}
-
-                    <div>
-
-                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-emerald-100 pb-4">
-                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-emerald-800">
-                                Location
-                            </h3>
-                            <span className="text-[9px] text-gray-400 dark:text-emerald-950/40 font-black uppercase tracking-widest">
-                                SPATIAL REGISTRY
-                            </span>
-                        </div>
-
-                        <div className="grid md:grid-cols-3 gap-6">
-
-                            <select
-                                value={formData.countryCode}
-                                onChange={handleCountryChange}
-                                className="w-full px-5 py-3.5 rounded-xl bg-gray-50 dark:bg-emerald-50/50 border border-gray-100 dark:border-emerald-100/50 text-sm font-bold text-gray-900 dark:text-emerald-900 outline-none focus:ring-2 focus:ring-[#7BB9D4] appearance-none cursor-pointer transition-all"
-                            >
-                                <option value="">Country</option>
-                                {locationData.countries.map((c) => (
-                                    <option key={c.isoCode} value={c.isoCode}>
-                                        {c.name}
-                                    </option>
-                                ))}
-                            </select>
-
-                            <select
-                                value={formData.stateCode}
-                                onChange={handleStateChange}
-                                disabled={!formData.countryCode}
-                                className="w-full px-5 py-3.5 rounded-xl bg-gray-50 dark:bg-emerald-50/50 border border-gray-100 dark:border-emerald-100/50 text-sm font-bold text-gray-900 dark:text-emerald-900 outline-none focus:ring-2 focus:ring-[#7BB9D4] appearance-none disabled:opacity-40 cursor-pointer transition-all"
-                            >
-                                <option value="">State</option>
-                                {locationData.states.map((s) => (
-                                    <option key={s.isoCode} value={s.isoCode}>
-                                        {s.name}
-                                    </option>
-                                ))}
-                            </select>
-
-                            <select
-                                value={formData.city}
-                                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                                disabled={!formData.stateCode}
-                                className="w-full px-5 py-3.5 rounded-xl bg-gray-50 dark:bg-emerald-50/50 border border-gray-100 dark:border-emerald-100/50 text-sm font-bold text-gray-900 dark:text-emerald-900 outline-none focus:ring-2 focus:ring-[#7BB9D4] appearance-none disabled:opacity-40 cursor-pointer transition-all"
-                            >
-                                <option value="">City</option>
-                                {locationData.cities.map((c) => (
-                                    <option key={c.name}>{c.name}</option>
-                                ))}
-                            </select>
-
-                        </div>
-
-                    </div>
-
-
-                    {/* Digital Ecosystem */}
-
-                    <div>
-
-                        <div className="flex justify-between items-end mb-6 border-b border-gray-50 dark:border-emerald-100 pb-4">
-                            <h3 className="font-black text-[11px] uppercase tracking-[0.2em] text-gray-900 dark:text-emerald-800">
-                                Digital Ecosystem
-                            </h3>
-                            <span className="text-[9px] text-gray-400 dark:text-emerald-950/40 font-black uppercase tracking-widest">
-                                BROADCAST NODES
-                            </span>
-                        </div>
-
-                        <div className="relative mb-6">
-                            <FiIcons.FiGlobe className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
+                        ) : (
                             <input
                                 type="text"
-                                value={formData.website}
-                                onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                                placeholder="Website URL"
-                                className={inputWithIcon}
+                                placeholder="Paste Identity Logo URL..."
+                                value={formData.logo}
+                                onChange={(e) => setFormData({ ...formData, logo: e.target.value })}
+                                className="w-full p-4 rounded-lg bg-gray-50 text-[11px] font-bold border border-transparent focus:border-black/5 transition-all outline-none"
                             />
-                        </div>
-
-                        <div className="grid md:grid-cols-2 gap-6">
-
-                            <div className="relative">
-                                <FiIcons.FiLinkedin className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
-                                <input
-                                    type="text"
-                                    value={formData.linkedin}
-                                    onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
-                                    placeholder="LinkedIn"
-                                    className={inputWithIcon}
-                                />
-                            </div>
-
-                            <div className="relative">
-                                <FiIcons.FiInstagram className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
-                                <input
-                                    type="text"
-                                    value={formData.instagram}
-                                    onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
-                                    placeholder="Instagram"
-                                    className={inputWithIcon}
-                                />
-                            </div>
-
-                            <div className="relative">
-                                <FiIcons.FiTwitter className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
-                                <input
-                                    type="text"
-                                    value={formData.twitter}
-                                    onChange={(e) => setFormData({ ...formData, twitter: e.target.value })}
-                                    placeholder="Twitter"
-                                    className={inputWithIcon}
-                                />
-                            </div>
-
-                            <div className="relative">
-                                <FiIcons.FiFacebook className="absolute left-4 top-3.5 text-[#7BB9D4] opacity-40" />
-                                <input
-                                    type="text"
-                                    value={formData.facebook}
-                                    onChange={(e) => setFormData({ ...formData, facebook: e.target.value })}
-                                    placeholder="Facebook"
-                                    className={inputWithIcon}
-                                />
-                            </div>
-
-                        </div>
-
+                        )}
                     </div>
+                </div>
 
-
-                    {/* Buttons */}
-
-                    <div className="flex justify-end items-center pt-8 border-t border-gray-50 dark:border-emerald-100">
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="bg-[#7BB9D4] text-white px-10 py-4 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-[#7BB9D4]/30 hover:scale-[1.02] transition-all disabled:opacity-50"
-                        >
-                            {loading ? "Synchronizing..." : "Continue"}
-                        </button>
+                {/* THEME */}
+                <div className="bg-white p-5 rounded-xl border shadow-sm">
+                    <h3 className="text-sm mb-4 font-semibold opacity-60">Identity Theme</h3>
+                    <div className="flex flex-wrap gap-3">
+                        {[
+                            "#22c55e", "#ef4444", "#f97316", "#eab308",
+                            "#3b82f6", "#6366f1", "#a855f7", "#0f172a"
+                        ].map((c) => (
+                            <div
+                                key={c}
+                                onClick={() => setTheme(c)}
+                                className={`w-8 h-8 rounded-full cursor-pointer transition-transform hover:scale-110 active:scale-90 ${theme === c ? 'ring-2 ring-black ring-offset-2' : ''}`}
+                                style={{ background: c }}
+                            />
+                        ))}
                     </div>
+                </div>
 
-                </form>
+                {/* CARD DETAILS */}
+
+                <Section title="Personal Information">
+                    <IconCard icon={Fi.FiUser} label="Name" field="name" onClick={setActiveField} />
+                    <IconCard icon={Fi.FiBriefcase} label="Job Title" field="job" onClick={setActiveField} />
+                    <IconCard icon={Fi.FiHome} label="Company" field="company" onClick={setActiveField} />
+                    <IconCard icon={Fi.FiAward} label="Business Role" field="businessRole" onClick={setActiveField} />
+                    <IconCard icon={Fi.FiFileText} label="Bio" field="bio" onClick={setActiveField} />
+                </Section>
+
+                <Section title="Contact & General">
+                    <IconCard icon={Fi.FiMail} label="Email" field="email" onClick={setActiveField} />
+                    <IconCard icon={Fi.FiPhone} label="Phone" field="phone" onClick={setActiveField} />
+                    <IconCard icon={Fi.FiGlobe} label="Website" field="website" onClick={setActiveField} />
+                    <IconCard icon={Fi.FiMapPin} label="Address" field="address" onClick={setActiveField} />
+                </Section>
+
+                <Section title="Social Presence">
+                    <IconCard icon={Fi.FiLinkedin} label="LinkedIn" field="linkedin" onClick={setActiveField} />
+                    <IconCard icon={Fi.FiTwitter} label="X / Twitter" field="twitter" onClick={setActiveField} />
+                    <IconCard icon={Fi.FiInstagram} label="Instagram" field="instagram" onClick={setActiveField} />
+                    <IconCard icon={Fi.FiYoutube} label="YouTube" field="youtube" onClick={setActiveField} />
+                    <IconCard icon={Fi.FiVideo} label="TikTok" field="tiktok" onClick={setActiveField} />
+                    <IconCard icon={Fi.FiMoreHorizontal} label="More" field="more" onClick={setActiveField} />
+                </Section>
+
+                <div className="grid md:grid-cols-2 gap-6">
+
+                    <Section title="Messaging">
+                        <IconCard icon={Fi.FiMessageSquare} label="Discord" field="discord" onClick={setActiveField} />
+                        <IconCard icon={Fi.FiSend} label="Telegram" field="telegram" onClick={setActiveField} />
+                        <IconCard icon={Fi.FiPhone} label="WhatsApp" field="whatsapp" onClick={setActiveField} />
+                    </Section>
+
+                    <Section title="Payment">
+                        <IconCard icon={Fi.FiCreditCard} label="PayPal" field="paypal" onClick={setActiveField} />
+                        <IconCard icon={Fi.FiDollarSign} label="Cash App" field="cashapp" onClick={setActiveField} />
+                        <IconCard icon={Fi.FiCreditCard} label="Venmo" field="venmo" onClick={setActiveField} />
+                    </Section>
+
+                </div>
+
+                {/* SAVE */}
+                <div className="flex justify-end">
+                    <button
+                        onClick={handleSave}
+                        className="bg-black text-white px-6 py-3 rounded-lg"
+                    >
+                        Save
+                    </button>
+                </div>
+
+                {/* MODAL */}
+                {activeField && (
+                    <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
+                        <div className="bg-white p-6 rounded-xl w-full max-w-md">
+                            <h3 className="mb-3 capitalize">{activeField}</h3>
+
+                            {activeField === 'address' ? (
+                                <div className="space-y-4">
+                                    <select
+                                        className="w-full p-3 border rounded-lg"
+                                        onChange={(e) => {
+                                            const country = Country.getCountryByCode(e.target.value);
+                                            setFormData({
+                                                ...formData,
+                                                country: country.name,
+                                                countryCode: country.isoCode,
+                                                state: "",
+                                                stateCode: "",
+                                                city: "",
+                                                address: country.name
+                                            });
+                                        }}
+                                        value={formData.countryCode || ""}
+                                    >
+                                        <option value="">Select Country</option>
+                                        {Country.getAllCountries().map((c) => (
+                                            <option key={c.isoCode} value={c.isoCode}>{c.name}</option>
+                                        ))}
+                                    </select>
+
+                                    <select
+                                        disabled={!formData.countryCode}
+                                        className="w-full p-3 border rounded-lg disabled:opacity-40"
+                                        onChange={(e) => {
+                                            const state = State.getStateByCodeAndCountry(e.target.value, formData.countryCode);
+                                            setFormData({
+                                                ...formData,
+                                                state: state.name,
+                                                stateCode: state.isoCode,
+                                                city: "",
+                                                address: `${state.name}, ${formData.country}`
+                                            });
+                                        }}
+                                        value={formData.stateCode || ""}
+                                    >
+                                        <option value="">Select State</option>
+                                        {formData.countryCode && State.getStatesOfCountry(formData.countryCode).map((s) => (
+                                            <option key={s.isoCode} value={s.isoCode}>{s.name}</option>
+                                        ))}
+                                    </select>
+
+                                    <select
+                                        disabled={!formData.stateCode}
+                                        className="w-full p-3 border rounded-lg disabled:opacity-40"
+                                        onChange={(e) => {
+                                            setFormData({
+                                                ...formData,
+                                                city: e.target.value,
+                                                address: `${e.target.value}, ${formData.state}, ${formData.country}`
+                                            });
+                                        }}
+                                        value={formData.city || ""}
+                                    >
+                                        <option value="">Select City</option>
+                                        {formData.countryCode && formData.stateCode && City.getCitiesOfState(formData.countryCode, formData.stateCode).map((c) => (
+                                            <option key={c.name} value={c.name}>{c.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            ) : (
+                                <input
+                                    className="w-full p-3 border rounded-lg"
+                                    value={formData[activeField] || ""}
+                                    onChange={(e) =>
+                                        setFormData({
+                                            ...formData,
+                                            [activeField]: e.target.value,
+                                        })
+                                    }
+                                />
+                            )}
+
+                            <div className="flex justify-end gap-3 mt-4">
+                                <button onClick={() => setActiveField(null)}>
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={() => setActiveField(null)}
+                                    className="bg-black text-white px-4 py-2 rounded"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </Layout>
     );

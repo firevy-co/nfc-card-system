@@ -10,6 +10,7 @@ import { auth } from '../../firebase.config';
 import { signOut } from 'firebase/auth';
 import { useTheme } from '../../context/ThemeContext';
 import NotificationCenter from './NotificationCenter';
+import logo from '../../assets/logo (2).png';
 
 const UserNav = ({ userData }) => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const UserNav = ({ userData }) => {
   };
 
   return (
-    <div className="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[1400px] z-[50] animate-in slide-in-from-top-8 duration-700 font-['Mulish']">
+    <div className="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[1400px] z-[50] animate-in slide-in-from-top-8 duration-700">
       <div className={`
         ${theme === 'dark'
           ? 'bg-zinc-950/95 border-white/10 shadow-[0_35px_80px_-15px_rgba(0,0,0,0.6)]'
@@ -30,8 +31,11 @@ const UserNav = ({ userData }) => {
 
         {/* LOGO SECTION */}
         <div className="flex items-center gap-3">
-          <span className={`text-2xl hidden sm:block font-['Luckiest_Guy'] ${theme === 'dark' ? 'text-white' : 'text-black'
-            }`}>Cardyn</span>
+          <img 
+            src={logo} 
+            alt="Cardyn Logo" 
+            className={`h-6 object-contain ${theme === 'dark' ? 'invert' : ''}`}
+          />
         </div>
 
         {/* CENTER NAVIGATION PILLS */}

@@ -49,7 +49,7 @@ export default function TemplateCard({
             )}
 
             {/* Premium Preview Section */}
-            <div className="h-[280px] sm:h-[340px] bg-black/5 dark:bg-white/5 relative flex items-center justify-center p-6 sm:p-12 overflow-hidden border-b border-black/5 dark:border-white/10 group-hover:bg-black/10 dark:group-hover:bg-white/10 transition-colors">
+            <div className="h-[360px] bg-black/5 dark:bg-white/5 relative flex items-center justify-center p-4 overflow-hidden border-b border-black/5 dark:border-white/10 group-hover:bg-black/10 dark:group-hover:bg-white/10 transition-colors">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.03] to-transparent opacity-50 z-0"></div>
 
                 {/* Floating Status Badge (Admin only or Top right) */}
@@ -63,14 +63,14 @@ export default function TemplateCard({
                 </div>
 
                 {/* The Device Frame Preview */}
-                <div className="w-[180px] h-[320px] bg-white dark:bg-zinc-900 rounded-[2rem] border-[6px] border-black/10 dark:border-white/10 shadow-2xl relative overflow-hidden transform scale-[0.8] group-hover:scale-[0.85] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col z-10">
+                <div className="w-[180px] h-[320px] bg-white dark:bg-zinc-900 rounded-[2rem] border-[6px] border-black/10 dark:border-white/10 shadow-2xl relative overflow-hidden transform group-hover:scale-[1.05] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col z-10">
                     {/* Device Notch */}
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-4 bg-black/5 dark:bg-white/10 rounded-b-xl z-30"></div>
 
                     {/* Inner Content Scale */}
-                    <div className="flex-1 w-full relative overflow-hidden flex items-center justify-center">
-                        <div className="origin-center" style={{ transform: 'scale(0.24)' }}>
-                            <div className="w-[375px] h-[667px] overflow-hidden relative">
+                    <div className="flex-1 w-full relative overflow-hidden flex justify-center rounded-[1.6rem]">
+                        <div className="origin-top" style={{ transform: 'scale(0.52)' }}>
+                            <div className="w-[375px] h-[667px] overflow-hidden relative rounded-[3.5rem]">
                                 <TemplateRenderer templateId={templateId} userData={previewData} />
                             </div>
                         </div>

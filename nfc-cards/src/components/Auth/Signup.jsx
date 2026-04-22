@@ -3,6 +3,7 @@ import { auth } from '../../firebase.config';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../layout/layout';
+import logo from '../../assets/logo (2).png';
 
 const Signup = () => {
     const [name, setName] = useState('');
@@ -55,6 +56,7 @@ const Signup = () => {
                         <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500"></div>
 
                         <div className="text-center mb-10">
+                            <img src={logo} alt="Cardyn Logo" className="h-10 object-contain mx-auto mb-6" />
                             <h1 className="text-4xl font-extrabold tracking-tight mb-3 text-gradient">
                                 Join the Network
                             </h1>

@@ -15,6 +15,7 @@ import { auth } from '../../firebase.config';
 import { signOut } from 'firebase/auth';
 import { useTheme } from '../../context/ThemeContext';
 import NotificationCenter from './NotificationCenter';
+import logo from '../../assets/logo (2).png';
 
 /**
  * PREMIUM FLOATING ADMIN NAV
@@ -44,12 +45,16 @@ const AdminNav = ({ userData }) => {
   ];
 
   return (
-    <div className="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[1400px] z-[50] animate-in slide-in-from-top-8 duration-700 font-['Mulish']">
+    <div className="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[1400px] z-[50] animate-in slide-in-from-top-8 duration-700">
       <div className="bg-white/95 border-black/5 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.08)] backdrop-blur-3xl border rounded-full px-5 py-3 flex items-center justify-between transition-all duration-500">
 
         {/* LOGO SECTION */}
         <div className="flex items-center gap-3">
-          <span className="text-2xl hidden font-['Luckiest_Guy'] sm:block font-black text-black">Cardyn</span>
+          <img
+            src={logo}
+            alt="Cardyn Logo"
+            className="h-6 object-contain"
+          />
         </div>
 
         {/* CENTER NAVIGATION PILLS */}

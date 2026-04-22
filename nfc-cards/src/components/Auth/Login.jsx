@@ -3,6 +3,7 @@ import { auth } from '../../firebase.config';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../layout/layout';
+import logo from '../../assets/logo (2).png';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -57,6 +58,7 @@ const Login = () => {
                         <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
 
                         <div className="text-center mb-10">
+                            <img src={logo} alt="Cardyn Logo" className="h-10 object-contain mx-auto mb-6" />
                             <h1 className="text-4xl font-extrabold tracking-tight mb-3 text-gradient">
                                 Welcome Back
                             </h1>
@@ -83,13 +85,13 @@ const Login = () => {
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206" />
                                         </svg>
                                     </div>
-                                    <input 
-                                        type="email" 
+                                    <input
+                                        type="email"
                                         className="w-full pl-12 pr-5 py-4 rounded-2xl bg-secondary/30 border border-border text-foreground placeholder-muted-foreground/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all duration-300"
-                                        placeholder="name@example.com" 
-                                        value={email} 
-                                        onChange={(e) => setEmail(e.target.value)} 
-                                        required 
+                                        placeholder="name@example.com"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        required
                                     />
                                 </div>
                             </div>
@@ -105,15 +107,15 @@ const Login = () => {
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                         </svg>
                                     </div>
-                                    <input 
-                                        type={showPassword ? "text" : "password"} 
+                                    <input
+                                        type={showPassword ? "text" : "password"}
                                         className="w-full pl-12 pr-12 py-4 rounded-2xl bg-secondary/30 border border-border text-foreground placeholder-muted-foreground/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all duration-300"
-                                        placeholder="••••••••" 
-                                        value={password} 
-                                        onChange={(e) => setPassword(e.target.value)} 
-                                        required 
+                                        placeholder="••••••••"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
                                     />
-                                    <button 
+                                    <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
                                         className="absolute inset-y-0 right-0 pr-4 flex items-center text-muted-foreground hover:text-foreground transition-colors"
@@ -132,9 +134,9 @@ const Login = () => {
                                 </div>
                             </div>
 
-                            <button 
-                                type="submit" 
-                                className="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold text-lg hover:translate-y-[-2px] hover:shadow-[0_10px_20px_-5px_rgba(79,70,229,0.5)] active:translate-y-0 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group" 
+                            <button
+                                type="submit"
+                                className="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold text-lg hover:translate-y-[-2px] hover:shadow-[0_10px_20px_-5px_rgba(79,70,229,0.5)] active:translate-y-0 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group"
                                 disabled={loading}
                             >
                                 <span className="flex items-center justify-center gap-2">

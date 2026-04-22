@@ -31,7 +31,7 @@ const TopNav = ({ title = "My Templates", showActions = true, onMenuToggle, isMe
                         <FiChevronRight className="mt-0.5" />
                         <span className="text-foreground truncate">{title}</span>
                     </div>
-                    <h2 className="text-base sm:text-2xl font-black text-foreground tracking-tighter capitalize truncate font-['Mulish'] leading-none">
+                    <h2 className="text-base sm:text-2xl font-black text-foreground tracking-tighter capitalize truncate leading-none">
                         {isMenuOpen ? "Navigation Hub" : "Identity Studio"}
                     </h2>
                 </div>

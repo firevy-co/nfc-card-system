@@ -125,10 +125,6 @@ const Support = ({ userData }) => {
 
                 {/* Header Section */}
                 <header className="flex flex-col gap-3 border-b border-black/[0.05] pb-10">
-                    <div className="flex items-center gap-3">
-                        <div className="w-1 h-1 bg-black rounded-full shadow-lg"></div>
-                        <span className="text-[10px] font-black text-black uppercase tracking-[0.4em] opacity-40">System Support Nodes</span>
-                    </div>
                     <div className="space-y-1">
                         <h2 className="text-4xl font-black text-foreground">Support Terminal</h2>
                         <p className="text-muted-foreground font-bold tracking-tight text-sm opacity-60">Direct neural link to technical architecture nodes. Dispatch your operational briefs below.</p>

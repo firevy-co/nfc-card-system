@@ -37,19 +37,21 @@ export default function Content({ userData }) {
   ].sort((a, b) => a === "All" ? -1 : a.localeCompare(b));
 
   // Determine if we should show restricted categories based on user's business role
-  const matchedCategory = (!isAdmin && userData && (userData.businessName || userData.companyName))
-    ? TEMPLATES.find(t => {
-        const userQuery = (userData.businessName || userData.companyName).toLowerCase();
-        return t.category.toLowerCase().includes(userQuery) ||
-               userQuery.includes(t.category.toLowerCase()) ||
-               t.tags?.some(tag => userQuery.includes(tag.toLowerCase()));
-      })?.category
-    : null;
+  const businessQuery = (userData?.businessName || userData?.companyName || userData?.role === "Admin" ? "Business" : "").toLowerCase();
 
-  const categories = allCategories.filter(c => {
-    if (isAdmin || !matchedCategory) return true;
-    return c === "All" || c === matchedCategory;
-  });
+  const matchedCategory = (userData?.businessName || userData?.companyName)
+    ? TEMPLATES.find(t => {
+      const userQuery = (userData.businessName || userData.companyName).toLowerCase();
+      return t.category.toLowerCase().includes(userQuery) ||
+        userQuery.includes(t.category.toLowerCase()) ||
+        t.tags?.some(tag => userQuery.includes(tag.toLowerCase()));
+    })?.category
+    : (isAdmin ? "Business" : null);
+
+  // Logic to determine categories: Admins see all, Users see strictly limited two
+  const categories = isAdmin
+    ? allCategories
+    : ["All", matchedCategory].filter(Boolean);
 
   // FETCH: Sync with Cloud Orchestrator (with Local Persistence Deduplication)
   const fetchTemplates = async () => {
@@ -216,188 +218,151 @@ export default function Content({ userData }) {
 
   return (
     <div className="flex-1 min-w-0">
-      <div className="p-3 sm:p-10 max-w-[1600px] mx-auto">
-        {/* DASHBOARD TOOLBAR: Fluid Search & Controls */}
-        <div className="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 sm:gap-6 mb-8 sm:mb-12">
-          <div className="relative flex-1 max-w-full lg:max-w-[450px] group">
-            <input
-              type="text"
-              placeholder="Search Nodes..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-5 sm:pl-6 pr-4 sm:pr-6 py-3 sm:py-4 rounded-2xl bg-white/50 dark:bg-white border border-black/5 dark:border-white/10 focus:border-primary/50 outline-none transition-all font-bold text-xs sm:text-sm shadow-sm text-foreground"
-            />
-          </div>
+      <div className="p-4 sm:p-10 max-w-[1700px] mx-auto">
+        <div className="flex flex-col lg:flex-row gap-10">
 
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            {isAdmin && (
-              <button
-                onClick={() => { setEditingTemplate(null); setIsModalOpen(true); }}
-                className="flex-1 lg:flex-none flex items-center justify-center gap-2 sm:gap-3 bg-white text-black cursor-pointer px-4 sm:px-10 py-3 sm:py-4 rounded-xl font-black text-[8px] sm:text-[10px] capitalize tracking-[0.1em] sm:tracking-[0.2em] hover:brightness-125 transition-all shadow-xl active:scale-95 group"
-              >
-                <FiPlus className="group-hover:rotate-90 transition-transform duration-300" />
-                <span className="hidden xs:block">Add node</span>
-              </button>
-            )}
-
-            {!isAdmin && globalLink && (
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(globalLink);
-                  toast.success("Identity link ready!");
-                }}
-                className="flex-1 lg:flex-none flex items-center justify-center gap-2 sm:gap-3 bg-black text-white cursor-pointer px-4 sm:px-10 py-3 sm:py-4 rounded-xl font-black text-[8px] sm:text-[10px] capitalize tracking-[0.1em] sm:tracking-[0.2em] hover:brightness-125 transition-all shadow-xl active:scale-95 group"
-              >
-                <FiLink size={16} />
-                <span className="hidden xs:block text-primary font-black uppercase tracking-widest text-[9px]">Live Link</span>
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* CATEGORY FILTER PILLS */}
-        <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-4 scrollbar-hide no-scrollbar -mx-2 px-2">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-5 py-2.5 rounded-2xl font-black text-[11px] tracking-[0.15em] transition-all whitespace-nowrap border cursor-pointer ${selectedCategory === category
-                ? "bg-black text-white border-foreground shadow-lg"
-                : "bg-white/50 dark:bg-white/5 text-muted-foreground border-black/5 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 hover:text-foreground"
-                }`}
-            >
-              {category === "All" ? "Discover All" : category}
-            </button>
-          ))}
-        </div>
-
-        {/* INDUSTRY RECOMMENDATION BADGE */}
-        {!isAdmin && selectedCategory !== "All" && (
-          <div className="flex items-center gap-2 mb-6 animate-in fade-in slide-in-from-left-4 duration-500">
-            <div className="w-1 h-4 bg-primary rounded-full"></div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-primary/60">
-              Filtered by your industry: <span className="text-primary">{selectedCategory}</span>
-            </p>
-          </div>
-        )}
-
-        {/* --- GLOBAL LINK (MIDDLE SECTION) --- */}
-        {!isAdmin && globalLink && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-14 p-8 border border-black/5 dark:border-white/10 rounded-[2.5rem] bg-white/50 dark:bg-white/5 backdrop-blur-xl shadow-[0_0_50px_rgba(0,0,0,0.06)] relative overflow-hidden group"
-          >
-            <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform">
-              <FiLink size={120} className="text-foreground" />
-            </div>
-
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-              <div className="flex-1">
-                <p className="text-[10px] text-primary mb-2 font-black uppercase tracking-[0.4em]">
-                  Active Global Identity Link
-                </p>
-                <div className="bg-black/5 dark:bg-white/5 px-8 py-5 rounded-[1.5rem] border border-black/5 dark:border-white/10 flex-1 w-full text-center lg:text-left overflow-hidden">
-                  <AnimatePresence mode="wait">
-                    <motion.code
-                      key={globalLink}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 10 }}
-                      className="text-[11px] text-foreground font-black break-all opacity-60 inline-block"
-                    >
-                      {globalLink}
-                    </motion.code>
-                  </AnimatePresence>
-                </div>
+          {/* LEFT SIDEBAR: CATEGORY FILTERS */}
+          <aside className="w-full lg:w-72 flex-shrink-0">
+            <div className="sticky top-10">
+              <div className="mb-8">
+                <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-4">
+                  Industry Nodes
+                </h2>
+                <div className="h-1 w-12 bg-accent rounded-full"></div>
               </div>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(globalLink);
-                  toast.success("Identity link ready!");
-                }}
-                className="w-full md:w-auto text-[10px] font-black uppercase tracking-[0.2em] px-10 py-4 bg-black text-white rounded-xl hover:brightness-125 transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 cursor-pointer"
-              >
-                <FiCopy />
-                Broadcast Identity
-              </button>
-            </div>
-          </motion.div>
-        )}
 
-
-        {/* IDENTITY GRID: Responsive layout for maximum legibility */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 sm:gap-10">
-
-          {loading ? (
-            <div className="col-span-full py-64 flex flex-col items-center justify-center gap-8 relative overflow-hidden">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-black/[0.02] rounded-full blur-[100px] pointer-events-none"></div>
-              <div className="relative">
-                <div className="w-16 h-16 border-[3px] border-black/5 border-t-black rounded-full animate-spin"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-1.5 h-1.5 bg-black rounded-full animate-pulse"></div>
-                </div>
-              </div>
-              <div className="text-center space-y-2 relative z-10">
-                <p className="font-black uppercase tracking-[0.5em] text-[10px] text-black/80">Retrieving Identity Nodes</p>
-                <p className="font-bold uppercase tracking-[0.3em] text-[8px] text-black/20">Accessing Global Encrypted Buffer</p>
-              </div>
-            </div>
-          ) : (
-            <>
-              {/* Functional Add Content Placeholder (Optimized for High Density) */}
-              {isAdmin && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  onClick={() => { setEditingTemplate(null); setIsModalOpen(true); }}
-                  className="border-[2px] sm:border-[3px] border-dashed border-black/10 dark:border-gray-300 rounded-[2.5rem] min-h-[300px] sm:min-h-[500px] bg-black/5 dark:bg-white/5 flex flex-col items-center justify-center text-muted-foreground hover:border-foreground/20 hover:bg-black/10 dark:hover:bg-white/10 cursor-pointer transition-all group relative overflow-hidden active:scale-[0.98]"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-foreground text-background flex items-center justify-center mb-6 sm:mb-8 shadow-2xl group-hover:scale-110 transition-all duration-500">
-                    <FiPlus size={24} className="sm:w-7 sm:h-7" />
-                  </div>
-                  <h3 className="font-black text-foreground text-xs sm:text-xl mb-1 capitalize tracking-tighter">New Node</h3>
-                  <p className="text-[9px] sm:text-[11px] text-center px-6 leading-relaxed opacity-40 font-bold capitalize tracking-widest">
-                    Initialize Deployment
-                  </p>
-                </motion.div>
-              )}
-
-              <AnimatePresence mode="popLayout">
-                {filteredTemplates.map((template, idx) => (
-                  <motion.div
-                    key={template.id || idx}
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.4, delay: idx * 0.05 }}
+              <div className="flex flex-col gap-2">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`group flex items-center justify-between px-6 py-4 rounded-lg font-bold text-xs tracking-wider transition-all border cursor-pointer ${selectedCategory === category
+                      ? "bg-primary text-primary-foreground border-primary shadow-lg"
+                      : "bg-white text-muted-foreground border-border hover:border-accent/40 hover:text-foreground"
+                      }`}
                   >
-                    <TemplateCard
-                      templateId={template.templateId || template.id}
-                      title={template.name}
-                      path={`/${template.id}`}
-                      category={template.category}
-                      tags={template.tags}
-                      description={template.description}
-                      userData={userData}
-                      isAdmin={isAdmin}
-                      onDelete={() => handleDeleteNode(template.id)}
-                      onEdit={() => handleEditNode(template)}
-                      onSelect={() => handleSelectTemplate(template.templateId || template.id)}
-                      isSelected={userData?.selectedTemplateId === (template.templateId || template.id)}
-                    />
-                  </motion.div>
+                    <span>{category === "All" ? "Discovery All" : category}</span>
+                    {selectedCategory === category && (
+                      <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></div>
+                    )}
+                  </button>
                 ))}
-              </AnimatePresence>
-            </>
-          )}
+              </div>
+
+              {/* STATS OR INFO PANEL */}
+              {!isAdmin && selectedCategory !== "All" && (
+                <div className="mt-8 p-6 bg-accent/5 border border-accent/20 rounded-lg animate-in fade-in slide-in-from-left-4 duration-500">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">
+                    Industry Optimization
+                  </p>
+                  <p className="text-[11px] text-foreground/70 leading-relaxed font-bold">
+                    Currently filtering nodes optimized for the <span className="text-accent">{selectedCategory}</span> sector.
+                  </p>
+                </div>
+              )}
+            </div>
+          </aside>
+
+          {/* RIGHT CONTENT AREA */}
+          <main className="flex-1 min-w-0">
+            {/* DASHBOARD TOOLBAR */}
+            <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-6 mb-10">
+              <div className="relative flex-1 group">
+                <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-accent transition-colors">
+                  <FiSearch size={18} />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search architecture nodes..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-14 pr-6 py-4 rounded-lg bg-white border border-border focus:border-accent focus:ring-4 focus:ring-accent/5 outline-none transition-all font-bold text-sm shadow-sm text-foreground"
+                />
+              </div>
+
+              <div className="flex items-center gap-3">
+                {isAdmin && (
+                  <button
+                    onClick={() => { setEditingTemplate(null); setIsModalOpen(true); }}
+                    className="flex items-center justify-center gap-3 bg-primary text-primary-foreground cursor-pointer px-8 py-4 rounded-lg font-black text-[10px] uppercase tracking-[0.2em] hover:brightness-110 transition-all shadow-lg active:scale-95 group"
+                  >
+                    <FiPlus className="group-hover:rotate-90 transition-transform duration-300" />
+                    Add Node
+                  </button>
+                )}
+
+                {!isAdmin && globalLink && (
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(globalLink);
+                      toast.success("Broadcast identity copied.");
+                    }}
+                    className="flex items-center justify-center gap-3 bg-white border border-border text-foreground cursor-pointer px-8 py-4 rounded-lg font-black text-[10px] uppercase tracking-[0.2em] hover:bg-gray-50 transition-all shadow-sm active:scale-95 group"
+                  >
+                    <FiLink size={16} className="text-accent" />
+                    Live Link
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* IDENTITY GRID */}
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+              {loading ? (
+                <div className="col-span-full py-48 flex flex-col items-center justify-center gap-6">
+                  <div className="w-12 h-12 border-4 border-accent/10 border-t-accent rounded-full animate-spin"></div>
+                  <p className="font-black uppercase tracking-[0.3em] text-[10px] text-muted-foreground">Accessing Registry</p>
+                </div>
+              ) : (
+                <>
+                  {isAdmin && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      onClick={() => { setEditingTemplate(null); setIsModalOpen(true); }}
+                      className="border-2 border-dashed border-border rounded-lg min-h-[400px] bg-white/40 flex flex-col items-center justify-center text-muted-foreground hover:border-accent/40 hover:bg-white cursor-pointer transition-all group active:scale-[0.98]"
+                    >
+                      <div className="w-14 h-14 rounded-lg bg-primary text-primary-foreground flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform">
+                        <FiPlus size={24} />
+                      </div>
+                      <h3 className="font-bold text-foreground text-lg mb-1">New Node</h3>
+                      <p className="text-[10px] font-black uppercase tracking-widest opacity-40">Initialize Deployment</p>
+                    </motion.div>
+                  )}
+
+                  <AnimatePresence mode="popLayout">
+                    {filteredTemplates.map((template, idx) => (
+                      <motion.div
+                        key={template.id || idx}
+                        layout
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.3, delay: idx * 0.05 }}
+                      >
+                        <TemplateCard
+                          templateId={template.templateId || template.id}
+                          title={template.name}
+                          path={`/${template.id}`}
+                          category={template.category}
+                          tags={template.tags}
+                          description={template.description}
+                          userData={userData}
+                          isAdmin={isAdmin}
+                          onDelete={() => handleDeleteNode(template.id)}
+                          onEdit={() => handleEditNode(template)}
+                          onSelect={() => handleSelectTemplate(template.templateId || template.id)}
+                          isSelected={userData?.selectedTemplateId === (template.templateId || template.id)}
+                        />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </>
+              )}
+            </div>
+          </main>
         </div>
-
-
       </div>
-
 
       <CreateTemplateModal
         isOpen={isModalOpen}
