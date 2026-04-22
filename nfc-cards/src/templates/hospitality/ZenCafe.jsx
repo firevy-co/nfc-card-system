@@ -35,7 +35,7 @@ const ZenCafe = ({ userData }) => {
 
         <StandardMapPreview address={address} />
 
-        <StandardSaveContactButton />
+        <StandardSaveContactButton userData={userData} />
         
         <div className="mt-12 flex justify-center gap-2 opacity-20">
            <div className="w-2 h-2 rounded-full bg-[#86867e]" />

@@ -33,7 +33,7 @@ const OpalMinimal = ({ userData }) => {
 
           <StandardMapPreview address={address} />
 
-          <StandardSaveContactButton />
+          <StandardSaveContactButton userData={userData} />
 
           <footer className="mt-10 text-center opacity-10">
              <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[7px] text-slate-900 font-black uppercase tracking-[0.6em] hover:opacity-100 transition-opacity">Powered by Cardyn</a>

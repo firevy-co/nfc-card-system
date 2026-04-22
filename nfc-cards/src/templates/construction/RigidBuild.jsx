@@ -38,7 +38,7 @@ const RigidBuild = ({ userData }) => {
 
         <StandardMapPreview address={address} />
 
-        <StandardSaveContactButton />
+        <StandardSaveContactButton userData={userData} />
 
         <div className="mt-16 opacity-30 flex justify-between items-center relative z-10">
            <p className="text-[7px] font-black tracking-[0.8em] text-white uppercase italic">Rigid Protocol v3.0</p>

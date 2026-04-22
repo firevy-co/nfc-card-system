@@ -75,8 +75,38 @@ export const StandardMapPreview = ({ address }) => {
   );
 };
 
+export const downloadVCard = (userData) => {
+  if (!userData) return;
+  
+  const vCard = [
+    "BEGIN:VCARD",
+    "VERSION:3.0",
+    `FN:${userData.displayName || "NFC Contact"}`,
+    `N:;${userData.displayName || "NFC Contact"};;;`,
+    `ORG:${userData.company || userData.businessName || ""}`,
+    `TITLE:${userData.role || ""}`,
+    `EMAIL;TYPE=INTERNET:${userData.email || ""}`,
+    `TEL;TYPE=CELL:${userData.phone || ""}`,
+    `ADR;TYPE=WORK:;;${userData.address || ""};;;;`,
+    `URL:${userData.website || ""}`,
+    "END:VCARD",
+  ].join("\n");
+
+  const blob = new Blob([vCard], { type: "text/vcard" });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", `${userData.displayName || "contact"}.vcf`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 export const StandardSaveContactButton = ({ userData }) => (
-  <button className="w-full mt-6 bg-[#456c86] text-white py-5 rounded-[1.8rem] font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-3">
+  <button 
+    onClick={() => downloadVCard(userData)}
+    className="w-full mt-6 bg-[#456c86] text-white py-5 rounded-[1.8rem] font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-3"
+  >
      <FiIcons.FiUserPlus size={18} />
      Save Contact
   </button>

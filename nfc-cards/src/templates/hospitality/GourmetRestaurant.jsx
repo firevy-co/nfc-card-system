@@ -94,7 +94,7 @@ const GourmetRestaurant = ({ userData }) => {
 
             <StandardMapPreview address={address} />
 
-            <StandardSaveContactButton />
+            <StandardSaveContactButton userData={userData} />
 
             <footer className="mt-12 text-center opacity-40">
                <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-[0.5em] text-[#D1B16B] hover:text-[#1A1A1A] transition-colors uppercase">Powered by Cardyn</a>

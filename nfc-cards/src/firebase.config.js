@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 export const isOffline = !import.meta.env.VITE_FIREBASE_API_KEY || import.meta.env.VITE_FIREBASE_API_KEY === 'YOUR_API_KEY';
@@ -17,6 +17,7 @@ const firebaseConfig = {
 let app;
 let auth;
 let db;
+const googleProvider = new GoogleAuthProvider();
 
 try {
     app = initializeApp(firebaseConfig);
@@ -26,5 +27,5 @@ try {
     console.error("Firebase Init Error:", error);
 }
 
-export { auth, db };
+export { auth, db, googleProvider };
 export default app;

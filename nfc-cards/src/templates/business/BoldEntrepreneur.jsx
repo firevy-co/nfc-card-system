@@ -34,7 +34,7 @@ const BoldEntrepreneur = ({ userData }) => {
 
            <StandardMapPreview address={address} />
 
-           <StandardSaveContactButton />
+           <StandardSaveContactButton userData={userData} />
 
            <footer className="pt-8 text-center opacity-10">
               <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] text-white font-black tracking-[0.2em] uppercase hover:opacity-100 transition-opacity">Powered by Cardyn</a>

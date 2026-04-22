@@ -34,7 +34,7 @@ const GoldenGrace = ({ userData }) => {
         
         <StandardMapPreview address={address} />
 
-        <StandardSaveContactButton />
+        <StandardSaveContactButton userData={userData} />
         
         <div className="mt-12 flex items-center gap-1 opacity-20">
           <div className="w-8 h-px bg-black" />

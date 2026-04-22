@@ -62,7 +62,7 @@ const BoutiqueStylist = ({ userData }) => {
 
             <StandardMapPreview address={address} />
 
-            <StandardSaveContactButton />
+            <StandardSaveContactButton userData={userData} />
 
             <footer className="mt-8 text-center opacity-30">
                <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[8px] font-black tracking-[0.4em] text-gray-400 hover:text-[#D35D92] transition-colors uppercase">Powered by Cardyn</a>

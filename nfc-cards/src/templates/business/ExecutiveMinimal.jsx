@@ -41,7 +41,7 @@ const ExecutiveMinimal = ({ userData }) => {
 
           <StandardMapPreview address={address} />
 
-          <StandardSaveContactButton />
+          <StandardSaveContactButton userData={userData} />
 
           <footer className="mt-12 text-center opacity-20">
              <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-widest uppercase hover:opacity-100 transition-opacity tracking-[0.5em]">Powered by Cardyn</a>
