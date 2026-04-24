@@ -22,21 +22,21 @@ const ExecutiveMinimal = ({ userData }) => {
           </div>
 
           <div className="space-y-3">
-             <StandardContactLink icon={FiGlobe} value={website} href={website} />
-             <StandardContactLink icon={FiMail} value={email} href={`mailto:${email}`} />
-             <StandardContactLink icon={FiPhone} value={phone} href={`tel:${phone}`} />
-             <StandardContactLink icon={FiMapPin} value={address} />
+            <StandardContactLink icon={FiGlobe} value={website} href={website} />
+            <StandardContactLink icon={FiMail} value={email} href={`mailto:${email}`} />
+            <StandardContactLink icon={FiPhone} value={phone} href={`tel:${phone}`} />
+            <StandardContactLink icon={FiMapPin} value={address} />
 
-             {/* Dynamic Social Uplinks */}
-             <StandardContactLink icon={FiLinkedin} value={userData?.linkedin} href={userData?.linkedin} />
-             <StandardContactLink icon={FiTwitter} value={userData?.twitter} href={userData?.twitter} />
-             <StandardContactLink icon={FiGithub} value={userData?.github} href={userData?.github} />
+            {/* Dynamic Social Uplinks */}
+            <StandardContactLink icon={FiLinkedin} value={userData?.linkedin} href={userData?.linkedin} />
+            <StandardContactLink icon={FiTwitter} value={userData?.twitter} href={userData?.twitter} />
+            <StandardContactLink icon={FiGithub} value={userData?.github} href={userData?.github} />
           </div>
 
           <div className="flex flex-col gap-3 mt-10">
-              <button className="w-full bg-white text-black py-4 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:bg-white/90 transition-all">
-                  Our Portfolio
-              </button>
+            <button className="w-full bg-white text-black py-4 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:bg-white/90 transition-all">
+              Our Portfolio
+            </button>
           </div>
 
           <StandardMapPreview address={address} />
@@ -44,7 +44,7 @@ const ExecutiveMinimal = ({ userData }) => {
           <StandardSaveContactButton userData={userData} />
 
           <footer className="mt-12 text-center opacity-20">
-             <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-widest uppercase hover:opacity-100 transition-opacity tracking-[0.5em]">Powered by Cardyn</a>
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-widest uppercase hover:opacity-100 transition-opacity tracking-[0.5em]">Powered by Cardyn</a>
           </footer>
         </div>
       </div>

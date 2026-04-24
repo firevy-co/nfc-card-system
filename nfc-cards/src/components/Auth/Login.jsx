@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { auth, googleProvider } from '../../firebase.config';
+import { auth, googleProvider } from '@/firebase.config';
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../layout/layout';
 import logo from '../../assets/logo (2).png';
+import * as Fi from "react-icons/fi";
+import { motion } from 'framer-motion';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -23,7 +25,7 @@ const Login = () => {
             const user = userCredential.user;
 
             const { doc, getDoc } = await import('firebase/firestore');
-            const { db } = await import('../../firebase.config');
+            const { db } = await import('@/firebase.config');
             const userDoc = await getDoc(doc(db, "users", user.uid));
 
             if (!userDoc.exists()) {
@@ -53,7 +55,7 @@ const Login = () => {
             const user = result.user;
 
             const { doc, getDoc, setDoc, serverTimestamp } = await import('firebase/firestore');
-            const { db } = await import('../../firebase.config');
+            const { db } = await import('@/firebase.config');
             const userDoc = await getDoc(doc(db, "users", user.uid));
 
             if (!userDoc.exists()) {
@@ -77,45 +79,36 @@ const Login = () => {
     };
 
     return (
-        <Layout hideSidebar={true} hideTopNav={true}>
-            <div className="flex-1 flex items-center justify-center p-6 sm:p-12 min-h-screen">
-                <div className="w-full max-w-lg">
-                    <div className="glass-card p-10 rounded-[2.5rem] border-white/10 shadow-2xl relative overflow-hidden backdrop-blur-2xl">
-                        {/* Decorative Top Accent */}
-                        <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+        <div className="flex min-h-screen bg-white font-['Mulish']">
+            {/* Left Side: Form */}
+            <div className="flex-1 flex flex-col p-8 sm:p-16 lg:p-24 justify-between max-w-2xl">
+                <div>
+                    <Link to="/" className="mb-12 block">
+                        <img src={logo} alt="Logo" className="h-10 object-contain" />
+                    </Link>
 
-                        <div className="text-center mb-10">
-                            <img src={logo} alt="Cardyn Logo" className="h-10 object-contain mx-auto mb-6" />
-                            <h1 className="text-4xl font-extrabold tracking-tight mb-3 text-gradient">
-                                Welcome Back
-                            </h1>
-                            <p className="text-muted-foreground font-medium">
-                                Sign in to your premium NFC dashboard
-                            </p>
-                        </div>
+                    <div className="max-w-md">
+                        <h1 className="text-4xl font-black text-gray-900 mb-2">Welcome Back</h1>
+                        <p className="text-gray-500 font-medium mb-10">Log in to your premium NFC dashboard</p>
 
                         {error && (
-                            <div className="mb-8 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-300 text-sm flex items-start gap-3 animate-shake">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
+                            <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm flex items-center gap-3">
+                                <Fi.FiAlertCircle className="flex-shrink-0" />
                                 <span>{error}</span>
                             </div>
                         )}
 
                         <form onSubmit={handleLogin} className="space-y-6">
                             <div className="space-y-2">
-                                <label className="block text-sm font-semibold text-muted-foreground ml-1">Email Address</label>
+                                <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
                                 <div className="relative group">
-                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-indigo-400 transition-colors">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206" />
-                                        </svg>
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                                        <Fi.FiMail size={18} />
                                     </div>
                                     <input
                                         type="email"
-                                        className="w-full pl-12 pr-5 py-4 rounded-2xl bg-secondary/30 border border-border text-foreground placeholder-muted-foreground/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all duration-300"
-                                        placeholder="name@example.com"
+                                        className="w-full pl-12 pr-4 py-4 rounded-xl bg-gray-50 border border-transparent focus:bg-white focus:border-gray-200 focus:ring-0 transition-all outline-none text-gray-900 font-medium placeholder:text-gray-300"
+                                        placeholder="name@company.com"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
@@ -125,18 +118,16 @@ const Login = () => {
 
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between ml-1">
-                                    <label className="block text-sm font-semibold text-muted-foreground">Password</label>
-                                    <a href="#" className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors">Forgot?</a>
+                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Password</label>
+                                    <a href="#" className="text-xs font-bold text-[#7c3aed] hover:text-[#db2777] transition-colors">Forgot password?</a>
                                 </div>
                                 <div className="relative group">
-                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-indigo-400 transition-colors">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                        </svg>
+                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                                        <Fi.FiLock size={18} />
                                     </div>
                                     <input
                                         type={showPassword ? "text" : "password"}
-                                        className="w-full pl-12 pr-12 py-4 rounded-2xl bg-secondary/30 border border-border text-foreground placeholder-muted-foreground/30 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all duration-300"
+                                        className="w-full pl-12 pr-12 py-4 rounded-xl bg-gray-50 border border-transparent focus:bg-white focus:border-gray-200 focus:ring-0 transition-all outline-none text-gray-900 font-medium placeholder:text-gray-300"
                                         placeholder="••••••••"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
@@ -145,52 +136,31 @@ const Login = () => {
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-muted-foreground hover:text-foreground transition-colors"
+                                        className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
                                     >
-                                        {showPassword ? (
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.888 9.888L13.89 13.89m-3.13-3.132L10 10m0 0l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                        ) : (
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268-2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                            </svg>
-                                        )}
+                                        {showPassword ? <Fi.FiEyeOff size={18} /> : <Fi.FiEye size={18} />}
                                     </button>
                                 </div>
                             </div>
 
                             <button
                                 type="submit"
-                                className="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold text-lg hover:translate-y-[-2px] hover:shadow-[0_10px_20px_-5px_rgba(79,70,229,0.5)] active:translate-y-0 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group"
+                                className="w-full py-4 rounded-xl bg-gradient-to-r from-[#7c3aed] to-[#db2777] text-white font-black text-sm uppercase tracking-widest shadow-xl shadow-purple-500/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-4"
                                 disabled={loading}
                             >
-                                <span className="flex items-center justify-center gap-2">
-                                    {loading ? (
-                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                                    ) : 'Sign In'}
-                                    {!loading && (
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                        </svg>
-                                    )}
-                                </span>
+                                {loading ? "Authenticating..." : "Sign In"}
                             </button>
 
-                            <div className="relative my-8">
-                                <div className="absolute inset-0 flex items-center">
-                                    <div className="w-full border-t border-white/10"></div>
-                                </div>
-                                <div className="relative flex justify-center text-xs uppercase">
-                                    <span className="bg-[#0f172a] px-2 text-muted-foreground font-black tracking-widest">Or Secure Link Via</span>
-                                </div>
+                            <div className="relative py-4 flex items-center">
+                                <div className="flex-grow border-t border-gray-100"></div>
+                                <span className="flex-shrink mx-4 text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">OR</span>
+                                <div className="flex-grow border-t border-gray-100"></div>
                             </div>
 
                             <button
                                 type="button"
                                 onClick={handleGoogleLogin}
-                                className="w-full py-4 rounded-2xl bg-white text-black font-bold text-sm hover:bg-gray-100 transition-all duration-300 flex items-center justify-center gap-3 active:scale-[0.98] shadow-sm"
+                                className="w-full py-4 rounded-xl bg-white border border-gray-200 text-gray-900 font-bold text-sm hover:bg-gray-50 transition-all flex items-center justify-center gap-3 active:scale-95 shadow-sm"
                             >
                                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -202,16 +172,149 @@ const Login = () => {
                             </button>
                         </form>
 
-                        <div className="mt-10 flex flex-col items-center gap-4">
-                            <p className="text-sm font-medium text-muted-foreground">
-                                New to the system? <Link to="/signup" className="text-indigo-400 font-bold hover:text-pink-400 transition-colors">Create Account</Link>
-                            </p>
+                        <p className="mt-12 text-sm font-bold text-gray-400">
+                            Don't have an account? <Link to="/signup" className="text-[#7c3aed] hover:text-[#db2777] transition-colors">Create Account</Link>
+                        </p>
+                    </div>
+                </div>
+
+                <div className="flex gap-6 text-[10px] font-bold text-gray-300 uppercase tracking-widest">
+                    <a href="#" className="hover:text-gray-600 transition-colors">Privacy Policy</a>
+                    <a href="#" className="hover:text-gray-600 transition-colors">Terms of Service</a>
+                </div>
+            </div>
+
+            {/* Right Side: Visual Showcase */}
+            <div className="hidden lg:flex flex-1 relative bg-[#0a0a0b] items-center justify-center overflow-hidden">
+                {/* Abstract Background Glow */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-pink-600/10 rounded-full blur-[100px] pointer-events-none delay-700"></div>
+
+                {/* NFC Tap Experience Container */}
+                <div className="relative z-10 w-full h-full flex items-center justify-center scale-110">
+
+                    {/* iPhone Frame */}
+                    <div className="relative w-[280px] h-[580px] bg-black rounded-[3rem] p-3 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.8)] border-[6px] border-gray-800">
+                        {/* Dynamic Island */}
+                        <div className="absolute top-7 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-full z-30 flex items-center justify-center">
+                            <div className="w-1 h-1 rounded-full bg-blue-500/50 mr-12"></div>
+                            <div className="w-2 h-2 rounded-full bg-white/5"></div>
                         </div>
+
+                        {/* Screen Content */}
+                        <div className="relative w-full h-full rounded-[2.2rem] overflow-hidden bg-[#1c1c1e]">
+
+                            {/* Home Screen (Initial) */}
+                            <motion.div
+                                className="absolute inset-0 p-6 flex flex-col pt-16"
+                                animate={{ opacity: [1, 1, 0, 0, 1], filter: ["blur(0px)", "blur(0px)", "blur(20px)", "blur(20px)", "blur(0px)"] }}
+                                transition={{ duration: 8, repeat: Infinity, times: [0, 0.45, 0.5, 0.95, 1] }}
+                            >
+                                <div className="grid grid-cols-4 gap-4">
+                                    {[...Array(16)].map((_, i) => (
+                                        <div key={i} className="aspect-square rounded-xl bg-white/10"></div>
+                                    ))}
+                                </div>
+                                <div className="mt-auto flex justify-center gap-4 mb-4">
+                                    {[...Array(4)].map((_, i) => (
+                                        <div key={i} className="w-12 h-12 rounded-xl bg-white/20"></div>
+                                    ))}
+                                </div>
+                            </motion.div>
+
+                            {/* Digital Card (After Tap) */}
+                            <motion.div
+                                className="absolute inset-0 bg-gray-50 flex flex-col"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: [0, 0, 1, 1, 0] }}
+                                transition={{ duration: 8, repeat: Infinity, times: [0, 0.45, 0.5, 0.95, 1] }}
+                            >
+                                <div className="h-40 bg-[#1c1c1e] relative">
+                                    <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-24 h-24 rounded-full bg-white border-4 border-gray-50 flex items-center justify-center shadow-lg">
+                                        <Fi.FiUser size={40} className="text-gray-200" />
+                                    </div>
+                                </div>
+                                <div className="mt-14 text-center px-6">
+                                    <h3 className="text-2xl font-black text-gray-900">Yash</h3>
+                                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">CEO / FOUNDER</p>
+
+                                    <div className="mt-8 flex gap-2">
+                                        <button className="flex-1 bg-[#1c1c1e] text-white py-3 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2">
+                                            <Fi.FiDownload size={14} /> Save Contact
+                                        </button>
+                                        <button className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center text-gray-600">
+                                            <Fi.FiShare2 size={18} />
+                                        </button>
+                                    </div>
+
+                                    <div className="mt-8 space-y-3">
+                                        {[
+                                            { icon: <Fi.FiPhone />, label: "Call Mobile", value: "+91 70693 70623" },
+                                            { icon: <Fi.FiMail />, label: "Email", value: "getcardyn@gmail.com" },
+                                            { icon: <Fi.FiGlobe />, label: "Website", value: "cardyn.shop" },
+                                            { icon: <Fi.FiMapPin />, label: "Office Address", value: "Surat, Gujarat" }
+                                        ].map((item, i) => (
+                                            <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-gray-100 text-left">
+                                                <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400">
+                                                    {item.icon}
+                                                </div>
+                                                <div className="flex-1">
+                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{item.label}</p>
+                                                    <p className="text-xs font-bold text-gray-900">{item.value}</p>
+                                                </div>
+                                                <Fi.FiChevronRight size={16} className="text-gray-300" />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+
+                        {/* NFC Waves Animation */}
+                        <motion.div
+                            className="absolute -top-10 left-1/2 -translate-x-1/2 w-20 h-20 pointer-events-none"
+                            initial={{ opacity: 0 }}
+                            animate={{
+                                opacity: [0, 0, 1, 0, 0],
+                                scale: [0.5, 0.5, 1.5, 2, 2]
+                            }}
+                            transition={{ duration: 8, repeat: Infinity, times: [0, 0.4, 0.42, 0.55, 1] }}
+                        >
+                            <div className="absolute inset-0 border-2 border-orange-500 rounded-full animate-ping"></div>
+                            <div className="absolute inset-4 border-2 border-orange-400 rounded-full animate-ping delay-100"></div>
+                            <div className="absolute inset-8 border-2 border-orange-300 rounded-full animate-ping delay-200"></div>
+                        </motion.div>
+                    </div>
+
+                    <motion.div
+                        className="absolute z-40 w-80 aspect-[1.58/1] bg-gradient-to-br from-[#2c2c2e] to-[#000000] rounded-2xl shadow-[0_30px_60px_-10px_rgba(0,0,0,0.8)] p-8 border border-white/10 flex items-center justify-center"
+                        initial={{ x: 400, y: 100, rotate: 15 }}
+                        animate={{
+                            x: [400, 400, 0, 0, 400],
+                            y: [100, 100, -250, -250, 100],
+                            rotate: [15, 15, -15, -15, 15]
+                        }}
+                        transition={{
+                            duration: 8,
+                            repeat: Infinity,
+                            times: [0, 0.1, 0.4, 0.6, 0.9],
+                            ease: "easeInOut"
+                        }}
+                    >
+                        <img src={logo} alt="Logo" className="w-40 h-16 object-contain invert brightness-0" style={{ filter: 'brightness(0) invert(1)' }} />
+                        <div className="absolute bottom-6 right-8 w-12 h-8 rounded bg-white/5 border border-white/10"></div>
+                    </motion.div>
+
+                    {/* Static Text Overlay */}
+                    <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center w-full">
+                        <h2 className="text-2xl font-black text-white mb-2 uppercase tracking-widest">Tap the Future</h2>
+                        <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.3em]">Experience cardless connection</p>
                     </div>
                 </div>
             </div>
-        </Layout>
+        </div>
     );
 };
 
 export default Login;
+

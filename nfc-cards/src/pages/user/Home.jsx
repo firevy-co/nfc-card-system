@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { auth, db } from '../../firebase.config';
+import { auth, db } from '@/firebase.config';
 import { doc, onSnapshot } from 'firebase/firestore';
 import Layout from '../../components/layout/layout';
 import {
@@ -222,3 +222,4 @@ const Progress = ({ label, value, color }) => (
         </div>
     </div>
 );
+

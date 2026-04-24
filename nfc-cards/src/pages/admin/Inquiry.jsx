@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { db } from '../../firebase.config';
+import { db } from '@/firebase.config';
 import { collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, addDoc, serverTimestamp } from 'firebase/firestore';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -353,3 +353,4 @@ const Inquiry = ({ userData }) => {
 };
 
 export default Inquiry;
+

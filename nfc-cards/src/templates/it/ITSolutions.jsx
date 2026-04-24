@@ -27,15 +27,16 @@ const ITSolutions = ({ userData }) => {
             {/* LOGO */}
             <div className="flex flex-col items-center text-center">
 
-               <div className="w-20 h-20 bg-cyan-400/10 border border-cyan-400/20 rounded-2xl flex items-center justify-center mb-6">
-                  <FiCpu className="text-cyan-400 text-3xl" />
+               <div className="w-20 h-20 bg-cyan-400/10 border border-cyan-400/20 rounded-2xl flex items-center justify-center mb-6 overflow-hidden">
+                  {userData?.logo ? (
+                     <img src={userData.logo} alt="Logo" className="w-full h-full object-cover" />
+                  ) : (
+                     <FiCpu className="text-cyan-400 text-3xl" />
+                  )}
                </div>
 
                <h1 className="text-2xl font-black tracking-tight">{displayName || "IT Global Resource"}</h1>
 
-               <p className="text-[10px] text-cyan-400 font-black tracking-[0.3em] uppercase mt-2 opacity-80">
-                  Architecting The Digital Frontier
-               </p>
 
                {/* TAGS */}
                <div className="flex gap-2 mt-6 flex-wrap justify-center font-black">

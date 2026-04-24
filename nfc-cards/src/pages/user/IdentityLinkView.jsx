@@ -27,7 +27,7 @@ const IdentityLinkView = () => {
                 // 1. Resolve User Data
                 if (userId) {
                     const { doc, getDoc } = await import('firebase/firestore');
-                    const { db } = await import('../../firebase.config');
+                    const { db } = await import('@/firebase.config');
                     const userRef = doc(db, "users", userId);
                     const userSnap = await getDoc(userRef);
                     if (userSnap.exists()) {
@@ -68,3 +68,4 @@ const IdentityLinkView = () => {
 };
 
 export default IdentityLinkView;
+

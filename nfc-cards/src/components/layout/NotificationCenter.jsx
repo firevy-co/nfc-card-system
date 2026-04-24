@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { db, auth } from '../../firebase.config';
+import { db, auth } from '@/firebase.config';
 import { collection, query, where, orderBy, onSnapshot, limit } from 'firebase/firestore';
 import { FiBell, FiMessageSquare, FiClock, FiCheckCircle } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -159,3 +159,4 @@ const NotificationCenter = ({ isAdmin, theme }) => {
 };
 
 export default NotificationCenter;
+

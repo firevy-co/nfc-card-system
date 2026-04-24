@@ -1,7 +1,7 @@
 import React from "react";
 import Layout from "../../components/layout/layout";
 import { signOut } from "firebase/auth";
-import { auth } from "../../firebase.config";
+import { auth } from '@/firebase.config';
 import {
    Users,
    CheckCircle2,

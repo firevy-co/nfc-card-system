@@ -1,5 +1,4 @@
-import React from "react";
-import { FiEye, FiEdit, FiGlobe, FiWifi, FiTrash2, FiSettings } from "react-icons/fi";
+import { FiEye, FiEdit, FiTrash2 } from "react-icons/fi";
 import { useNavigate, useLocation } from "react-router-dom";
 import TemplateRenderer from "../../templates/TemplateRenderer";
 
@@ -12,12 +11,9 @@ export default function TemplateCard({
     templateId,
     title,
     path,
-    type,
-    status = "Active",
     isAdmin = true,
     description,
     category,
-    tags = [],
     userData,
     onDelete,
     onEdit,
@@ -30,12 +26,10 @@ export default function TemplateCard({
     const baseRoute = location.pathname.startsWith('/admin') ? '/admin' : '/user';
 
     const previewData = {
-        displayName: userData?.displayName || title,
-        email: userData?.email || "hello@identity.co",
-        role: userData?.businessName || userData?.role || category || "Design Lead",
-        phone: userData?.phone || "+x (xxx) xxx-xxxx",
-        socialLinks: userData?.socialLinks || {},
-        logo: userData?.logo
+        ...userData,
+        displayName: userData?.name || userData?.displayName || title,
+        role: userData?.businessRole || userData?.job || userData?.role || category || "Design Lead",
+        themeColor: userData?.themeColor || "#0f172a"
     };
 
     return (

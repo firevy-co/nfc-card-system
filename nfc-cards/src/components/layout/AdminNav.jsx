@@ -1,17 +1,9 @@
 import React, { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
-  FiPieChart,
-  FiUsers,
-  FiLayout,
-  FiSettings,
-  FiBell,
-  FiLogOut,
-  FiActivity,
-  FiSun,
-  FiMoon
+  FiSettings
 } from 'react-icons/fi';
-import { auth } from '../../firebase.config';
+import { auth } from '@/firebase.config';
 import { signOut } from 'firebase/auth';
 import { useTheme } from '../../context/ThemeContext';
 import NotificationCenter from './NotificationCenter';
@@ -33,19 +25,8 @@ const AdminNav = ({ userData }) => {
     }
   }, [theme]);
 
-  const handleLogout = () => {
-    signOut(auth).then(() => navigate('/login'));
-  };
-
-  const navLinks = [
-    { name: 'Analytics', path: '/admin/analytics', icon: <FiPieChart size={14} /> },
-    { name: 'Templates', path: '/admin/templates', icon: <FiLayout size={14} /> },
-    { name: 'Users', path: '/admin/users', icon: <FiUsers size={14} /> },
-    { name: 'Inquiry', path: '/admin/inquiry', icon: <FiActivity size={14} /> },
-  ];
-
   return (
-    <div className="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[1400px] z-[50] animate-in slide-in-from-top-8 duration-700">
+    <div className="hidden lg:block fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[1400px] z-[50] animate-in slide-in-from-top-8 duration-700">
       <div className="bg-white/95 border-black/5 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.08)] backdrop-blur-3xl border rounded-full px-5 py-3 flex items-center justify-between transition-all duration-500">
 
         {/* LOGO SECTION */}
@@ -105,3 +86,4 @@ const AdminNav = ({ userData }) => {
 };
 
 export default AdminNav;
+

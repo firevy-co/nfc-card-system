@@ -3,21 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import TemplateCard from "../admin/TemplateCard";
 import CreateTemplateModal from "../admin/CreateTemplateModal";
 import {
-  FiFilter,
   FiPlus,
-  FiGrid,
-  FiList,
-  FiChevronRight,
-  FiChevronDown,
   FiSearch,
-  FiCheckSquare,
-  FiSliders,
-  FiBell,
-  FiShare2,
-  FiTag,
-  FiBox,
   FiLink,
-  FiCopy
 } from "react-icons/fi";
 import { TEMPLATES } from "../../templates/templateRegistry";
 import toast from 'react-hot-toast';
@@ -37,18 +25,18 @@ export default function Content({ userData }) {
   ].sort((a, b) => a === "All" ? -1 : a.localeCompare(b));
 
   // Determine if we should show restricted categories based on user's business role
-  const businessQuery = (userData?.businessName || userData?.companyName || userData?.role === "Admin" ? "Business" : "").toLowerCase();
 
-  const matchedCategory = (userData?.businessName || userData?.companyName)
-    ? TEMPLATES.find(t => {
-      const userQuery = (userData.businessName || userData.companyName).toLowerCase();
-      return t.category.toLowerCase().includes(userQuery) ||
-        userQuery.includes(t.category.toLowerCase()) ||
-        t.tags?.some(tag => userQuery.includes(tag.toLowerCase()));
-    })?.category
+  const matchedCategory = (userData?.businessRole || userData?.businessName || userData?.companyName)
+    ? (TEMPLATES.find(t => t.category.toLowerCase() === (userData.businessRole || "").toLowerCase())?.category ||
+      TEMPLATES.find(t => {
+        const userQuery = (userData.businessName || userData.companyName || "").toLowerCase();
+        return userQuery && (t.category.toLowerCase().includes(userQuery) ||
+          userQuery.includes(t.category.toLowerCase()) ||
+          t.tags?.some(tag => userQuery.includes(tag.toLowerCase())));
+      })?.category)
     : (isAdmin ? "Business" : null);
 
-  // Logic to determine categories: Admins see all, Users see strictly limited two
+  // Logic to determine categories: Admins see all, Users see matched + Discovery All
   const categories = isAdmin
     ? allCategories
     : ["All", matchedCategory].filter(Boolean);
@@ -71,20 +59,21 @@ export default function Content({ userData }) {
 
         // AUTO-RECOMMEND: Multi-layer matching logic
         if (!isAdmin && userData) {
+          const userRole = (userData.businessRole || "").toLowerCase();
           const userQuery = (userData.businessName || userData.companyName || "").toLowerCase();
-          if (userQuery) {
-            const match = combined.find(t =>
-              t.category.toLowerCase().includes(userQuery) ||
-              userQuery.includes(t.category.toLowerCase()) ||
-              t.tags?.some(tag => userQuery.includes(tag.toLowerCase()))
-            );
-            if (match) setSelectedCategory(match.category);
-          }
+          
+          const match = combined.find(t => 
+            t.category.toLowerCase() === userRole ||
+            (userQuery && (t.category.toLowerCase().includes(userQuery) ||
+            userQuery.includes(t.category.toLowerCase()) ||
+            t.tags?.some(tag => userQuery.includes(tag.toLowerCase()))))
+          );
+          if (match) setSelectedCategory(match.category);
         }
       } else {
         throw new Error("Sync Handshake Failed.");
       }
-    } catch (error) {
+    } catch {
       console.warn("[SYNC]: Cloud offline. Activating Identity Deduplication Firewall.");
       const localCache = JSON.parse(localStorage.getItem('identity_nodes') || '[]');
       const combined = [
@@ -95,15 +84,16 @@ export default function Content({ userData }) {
 
       // Fallback RECOMMEND logic
       if (!isAdmin && userData) {
+        const userRole = (userData.businessRole || "").toLowerCase();
         const userQuery = (userData.businessName || userData.companyName || "").toLowerCase();
-        if (userQuery) {
-          const match = combined.find(t =>
-            t.category.toLowerCase().includes(userQuery) ||
-            userQuery.includes(t.category.toLowerCase()) ||
-            t.tags?.some(tag => userQuery.includes(tag.toLowerCase()))
-          );
-          if (match) setSelectedCategory(match.category);
-        }
+        
+        const match = combined.find(t => 
+          t.category.toLowerCase() === userRole ||
+          (userQuery && (t.category.toLowerCase().includes(userQuery) ||
+          userQuery.includes(t.category.toLowerCase()) ||
+          t.tags?.some(tag => userQuery.includes(tag.toLowerCase()))))
+        );
+        if (match) setSelectedCategory(match.category);
       }
     } finally {
       setLoading(false);
@@ -138,7 +128,7 @@ export default function Content({ userData }) {
       } else {
         throw new Error("Cloud Sync Failed.");
       }
-    } catch (error) {
+    } catch {
       const localCache = JSON.parse(localStorage.getItem('identity_nodes') || '[]');
       const updatedNode = {
         ...templateData,
@@ -176,7 +166,7 @@ export default function Content({ userData }) {
       });
       if (response.ok) fetchTemplates();
       else throw new Error("Purge Failed.");
-    } catch (error) {
+    } catch {
       const localCache = JSON.parse(localStorage.getItem('identity_nodes') || '[]');
       localStorage.setItem('identity_nodes', JSON.stringify(localCache.filter(n => n.id !== id)));
       fetchTemplates();
@@ -187,7 +177,7 @@ export default function Content({ userData }) {
     if (!userData?.uid) return;
     try {
       const { doc, updateDoc } = await import('firebase/firestore');
-      const { db } = await import('../../firebase.config');
+      const { db } = await import('@/firebase.config');
       const userRef = doc(db, "users", userData.uid);
 
       await updateDoc(userRef, {
@@ -205,11 +195,21 @@ export default function Content({ userData }) {
   };
 
   const filteredTemplates = localTemplates.filter(t => {
+    // SECURITY: Restricted Access Filter
+    // Hide restricted templates from Admins as requested, 
+    // but ALWAYS allow the authorized user to see their exclusive nodes in the gallery.
+    if (t.restrictedAccess && isAdmin) {
+      return false;
+    }
+
     const matchesSearch = t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.category.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === "All" || t.category === selectedCategory;
+    
+    // EXCLUSIVE BYPASS: Restricted templates bypass category filters for authorized users
+    const matchesCategory = selectedCategory === "All" || t.category === selectedCategory || (t.restrictedAccess && !isAdmin);
+    
     return matchesSearch && matchesCategory;
-  });
+  }).sort((a, b) => (b.restrictedAccess ? 1 : 0) - (a.restrictedAccess ? 1 : 0));
 
   const globalLink = userData?.selectedTemplateId
     ? `${window.location.origin}/url/${userData.selectedTemplateId}?u=${userData?.uid}`
@@ -373,3 +373,4 @@ export default function Content({ userData }) {
     </div>
   );
 }
+

@@ -6,7 +6,7 @@ import {
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase.config';
+import { auth } from '@/firebase.config';
 import Layout from '../../components/layout/layout';
 
 const UserSettings = ({ userData }) => {
@@ -56,7 +56,7 @@ const UserSettings = ({ userData }) => {
                 <header className="flex flex-col gap-4 border-b border-black/[0.05] dark:border-black/[0.1] pb-8">
                     <div className="flex items-center gap-3">
                         <div className="w-1.5 h-6 bg-[#7BB9D4] rounded-full shadow-lg"></div>
-                        <span className="text-[10px] font-black text-black dark:text-black uppercase tracking-[0.4em] opacity-40">User Configuration</span>
+                        <span className="text-[10px] font-black text-black dark:text-black uppercase tracking-[0.4em] opacity-40">Identity Configuration</span>
                     </div>
                     <div className="space-y-1">
                         <h2 className="text-4xl font-black text-foreground dark:text-black tracking-tighter">Settings Hub</h2>
@@ -71,14 +71,14 @@ const UserSettings = ({ userData }) => {
 
                         <div className="flex items-center gap-8 relative z-10">
                             <div className="w-24 h-24 rounded-[2.5rem] flex items-center justify-center bg-slate-50 border-4 border-slate-50 shadow-xl text-3xl font-black text-[#7BB9D4]">
-                                {userData?.displayName?.charAt(0) || 'U'}
+                                {userData?.displayName?.charAt(0) || 'I'}
                             </div>
                             <div>
                                 <h3 className="text-2xl font-black tracking-tighter text-black dark:text-black">{userData?.displayName || 'Digital Resident'}</h3>
                                 <p className="text-sm font-bold text-zinc-400 dark:text-black/40 mt-1">{userData?.email}</p>
                                 <div className="mt-4 inline-flex items-center px-4 py-1.5 bg-[#7BB9D4]/10 border border-[#7BB9D4]/20 rounded-full text-[10px] text-[#7BB9D4] font-black uppercase tracking-widest">
                                     <FiActivity className="mr-2" />
-                                    {userData?.role || 'Standard User'}
+                                    {userData?.role || 'Standard Member'}
                                 </div>
                             </div>
                         </div>
@@ -148,3 +148,4 @@ const UserSettings = ({ userData }) => {
 };
 
 export default UserSettings;
+

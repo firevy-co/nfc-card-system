@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db, auth } from "../../firebase.config";
+import { db, auth } from '@/firebase.config';
 import { collection, addDoc, serverTimestamp, query, where, orderBy, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { FiSend, FiMessageSquare, FiClock, FiCheckCircle, FiActivity } from 'react-icons/fi';
 import toast from "react-hot-toast";

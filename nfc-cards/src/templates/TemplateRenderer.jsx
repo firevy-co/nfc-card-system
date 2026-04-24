@@ -8,6 +8,7 @@ import React, { lazy, Suspense } from 'react';
 
 // --- BUSINESS ---
 const ClassicExecutive = lazy(() => import('./business/ClassicExecutive'));
+const ClassicRefined = lazy(() => import('./business/ClassicRefined'));
 const ExecutiveMinimal = lazy(() => import('./business/ExecutiveMinimal'));
 const CorporateGlass = lazy(() => import('./business/CorporateGlass'));
 const BoldEntrepreneur = lazy(() => import('./business/BoldEntrepreneur'));
@@ -134,12 +135,27 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
     facebook: rawUserData.facebook || "",
     twitter: rawUserData.twitter || "",
     youtube: rawUserData.youtube || "",
-    github: rawUserData.github || ""
+    github: rawUserData.github || "",
+    
+    // Theme & Branding
+    themeColor: rawUserData.themeColor || "#0f172a",
+    logo: rawUserData.logo || rawUserData.profileImage || ""
   } : {};
 
   const renderTemplate = () => {
-    switch (templateId) {
+    // RESOLUTION LAYER: Handle dynamic node IDs by checking for underlying blueprint references
+    let activeId = (templateId?.startsWith('node_') || !templateId) 
+      ? (userData.templateId || 'cardyn_classic') 
+      : templateId;
+
+    // FAIL-SAFE: If activeId is still a dynamic node ID (resolution failed), default to a reliable blueprint
+    if (activeId?.startsWith('node_')) {
+      activeId = 'cardyn_classic';
+    }
+
+    switch (activeId) {
       // --- BUSINESS ---
+      case 'cardyn_classic': return <ClassicRefined userData={userData} />;
       case 'business_basic': return <ClassicExecutive userData={userData} />;
       case 'business_minimal': return <ExecutiveMinimal userData={userData} />;
       case 'business_glass': return <CorporateGlass userData={userData} />;

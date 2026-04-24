@@ -8,11 +8,14 @@ const SiliconStream = ({ userData }) => {
       <div className="w-full max-w-sm bg-white rounded-[2rem] p-8 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] border border-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-500/5 rounded-full -translate-y-1/2 translate-x-1/2" />
         <div className="flex flex-col items-center mb-10">
-          <div className="w-16 h-16 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-xl shadow-indigo-600/20 mb-6 group hover:rotate-6 transition-transform">
-            <FiCommand size={28} />
+          <div className="w-16 h-16 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-xl shadow-indigo-600/20 mb-6 group hover:rotate-6 transition-transform overflow-hidden">
+            {userData?.logo ? (
+              <img src={userData.logo} alt="Logo" className="w-full h-full object-cover" />
+            ) : (
+              <FiCommand size={28} />
+            )}
           </div>
           <h1 className="text-xl font-bold text-slate-900 tracking-tight">{displayName || 'Silicon Architect'}</h1>
-          <p className="text-slate-400 text-xs font-semibold mt-1">{role || 'Innovation Lead'}</p>
         </div>
         
         <div className="space-y-3">

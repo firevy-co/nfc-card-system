@@ -7,19 +7,16 @@ import {
   FiBarChart2,
   FiSettings,
   FiLogOut,
-  FiMoon,
-  FiSun,
   FiExternalLink,
   FiX,
   FiMessageSquare
 } from "react-icons/fi";
 import { useTheme } from "../../context/ThemeContext";
 import { signOut } from "firebase/auth";
-import { auth } from "../../firebase.config";
+import { auth } from '@/firebase.config';
 
 export default function Sidebar({ userData, isOpen, onClose }) {
   const navigate = useNavigate();
-  const { theme, toggleTheme } = useTheme();
   const isAdmin = userData?.role === "Admin";
   const rolePrefix = isAdmin ? "/admin" : "/user";
 
@@ -149,3 +146,4 @@ export default function Sidebar({ userData, isOpen, onClose }) {
     </aside>
   );
 }
+

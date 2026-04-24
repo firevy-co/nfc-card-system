@@ -12,11 +12,11 @@ const CorporateGlass = ({ userData }) => {
         <div className="relative z-10">
           <div className="flex items-center gap-5 mb-8">
             <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-3xl font-black shadow-xl shadow-blue-500/30 overflow-hidden">
-               {userData?.logo ? (
-                 <img src={userData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
-               ) : (
-                 displayName?.charAt(0) || 'C'
-               )}
+              {userData?.logo ? (
+                <img src={userData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
+              ) : (
+                displayName?.charAt(0) || 'C'
+              )}
             </div>
             <div>
               <h1 className="text-xl font-black text-white capitalize leading-none">{displayName || 'Corporate Lead'}</h1>
@@ -24,20 +24,20 @@ const CorporateGlass = ({ userData }) => {
             </div>
           </div>
           {bio && <p className="text-white/60 text-[11px] font-bold mb-8 leading-relaxed italic border-l-2 border-blue-500/30 pl-4">{bio}</p>}
-          
-          <div className="space-y-3">
-             <StandardContactLink icon={FiIcons.FiGlobe} value={website} href={website} />
-             <StandardContactLink icon={FiIcons.FiMail} value={email} href={`mailto:${email}`} />
-             <StandardContactLink icon={FiIcons.FiPhone} value={phone} href={`tel:${phone}`} />
-             <StandardContactLink icon={FiIcons.FiMapPin} value={address} />
 
-             {/* Corporate Socials */}
-             <StandardContactLink icon={FiIcons.FiLinkedin} value={linkedin} href={linkedin} />
-             <StandardContactLink icon={FiIcons.FiFacebook} value={facebook} href={facebook} />
+          <div className="space-y-3">
+            <StandardContactLink icon={FiIcons.FiGlobe} value={website} href={website} />
+            <StandardContactLink icon={FiIcons.FiMail} value={email} href={`mailto:${email}`} />
+            <StandardContactLink icon={FiIcons.FiPhone} value={phone} href={`tel:${phone}`} />
+            <StandardContactLink icon={FiIcons.FiMapPin} value={address} />
+
+            {/* Corporate Socials */}
+            <StandardContactLink icon={FiIcons.FiLinkedin} value={linkedin} href={linkedin} />
+            <StandardContactLink icon={FiIcons.FiFacebook} value={facebook} href={facebook} />
           </div>
 
           <div className="mt-8">
-             <button className="w-full py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl shadow-blue-500/30 hover:scale-[1.02] transition-all">Connect Now</button>
+            <button className="w-full py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl shadow-blue-500/30 hover:scale-[1.02] transition-all">Connect Now</button>
           </div>
 
           <StandardMapPreview address={address} />
@@ -45,7 +45,7 @@ const CorporateGlass = ({ userData }) => {
           <StandardSaveContactButton userData={userData} />
 
           <footer className="mt-10 text-center opacity-10">
-             <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] text-white font-black tracking-[0.5em] uppercase hover:opacity-100 transition-opacity">Powered by Cardyn</a>
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] text-white font-black tracking-[0.5em] uppercase hover:opacity-100 transition-opacity">Powered by Cardyn</a>
           </footer>
         </div>
       </div>

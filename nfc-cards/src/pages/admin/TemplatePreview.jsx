@@ -37,7 +37,7 @@ const TemplatePreview = ({ userData }) => {
         setConfirming(true);
         try {
             const { doc, updateDoc } = await import('firebase/firestore');
-            const { db } = await import('../../firebase.config');
+            const { db } = await import('@/firebase.config');
             const userRef = doc(db, "users", userData.uid);
             
             await updateDoc(userRef, {
@@ -188,3 +188,4 @@ const TemplatePreview = ({ userData }) => {
 };
 
 export default TemplatePreview;
+

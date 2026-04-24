@@ -4,7 +4,7 @@
   PREMIUM DESIGN SYSTEM - FIREVY IDENTITY NETWORK
   CURATED TYPOGRAPHY & SOPHISTICATED COLOR PALETTE
 */
-@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Inter:wght@100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
 
 @layer base {
   :root {
@@ -62,7 +62,7 @@
   body {
     background-color: rgb(var(--background));
     color: rgb(var(--foreground));
-    font-family: 'Inter', sans-serif;
+    font-family: 'Mulish', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -73,9 +73,28 @@
   h4,
   h5,
   h6 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Mulish', sans-serif;
     letter-spacing: -0.025em;
     font-weight: 600;
+  }
+
+  /* PREMIUM AUTH ANIMATIONS */
+  @keyframes float {
+    0%, 100% { transform: translateY(0) translateX(-10%); }
+    50% { transform: translateY(-10px) translateX(-10%); }
+  }
+
+  @keyframes float-delayed {
+    0%, 100% { transform: translateY(0) translateX(15%); }
+    50% { transform: translateY(-10px) translateX(15%); }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float-delayed 7s ease-in-out infinite;
   }
 }
 
@@ -163,5 +182,28 @@
     50% {
       opacity: 0.4;
     }
+  }
+
+  /* React Colorful Customization */
+  .react-colorful {
+    width: 240px !important;
+    height: 240px !important;
+    border-radius: 1.5rem !important;
+    overflow: hidden;
+    border: 8px solid white;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+  }
+
+  .react-colorful__hue {
+    height: 12px !important;
+    border-radius: 6px !important;
+    margin-top: 20px !important;
+  }
+
+  .react-colorful__pointer {
+    width: 24px !important;
+    height: 24px !important;
+    border: 4px solid white !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
   }
 }

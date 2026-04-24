@@ -6,7 +6,7 @@ import {
   FiBell,
   FiActivity,
 } from 'react-icons/fi';
-import { auth } from '../../firebase.config';
+import { auth } from '@/firebase.config';
 import { signOut } from 'firebase/auth';
 import { useTheme } from '../../context/ThemeContext';
 import NotificationCenter from './NotificationCenter';
@@ -21,7 +21,7 @@ const UserNav = ({ userData }) => {
   };
 
   return (
-    <div className="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[1400px] z-[50] animate-in slide-in-from-top-8 duration-700">
+    <div className="hidden lg:block fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[1400px] z-[50] animate-in slide-in-from-top-8 duration-700">
       <div className={`
         ${theme === 'dark'
           ? 'bg-zinc-950/95 border-white/10 shadow-[0_35px_80px_-15px_rgba(0,0,0,0.6)]'
@@ -78,7 +78,11 @@ const UserNav = ({ userData }) => {
             className={`w-10 h-10 rounded-full ml-3 border-2 flex items-center justify-center overflow-hidden transition-all cursor-pointer font-black text-sm ${theme === 'dark' ? 'border-white/10 bg-white/5 text-white hover:border-white/30 hover:scale-110' : 'border-black/10 bg-black/5 text-black hover:border-black/30 hover:scale-110'
               }`}
           >
-            {userData?.displayName?.charAt(0) || "U"}
+            {userData?.profileImage ? (
+              <img src={userData.profileImage} alt="Profile" className="w-full h-full object-cover" />
+            ) : (
+              userData?.displayName?.charAt(0) || "I"
+            )}
           </div>
         </div>
       </div>
@@ -87,3 +91,4 @@ const UserNav = ({ userData }) => {
 };
 
 export default UserNav;
+

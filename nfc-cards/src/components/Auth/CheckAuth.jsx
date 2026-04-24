@@ -19,7 +19,20 @@ const ProtectedRoute = ({ children, user, userData, loading, adminOnly = false }
         return <Navigate to="/user/home" />;
     }
 
-    // 4. APPROVED: Inject identity context into children
+    // 4. ONBOARDING ENFORCEMENT
+    // If not onboarded and not on the onboarding page, redirect to onboarding
+    const isOnboardingPage = window.location.pathname === '/user/complete-profile' || window.location.pathname === '/admin/complete-profile';
+    
+    if (userData && userData.role !== 'Admin' && !userData.onboarded && !isOnboardingPage) {
+        return <Navigate to="/user/complete-profile" />;
+    }
+
+    // If already onboarded and trying to access onboarding page, redirect to home
+    if (userData?.onboarded && isOnboardingPage) {
+        return <Navigate to="/user/home" />;
+    }
+
+    // 5. APPROVED: Inject identity context into children
     if (React.isValidElement(children)) {
         return React.cloneElement(children, { user, userData });
     }
