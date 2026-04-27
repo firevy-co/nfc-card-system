@@ -23,7 +23,7 @@ const ClinicaElite = ({ userData }) => {
                 </div>
              </div>
              <div className="text-right">
-                <p className="text-blue-500 text-[10px] font-black uppercase tracking-[0.4em] italic mb-2">Security ID: {Math.random().toString(36).substring(7).toUpperCase()}</p>
+                <p className="text-blue-500 text-[10px] font-black uppercase tracking-[0.4em] italic mb-2">Security ID: {userData?.uid ? userData.uid.substring(0, 8).toUpperCase() : (displayName ? displayName.substring(0, 3).toUpperCase() + '992' : 'ALPHA-701')}</p>
                 <div className="w-12 h-1 bg-blue-600 ml-auto" />
              </div>
           </header>

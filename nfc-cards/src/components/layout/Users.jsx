@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import Layout from './layout';
 import { FiRefreshCw, FiUserPlus, FiEdit2, FiTrash2, FiShield, FiUser, FiActivity } from 'react-icons/fi';
 import { API_BASE_URL } from "../../config/api";
-
+import Layout from "./layout";
+import { useState, useEffect } from 'react';
 
 const Users = ({ userData }) => {
     const [usersList, setUsersList] = useState([]);

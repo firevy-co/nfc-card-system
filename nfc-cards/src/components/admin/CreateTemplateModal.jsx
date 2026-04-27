@@ -136,17 +136,17 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                             <FiTag size={12} /> Identity Branding
                                         </label>
                                         <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-lg">
-                                            <button 
-                                                onClick={() => setFormData({...formData, logoType: 'url'})}
+                                            <button
+                                                onClick={() => setFormData({ ...formData, logoType: 'url' })}
                                                 className={`px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-md transition-all ${formData.logoType === 'url' ? 'bg-white shadow-sm text-black' : 'text-black/30'}`}
                                             >URL</button>
-                                            <button 
-                                                onClick={() => setFormData({...formData, logoType: 'file'})}
+                                            <button
+                                                onClick={() => setFormData({ ...formData, logoType: 'file' })}
                                                 className={`px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-md transition-all ${formData.logoType === 'file' ? 'bg-white shadow-sm text-black' : 'text-black/30'}`}
                                             >FILE</button>
                                         </div>
                                     </div>
-                                    
+
                                     <div className="flex items-center gap-6 p-6 bg-slate-50 border border-slate-200 rounded-[2rem]">
                                         <div className="relative group">
                                             <div className="w-20 h-20 rounded-2xl bg-white border border-slate-200 flex items-center justify-center overflow-hidden shadow-inner">
@@ -157,8 +157,8 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                                 )}
                                             </div>
                                             {formData.logo && (
-                                                <button 
-                                                    onClick={() => setFormData({...formData, logo: ''})}
+                                                <button
+                                                    onClick={() => setFormData({ ...formData, logo: '' })}
                                                     className="absolute -top-2 -right-2 w-6 h-6 bg-rose-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 opacity-0 group-hover:opacity-100 transition-all"
                                                 >
                                                     <FiX size={12} />
@@ -263,8 +263,8 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                                     <div className="absolute left-4 top-10 text-black/20 z-10">
                                                         <FiSearch size={14} />
                                                     </div>
-                                                    <input 
-                                                        type="text" 
+                                                    <input
+                                                        type="text"
                                                         placeholder="Quick Search Blueprints..."
                                                         className="w-full bg-slate-50 border border-slate-200 rounded-xl px-10 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:border-[#7BB9D4] mb-6"
                                                         onChange={(e) => setSearchTemplate(e.target.value)}
@@ -274,56 +274,56 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                                     <div className="max-h-[400px] overflow-y-auto custom-scrollbar space-y-8 pb-4 pr-1">
                                                         {Object.entries(
                                                             TEMPLATES
-                                                            .filter(t => 
-                                                                t.name.toLowerCase().includes(searchTemplate.toLowerCase()) || 
-                                                                t.category.toLowerCase().includes(searchTemplate.toLowerCase()) ||
-                                                                t.id.toLowerCase().includes(searchTemplate.toLowerCase())
-                                                            )
-                                                            .reduce((acc, t) => {
-                                                                const cat = t.category || 'Other';
-                                                                if (!acc[cat]) acc[cat] = [];
-                                                                acc[cat].push(t);
-                                                                return acc;
-                                                            }, {})
+                                                                .filter(t =>
+                                                                    t.name.toLowerCase().includes(searchTemplate.toLowerCase()) ||
+                                                                    t.category.toLowerCase().includes(searchTemplate.toLowerCase()) ||
+                                                                    t.id.toLowerCase().includes(searchTemplate.toLowerCase())
+                                                                )
+                                                                .reduce((acc, t) => {
+                                                                    const cat = t.category || 'Other';
+                                                                    if (!acc[cat]) acc[cat] = [];
+                                                                    acc[cat].push(t);
+                                                                    return acc;
+                                                                }, {})
                                                         ).sort(([a], [b]) => a.localeCompare(b)).map(([category, templates]) => (
-                                                        <div key={category} className="space-y-4">
-                                                            <div className="flex items-center gap-4">
-                                                                <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-black/20 dark:text-black/20 whitespace-nowrap font-['Mulish']">
-                                                                    {category}
-                                                                </h3>
-                                                                <div className="h-px w-full bg-slate-100" />
-                                                            </div>
-                                                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                                                {templates.map(t => (
-                                                                    <button
-                                                                        key={t.id}
-                                                                        type="button"
-                                                                        onClick={() => {
-                                                                            setFormData({ ...formData, templateId: t.id });
-                                                                            setShowPicker(false);
-                                                                        }}
-                                                                        className={`flex items-center gap-4 p-4 rounded-2xl border-2 text-left transition-all ${formData.templateId === t.id
-                                                                            ? 'border-black bg-slate-50 shadow-inner'
-                                                                            : 'border-slate-100 bg-transparent hover:border-[#7BB9D4]/40 hover:bg-slate-50'
-                                                                            }`}
-                                                                    >
-                                                                        <div className={`w-8 h-8 rounded-lg ${t.previewColor} flex-shrink-0 shadow-md group-hover:scale-110 transition-transform`} />
-                                                                        <div className="min-w-0 flex-1">
-                                                                            <p className={`text-[11px] font-black truncate capitalize ${formData.templateId === t.id ? 'text-black' : 'text-black/60'}`}>
-                                                                                {t.name}
-                                                                            </p>
-                                                                            <p className="text-[8px] text-black/20 font-bold uppercase tracking-tighter truncate">{t.id}</p>
-                                                                        </div>
-                                                                        {formData.templateId === t.id && (
-                                                                            <div className="shrink-0 w-5 h-5 rounded-full bg-black flex items-center justify-center shadow-lg">
-                                                                                <FiCheck size={10} className="text-white" />
+                                                            <div key={category} className="space-y-4">
+                                                                <div className="flex items-center gap-4">
+                                                                    <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-black/20 dark:text-black/20 whitespace-nowrap font-['Mulish']">
+                                                                        {category}
+                                                                    </h3>
+                                                                    <div className="h-px w-full bg-slate-100" />
+                                                                </div>
+                                                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                                                    {templates.map(t => (
+                                                                        <button
+                                                                            key={t.id}
+                                                                            type="button"
+                                                                            onClick={() => {
+                                                                                setFormData({ ...formData, templateId: t.id });
+                                                                                setShowPicker(false);
+                                                                            }}
+                                                                            className={`flex items-center gap-4 p-4 rounded-2xl border-2 text-left transition-all ${formData.templateId === t.id
+                                                                                ? 'border-black bg-slate-50 shadow-inner'
+                                                                                : 'border-slate-100 bg-transparent hover:border-[#7BB9D4]/40 hover:bg-slate-50'
+                                                                                }`}
+                                                                        >
+                                                                            <div className={`w-8 h-8 rounded-lg ${t.previewColor} flex-shrink-0 shadow-md group-hover:scale-110 transition-transform`} />
+                                                                            <div className="min-w-0 flex-1">
+                                                                                <p className={`text-[11px] font-black truncate capitalize ${formData.templateId === t.id ? 'text-black' : 'text-black/60'}`}>
+                                                                                    {t.name}
+                                                                                </p>
+                                                                                <p className="text-[8px] text-black/20 font-bold uppercase tracking-tighter truncate">{t.id}</p>
                                                                             </div>
-                                                                        )}
-                                                                    </button>
-                                                                ))}
+                                                                            {formData.templateId === t.id && (
+                                                                                <div className="shrink-0 w-5 h-5 rounded-full bg-black flex items-center justify-center shadow-lg">
+                                                                                    <FiCheck size={10} className="text-white" />
+                                                                                </div>
+                                                                            )}
+                                                                        </button>
+                                                                    ))}
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    ))}
+                                                        ))}
                                                     </div>
                                                 </div>
                                             </motion.div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import Layout from "../layout/layout";
 import { Country, State, City } from "country-state-city";
@@ -32,86 +32,395 @@ const Section = ({ title, children }) => (
     </div>
 );
 
+const isLight = (color) => {
+    if (!color || typeof color !== 'string' || color.length < 7) return false;
+    try {
+        const hex = color.replace('#', '');
+        const r = parseInt(hex.substring(0, 2), 16);
+        const g = parseInt(hex.substring(2, 4), 16);
+        const b = parseInt(hex.substring(4, 6), 16);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness > 180;
+    } catch (e) {
+        return false;
+    }
+};
+
+const CardPreview = ({ formData }) => {
+    const themeColor = formData.themeColor || "#0f172a";
+    const light = isLight(themeColor);
+
+    const renderLayout = () => {
+        switch (formData.templateId) {
+            case 'layout_2': // HERO
+                return (
+                    <div className="flex flex-col h-full">
+                        <div className="h-24 -mx-6 -mt-6 mb-16 relative" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                            <div className="absolute left-1/2 -translate-x-1/2 top-10">
+                                <div className={`w-24 h-24 rounded-full border-4 ${light ? 'border-white bg-gray-100 shadow-xl' : 'border-zinc-900 bg-zinc-800 shadow-2xl'} overflow-hidden`}>
+                                    {formData.logo ? <img src={formData.logo} className="w-full h-full object-cover" /> : <Fi.FiUser className="m-auto mt-6" size={36} />}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="text-center mb-6">
+                            <h3 className="text-lg font-black">{formData.name || "Your Name"}</h3>
+                            <p className="opacity-60 text-[10px] font-black uppercase tracking-widest">{formData.businessRole || "Your Role"}</p>
+                        </div>
+                        <div className="space-y-2">
+                            <a
+                                href={`tel:${formData.phone}`}
+                                className={`p-3 rounded-2xl flex items-center gap-3 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/5'}`}
+                            >
+                                <Fa.FaPhoneAlt className="text-[#b8955d]" size={14} />
+                                <span className="text-[9px] font-black uppercase">{formData.phone || "Phone Number"}</span>
+                            </a>
+                            {formData.whatsapp && (
+                                <a
+                                    href={`https://wa.me/${formData.whatsapp}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`p-3 rounded-2xl flex items-center gap-3 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/5'}`}
+                                >
+                                    <Fa.FaWhatsapp className="text-[#b8955d]" size={16} />
+                                    <span className="text-[9px] font-black uppercase">WhatsApp</span>
+                                </a>
+                            )}
+                        </div>
+                        <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+                            {[
+                                { id: 'website', icon: Fa.FaGlobe, prefix: '' },
+                                { id: 'linkedin', icon: Fa.FaLinkedin, prefix: 'https://linkedin.com/in/' },
+                                { id: 'instagram', icon: Fa.FaInstagram, prefix: 'https://instagram.com/' },
+                                { id: 'twitter', icon: Fa.FaTwitter, prefix: 'https://twitter.com/' },
+                                { id: 'facebook', icon: Fa.FaFacebook, prefix: 'https://facebook.com/' },
+                            ].map(social => formData[social.id] && (
+                                <a
+                                    key={social.id}
+                                    href={social.id === 'website' ? (formData.website.startsWith('http') ? formData.website : `https://${formData.website}`) : `${social.prefix}${formData[social.id]}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all hover:scale-110 ${light ? "bg-black/5 border-black/5" : "bg-white/10 border-white/5"}`}
+                                >
+                                    <social.icon size={12} />
+                                </a>
+                            ))}
+                        </div>
+                        <button className={`mt-6 w-full py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg ${light ? 'bg-black text-white' : 'bg-white text-black'}`}>
+                            Save Contact
+                        </button>
+                    </div>
+                );
+            case 'layout_3': // MATRIX
+                return (
+                    <div className="flex flex-col h-full gap-6">
+                        <div className="grid grid-cols-2 gap-3">
+                            <a
+                                href={`tel:${formData.phone}`}
+                                className={`aspect-square rounded-[2rem] flex flex-col items-center justify-center gap-2 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/5'}`}
+                            >
+                                <Fa.FaPhoneAlt size={20} className="text-[#b8955d]" />
+                                <span className="text-[8px] font-black uppercase tracking-widest">Call</span>
+                            </a>
+                            {formData.whatsapp && (
+                                <a
+                                    href={`https://wa.me/${formData.whatsapp}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`aspect-square rounded-[2rem] flex flex-col items-center justify-center gap-2 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/5'}`}
+                                >
+                                    <Fa.FaWhatsapp size={22} className="text-[#b8955d]" />
+                                    <span className="text-[8px] font-black uppercase tracking-widest">Chat</span>
+                                </a>
+                            )}
+                        </div>
+                        <div className="flex-1 flex flex-col items-center justify-center text-center">
+                            <div className={`w-18 h-18 rounded-2xl rotate-3 mb-4 overflow-hidden border-2 ${light ? 'border-black/10' : 'border-white/20'}`}>
+                                {formData.logo && <img src={formData.logo} className="w-full h-full object-cover" />}
+                            </div>
+                            <h3 className="text-lg font-black leading-tight">{formData.name || "Your Name"}</h3>
+                            <p className="text-[10px] opacity-60 font-bold uppercase tracking-widest">{formData.businessRole}</p>
+                        </div>
+                        <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+                            {[
+                                { id: 'linkedin', icon: Fa.FaLinkedin, prefix: 'https://linkedin.com/in/' },
+                                { id: 'instagram', icon: Fa.FaInstagram, prefix: 'https://instagram.com/' },
+                                { id: 'facebook', icon: Fa.FaFacebook, prefix: 'https://facebook.com/' },
+                            ].map(social => formData[social.id] && (
+                                <a
+                                    key={social.id}
+                                    href={`${social.prefix}${formData[social.id]}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all hover:scale-110 ${light ? "bg-black/5 border-black/5" : "bg-white/10 border-white/5"}`}
+                                >
+                                    <social.icon size={12} />
+                                </a>
+                            ))}
+                        </div>
+                        <button className={`w-full py-4 rounded-[2rem] font-black text-[10px] uppercase tracking-widest shadow-lg ${light ? 'bg-black text-white' : 'bg-white text-black'}`}>
+                            Save Contact
+                        </button>
+                    </div>
+                );
+            case 'layout_4': // LEAD
+                return (
+                    <div className="flex flex-col h-full pt-2">
+                        <div className={`w-full py-4 rounded-[1.5rem] mb-6 flex items-center justify-center font-black text-[9px] uppercase tracking-[0.2em] shadow-xl ${light ? 'bg-black text-white' : 'bg-white text-black'}`}>
+                            Save Identity
+                        </div>
+                        <div className="space-y-4">
+                            <div>
+                                <h3 className="text-xl font-black italic tracking-tighter">{formData.name || "Your Name"}</h3>
+                                <div className="h-1 w-10 bg-[#b8955d] mt-1"></div>
+                            </div>
+                            <p className="text-[10px] opacity-80 leading-relaxed font-bold">{formData.bio || "Crafting digital experiences through innovative architecture nodes."}</p>
+                            <div className="pt-4 border-t border-current border-opacity-10 space-y-3">
+                                <a
+                                    href={`mailto:${formData.email}`}
+                                    className="flex items-center gap-3 opacity-70 transition-all hover:opacity-100"
+                                >
+                                    <Fi.FiMail size={12} />
+                                    <span className="text-[9px] font-black uppercase tracking-widest">{formData.email || "hello@identity.com"}</span>
+                                </a>
+                                {formData.address && (
+                                    <a
+                                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(formData.address)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-3 opacity-70 transition-all hover:opacity-100"
+                                    >
+                                        <Fi.FiMapPin size={12} />
+                                        <span className="text-[9px] font-black uppercase tracking-widest">{formData.address || "Global Presence"}</span>
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                );
+            case 'layout_5': // ULTRA
+                return (
+                    <div className="flex flex-col h-full relative">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-white/20 to-transparent rounded-full -mr-12 -mt-12 blur-xl"></div>
+                        <div className="z-10 mt-4">
+                            <div className="flex items-end gap-3 mb-8">
+                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#b8955d] to-[#8a6d3b] p-0.5 shadow-2xl">
+                                    <div className="w-full h-full rounded-[0.9rem] overflow-hidden bg-zinc-900">
+                                        {formData.logo ? <img src={formData.logo} className="w-full h-full object-cover" /> : <Fi.FiUser className="m-auto mt-3 text-white" size={24} />}
+                                    </div>
+                                </div>
+                                <div className="pb-1">
+                                    <h3 className="text-lg font-black tracking-tighter leading-none">{formData.name || "NAME"}</h3>
+                                    <p className="text-[8px] font-black uppercase text-[#b8955d] tracking-[0.2em] mt-1">Authorized Node</p>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-4 gap-2 mb-8">
+                                {[
+                                    { id: 'phone', icon: Fa.FaPhoneAlt, href: `tel:${formData.phone}` },
+                                    { id: 'whatsapp', icon: Fa.FaWhatsapp, href: `https://wa.me/${formData.whatsapp}` },
+                                    { id: 'website', icon: Fa.FaGlobe, href: formData.website?.startsWith('http') ? formData.website : `https://${formData.website}` },
+                                    { id: 'linkedin', icon: Fa.FaLinkedin, href: `https://linkedin.com/in/${formData.linkedin}` },
+                                ].map((item, i) => formData[item.id] && (
+                                    <a
+                                        key={i}
+                                        href={item.href}
+                                        target={item.id !== 'phone' ? "_blank" : undefined}
+                                        rel={item.id !== 'phone' ? "noopener noreferrer" : undefined}
+                                        className={`aspect-square rounded-xl flex items-center justify-center border transition-all hover:scale-110 active:scale-90 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/10'}`}
+                                    >
+                                        <item.icon size={14} />
+                                    </a>
+                                ))}
+                            </div>
+                            <div className={`p-5 rounded-[2rem] backdrop-blur-md border ${light ? 'bg-black/5 border-black/5' : 'bg-white/5 border-white/10'}`}>
+                                <p className="text-[8px] font-black opacity-40 mb-1 uppercase tracking-widest">Primary Objective</p>
+                                <p className="text-[10px] font-black leading-relaxed italic">{formData.job || "Strategic Leadership & Identity Deployment"}</p>
+                            </div>
+                            <button className={`mt-6 w-full py-4 rounded-[2.5rem] font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl ${light ? 'bg-black text-white' : 'bg-white text-black'}`}>
+                                Save Contact
+                            </button>
+                        </div>
+                    </div>
+                );
+            default: // STANDARD (LAYOUT 1)
+                return (
+                    <>
+                        <div className="flex flex-col items-center justify-center h-34 mt-4">
+                            <div className={`w-18 h-18 rounded-full border flex items-center justify-center overflow-hidden mb-3 ${light ? 'border-black/10 bg-black/5' : 'border-white/20 bg-white/10'}`}>
+                                {formData.logo ? (
+                                    <img src={formData.logo} alt="Profile" className="w-full h-full object-cover" />
+                                ) : (
+                                    <Fi.FiUser size={30} />
+                                )}
+                            </div>
+                            <h3 className="text-lg font-black">{formData.name || "Your Name"}</h3>
+                            <p className={`${light ? "text-gray-500" : "opacity-70"} text-sm`}>
+                                {formData.businessRole || formData.job || "Your Role"}
+                            </p>
+                        </div>
+                        <div className="mt-8 space-y-4">
+                            <div className="flex items-center gap-3">
+                                <h4 className={`text-[10px] font-black uppercase tracking-widest ${light ? "text-black/40" : "text-white/40"}`}>Connect with Us</h4>
+                                <div className={`flex-1 h-[1px] ${light ? "bg-black/10" : "bg-white/10"}`}></div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                                <a
+                                    href={`tel:${formData.phone}`}
+                                    className={`p-4 rounded-[1.5rem] flex flex-col items-center justify-center gap-2 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/5 border-white/5'}`}
+                                >
+                                    <Fa.FaPhoneAlt size={20} className="text-[#b8955d]" />
+                                    <span className="text-[10px] font-black uppercase tracking-widest">Call Now</span>
+                                </a>
+                                {formData.whatsapp && (
+                                    <a
+                                        href={`https://wa.me/${formData.whatsapp}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={`p-4 rounded-[1.5rem] flex flex-col items-center justify-center gap-2 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/5'}`}
+                                    >
+                                        <Fa.FaWhatsapp size={22} className="text-[#b8955d]" />
+                                        <span className="text-[10px] font-black uppercase tracking-widest">WhatsApp</span>
+                                    </a>
+                                )}
+                            </div>
+                            {formData.address && (
+                                <a
+                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(formData.address)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`p-5 rounded-[1.5rem] flex flex-col items-center justify-center gap-2 border transition-all active:scale-98 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/5'}`}
+                                >
+                                    <Fa.FaMapMarkerAlt size={20} className="text-[#b8955d]" />
+                                    <p className="text-[10px] font-bold text-center opacity-90">{formData.address}</p>
+                                </a>
+                            )}
+                            {formData.website && (
+                                <a
+                                    href={formData.website.startsWith('http') ? formData.website : `https://${formData.website}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`w-full py-4 rounded-[1.5rem] flex items-center justify-center border transition-all hover:scale-[1.02] active:scale-95 shadow-lg font-black text-[10px] uppercase tracking-widest ${light ? 'bg-black/5 border-black/10 text-black' : 'bg-white/5 border-white/10 text-white'}`}
+                                >
+                                    Visit Website
+                                </a>
+                            )}
+                        </div>
+                        <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
+                            {[
+                                { id: 'linkedin', icon: Fa.FaLinkedin, prefix: 'https://linkedin.com/in/' },
+                                { id: 'instagram', icon: Fa.FaInstagram, prefix: 'https://instagram.com/' },
+                                { id: 'twitter', icon: Fa.FaTwitter, prefix: 'https://twitter.com/' },
+                                { id: 'facebook', icon: Fa.FaFacebook, prefix: 'https://facebook.com/' },
+                                { id: 'youtube', icon: Fa.FaYoutube, prefix: 'https://youtube.com/' },
+                                { id: 'tiktok', icon: Fa.FaTiktok, prefix: 'https://tiktok.com/@' },
+                                { id: 'telegram', icon: Fa.FaTelegram, prefix: 'https://t.me/' },
+                                { id: 'discord', icon: Fi.FiMessageSquare, prefix: '' },
+                                { id: 'skype', icon: Fi.FiMessageCircle, prefix: 'skype:' },
+                            ].map(social => formData[social.id] && (
+                                <a
+                                    key={social.id}
+                                    href={`${social.prefix}${formData[social.id]}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110 ${light ? "text-black/20 hover:text-black" : "text-white/20 hover:text-white"}`}
+                                >
+                                    <social.icon size={18} />
+                                </a>
+                            ))}
+                        </div>
+                        <button className={`mt-8 w-full py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl transition-all hover:scale-[1.02] active:scale-95 ${light ? 'bg-black text-white' : 'bg-white text-black'}`}>
+                            Save Contact
+                        </button>
+                    </>
+                );
+        }
+    };
+
+    return (
+        <div className={`rounded-3xl w-[320px] min-h-[520px] p-6 shadow-2xl transition-all duration-700 relative overflow-hidden flex flex-col ${light ? "text-gray-900" : "text-white"}`} style={{ background: themeColor }}>
+            {renderLayout()}
+            <div className="mt-auto pt-8 pb-2 text-center">
+                <a href="https://cardyn.shop" target="_blank" rel="noopener noreferrer" className={`text-[9px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-100 ${light ? "text-black/30" : "text-white/30"}`}>
+                    Powered by cardyn
+                </a>
+            </div>
+        </div>
+    );
+};
+
 const CompleteProfile = ({ userData }) => {
     const navigate = useNavigate();
     const isAdmin = userData?.role === "Admin";
 
-    const [activeField, setActiveField] = useState(null);
     const [activeTab, setActiveTab] = useState("personal");
-    const isLoaded = React.useRef(false);
+    const [activeField, setActiveField] = useState(null);
+    const [isSaving, setIsSaving] = useState(false);
+    const [prevUserData, setPrevUserData] = useState(null);
 
-    const [formData, setFormData] = useState({
-        label: "",
-        name: "",
-        job: "",
-        company: "",
-        businessRole: "",
-        bio: "",
-        email: "",
-        phone: "",
-        website: "",
-        address: "",
-        exactLocation: "",
-        logo: "",
-        logoType: "file",
-        country: "",
-        countryCode: "",
-        state: "",
-        stateCode: "",
-        city: "",
-        linkedin: "",
-        twitter: "",
-        instagram: "",
-        youtube: "",
-        tiktok: "",
-        discord: "",
-        telegram: "",
-        whatsapp: "",
-        paypal: "",
-        cashapp: "",
-        venmo: "",
-        skype: "",
-        profileImage: "",
-        profileImageType: "file",
-        templateId: "layout_1",
-        themeColor: "#0f172a"
-    });
-
-    useEffect(() => {
-        // 1. ATTEMPT RECOVERY FIRST
+    const [formData, setFormData] = useState(() => {
         const backup = localStorage.getItem("onboarding_backup");
-        let initialData = {};
+        const baseData = {
+            label: "Work Identity",
+            templateId: "layout_1",
+            themeColor: "#0f172a",
+            name: "",
+            email: "",
+            phone: "",
+            whatsapp: "",
+            businessRole: "",
+            bio: "",
+            address: "",
+            job: "",
+            company: "",
+            logo: "",
+            website: "",
+            linkedin: "",
+            twitter: "",
+            instagram: "",
+            facebook: "",
+            youtube: "",
+            tiktok: "",
+            telegram: "",
+            discord: "",
+            skype: "",
+            country: "",
+            countryCode: "",
+            state: "",
+            stateCode: "",
+            city: "",
+        };
+
         if (backup) {
             try {
-                initialData = JSON.parse(backup);
-                setFormData(initialData);
+                return { ...baseData, ...JSON.parse(backup) };
             } catch (e) {
-                console.error("Recovery Failed", e);
+                console.error("Backup parse failed", e);
             }
         }
+        return baseData;
+    });
 
-        // 2. MERGE CLOUD DATA (only if cloud field is not empty)
-        if (userData) {
-            setFormData(prev => {
-                const merged = { ...prev };
-                Object.keys(userData).forEach(key => {
-                    if (userData[key] && userData[key] !== "") {
-                        merged[key] = userData[key];
-                    }
-                });
-                return merged;
-            });
+    // 2. MERGE CLOUD DATA - Sync during render for React 19 compliance
+    if (userData && userData !== prevUserData) {
+        let changed = false;
+        const merged = { ...formData };
+        Object.keys(userData).forEach(key => {
+            if (userData[key] && userData[key] !== "" && formData[key] !== userData[key]) {
+                merged[key] = userData[key];
+                changed = true;
+            }
+        });
+        if (changed) {
+            setFormData(merged);
         }
-        
-        isLoaded.current = true;
-    }, [userData]);
+        setPrevUserData(userData);
+    }
 
     // Save to localStorage on change - GUARDED
     useEffect(() => {
-        if (isLoaded.current) {
+        if (prevUserData) {
             localStorage.setItem("onboarding_backup", JSON.stringify(formData));
         }
-    }, [formData]);
+    }, [formData, prevUserData]);
 
     const handleLogoUpload = (e) => {
         const file = e.target.files[0];
@@ -182,322 +491,7 @@ const CompleteProfile = ({ userData }) => {
     if (isAdmin) return <Navigate to="/admin/analytics" />;
     if (userData?.onboarded) return <Navigate to="/user/home" />;
 
-    const isLight = (color) => {
-        if (!color || typeof color !== 'string' || color.length < 7) return false;
-        const hex = color.replace('#', '');
-        const r = parseInt(hex.substring(0, 2), 16);
-        const g = parseInt(hex.substring(2, 4), 16);
-        const b = parseInt(hex.substring(4, 6), 16);
-        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-        return brightness > 180;
-    };
 
-    const CardPreview = ({ formData }) => {
-        const themeColor = formData.themeColor || "#0f172a";
-        const light = isLight(themeColor);
-
-        const renderLayout = () => {
-            switch (formData.templateId) {
-                case 'layout_2': // HERO
-                    return (
-                        <div className="flex flex-col h-full">
-                            <div className="h-24 -mx-6 -mt-6 mb-16 relative" style={{ background: 'rgba(255,255,255,0.1)' }}>
-                                <div className="absolute left-1/2 -translate-x-1/2 top-10">
-                                    <div className={`w-24 h-24 rounded-full border-4 ${light ? 'border-white bg-gray-100 shadow-xl' : 'border-zinc-900 bg-zinc-800 shadow-2xl'} overflow-hidden`}>
-                                        {formData.logo ? <img src={formData.logo} className="w-full h-full object-cover" /> : <Fi.FiUser className="m-auto mt-6" size={36} />}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="text-center mb-6">
-                                <h3 className="text-lg font-black">{formData.name || "Your Name"}</h3>
-                                <p className="opacity-60 text-[10px] font-black uppercase tracking-widest">{formData.businessRole || "Your Role"}</p>
-                            </div>
-                            <div className="space-y-2">
-                                <a
-                                    href={`tel:${formData.phone}`}
-                                    className={`p-3 rounded-2xl flex items-center gap-3 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/5'}`}
-                                >
-                                    <Fa.FaPhoneAlt className="text-[#b8955d]" size={14} />
-                                    <span className="text-[9px] font-black uppercase">{formData.phone || "Phone Number"}</span>
-                                </a>
-                                {formData.whatsapp && (
-                                    <a
-                                        href={`https://wa.me/${formData.whatsapp}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`p-3 rounded-2xl flex items-center gap-3 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/5'}`}
-                                    >
-                                        <Fa.FaWhatsapp className="text-[#b8955d]" size={16} />
-                                        <span className="text-[9px] font-black uppercase">WhatsApp</span>
-                                    </a>
-                                )}
-                            </div>
-                            {/* Social Matrix */}
-                            <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
-                                {[
-                                    { id: 'website', icon: Fa.FaGlobe, prefix: '' },
-                                    { id: 'linkedin', icon: Fa.FaLinkedin, prefix: 'https://linkedin.com/in/' },
-                                    { id: 'instagram', icon: Fa.FaInstagram, prefix: 'https://instagram.com/' },
-                                    { id: 'twitter', icon: Fa.FaTwitter, prefix: 'https://twitter.com/' },
-                                    { id: 'facebook', icon: Fa.FaFacebook, prefix: 'https://facebook.com/' },
-                                ].map(social => formData[social.id] && (
-                                    <a
-                                        key={social.id}
-                                        href={social.id === 'website' ? (formData.website.startsWith('http') ? formData.website : `https://${formData.website}`) : `${social.prefix}${formData[social.id]}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all hover:scale-110 ${light ? "bg-black/5 border-black/5" : "bg-white/10 border-white/5"}`}
-                                    >
-                                        <social.icon size={12} />
-                                    </a>
-                                ))}
-                            </div>
-                            <button className={`mt-6 w-full py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg ${light ? 'bg-black text-white' : 'bg-white text-black'}`}>
-                                Save Contact
-                            </button>
-                        </div>
-                    );
-                case 'layout_3': // MATRIX
-                    return (
-                        <div className="flex flex-col h-full gap-6">
-                            <div className="grid grid-cols-2 gap-3">
-                                <a
-                                    href={`tel:${formData.phone}`}
-                                    className={`aspect-square rounded-[2rem] flex flex-col items-center justify-center gap-2 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/5'}`}
-                                >
-                                    <Fa.FaPhoneAlt size={20} className="text-[#b8955d]" />
-                                    <span className="text-[8px] font-black uppercase tracking-widest">Call</span>
-                                </a>
-                                {formData.whatsapp && (
-                                    <a
-                                        href={`https://wa.me/${formData.whatsapp}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`aspect-square rounded-[2rem] flex flex-col items-center justify-center gap-2 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/5'}`}
-                                    >
-                                        <Fa.FaWhatsapp size={22} className="text-[#b8955d]" />
-                                        <span className="text-[8px] font-black uppercase tracking-widest">Chat</span>
-                                    </a>
-                                )}
-                            </div>
-                            <div className="flex-1 flex flex-col items-center justify-center text-center">
-                                <div className={`w-18 h-18 rounded-2xl rotate-3 mb-4 overflow-hidden border-2 ${light ? 'border-black/10' : 'border-white/20'}`}>
-                                    {formData.logo && <img src={formData.logo} className="w-full h-full object-cover" />}
-                                </div>
-                                <h3 className="text-lg font-black leading-tight">{formData.name || "Your Name"}</h3>
-                                <p className="text-[10px] opacity-60 font-bold uppercase tracking-widest">{formData.businessRole}</p>
-                            </div>
-                            {/* Social Matrix */}
-                            <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
-                                {[
-                                    { id: 'linkedin', icon: Fa.FaLinkedin, prefix: 'https://linkedin.com/in/' },
-                                    { id: 'instagram', icon: Fa.FaInstagram, prefix: 'https://instagram.com/' },
-                                    { id: 'facebook', icon: Fa.FaFacebook, prefix: 'https://facebook.com/' },
-                                ].map(social => formData[social.id] && (
-                                    <a
-                                        key={social.id}
-                                        href={`${social.prefix}${formData[social.id]}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all hover:scale-110 ${light ? "bg-black/5 border-black/5" : "bg-white/10 border-white/5"}`}
-                                    >
-                                        <social.icon size={12} />
-                                    </a>
-                                ))}
-                            </div>
-                            <button className={`w-full py-4 rounded-[2rem] font-black text-[10px] uppercase tracking-widest shadow-lg ${light ? 'bg-black text-white' : 'bg-white text-black'}`}>
-                                Save Contact
-                            </button>
-                        </div>
-                    );
-                case 'layout_4': // LEAD
-                    return (
-                        <div className="flex flex-col h-full pt-2">
-                            <div className={`w-full py-4 rounded-[1.5rem] mb-6 flex items-center justify-center font-black text-[9px] uppercase tracking-[0.2em] shadow-xl ${light ? 'bg-black text-white' : 'bg-white text-black'}`}>
-                                Save Identity
-                            </div>
-                            <div className="space-y-4">
-                                <div>
-                                    <h3 className="text-xl font-black italic tracking-tighter">{formData.name || "Your Name"}</h3>
-                                    <div className="h-1 w-10 bg-[#b8955d] mt-1"></div>
-                                </div>
-                                <p className="text-[10px] opacity-80 leading-relaxed font-bold">{formData.bio || "Crafting digital experiences through innovative architecture nodes."}</p>
-                                <div className="pt-4 border-t border-current border-opacity-10 space-y-3">
-                                    <a
-                                        href={`mailto:${formData.email}`}
-                                        className="flex items-center gap-3 opacity-70 transition-all hover:opacity-100"
-                                    >
-                                        <Fi.FiMail size={12} />
-                                        <span className="text-[9px] font-black uppercase tracking-widest">{formData.email || "hello@identity.com"}</span>
-                                    </a>
-                                    {formData.address && (
-                                        <a
-                                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(formData.address)}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="flex items-center gap-3 opacity-70 transition-all hover:opacity-100"
-                                        >
-                                            <Fi.FiMapPin size={12} />
-                                            <span className="text-[9px] font-black uppercase tracking-widest">{formData.address || "Global Presence"}</span>
-                                        </a>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    );
-                case 'layout_5': // ULTRA
-                    return (
-                        <div className="flex flex-col h-full relative">
-                            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-white/20 to-transparent rounded-full -mr-12 -mt-12 blur-xl"></div>
-                            <div className="z-10 mt-4">
-                                <div className="flex items-end gap-3 mb-8">
-                                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#b8955d] to-[#8a6d3b] p-0.5 shadow-2xl">
-                                        <div className="w-full h-full rounded-[0.9rem] overflow-hidden bg-zinc-900">
-                                            {formData.logo ? <img src={formData.logo} className="w-full h-full object-cover" /> : <Fi.FiUser className="m-auto mt-3 text-white" size={24} />}
-                                        </div>
-                                    </div>
-                                    <div className="pb-1">
-                                        <h3 className="text-lg font-black tracking-tighter leading-none">{formData.name || "NAME"}</h3>
-                                        <p className="text-[8px] font-black uppercase text-[#b8955d] tracking-[0.2em] mt-1">Authorized Node</p>
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-4 gap-2 mb-8">
-                                    {[
-                                        { id: 'phone', icon: Fa.FaPhoneAlt, href: `tel:${formData.phone}` },
-                                        { id: 'whatsapp', icon: Fa.FaWhatsapp, href: `https://wa.me/${formData.whatsapp}` },
-                                        { id: 'website', icon: Fa.FaGlobe, href: formData.website?.startsWith('http') ? formData.website : `https://${formData.website}` },
-                                        { id: 'linkedin', icon: Fa.FaLinkedin, href: `https://linkedin.com/in/${formData.linkedin}` },
-                                    ].map((item, i) => formData[item.id] && (
-                                        <a
-                                            key={i}
-                                            href={item.href}
-                                            target={item.id !== 'phone' ? "_blank" : undefined}
-                                            rel={item.id !== 'phone' ? "noopener noreferrer" : undefined}
-                                            className={`aspect-square rounded-xl flex items-center justify-center border transition-all hover:scale-110 active:scale-90 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/10'}`}
-                                        >
-                                            <item.icon size={14} />
-                                        </a>
-                                    ))}
-                                </div>
-                                <div className={`p-5 rounded-[2rem] backdrop-blur-md border ${light ? 'bg-black/5 border-black/5' : 'bg-white/5 border-white/10'}`}>
-                                    <p className="text-[8px] font-black opacity-40 mb-1 uppercase tracking-widest">Primary Objective</p>
-                                    <p className="text-[10px] font-black leading-relaxed italic">{formData.job || "Strategic Leadership & Identity Deployment"}</p>
-                                </div>
-                                <button className={`mt-6 w-full py-4 rounded-[2.5rem] font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl ${light ? 'bg-black text-white' : 'bg-white text-black'}`}>
-                                    Save Contact
-                                </button>
-                            </div>
-                        </div>
-                    );
-                default: // STANDARD (LAYOUT 1)
-                    return (
-                        <>
-                            <div className="flex flex-col items-center justify-center h-34 mt-4">
-                                <div className={`w-18 h-18 rounded-full border flex items-center justify-center overflow-hidden mb-3 ${light ? 'border-black/10 bg-black/5' : 'border-white/20 bg-white/10'}`}>
-                                    {formData.logo ? (
-                                        <img src={formData.logo} alt="Profile" className="w-full h-full object-cover" />
-                                    ) : (
-                                        <Fi.FiUser size={30} />
-                                    )}
-                                </div>
-                                <h3 className="text-lg font-black">{formData.name || "Your Name"}</h3>
-                                <p className={`${light ? "text-gray-500" : "opacity-70"} text-sm`}>
-                                    {formData.businessRole || formData.job || "Your Role"}
-                                </p>
-                            </div>
-                            <div className="mt-8 space-y-4">
-                                <div className="flex items-center gap-3">
-                                    <h4 className={`text-[10px] font-black uppercase tracking-widest ${light ? "text-black/40" : "text-white/40"}`}>Connect with Us</h4>
-                                    <div className={`flex-1 h-[1px] ${light ? "bg-black/10" : "bg-white/10"}`}></div>
-                                </div>
-                                <div className="grid grid-cols-2 gap-3">
-                                    <a
-                                        href={`tel:${formData.phone}`}
-                                        className={`p-4 rounded-[1.5rem] flex flex-col items-center justify-center gap-2 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/5 border-white/5'}`}
-                                    >
-                                        <Fa.FaPhoneAlt size={20} className="text-[#b8955d]" />
-                                        <span className="text-[10px] font-black uppercase tracking-widest">Call Now</span>
-                                    </a>
-                                    {formData.whatsapp && (
-                                        <a
-                                            href={`https://wa.me/${formData.whatsapp}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className={`p-4 rounded-[1.5rem] flex flex-col items-center justify-center gap-2 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/5'}`}
-                                        >
-                                            <Fa.FaWhatsapp size={22} className="text-[#b8955d]" />
-                                            <span className="text-[10px] font-black uppercase tracking-widest">WhatsApp</span>
-                                        </a>
-                                    )}
-                                </div>
-                                {formData.address && (
-                                    <a
-                                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(formData.address)}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`p-5 rounded-[1.5rem] flex flex-col items-center justify-center gap-2 border transition-all active:scale-98 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/5'}`}
-                                    >
-                                        <Fa.FaMapMarkerAlt size={20} className="text-[#b8955d]" />
-                                        <p className="text-[10px] font-bold text-center opacity-90">{formData.address}</p>
-                                    </a>
-                                )}
-
-                                {/* Visit Website Button */}
-                                {formData.website && (
-                                    <a
-                                        href={formData.website.startsWith('http') ? formData.website : `https://${formData.website}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`w-full py-4 rounded-[1.5rem] flex items-center justify-center border transition-all hover:scale-[1.02] active:scale-95 shadow-lg font-black text-[10px] uppercase tracking-widest ${light ? 'bg-black/5 border-black/10 text-black' : 'bg-white/5 border-white/10 text-white'}`}
-                                    >
-                                        Visit Website
-                                    </a>
-                                )}
-                            </div>
-                            {/* Social Matrix */}
-                            <div className="flex flex-wrap items-center justify-center gap-4 mt-8">
-                                {[
-                                    { id: 'linkedin', icon: Fa.FaLinkedin, prefix: 'https://linkedin.com/in/' },
-                                    { id: 'instagram', icon: Fa.FaInstagram, prefix: 'https://instagram.com/' },
-                                    { id: 'twitter', icon: Fa.FaTwitter, prefix: 'https://twitter.com/' },
-                                    { id: 'facebook', icon: Fa.FaFacebook, prefix: 'https://facebook.com/' },
-                                    { id: 'youtube', icon: Fa.FaYoutube, prefix: 'https://youtube.com/' },
-                                    { id: 'tiktok', icon: Fa.FaTiktok, prefix: 'https://tiktok.com/@' },
-                                    { id: 'telegram', icon: Fa.FaTelegram, prefix: 'https://t.me/' },
-                                    { id: 'discord', icon: Fi.FiMessageSquare, prefix: '' },
-                                    { id: 'skype', icon: Fi.FiMessageCircle, prefix: 'skype:' },
-                                ].map(social => formData[social.id] && (
-                                    <a
-                                        key={social.id}
-                                        href={`${social.prefix}${formData[social.id]}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110 ${light ? "text-black/20 hover:text-black" : "text-white/20 hover:text-white"}`}
-                                    >
-                                        <social.icon size={18} />
-                                    </a>
-                                ))}
-                            </div>
-                            {/* Save Contact Button */}
-                            <button className={`mt-8 w-full py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl transition-all hover:scale-[1.02] active:scale-95 ${light ? 'bg-black text-white' : 'bg-white text-black'}`}>
-                                Save Contact
-                            </button>
-                        </>
-                    );
-            }
-        };
-
-        return (
-            <div className={`rounded-3xl w-[320px] min-h-[520px] p-6 shadow-2xl transition-all duration-700 relative overflow-hidden flex flex-col ${light ? "text-gray-900" : "text-white"}`} style={{ background: themeColor }}>
-                {renderLayout()}
-                <div className="mt-auto pt-8 pb-2 text-center">
-                    <a href="https://cardyn.shop" target="_blank" rel="noopener noreferrer" className={`text-[9px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-100 ${light ? "text-black/30" : "text-white/30"}`}>
-                        Powered by cardyn
-                    </a>
-                </div>
-            </div>
-        );
-    };
 
     return (
         <Layout userData={userData} hideSidebar hideTopNav>

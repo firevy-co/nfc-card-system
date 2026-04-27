@@ -27,7 +27,8 @@ const NeoAgency = ({ userData }) => {
     discord,
     telegram,
     skype,
-    paypal
+    paypal,
+    company
   } = userData || {};
 
   const finalPhone = phone || mobileNumber;
