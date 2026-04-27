@@ -10,21 +10,8 @@ import {
     LineChart, Line, PieChart, Pie, Cell, ResponsiveContainer
 } from "recharts";
 
-export const Home = () => {
-    const [userData, setUserData] = useState(null);
-
-    useEffect(() => {
-        if (!auth.currentUser) return;
-        const userRef = doc(db, "users", auth.currentUser.uid);
-        const unsubscribe = onSnapshot(userRef, (docSnap) => {
-            if (docSnap.exists()) {
-                setUserData({ uid: auth.currentUser.uid, ...docSnap.data() });
-            }
-        });
-        return () => unsubscribe();
-    }, []);
-
-    if (!userData) return <div className="text-white p-10 font-bold">Loading Identity Hub...</div>;
+export const Home = ({ userData }) => {
+    if (!userData) return null;
 
     // --- EXACT ADMIN PROTOCOL DATA ---
     const COLORS = { emerald: "#10b981", blue: "#3b82f6", pink: "#ec4899" };
