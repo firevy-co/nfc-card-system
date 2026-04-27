@@ -9,6 +9,8 @@ try {
         ? JSON.parse(process.env.SERVICE_ACCOUNT_KEY) 
         : require("../serviceAccountKey.json");
 
+    console.log("[FIREBASE INIT]: Attempting to initialize with Project ID:", serviceAccount.project_id);
+
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
         databaseURL: `https://${serviceAccount.project_id}.firebaseio.com`
@@ -16,10 +18,11 @@ try {
 
     db = admin.firestore();
     auth = admin.auth();
-    console.log("\n[IDENTITY SYSTEM]: CLOUD INFRASTRUCTURE SYNCHRONISED SUCCESSFULLY.");
+    console.log("[IDENTITY SYSTEM]: CLOUD INFRASTRUCTURE SYNCHRONISED SUCCESSFULLY.");
 } catch (error) {
-    console.warn("\n[WARNING]: Firebase Service Account Key Missing or Invalid.");
-    console.warn("Operating in MOCK/STANDBY MODE until ./serviceAccountKey.json is provided.\n");
+    console.error("[FIREBASE INIT ERROR]:", error.message);
+    console.warn("[WARNING]: Firebase Service Account Key Missing or Invalid.");
+    console.warn("Operating in MOCK/STANDBY MODE until ./serviceAccountKey.json is provided.");
     isOffline = true;
 }
 

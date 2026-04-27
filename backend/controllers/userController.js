@@ -39,7 +39,11 @@ exports.getAllUsers = async (req, res) => {
         res.json(users);
     } catch (error) {
         console.error("Identity Discovery Failure:", error);
-        res.status(500).json({ error: "Failed to audit network identities" });
+        res.status(500).json({ 
+            error: "Failed to audit network identities", 
+            details: error.message,
+            stack: error.stack 
+        });
     }
 };
 
