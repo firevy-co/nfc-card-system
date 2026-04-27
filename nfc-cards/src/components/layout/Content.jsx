@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import TemplateCard from "../admin/TemplateCard";
 import CreateTemplateModal from "../admin/CreateTemplateModal";
@@ -44,7 +44,7 @@ export default function Content({ userData }) {
     : ["All", matchedCategory].filter(Boolean);
 
   // FETCH: Sync with Cloud Orchestrator (with Local Persistence Deduplication)
-  const fetchTemplates = async () => {
+  const fetchTemplates = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch(`${API_BASE_URL}/api/templates`);
@@ -100,11 +100,11 @@ export default function Content({ userData }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [isAdmin, userData]);
 
   useEffect(() => {
     fetchTemplates();
-  }, []);
+  }, [fetchTemplates]);
 
   const handleSaveTemplate = async (templateData) => {
     try {

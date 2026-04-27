@@ -26,9 +26,9 @@ const UserNav = ({ userData }) => {
 
         {/* LOGO SECTION */}
         <div className="flex items-center gap-3">
-          <img 
-            src={logo} 
-            alt="Cardyn Logo" 
+          <img
+            src={logo}
+            alt="Cardyn Logo"
             className="h-6 object-contain"
           />
         </div>

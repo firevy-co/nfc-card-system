@@ -39,10 +39,10 @@ exports.getAllUsers = async (req, res) => {
         res.json(users);
     } catch (error) {
         console.error("Identity Discovery Failure:", error);
-        res.status(500).json({ 
-            error: "Failed to audit network identities", 
+        res.status(500).json({
+            error: "Failed to audit network identities",
             details: error.message,
-            stack: error.stack 
+            stack: error.stack
         });
     }
 };
@@ -56,7 +56,7 @@ exports.updateUserDetails = async (req, res) => {
 
     try {
         if (isOffline) {
-            mockUsersCache = mockUsersCache.map(u => 
+            mockUsersCache = mockUsersCache.map(u =>
                 u.uid === uid ? { ...u, displayName, email, role } : u
             );
             return res.json({ message: `Identity ${uid} credentials successfully re-architected (MOCK).` });
@@ -66,7 +66,7 @@ exports.updateUserDetails = async (req, res) => {
             const authPayload = {};
             if (email) authPayload.email = email;
             if (displayName !== undefined && displayName !== null) authPayload.displayName = displayName;
-            
+
             if (Object.keys(authPayload).length > 0) {
                 await auth.updateUser(uid, authPayload);
             }
@@ -74,9 +74,9 @@ exports.updateUserDetails = async (req, res) => {
             console.warn(`[IDENTITY SYNC]: Core Auth sync skipped/failed for ${uid}: ${authError.message}`);
         }
 
-        await db.collection('users').doc(uid).set({ 
-            displayName: displayName || '', 
-            email, 
+        await db.collection('users').doc(uid).set({
+            displayName: displayName || '',
+            email,
             role,
             isAdmin: role === 'Admin',
             updatedAt: admin.firestore.FieldValue.serverTimestamp()
@@ -103,10 +103,10 @@ exports.deleteUser = async (req, res) => {
 
         // [PURGE] Stage 1: Core Authentication
         await auth.deleteUser(uid);
-        
+
         // [PURGE] Stage 2: Identity Registry
         await db.collection('users').doc(uid).delete();
-        
+
         // [PURGE] Stage 3: Organizational Metadata
         await db.collection('companyDetails').doc(uid).delete();
 
@@ -125,7 +125,7 @@ exports.updateUserRole = async (req, res) => {
     const { uid, role } = req.body;
 
     try {
-        await db.collection('users').doc(uid).set({ 
+        await db.collection('users').doc(uid).set({
             role: role,
             isAdmin: role === 'Admin',
             updatedAt: admin.firestore.FieldValue.serverTimestamp()
@@ -145,9 +145,9 @@ exports.completeProfile = async (req, res) => {
 
     try {
         if (isOffline) {
-            return res.json({ 
-                success: true, 
-                message: "Company Hub successfully architected (MOCK)." 
+            return res.json({
+                success: true,
+                message: "Company Hub successfully architected (MOCK)."
             });
         }
 
@@ -165,9 +165,9 @@ exports.completeProfile = async (req, res) => {
             updatedAt: admin.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
 
-        res.json({ 
-            success: true, 
-            message: "Company Hub and Participant Node successfully architected." 
+        res.json({
+            success: true,
+            message: "Company Hub and Participant Node successfully architected."
         });
     } catch (error) {
         console.error("Onboarding Failure:", error);
