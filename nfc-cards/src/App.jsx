@@ -21,7 +21,7 @@ const TemplatePreview = lazy(() => import('./pages/admin/TemplatePreview'));
 const Inquiry = lazy(() => import('./pages/admin/Inquiry'));
 const Settings = lazy(() => import('./pages/admin/Settings'));
 const Support = lazy(() => import('./pages/user/Support'));
-const Home = lazy(() => import('./pages/user/Home').then(module => ({ default: module.Home })));
+const Home = lazy(() => import('./pages/user/Home'));
 const UserSettings = lazy(() => import('./pages/user/Settings'));
 const IdentityLinkView = lazy(() => import('./pages/user/IdentityLinkView'));
 

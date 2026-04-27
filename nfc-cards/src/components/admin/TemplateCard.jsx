@@ -35,7 +35,7 @@ export default function TemplateCard({
     return (
         <div className={`h-full rounded-[2.5rem] backdrop-blur-xl border transition-all duration-700 group flex flex-col overflow-hidden relative ${isSelected
             ? 'border-primary/50 bg-primary/[0.03] shadow-[0_0_50px_rgba(0,0,0,0.12)] ring-1 ring-primary/20'
-            : 'border-black/5 dark:border-white/80 bg-white shadow-[0_0_30px_rgba(0,0,0,0.06)] dark:bg-white/5 hover:border-primary/30 hover:shadow-[0_0_50px_rgba(0,0,0,0.1)]'
+            : 'border-black/5  bg-white shadow-[0_0_30px_rgba(0,0,0,0.06)]  hover:border-primary/30 hover:shadow-[0_0_50px_rgba(0,0,0,0.1)]'
             }`}>
             {/* ACTIVE SELECTION GLOW */}
             {isSelected && (
@@ -43,23 +43,23 @@ export default function TemplateCard({
             )}
 
             {/* Premium Preview Section */}
-            <div className="h-[360px] bg-black/5 dark:bg-white/5 relative flex items-center justify-center p-4 overflow-hidden border-b border-black/5 dark:border-white/10 group-hover:bg-black/10 dark:group-hover:bg-white/10 transition-colors">
+            <div className="h-[360px] bg-black/5  relative flex items-center justify-center p-4 overflow-hidden border-b border-black/5  group-hover:bg-black/10 :bg-white/10 transition-colors">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.03] to-transparent opacity-50 z-0"></div>
 
                 {/* Floating Status Badge (Admin only or Top right) */}
                 <div className="absolute top-6 right-6 z-20">
                     <div className={`px-3 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest backdrop-blur-md border ${isSelected
                         ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
-                        : 'bg-white/20 dark:bg-white/10 text-muted-foreground border-black/5 dark:border-white/10'
+                        : 'bg-white/20  text-muted-foreground border-black/5 '
                         }`}>
                         {isSelected ? 'Active Node' : category || 'Premium'}
                     </div>
                 </div>
 
                 {/* The Device Frame Preview */}
-                <div className="w-[180px] h-[320px] bg-white dark:bg-zinc-900 rounded-[2rem] border-[6px] border-black/10 dark:border-white/10 shadow-2xl relative overflow-hidden transform group-hover:scale-[1.05] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col z-10">
+                <div className="w-[180px] h-[320px] bg-white  rounded-[2rem] border-[6px] border-black/10  shadow-2xl relative overflow-hidden transform group-hover:scale-[1.05] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col z-10">
                     {/* Device Notch */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-4 bg-black/5 dark:bg-white/10 rounded-b-xl z-30"></div>
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-4 bg-black/5  rounded-b-xl z-30"></div>
 
                     {/* Inner Content Scale */}
                     <div className="flex-1 w-full relative overflow-hidden flex justify-center rounded-[1.6rem]">
@@ -96,7 +96,7 @@ export default function TemplateCard({
                             </button>
                             <button
                                 onClick={onEdit}
-                                className="flex items-center justify-center gap-2 bg-white/5 dark:bg-white/10 text-foreground py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-black/10 dark:hover:bg-white/20 transition-all border border-black/5 dark:border-white/10 active:scale-95"
+                                className="flex items-center justify-center gap-2 bg-white/5  text-foreground py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-black/10 :bg-white/20 transition-all border border-black/5  active:scale-95"
                             >
                                 <FiEdit size={14} />
                                 Edit Node
@@ -113,7 +113,7 @@ export default function TemplateCard({
                         <div className="grid grid-cols-5 gap-3">
                             <button
                                 onClick={() => navigate(`${baseRoute}/templates${path}`)}
-                                className="col-span-2 flex items-center justify-center gap-2 bg-white/5 dark:bg-white/10 text-muted-foreground py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:text-foreground hover:bg-black/10 dark:hover:bg-white/20 transition-all border border-black/5 dark:border-white/10 shadow-sm active:scale-95"
+                                className="col-span-2 flex items-center justify-center gap-2 bg-white/5  text-muted-foreground py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:text-foreground hover:bg-black/10 :bg-white/20 transition-all border border-black/5  shadow-sm active:scale-95"
                             >
                                 <FiEye size={16} />
                                 View

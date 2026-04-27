@@ -100,19 +100,19 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.97, y: 12 }}
                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                        className="relative w-full max-w-[1100px] max-h-[92vh] bg-white dark:bg-white border border-slate-100 dark:border-slate-100 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col"
+                        className="relative w-full max-w-[1100px] max-h-[92vh] bg-white  border border-slate-100  rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col"
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between px-7 py-6 border-b border-slate-100 dark:border-slate-100 bg-slate-50 dark:bg-slate-50 shrink-0">
+                        <div className="flex items-center justify-between px-7 py-6 border-b border-slate-100  bg-slate-50  shrink-0">
                             <div className="flex items-center gap-4">
                                 <div className="w-10 h-10 rounded-xl bg-[#7BB9D4] text-white flex items-center justify-center shadow-lg">
                                     <FiLayout size={20} />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-black text-black dark:text-black leading-none tracking-tight">
+                                    <h2 className="text-xl font-black text-black  leading-none tracking-tight">
                                         {initialData ? 'Edit Identity Node' : 'New Identity Node'}
                                     </h2>
-                                    <p className="text-[10px] text-black/40 dark:text-black/40 font-black capitalize tracking-[0.2em] mt-1 opacity-60">Identity Studio</p>
+                                    <p className="text-[10px] text-black/40  font-black capitalize tracking-[0.2em] mt-1 opacity-60">Identity Studio</p>
                                 </div>
                             </div>
                             <button
@@ -127,7 +127,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                         <div className="flex flex-col lg:flex-row flex-1 min-h-0 overflow-hidden">
 
                             {/* LEFT - Form */}
-                            <div className="flex-1 overflow-y-auto p-7 sm:p-10 custom-scrollbar space-y-8 border-r border-black/5 dark:border-white/10">
+                            <div className="flex-1 overflow-y-auto p-7 sm:p-10 custom-scrollbar space-y-8 border-r border-black/5 ">
 
                                 {/* Identity Branding */}
                                 <div className="space-y-6">
@@ -203,7 +203,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                             placeholder="e.g. Modern Agent"
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                            className="w-full bg-slate-50 dark:bg-slate-50 border border-slate-200 dark:border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-black dark:text-black focus:border-[#7BB9D4]/50 focus:ring-4 focus:ring-[#7BB9D4]/5 transition-all placeholder:text-black/20 outline-none"
+                                            className="w-full bg-slate-50  border border-slate-200  rounded-2xl px-5 py-4 text-sm font-bold text-black  focus:border-[#7BB9D4]/50 focus:ring-4 focus:ring-[#7BB9D4]/5 transition-all placeholder:text-black/20 outline-none"
                                         />
                                     </div>
                                     <div className="space-y-3">
@@ -214,7 +214,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                             <select
                                                 value={formData.category}
                                                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                                className="w-full bg-slate-50 dark:bg-slate-50 border border-slate-200 dark:border-slate-200 rounded-2xl px-5 py-4 text-sm font-black text-black dark:text-black focus:border-[#7BB9D4]/50 appearance-none transition-all cursor-pointer outline-none capitalize tracking-widest"
+                                                className="w-full bg-slate-50  border border-slate-200  rounded-2xl px-5 py-4 text-sm font-black text-black  focus:border-[#7BB9D4]/50 appearance-none transition-all cursor-pointer outline-none capitalize tracking-widest"
                                             >
                                                 {categories.map(cat => <option key={cat} value={cat} className="bg-background text-foreground">{cat}</option>)}
                                             </select>
@@ -241,7 +241,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
 
                                     <div
                                         onClick={() => setShowPicker(p => !p)}
-                                        className="w-full flex items-center gap-5 bg-slate-50 dark:bg-slate-50 border-2 border-slate-200 dark:border-slate-200 rounded-2xl px-5 py-4 cursor-pointer hover:border-[#7BB9D4]/40 transition-all group active:scale-[0.99]"
+                                        className="w-full flex items-center gap-5 bg-slate-50  border-2 border-slate-200  rounded-2xl px-5 py-4 cursor-pointer hover:border-[#7BB9D4]/40 transition-all group active:scale-[0.99]"
                                     >
                                         <div className={`w-10 h-10 rounded-xl ${selectedTemplate.previewColor || 'bg-muted'} flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform`} />
                                         <div className="flex-1 min-w-0">
@@ -288,7 +288,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                                         ).sort(([a], [b]) => a.localeCompare(b)).map(([category, templates]) => (
                                                             <div key={category} className="space-y-4">
                                                                 <div className="flex items-center gap-4">
-                                                                    <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-black/20 dark:text-black/20 whitespace-nowrap font-['Mulish']">
+                                                                    <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-black/20  whitespace-nowrap font-['Mulish']">
                                                                         {category}
                                                                     </h3>
                                                                     <div className="h-px w-full bg-slate-100" />
@@ -343,7 +343,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                             placeholder="Modern, clean, minimal..."
                                             value={formData.tags}
                                             onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                                            className="w-full bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl px-5 pl-12 py-4 text-sm font-bold text-foreground focus:border-primary/50 transition-all placeholder:text-muted-foreground/30 outline-none"
+                                            className="w-full bg-black/5  border border-black/5  rounded-2xl px-5 pl-12 py-4 text-sm font-bold text-foreground focus:border-primary/50 transition-all placeholder:text-muted-foreground/30 outline-none"
                                         />
                                     </div>
                                 </div>
@@ -356,14 +356,14 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                     <textarea
                                         rows={3}
                                         placeholder="Outline the core objective of this design protocol..."
-                                        className="w-full bg-slate-50 dark:bg-slate-50 border border-slate-200 dark:border-slate-200 rounded-2xl px-5 py-4 text-sm font-bold text-black dark:text-black focus:border-[#7BB9D4]/50 transition-all placeholder:text-black/20 outline-none resize-none"
+                                        className="w-full bg-slate-50  border border-slate-200  rounded-2xl px-5 py-4 text-sm font-bold text-black  focus:border-[#7BB9D4]/50 transition-all placeholder:text-black/20 outline-none resize-none"
                                         value={formData.description}
                                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                     />
                                 </div>
 
                                 {/* Accent Colors */}
-                                <div className="space-y-4 pt-6 border-t border-black/5 dark:border-white/10">
+                                <div className="space-y-4 pt-6 border-t border-black/5 ">
                                     <label className="text-[10px] font-black capitalize tracking-[0.2em] text-muted-foreground ml-1 opacity-60">System Accent</label>
                                     <div className="flex flex-wrap gap-4">
                                         {['bg-primary', 'bg-blue-600', 'bg-emerald-500', 'bg-orange-500', 'bg-rose-500', 'bg-zinc-900'].map(color => (
@@ -388,9 +388,9 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                             </div>
 
                             {/* RIGHT - Live Preview */}
-                            <div className="hidden lg:flex w-[400px] xl:w-[450px] flex-col bg-slate-50 dark:bg-slate-50 border-l border-slate-100 dark:border-slate-100 shrink-0">
+                            <div className="hidden lg:flex w-[400px] xl:w-[450px] flex-col bg-slate-50  border-l border-slate-100  shrink-0">
                                 {/* Preview header */}
-                                <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 dark:border-slate-100">
+                                <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 ">
                                     <div>
                                         <p className="text-[10px] font-black capitalize tracking-[0.2em] text-muted-foreground opacity-60">Pulse Preview</p>
                                         <p className="text-sm font-black text-foreground mt-1 capitalize">{selectedTemplate.name}</p>
@@ -399,10 +399,10 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                 </div>
 
                                 {/* Scaled template render */}
-                                <div className="flex-1 overflow-hidden flex items-center justify-center p-10 bg-black/5 dark:bg-white/5">
-                                    <div className="w-full max-w-[280px] aspect-[9/18.5] bg-white dark:bg-zinc-900 rounded-[2.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] border-[6px] border-black/10 dark:border-white/10 overflow-hidden relative group">
+                                <div className="flex-1 overflow-hidden flex items-center justify-center p-10 bg-black/5 ">
+                                    <div className="w-full max-w-[280px] aspect-[9/18.5] bg-white  rounded-[2.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] border-[6px] border-black/10  overflow-hidden relative group">
                                         {/* Phone chrome notch */}
-                                        <div className="absolute top-4 left-1/2 -translate-x-1/2 w-16 h-3 bg-black/5 dark:bg-white/10 rounded-full z-10" />
+                                        <div className="absolute top-4 left-1/2 -translate-x-1/2 w-16 h-3 bg-black/5  rounded-full z-10" />
                                         {/* Scaled content */}
                                         <div className="absolute inset-0 overflow-hidden" style={{ paddingTop: '30px' }}>
                                             <div
@@ -411,7 +411,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                             >
                                                 <Suspense fallback={
                                                     <div className="w-full h-full flex items-center justify-center bg-background">
-                                                        <div className="w-8 h-8 border-4 border-black/5 dark:border-white/10 border-t-foreground rounded-full animate-spin" />
+                                                        <div className="w-8 h-8 border-4 border-black/5  border-t-foreground rounded-full animate-spin" />
                                                     </div>
                                                 }>
                                                     <TemplateRenderer templateId={formData.templateId} userData={previewUserData} />
@@ -428,7 +428,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                     </p>
                                     <div className="flex flex-wrap gap-2 mt-5">
                                         {(selectedTemplate.tags || []).map(tag => (
-                                            <span key={tag} className="text-[8px] font-black capitalize tracking-[0.2em] bg-black/5 dark:bg-white/10 text-muted-foreground px-3 py-1.5 rounded-xl border border-black/5 dark:border-white/10 opacity-70">
+                                            <span key={tag} className="text-[8px] font-black capitalize tracking-[0.2em] bg-black/5  text-muted-foreground px-3 py-1.5 rounded-xl border border-black/5  opacity-70">
                                                 {tag}
                                             </span>
                                         ))}
@@ -438,11 +438,11 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                         </div>
 
                         {/* Footer */}
-                        <div className="px-8 py-6 border-t border-slate-100 dark:border-slate-100 bg-slate-50 dark:bg-slate-50 flex items-center gap-4 shrink-0">
+                        <div className="px-8 py-6 border-t border-slate-100  bg-slate-50  flex items-center gap-4 shrink-0">
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="flex-1 py-4 rounded-2xl bg-white dark:bg-white text-black dark:text-black font-black text-[10px] capitalize tracking-[0.2em] border border-slate-200 dark:border-slate-200 hover:bg-slate-50 transition-all active:scale-[0.98]"
+                                className="flex-1 py-4 rounded-2xl bg-white  text-black  font-black text-[10px] capitalize tracking-[0.2em] border border-slate-200  hover:bg-slate-50 transition-all active:scale-[0.98]"
                             >
                                 Cancel
                             </button>

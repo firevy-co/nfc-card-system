@@ -18,12 +18,8 @@ const AdminNav = ({ userData }) => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
 
-  // Force Light Mode for Admin
-  useEffect(() => {
-    if (theme === 'dark') {
-      setTimeout(() => toggleTheme(), 0);
-    }
-  }, [theme]);
+  // Admin side is forced to light mode by the Layout component via CSS classes
+  // We no longer need to toggle the global theme state here
 
   return (
     <div className="hidden lg:block fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[1400px] z-[50] animate-in slide-in-from-top-8 duration-700">

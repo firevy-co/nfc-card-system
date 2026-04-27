@@ -10,7 +10,7 @@ import {
     LineChart, Line, PieChart, Pie, Cell, ResponsiveContainer
 } from "recharts";
 
-export const Home = ({ userData }) => {
+const Home = ({ userData }) => {
     if (!userData) return null;
 
     // --- EXACT ADMIN PROTOCOL DATA ---
@@ -32,21 +32,26 @@ export const Home = ({ userData }) => {
         <Layout userData={userData} title="Dashboard">
             <div className="p-6 lg:p-12 font-['Mulish'] min-h-screen">
 
-                {/* --- HEADER (EXACT ADMIN STYLE) --- */}
-                <div className="flex justify-between items-center mb-10">
-                    <h1 className="text-2xl font-black tracking-tight text-black">
-                        Identity Management Overview
-                    </h1>
-                    <button className="bg-black text-white px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all shadow-xl active:scale-95">
-                        + New Node
+                {/* --- HEADER (DYNAMIC) --- */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+                    <div>
+                        <h1 className="text-3xl font-black tracking-tight text-black">
+                            Welcome, {userData.displayName || 'Architect'}
+                        </h1>
+                        <p className="text-xs font-bold text-zinc-400 uppercase tracking-[0.3em] mt-1 opacity-60">
+                            {userData.role} Protocol Dashboard
+                        </p>
+                    </div>
+                    <button className="bg-black text-white px-10 py-4 rounded-full text-[11px] font-black uppercase tracking-widest hover:brightness-110 transition-all shadow-xl active:scale-95">
+                        + Deploy New Identity
                     </button>
                 </div>
 
-                {/* --- TOP CARDS (EXACT ADMIN STYLE) --- */}
-                <div className="grid md:grid-cols-3 gap-8 mb-10">
-                    <MetricCard title="Active Projects" value="426" color="bg-emerald-500" />
-                    <MetricCard title="Total Tasks" value="1,234" color="bg-blue-500" />
-                    <MetricCard title="Team Members" value="102" color="bg-pink-500" />
+                {/* --- TOP CARDS (IDENTITY THEMED) --- */}
+                <div className="grid md:grid-cols-3 gap-8 mb-12">
+                    <MetricCard title="Identity Nodes" value="1" color="bg-emerald-500" />
+                    <MetricCard title="Node Impressions" value="1,234" color="bg-blue-500" />
+                    <MetricCard title="Digital Connections" value="86" color="bg-pink-500" />
                 </div>
 
                 {/* --- MAIN ANALYTICS GRID (EXACT ADMIN STYLE) --- */}
@@ -62,9 +67,9 @@ export const Home = ({ userData }) => {
                         </div>
                     </div>
 
-                    {/* PROJECT STATUS */}
+                    {/* IDENTITY NODE STATUS */}
                     <div className="bg-white border border-zinc-100 p-8 rounded-[2.5rem] shadow-sm flex flex-col items-center">
-                        <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-10 w-full text-left">Project Status</h3>
+                        <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-10 w-full text-left">Node Deployment Status</h3>
                         <div className="relative">
                             <PieChart width={180} height={180}>
                                 <Pie
@@ -141,18 +146,18 @@ export const Home = ({ userData }) => {
                         </div>
                     </div>
 
-                    {/* TEAM OVERVIEW (EXACT ADMIN STYLE) */}
+                    {/* NETWORK INSIGHTS */}
                     <div className="bg-white border border-zinc-100 p-10 rounded-[3rem] shadow-sm transition-all flex flex-col justify-between">
                         <div>
-                            <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-8">Team Overview</h3>
+                            <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-8">Network Insights</h3>
                             <div className="flex items-center gap-6 p-6 bg-zinc-50 rounded-[2rem] border border-zinc-100">
                                 <div className="w-16 h-16 rounded-[1.5rem] bg-blue-500/10 text-blue-500 flex items-center justify-center shadow-inner">
                                     <FiUsers size={32} />
                                 </div>
                                 <div>
-                                    <p className="text-3xl font-black text-black tracking-tighter">102 Members</p>
+                                    <p className="text-3xl font-black text-black tracking-tighter">86 Contacts</p>
                                     <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest opacity-60 mt-1">
-                                        Synchronized Team Nodes
+                                        Active Network Nodes
                                     </p>
                                 </div>
                             </div>
@@ -210,3 +215,4 @@ const Progress = ({ label, value, color }) => (
     </div>
 );
 
+export default Home;

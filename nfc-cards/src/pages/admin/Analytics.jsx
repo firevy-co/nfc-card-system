@@ -62,7 +62,7 @@ const Analytics = ({ user, userData }) => {
             <div className="grid md:grid-cols-3 gap-6">
 
                {/* TASK PROGRESS */}
-               <div className="bg-white dark:bg-white backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm transition-all">
+               <div className="bg-white  backdrop-blur-xl border border-black/5  p-6 rounded-[2rem] shadow-sm transition-all">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">Task Progress</h3>
                   <h1 className="text-4xl font-black text-foreground mb-6">70%</h1>
 
@@ -74,7 +74,7 @@ const Analytics = ({ user, userData }) => {
                </div>
 
                {/* PROJECT STATUS */}
-               <div className="bg-white dark:bg-white backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm flex flex-col items-center transition-all">
+               <div className="bg-white  backdrop-blur-xl border border-black/5  p-6 rounded-[2rem] shadow-sm flex flex-col items-center transition-all">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-6 w-full text-left">Project Status</h3>
 
                   <div className="relative">
@@ -106,7 +106,7 @@ const Analytics = ({ user, userData }) => {
                </div>
 
                {/* PRODUCTIVITY TREND */}
-               <div className="bg-white dark:bg-white backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm transition-all">
+               <div className="bg-white  backdrop-blur-xl border border-black/5  p-6 rounded-[2rem] shadow-sm transition-all">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">Productivity Trend</h3>
 
                   <div className="h-[200px] w-full mt-4">
@@ -149,7 +149,7 @@ const Analytics = ({ user, userData }) => {
             <div className="grid md:grid-cols-2 gap-6 mt-8">
 
                {/* ACTIVITY */}
-               <div className="bg-white dark:bg-white backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm transition-all">
+               <div className="bg-white  backdrop-blur-xl border border-black/5  p-6 rounded-[2rem] shadow-sm transition-all">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-6">Recent Activity</h3>
 
                   <div className="space-y-4">
@@ -159,7 +159,7 @@ const Analytics = ({ user, userData }) => {
                         { label: "Blueprint Project Updated", time: "45m ago" },
                         { label: "Architecture Deadline Reached", time: "1h ago" },
                      ].map((item, i) => (
-                        <div key={i} className="flex items-center justify-between p-3 rounded-2xl hover:bg-black/5 dark:hover:bg-white/5 transition-all group">
+                        <div key={i} className="flex items-center justify-between p-3 rounded-2xl hover:bg-black/5 :bg-white/5 transition-all group">
                            <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
                                  <CheckCircle2 size={16} />
@@ -173,10 +173,10 @@ const Analytics = ({ user, userData }) => {
                </div>
 
                {/* TEAM */}
-               <div className="bg-white dark:bg-white backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm transition-all">
+               <div className="bg-white  backdrop-blur-xl border border-black/5  p-6 rounded-[2rem] shadow-sm transition-all">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-6">Team Overview</h3>
 
-                  <div className="flex items-center gap-5 p-4 bg-black/5 dark:bg-white/5 rounded-[1.5rem] border border-black/5 dark:border-white/5">
+                  <div className="flex items-center gap-5 p-4 bg-black/5  rounded-[1.5rem] border border-black/5 ">
                      <div className="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center shadow-inner">
                         <Users size={28} />
                      </div>
@@ -212,7 +212,7 @@ export default Analytics;
 /* COMPONENTS */
 
 const Card = ({ title, value, color }) => (
-   <div className="bg-white dark:bg-white backdrop-blur-xl border border-black/5 dark:border-white/10 p-6 rounded-[2rem] shadow-sm flex justify-between items-center group hover:scale-[1.02] transition-all duration-300" >
+   <div className="bg-white  backdrop-blur-xl border border-black/5  p-6 rounded-[2rem] shadow-sm flex justify-between items-center group hover:scale-[1.02] transition-all duration-300" >
       <div>
          <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mb-1 opacity-60">{title}</p>
          <h2 className="text-3xl font-black text-foreground tracking-tighter">{value}</h2>
@@ -229,7 +229,7 @@ const Progress = ({ label, value, color }) => (
          <span className="text-muted-foreground group-hover:text-foreground transition-colors">{label}</span>
          <span className="text-foreground">{value}%</span>
       </div>
-      <div className="w-full bg-black/5 dark:bg-white/5 h-2.5 rounded-full overflow-hidden border border-black/5 dark:border-white/5 p-0.5 shadow-inner">
+      <div className="w-full bg-black/5  h-2.5 rounded-full overflow-hidden border border-black/5  p-0.5 shadow-inner">
          <div
             className={`h-full rounded-full ${color} shadow-[0_0_10px_rgba(0,0,0,0.1)] transition-all duration-1000 ease-out group-hover:brightness-110`}
             style={{ width: `${value}%` }}
