@@ -201,10 +201,10 @@ const Signup = () => {
             </div>
 
             {/* Right Side: Visual Showcase */}
-            <div className="hidden lg:flex flex-1 relative bg-[#0a0a0b] items-center justify-center overflow-hidden">
-                {/* Abstract Background Glow */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[120px] pointer-events-none"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-pink-600/10 rounded-full blur-[100px] pointer-events-none delay-700"></div>
+            <div className="hidden lg:flex flex-1 relative bg-[#F8EDEB] items-center justify-center overflow-hidden">
+                {/* Abstract Background Glow (Softened for light mode) */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-pink-500/5 rounded-full blur-[100px] pointer-events-none delay-700"></div>
 
                 {/* NFC Tap Experience Container */}
                 <div className="relative z-10 w-full h-full flex items-center justify-center scale-110">
@@ -323,8 +323,8 @@ const Signup = () => {
 
                     {/* Static Text Overlay */}
                     <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center w-full">
-                        <h2 className="text-2xl font-black text-white mb-2 uppercase tracking-widest">Tap the Future</h2>
-                        <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.3em]">Experience cardless connection</p>
+                        <h2 className="text-2xl font-black text-black mb-2 uppercase tracking-widest">Tap the Future</h2>
+                        <p className="text-black/40 text-[10px] font-bold uppercase tracking-[0.3em]">Experience cardless connection</p>
                     </div>
                 </div>
             </div>
