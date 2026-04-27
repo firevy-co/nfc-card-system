@@ -24,16 +24,27 @@ const saveLocalData = (data) => fs.writeFileSync(DATA_PATH, JSON.stringify(data,
 
 // [LIST]: Retrieve all active templates
 exports.getAllTemplates = async (req, res) => {
-    if (isOffline) {
-        console.warn("[PERSISTENCE]: Cloud offline. Switching to Local JSON Drive.");
-        return res.status(200).json(getLocalData());
-    }
     try {
+        if (isOffline) {
+            console.warn("[PERSISTENCE]: Cloud offline. Serving local templates.");
+            return res.status(200).json(getLocalData());
+        }
+
+        if (!db) {
+            throw new Error("Firestore instance not initialized.");
+        }
+
         const snapshot = await db.collection('templates').orderBy('createdAt', 'desc').get();
         const templates = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         res.status(200).json(templates);
     } catch (error) {
-        res.status(500).json({ error: "Sync Error.", details: error.message });
+        console.error("[TEMPLATES LIST ERROR]:", error);
+        res.status(500).json({ 
+            error: "Failed to synchronize template registry", 
+            details: error.message,
+            isOffline,
+            dbInitialized: !!db
+        });
     }
 };
 
@@ -65,29 +76,31 @@ exports.updateTemplate = async (req, res) => {
     const { id } = req.params;
     const updatableData = req.body;
 
-    if (isOffline) {
-        console.warn(`[SYNC]: Locally updating node: ${id}`);
-        const data = getLocalData();
-        const index = data.findIndex(t => t.id === id);
-        if (index !== -1) {
-            data[index] = { ...data[index], ...updatableData, lastModified: new Date().toISOString() };
-            saveLocalData(data);
-            return res.status(200).json({ id, message: "Local sync successful." });
-        } else {
-            // Upsert if missing
-            data.push({ ...updatableData, id, createdAt: new Date().toISOString() });
-            saveLocalData(data);
-            return res.status(200).json({ id, message: "Node initialized in local drive." });
-        }
-    }
-
     try {
+        if (isOffline) {
+            console.warn(`[SYNC]: Locally updating node: ${id}`);
+            const data = getLocalData();
+            const index = data.findIndex(t => t.id === id);
+            if (index !== -1) {
+                data[index] = { ...data[index], ...updatableData, lastModified: new Date().toISOString() };
+                saveLocalData(data);
+                return res.status(200).json({ id, message: "Local sync successful." });
+            } else {
+                data.push({ ...updatableData, id, createdAt: new Date().toISOString() });
+                saveLocalData(data);
+                return res.status(200).json({ id, message: "Node initialized in local drive." });
+            }
+        }
+
+        if (!db) throw new Error("Firestore offline.");
+
         await db.collection('templates').doc(id).set({
             ...updatableData,
             lastModified: new Date().toISOString()
         }, { merge: true });
         res.status(200).json({ id, message: "Cloud sync successful." });
     } catch (error) {
+        console.error("[TEMPLATE UPDATE ERROR]:", error);
         res.status(500).json({ error: "Cloud sync failure.", details: error.message });
     }
 };
@@ -96,17 +109,20 @@ exports.updateTemplate = async (req, res) => {
 exports.deleteTemplate = async (req, res) => {
     const { id } = req.params;
 
-    if (isOffline) {
-        let data = getLocalData();
-        data = data.filter(t => t.id !== id);
-        saveLocalData(data);
-        return res.status(200).json({ id, message: "Local drive purged." });
-    }
-
     try {
+        if (isOffline) {
+            let data = getLocalData();
+            data = data.filter(t => t.id !== id);
+            saveLocalData(data);
+            return res.status(200).json({ id, message: "Local drive purged." });
+        }
+
+        if (!db) throw new Error("Firestore offline.");
+
         await db.collection('templates').doc(id).delete();
         res.status(200).json({ id, message: "Cloud purge successful." });
     } catch (error) {
+        console.error("[TEMPLATE DELETE ERROR]:", error);
         res.status(500).json({ error: "Cloud purge failure.", details: error.message });
     }
 };

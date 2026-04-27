@@ -5,6 +5,15 @@ const { isOffline } = require('./config/firebase');
 
 const app = express();
 
+// --- CRITICAL: CRASH PREVENTION ---
+process.on('uncaughtException', (err) => {
+    console.error('[CRITICAL]: Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('[CRITICAL]: Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 // --- MIDDLEWARE ---
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
