@@ -18,7 +18,7 @@ const OpalMinimal = ({ userData }) => {
         </div>
         <div className="bg-white/70 backdrop-blur-3xl border border-white rounded-[3rem] p-10 shadow-2xl shadow-blue-500/5 text-center group">
           <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-none">{displayName || 'Opal Minimal'}</h1>
-          <p className="text-blue-500 text-[10px] font-black uppercase tracking-[0.4em] mt-3 mb-10">{role || 'Studio Lead'}</p>
+          
           
           <div className="space-y-3 text-left">
              <StandardContactLink icon={FiIcons.FiGlobe} value={website} href={website} />

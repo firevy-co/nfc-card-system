@@ -11,7 +11,7 @@ const NightConnect = ({ userData }) => {
            <FiZap size={28} />
         </div>
         <h1 className="text-3xl font-black text-white tracking-widest uppercase italic text-center leading-none">{displayName || 'Club Nexus'}</h1>
-        <p className="text-indigo-400 text-[10px] font-black uppercase tracking-[0.5em] mt-3 mb-12">{role || 'Creative Producer'}</p>
+        
         
         <div className="w-full space-y-4">
            <a href={`tel:${mobileNumber}`} className="flex items-center justify-between bg-white text-black py-5 px-8 rounded-2xl font-black text-[12px] uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all">

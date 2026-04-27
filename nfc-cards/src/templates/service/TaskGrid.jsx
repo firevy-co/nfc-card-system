@@ -18,7 +18,7 @@ const TaskGrid = ({ userData }) => {
               )}
            </div>
            <h1 className="text-2xl font-black text-slate-900 tracking-tighter leading-none uppercase">{displayName || 'Expert Node'}</h1>
-           <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.4em] mt-3">{role || 'Professional Services'}</p>
+           
         </div>
         
         <div className="space-y-3 relative z-10 mb-8">

@@ -105,6 +105,8 @@ const ExpertNode = lazy(() => import('./service/ExpertNode'));
 const SkillFlow = lazy(() => import('./service/SkillFlow'));
 const PrimeService = lazy(() => import('./service/PrimeService'));
 
+import defaultLogo from '../assets/logo (2).png';
+
 const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
   
   // NORMALIZE USER DATA - Bridging discrepancies between Form fields and Template expectations
@@ -139,7 +141,8 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
     
     // Theme & Branding
     themeColor: rawUserData.themeColor || "#0f172a",
-    logo: rawUserData.logo || rawUserData.profileImage || ""
+    logo: rawUserData.logo || rawUserData.profileImage || defaultLogo,
+    profileImage: rawUserData.profileImage || rawUserData.logo || defaultLogo
   } : {};
 
   const renderTemplate = () => {

@@ -10,7 +10,7 @@ const WellnessWay = ({ userData }) => {
            <FiWind size={32} />
         </div>
         <h1 className="text-2xl font-black text-gray-800 tracking-tight text-center">{displayName || 'Wellness Way'}</h1>
-        <p className="text-[#8e8d8a] text-[10px] font-black uppercase tracking-[0.5em] mt-3 mb-12">{role || 'Harmony Specialist'}</p>
+        
         
         <div className="w-full space-y-3">
            <a href={`tel:${mobileNumber}`} className="w-full flex items-center justify-center p-5 rounded-[2.5rem] border border-[#f0ede5] text-gray-700 font-bold text-sm bg-transparent hover:bg-[#f0ede5] transition-all">

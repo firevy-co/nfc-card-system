@@ -12,7 +12,7 @@ const VelocityElite = ({ userData }) => {
             <FiIcons.FiTriangle className="rotate-90" size={32} />
           </div>
           <h1 className="text-2xl font-black text-white tracking-tight leading-none uppercase">{displayName || 'Vehicle Node'}</h1>
-          <p className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.4em] mt-3 opacity-80">{role || 'Sales Director'}</p>
+          
         </div>
 
         <div className="space-y-3 relative z-10">

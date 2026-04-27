@@ -11,7 +11,7 @@ const PureAura = ({ userData }) => {
            <FiWind size={32} className="relative z-10" />
         </div>
         <h1 className="text-2xl font-black text-slate-900 tracking-tight text-center">{displayName || 'Pure Aura'}</h1>
-        <p className="text-slate-300 text-[10px] font-black uppercase tracking-[0.5em] mt-3 mb-10">{role || 'Holistic Stylist'}</p>
+        
         
         <div className="w-full space-y-3">
            <a href={`tel:${mobileNumber}`} className="w-full flex items-center justify-center py-5 rounded-[2.5rem] bg-slate-50 text-slate-700 font-bold text-sm border border-slate-100 hover:bg-slate-900 hover:text-white transition-all shadow-sm">

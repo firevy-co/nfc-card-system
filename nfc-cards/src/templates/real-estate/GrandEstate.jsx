@@ -11,7 +11,7 @@ const GrandEstate = ({ userData }) => {
               <FiHome size={32} />
            </div>
            <h1 className="text-2xl font-black text-slate-900 tracking-tight text-center">{displayName || 'Grand Estate'}</h1>
-           <p className="text-indigo-900/40 text-[10px] font-black uppercase tracking-[0.4em] mt-3">{role || 'Senior Property Advisor'}</p>
+           
         </div>
         
         <div className="space-y-4">

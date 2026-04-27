@@ -14,7 +14,7 @@ const PinnacleAuto = ({ userData }) => {
               <FiHexagon size={40} />
            </div>
            <h1 className="text-2xl font-black text-white tracking-widest uppercase relative z-10">{displayName || 'Pinnacle Auto'}</h1>
-           <p className="text-neutral-500 text-[9px] font-black uppercase tracking-[0.6em] mt-3 relative z-10">{role || 'Master Technician'}</p>
+           
         </div>
         
         <div className="p-10 space-y-4">

@@ -10,7 +10,7 @@ const CarbonDrive = ({ userData }) => {
         <div className="mb-10 flex items-center justify-between">
            <div>
               <h1 className="text-2xl font-black text-white tracking-widest uppercase italic">{displayName || 'Carbon Drive'}</h1>
-              <p className="text-red-600 text-[10px] font-black uppercase tracking-[0.4em] mt-1">{role || 'Performance Lead'}</p>
+              
            </div>
            <div className="w-12 h-12 bg-red-600 flex items-center justify-center text-white rounded-xl shadow-xl shadow-red-600/20 group-hover:scale-110 transition-transform">
               <FiTarget size={24} />

@@ -19,7 +19,7 @@ const VelvetBoutique = ({ userData }) => {
              )}
           </div>
           <h1 className="text-2xl font-serif italic text-[#d4af37] tracking-wider mb-2">{displayName || 'Velvet Boutique'}</h1>
-          <p className="text-white/40 text-[9px] font-black uppercase tracking-[0.4em]">{role || 'Artisanal Designer'}</p>
+          
         </div>
 
         <div className="space-y-3">

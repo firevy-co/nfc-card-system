@@ -20,7 +20,7 @@ const CorporateGlass = ({ userData }) => {
             </div>
             <div>
               <h1 className="text-xl font-black text-white capitalize leading-none">{displayName || 'Corporate Lead'}</h1>
-              <p className="text-blue-300 text-[10px] font-black uppercase tracking-widest mt-2">{role || 'Director'}</p>
+              
             </div>
           </div>
           {bio && <p className="text-white/60 text-[11px] font-bold mb-8 leading-relaxed italic border-l-2 border-blue-500/30 pl-4">{bio}</p>}

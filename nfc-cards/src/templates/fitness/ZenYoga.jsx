@@ -10,7 +10,7 @@ const ZenYoga = ({ userData }) => {
            <FiWind size={32} />
         </div>
         <h1 className="text-2xl font-black text-slate-800 tracking-tight text-center italic">{displayName || 'Zen Yoga'}</h1>
-        <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.4em] mt-3 mb-10">{role || 'Flow Practitioner'}</p>
+        
         
         <div className="w-full space-y-3">
            <a href={`tel:${mobileNumber}`} className="w-full flex items-center justify-center py-5 rounded-[2.5rem] bg-slate-50 text-slate-600 font-bold text-sm border border-slate-100 hover:bg-white hover:border-slate-800 hover:text-slate-900 transition-all">

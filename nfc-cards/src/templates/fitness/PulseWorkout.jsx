@@ -14,7 +14,7 @@ const PulseWorkout = ({ userData }) => {
               <FiActivity size={32} />
            </div>
            <h1 className="text-3xl font-black text-black tracking-tighter uppercase leading-none relative z-10">{displayName || 'Pulse Pro'}</h1>
-           <p className="text-black/60 text-[10px] font-black uppercase tracking-[0.4em] mt-3 relative z-10">{role || 'Elite Performance Coach'}</p>
+           
         </div>
         
         <div className="p-8 space-y-4">

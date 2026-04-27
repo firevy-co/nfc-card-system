@@ -16,7 +16,7 @@ const CreatorMatrix = ({ userData }) => {
         <div className="mb-12 relative z-10">
            <div className="w-12 h-1 bg-white mb-10" />
            <h1 className="text-4xl font-black text-white tracking-widest uppercase italic leading-none">{displayName || 'Matrix Node'}</h1>
-           <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.5em] mt-3">{role || 'Full System Creator'}</p>
+           
         </div>
         
         <div className="space-y-4 relative z-10">

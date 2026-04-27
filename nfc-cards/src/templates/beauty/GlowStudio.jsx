@@ -12,7 +12,7 @@ const GlowStudio = ({ userData }) => {
            </div>
         </div>
         <h1 className="text-2xl font-black text-slate-800 tracking-tight text-center">{displayName || 'Glow Studio'}</h1>
-        <p className="text-rose-400 text-[10px] font-black uppercase tracking-[0.5em] mt-3 mb-12">{role || 'Master Aesthetician'}</p>
+        
         
         <div className="w-full space-y-4">
            <a href={`tel:${mobileNumber}`} className="w-full flex items-center justify-between p-5 rounded-3xl bg-[#fffbfb] border border-[#ffe4e4] text-slate-700 font-bold text-sm hover:bg-rose-50 transition-all">

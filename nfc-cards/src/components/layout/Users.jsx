@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Layout from './layout';
 import { FiRefreshCw, FiUserPlus, FiEdit2, FiTrash2, FiShield, FiUser, FiActivity } from 'react-icons/fi';
+import { API_BASE_URL } from "../../config/api";
+
 
 const Users = ({ userData }) => {
     const [usersList, setUsersList] = useState([]);
@@ -23,7 +25,7 @@ const Users = ({ userData }) => {
     const fetchUsersFromBackend = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost:4000/api/users');
+            const response = await fetch(`${API_BASE_URL}/api/users`);
             if (response.ok) {
                 const data = await response.json();
                 setUsersList(data);
@@ -57,7 +59,7 @@ const Users = ({ userData }) => {
         e.preventDefault();
         setIsSaving(true);
         try {
-            const response = await fetch(`http://localhost:4000/api/users/${editingUser.uid}`, {
+            const response = await fetch(`${API_BASE_URL}/api/users/${editingUser.uid}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
@@ -84,7 +86,7 @@ const Users = ({ userData }) => {
 
         setIsDeleting(true);
         try {
-            const response = await fetch(`http://localhost:4000/api/users/${uid}`, {
+            const response = await fetch(`${API_BASE_URL}/api/users/${uid}`, {
                 method: 'DELETE'
             });
 

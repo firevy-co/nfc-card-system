@@ -17,7 +17,7 @@ const LuxeHotel = ({ userData }) => {
         </div>
 
         <h1 className="text-2xl font-black text-white tracking-tight uppercase text-center mb-2 leading-none">{displayName || 'Hospitality Node'}</h1>
-        <p className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.4em] mb-12 opacity-80">{role || 'Concierge Services'}</p>
+        
 
         <div className="w-full space-y-3 relative z-10">
           <StandardContactLink icon={FiIcons.FiGlobe} value={website} href={website} />

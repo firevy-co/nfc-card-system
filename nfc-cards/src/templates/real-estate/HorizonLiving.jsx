@@ -10,7 +10,7 @@ const HorizonLiving = ({ userData }) => {
            <FiCompass size={32} />
         </div>
         <h1 className="text-2xl font-black text-slate-900 tracking-tight">{displayName || 'Horizon Living'}</h1>
-        <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.5em] mt-3 mb-10">{role || 'Property Guide'}</p>
+        
         
         <div className="space-y-3">
            <a href={`tel:${mobileNumber}`} className="w-full flex items-center justify-center py-5 rounded-[2.5rem] bg-slate-900 text-white font-black text-[10px] uppercase tracking-[0.4em] hover:brightness-125 transition-all shadow-xl shadow-slate-900/10">

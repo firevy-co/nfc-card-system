@@ -11,7 +11,7 @@ const SovereignLaw = ({ userData }) => {
         <div className="mb-10 text-center flex flex-col items-center">
            <div className="w-16 h-1 bg-cyan-400 mb-8 opacity-50 shadow-[0_0_10px_rgba(34,211,238,0.5)]" />
            <h1 className="text-2xl font-black text-white tracking-tight uppercase leading-none">{displayName || 'Sovereign Law'}</h1>
-           <p className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.4em] mt-3 opacity-80">{role || 'Legal Counsel'}</p>
+           
         </div>
         
         <div className="space-y-3 relative z-10">

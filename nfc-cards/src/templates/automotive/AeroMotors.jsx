@@ -12,7 +12,7 @@ const AeroMotors = ({ userData }) => {
            </div>
         </div>
         <h1 className="text-2xl font-black text-slate-900 tracking-tight">{displayName || 'Aero Motors'}</h1>
-        <p className="text-indigo-600 text-[10px] font-black uppercase tracking-[0.4em] mt-3 mb-12">{role || 'Aerodynamics Lead'}</p>
+        
         
         <div className="space-y-4">
            <a href={`tel:${mobileNumber}`} className="flex items-center gap-4 bg-gray-50 p-5 rounded-3xl border border-gray-100 hover:border-indigo-600/30 transition-all group">

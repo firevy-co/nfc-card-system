@@ -8,6 +8,8 @@ import { HexColorPicker } from "react-colorful";
 import { auth } from "@/firebase.config";
 import { signOut } from "firebase/auth";
 import toast from "react-hot-toast";
+import { API_BASE_URL } from "../../config/api";
+
 
 
 const IconCard = ({ icon: _Icon, label, field, onClick, required }) => (
@@ -154,7 +156,7 @@ const CompleteProfile = ({ userData }) => {
         }
 
         const savePromise = (async () => {
-            const response = await fetch("http://localhost:4000/api/users/onboard", {
+            const response = await fetch(`${API_BASE_URL}/api/users/onboard`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ 

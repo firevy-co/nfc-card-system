@@ -14,7 +14,7 @@ const StreamNode = ({ userData }) => {
               <FiTv size={32} />
            </div>
            <h1 className="text-3xl font-black text-white tracking-tighter uppercase leading-none relative z-10">{displayName || 'Stream Node'}</h1>
-           <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.4em] mt-3 relative z-10">{role || 'Full Time Streamer'}</p>
+           
         </div>
         
         <div className="p-8 space-y-4">

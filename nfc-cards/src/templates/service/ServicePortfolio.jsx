@@ -20,7 +20,7 @@ const ServicePortfolio = ({ userData }) => {
              <FiLayout size={32} className="text-primary" />
           </div>
           <h2 className="text-3xl font-black tracking-tighter mb-2 text-foreground capitalize">{displayName || "SERVICE HUB"}</h2>
-          <p className="text-[10px] font-bold text-muted-foreground capitalize tracking-[0.4em]">{role || "Operations Lead"}</p>
+          
         </header>
 
         {/* Service List Identity */}

@@ -12,7 +12,7 @@ const PixelProperty = ({ userData }) => {
               <FiSquare size={28} />
            </div>
            <h1 className="text-3xl font-black text-white tracking-widest uppercase italic">{displayName || 'Pixel Prop'}</h1>
-           <p className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.4em] mt-3">{role || 'Digital Realtor'}</p>
+           
            
            <div className="mt-12 space-y-6">
               <a href={`tel:${mobileNumber}`} className="flex flex-col group/link">

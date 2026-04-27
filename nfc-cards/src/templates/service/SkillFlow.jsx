@@ -17,7 +17,7 @@ const SkillFlow = ({ userData }) => {
         </div>
         
         <h1 className="text-2xl font-black text-slate-800 tracking-tight text-center italic leading-none truncate w-full">{displayName || 'Skill Flow'}</h1>
-        <p className="text-indigo-400 text-[10px] font-black uppercase tracking-[0.4em] mt-3 mb-12">{role || 'Creative Solutionist'}</p>
+        
         
         <div className="w-full space-y-3 relative z-10 text-left mb-10">
            <StandardContactLink icon={FiGlobe} value={website} href={website} />

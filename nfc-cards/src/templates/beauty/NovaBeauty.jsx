@@ -9,7 +9,7 @@ const NovaBeauty = ({ userData }) => {
         <div className="absolute top-0 right-0 w-32 h-32 bg-slate-900/5 rotate-45 transform translate-x-12 -translate-y-12" />
         <div className="w-16 h-1 bg-slate-900 mb-10 transition-all group-hover:w-24 group-hover:bg-rose-500" />
         <h1 className="text-3xl font-black text-slate-900 tracking-tighter uppercase text-center leading-none">{displayName || 'Nova Beauty'}</h1>
-        <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.5em] mt-4 mb-12 italic">{role || 'Global Brand Lead'}</p>
+        
         
         <div className="w-full space-y-4">
            <a href={`tel:${mobileNumber}`} className="flex items-center justify-between border-2 border-slate-900 py-5 px-8 rounded-2xl font-black text-[12px] uppercase tracking-widest text-slate-900 hover:bg-slate-900 hover:text-white transition-all">

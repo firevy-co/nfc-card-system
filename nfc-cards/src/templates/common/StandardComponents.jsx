@@ -6,13 +6,11 @@ export const StandardContactLink = ({ icon: Icon, value, href, label }) => {
   const Comp = href ? 'a' : 'div';
   let finalHref = href;
   
-  // Logic to determine action label and transform links (e.g. WhatsApp)
+  // Logic to determine action label and transform links
   let displayLabel = label;
   if (!label) {
     if (finalHref?.startsWith('tel:')) {
-        const cleanPhone = value.replace(/\D/g, '');
-        finalHref = `https://wa.me/${cleanPhone}`;
-        displayLabel = "WhatsApp Chat";
+        displayLabel = "Call Now";
     }
     else if (finalHref?.startsWith('mailto:')) displayLabel = "Email Me";
     else if (finalHref?.startsWith('http') || Icon === FiIcons.FiGlobe) displayLabel = "Visit Website";
@@ -21,6 +19,7 @@ export const StandardContactLink = ({ icon: Icon, value, href, label }) => {
     else if (Icon === FiIcons.FiInstagram) displayLabel = "Instagram Profile";
     else if (Icon === FiIcons.FiFacebook) displayLabel = "Facebook Page";
     else if (Icon === FiIcons.FiTwitter) displayLabel = "X / Twitter";
+    else if (finalHref?.includes('wa.me')) displayLabel = "WhatsApp Chat";
     else displayLabel = value; // Fallback
   }
 

@@ -10,7 +10,7 @@ const JusticePartners = ({ userData }) => {
         <div className="mb-12">
            <div className="w-16 h-1 bg-[#c5a176] mb-6" />
            <h1 className="text-3xl font-black text-[#1a1a1a] tracking-tight italic capitalize">{displayName || 'Justice Partner'}</h1>
-           <p className="text-[#c5a176] text-[11px] font-bold uppercase tracking-[0.3em] font-sans mt-3">{role || 'Attorney at Law'}</p>
+           
         </div>
         
         <div className="space-y-5 font-sans">

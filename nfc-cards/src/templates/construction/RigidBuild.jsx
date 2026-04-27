@@ -19,7 +19,7 @@ const RigidBuild = ({ userData }) => {
               )}
            </div>
            <h1 className="text-3xl font-black text-white tracking-widest uppercase leading-none">{displayName || 'Rigid Build'}</h1>
-           <p className="text-orange-500 text-[10px] font-black uppercase tracking-[0.5em] mt-3 italic">{role || 'Project Super'}</p>
+           
         </div>
         
         <div className="space-y-3 relative z-10">

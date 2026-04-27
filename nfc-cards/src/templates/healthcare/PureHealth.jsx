@@ -13,7 +13,7 @@ const PureHealth = ({ userData }) => {
         </div>
         <div className="bg-emerald-50 rounded-[4rem] p-12 pt-20 border border-emerald-100 shadow-xl text-center">
            <h1 className="text-2xl font-black text-slate-900 tracking-tight">{displayName || 'Pure Health'}</h1>
-           <p className="text-emerald-600 text-[10px] font-black uppercase tracking-[0.3em] mt-2 mb-10">{role || 'Wellness Consultant'}</p>
+           
            
            <div className="space-y-3">
               <a href={`tel:${mobileNumber}`} className="flex items-center justify-center gap-3 bg-white py-4 rounded-3xl border border-emerald-100/50 hover:bg-emerald-50 transition-all font-bold text-sm text-slate-700">

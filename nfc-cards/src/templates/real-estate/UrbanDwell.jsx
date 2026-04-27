@@ -14,7 +14,7 @@ const UrbanDwell = ({ userData }) => {
         </div>
         <div className="bg-white rounded-[3rem] p-10 shadow-2xl relative z-10 border border-slate-100/50">
            <h1 className="text-3xl font-black text-slate-900 tracking-tighter leading-none">{displayName || 'Urban Dwell'}</h1>
-           <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.4em] mt-4 mb-10">{role || 'Agent Executive'}</p>
+           
            
            <div className="space-y-4">
               <div className="flex items-center gap-4 bg-slate-50 p-5 rounded-3xl border border-slate-100 group">

@@ -19,7 +19,7 @@ const EliteCounsel = ({ userData }) => {
            </div>
            
            <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-none uppercase mb-2">{displayName || 'Elite Counsel'}</h1>
-           <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.4em] mb-12">{role || 'Senior Managing Partner'}</p>
+           
            
            <div className="space-y-3 relative z-10 text-left">
               <StandardContactLink icon={FiGlobe} value={website} href={website} />

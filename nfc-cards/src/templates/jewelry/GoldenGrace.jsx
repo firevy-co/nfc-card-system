@@ -15,7 +15,7 @@ const GoldenGrace = ({ userData }) => {
           )}
         </div>
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight text-center leading-none">{displayName || 'Golden Grace'}</h1>
-        <p className="text-[#d4af37] text-[10px] font-black uppercase tracking-[0.3em] mt-3 mb-10">{role || 'Luxury Consultant'}</p>
+        
         
         <div className="w-full space-y-3">
           <StandardContactLink icon={FiIcons.FiGlobe} value={website} href={website} />

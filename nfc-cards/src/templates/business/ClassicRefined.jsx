@@ -1,6 +1,7 @@
 import React from 'react';
 import * as Fa from 'react-icons/fa';
 import * as Fi from 'react-icons/fi';
+import { downloadVCard } from "../common/StandardComponents";
 
 const isLight = (color) => {
     if (!color || typeof color !== 'string' || color.length < 7) return false;
@@ -23,13 +24,9 @@ const ClassicRefined = ({ userData }) => {
             {/* Profile Image / Logo Slot */}
             <div className="flex flex-col items-center justify-center mt-12 mb-8">
                 <div className={`w-24 h-24 rounded-full border-4 flex items-center justify-center overflow-hidden mb-4 shadow-2xl ${isLight(themeColor) ? 'border-black/10 bg-black/5' : 'border-white/20 bg-white/10'}`}>
-                    {userData.logo ? (
-                        <img src={userData.logo} alt="Profile" className="w-full h-full object-cover" />
-                    ) : (
-                        <Fi.FiUser size={40} />
-                    )}
+                    <img src={userData.logo} alt={userData.displayName} className="w-full h-full object-cover" />
                 </div>
-                <h1 className="text-2xl font-black tracking-tight">{userData.name || "Your Name"}</h1>
+                <h1 className="text-2xl font-black tracking-tight">{userData.displayName || "Your Name"}</h1>
             </div>
 
             {/* Connect With Us Section */}
@@ -100,8 +97,10 @@ const ClassicRefined = ({ userData }) => {
                 ))}
             </div>
 
-            {/* Save Contact Button */}
-            <button className={`mt-12 w-full max-w-sm py-5 rounded-[2.5rem] font-black text-sm uppercase tracking-[0.2em] shadow-2xl transition-all hover:scale-[1.02] active:scale-95 ${isLight(themeColor) ? 'bg-black text-white' : 'bg-white text-black'}`}>
+            <button 
+                onClick={() => downloadVCard(userData)}
+                className={`mt-12 w-full max-w-sm py-5 rounded-[2.5rem] font-black text-sm uppercase tracking-[0.2em] shadow-2xl transition-all hover:scale-[1.02] active:scale-95 ${isLight(themeColor) ? 'bg-black text-white' : 'bg-white text-black'}`}
+            >
                 Save Contact
             </button>
 

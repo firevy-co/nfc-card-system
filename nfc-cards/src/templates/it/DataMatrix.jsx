@@ -12,7 +12,7 @@ const DataMatrix = ({ userData }) => {
         <div className="mb-12">
            <div className="text-white/20 text-[6px] font-black tracking-[0.5em] uppercase mb-4">Cardyn Systems / Identity / 2026</div>
            <h1 className="text-4xl font-black text-white tracking-tighter capitalize">{displayName || 'Data Node'}</h1>
-           <p className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.4em] mt-3">{role || 'Systems Analyst'}</p>
+           
         </div>
         
         <div className="space-y-4">

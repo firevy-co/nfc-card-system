@@ -11,7 +11,7 @@ const NeonInfluence = ({ userData }) => {
            <FiZap size={32} />
         </div>
         <h1 className="text-3xl font-black text-white tracking-[0.2em] uppercase text-center leading-none italic">{displayName || 'Neon Icon'}</h1>
-        <p className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-rose-400 text-[10px] font-black uppercase tracking-[0.6em] mt-3 mb-12">{role || 'Global Influencer'}</p>
+        
         
         <div className="w-full space-y-3 px-2">
            <a href={`tel:${mobileNumber}`} className="w-full flex items-center justify-between py-5 px-8 rounded-[2.5rem] bg-white/5 border border-white/5 text-white font-bold text-sm hover:bg-white hover:text-black transition-all group/link">

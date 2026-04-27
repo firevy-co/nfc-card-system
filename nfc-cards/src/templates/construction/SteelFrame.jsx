@@ -11,7 +11,7 @@ const SteelFrame = ({ userData }) => {
         </div>
         <div className="mt-16 w-full text-center">
            <h1 className="text-3xl font-black text-slate-900 tracking-tighter uppercase leading-none">{displayName || 'Steel Frame'}</h1>
-           <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.5em] mt-4 mb-12 italic">{role || 'structural architect'}</p>
+           
         </div>
         
         <div className="w-full space-y-4">

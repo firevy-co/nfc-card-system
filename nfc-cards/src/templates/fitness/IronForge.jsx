@@ -10,7 +10,7 @@ const IronForge = ({ userData }) => {
         <div className="mb-12 relative z-10">
            <div className="w-12 h-1 bg-orange-600 mb-8" />
            <h1 className="text-4xl font-black text-white tracking-tighter uppercase leading-none">{displayName || 'Iron Forge'}</h1>
-           <p className="text-orange-600 text-[10px] font-black uppercase tracking-[0.5em] mt-3">{role || 'Strength Specialist'}</p>
+           
         </div>
         
         <div className="space-y-4 relative z-10">

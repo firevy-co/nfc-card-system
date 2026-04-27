@@ -15,7 +15,7 @@ const ZenCafe = ({ userData }) => {
            )}
         </div>
         <h1 className="text-2xl font-black text-[#444440] tracking-tight text-center leading-none">{displayName || 'Zen Cafe'}</h1>
-        <p className="text-[#86867e] text-[10px] font-bold uppercase tracking-[0.5em] mt-3 mb-10">{role || 'Barista Lead'}</p>
+        
         
         <div className="w-full space-y-3 relative z-10">
            <StandardContactLink icon={FiIcons.FiGlobe} value={website} href={website} />

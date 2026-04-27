@@ -9,6 +9,8 @@ import {
 } from "react-icons/fi";
 import { TEMPLATES } from "../../templates/templateRegistry";
 import toast from 'react-hot-toast';
+import { API_BASE_URL } from "../../config/api";
+
 
 export default function Content({ userData }) {
   const isAdmin = userData?.role === "Admin";
@@ -45,7 +47,7 @@ export default function Content({ userData }) {
   const fetchTemplates = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:4000/api/templates');
+      const response = await fetch(`${API_BASE_URL}/api/templates`);
       const localCache = JSON.parse(localStorage.getItem('identity_nodes') || '[]');
 
       if (response.ok) {
@@ -112,8 +114,8 @@ export default function Content({ userData }) {
         : templateData;
 
       const url = isEditing
-        ? `http://localhost:4000/api/templates/${editingTemplate.id}`
-        : 'http://localhost:4000/api/templates';
+        ? `${API_BASE_URL}/api/templates/${editingTemplate.id}`
+        : `${API_BASE_URL}/api/templates`;
 
       const response = await fetch(url, {
         method: isEditing ? 'PUT' : 'POST',
@@ -161,7 +163,7 @@ export default function Content({ userData }) {
   const handleDeleteNode = async (id) => {
     if (!window.confirm("Abort Identity Deployment? This action is IRREVERSIBLE.")) return;
     try {
-      const response = await fetch(`http://localhost:4000/api/templates/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/templates/${id}`, {
         method: 'DELETE'
       });
       if (response.ok) fetchTemplates();

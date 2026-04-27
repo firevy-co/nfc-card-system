@@ -10,7 +10,7 @@ const VelvetSkin = ({ userData }) => {
         <div className="relative z-10 flex flex-col items-center">
           <div className="w-16 h-1 bg-rose-500 mb-12 opacity-50" />
           <h1 className="text-3xl font-light text-white tracking-[0.2em] uppercase text-center">{displayName || 'Velvet Skin'}</h1>
-          <p className="text-rose-500 text-[9px] font-black uppercase tracking-[0.5em] mt-4 mb-12">{role || 'Dermal Specialist'}</p>
+          
           
           <div className="w-full space-y-4">
             <a href={`tel:${mobileNumber}`} className="flex items-center gap-4 bg-white/5 p-5 rounded-3xl border border-white/5 hover:border-rose-500/30 transition-all group/link">

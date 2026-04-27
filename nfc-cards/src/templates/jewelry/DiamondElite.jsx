@@ -19,7 +19,7 @@ const DiamondElite = ({ userData }) => {
             </div>
           </div>
           <h1 className="text-2xl font-black text-white tracking-[0.1em] uppercase text-center leading-tight">{displayName || 'Precious Jewels'}</h1>
-          <p className="text-amber-500 text-[10px] font-black uppercase tracking-[0.5em] mt-4 mb-10">{role || 'Master Jeweler'}</p>
+          
           
           <div className="w-full space-y-3">
              <StandardContactLink icon={FiIcons.FiGlobe} value={website} href={website} />

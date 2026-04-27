@@ -58,9 +58,16 @@ const ITSolutions = ({ userData }) => {
                 <button className="w-full bg-white text-black py-4 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:bg-white/90 transition-all">
                     Our Portfolio
                 </button>
-                <button className="w-full bg-white/5 border border-white/10 text-white py-4 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] hover:bg-white/10 transition-all">
-                    Visit Website
-                </button>
+                {website && (
+                  <a 
+                    href={website.startsWith('http') ? website : `https://${website}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-white/5 border border-white/10 text-white py-4 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] hover:bg-white/10 transition-all flex items-center justify-center"
+                  >
+                      Visit Website
+                  </a>
+                )}
             </div>
 
             {/* INFRASTRUCTURE DETAILS */}

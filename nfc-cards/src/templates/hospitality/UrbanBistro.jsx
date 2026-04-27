@@ -14,7 +14,7 @@ const UrbanBistro = ({ userData }) => {
               <FiCoffee size={32} />
            </div>
            <h1 className="text-3xl font-black text-[#2c3e50] tracking-tighter">{displayName || 'Urban Bistro'}</h1>
-           <p className="text-[#e67e22] text-[10px] font-black uppercase tracking-[0.4em] mt-2">{role || 'General Manager'}</p>
+           
         </div>
         
         <div className="space-y-4">
