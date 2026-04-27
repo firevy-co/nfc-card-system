@@ -15,6 +15,11 @@ let mockUsersCache = [
 exports.getAllUsers = async (req, res) => {
 
     try {
+        if (isOffline) {
+            console.warn("[SYNC]: Cloud offline. Serving memory-resident identities.");
+            return res.json(mockUsersCache);
+        }
+
         const listUsersResult = await auth.listUsers(100);
         const snapshot = await db.collection('users').get();
         const firestoreUsers = {};
@@ -46,6 +51,13 @@ exports.updateUserDetails = async (req, res) => {
     const { displayName, email, role } = req.body;
 
     try {
+        if (isOffline) {
+            mockUsersCache = mockUsersCache.map(u => 
+                u.uid === uid ? { ...u, displayName, email, role } : u
+            );
+            return res.json({ message: `Identity ${uid} credentials successfully re-architected (MOCK).` });
+        }
+
         try {
             const authPayload = {};
             if (email) authPayload.email = email;
@@ -80,6 +92,11 @@ exports.deleteUser = async (req, res) => {
     const { uid } = req.params;
 
     try {
+        if (isOffline) {
+            mockUsersCache = mockUsersCache.filter(u => u.uid !== uid);
+            return res.json({ message: `Identity ${uid} purged from the network (MOCK).` });
+        }
+
         // [PURGE] Stage 1: Core Authentication
         await auth.deleteUser(uid);
         
@@ -123,6 +140,13 @@ exports.completeProfile = async (req, res) => {
     const { uid, ...profileData } = req.body;
 
     try {
+        if (isOffline) {
+            return res.json({ 
+                success: true, 
+                message: "Company Hub successfully architected (MOCK)." 
+            });
+        }
+
         // [CORE STORAGE]: Store the Business Identity in a dedicated collection
         await db.collection('companyDetails').doc(uid).set({
             ...profileData,
