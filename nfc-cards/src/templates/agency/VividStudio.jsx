@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FiGlobe, FiMail, FiPhone, FiMapPin, FiInstagram, FiLinkedin, FiTwitter, FiUserPlus, FiArrowUpRight, FiGithub } from 'react-icons/fi';
 import { FaWhatsapp, FaFacebook, FaYoutube, FaTiktok, FaDiscord, FaTelegram } from 'react-icons/fa';
-import { downloadVCard } from "../common/StandardComponents";
+import { downloadVCard } from '../common/StandardComponents';
 
 const VividStudio = ({ userData }) => {
   const {

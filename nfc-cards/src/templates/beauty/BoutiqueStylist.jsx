@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from 'framer-motion';
 import * as FiIcons from 'react-icons/fi';
-import { downloadVCard } from "../common/StandardComponents";
+import { downloadVCard } from '../common/StandardComponents';
 
 const BoutiqueStylist = ({ userData }) => {
    const {

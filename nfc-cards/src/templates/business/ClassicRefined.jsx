@@ -1,99 +1,198 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
-import { downloadVCard } from "../common/StandardComponents";
+import { downloadVCard } from '../common/StandardComponents';
 
 const ClassicRefined = ({ userData }) => {
-  const { 
-    displayName, email, role, mobileNumber, phone, 
-    companyName, designation, website, address, city,
-    linkedin, instagram, facebook, twitter, bio, avatar, logo 
-  } = userData || {};
+   const {
+      displayName, email, role, mobileNumber, phone,
+      companyName, designation, website, address, city,
+      linkedin, instagram, facebook, twitter, bio, avatar, logo,
+      coverPhoto, tags
+   } = userData || {};
 
-  const displayPhone = mobileNumber || phone;
-  const displayRole = designation || role || "Managing Partner";
-  const finalAddress = address || city;
+   const displayPhone = mobileNumber || phone;
+   const displayRole = designation || role || "Creative Director";
+   const finalAddress = address || city;
 
-  return (
-    <div className="min-h-screen bg-zinc-900 font-serif pb-16">
-      
-      {/* Luxury Minimal Header */}
-      <div className="pt-20 pb-12 px-8 flex flex-col items-center border-b border-zinc-800 bg-black/20">
-         <div className="w-24 h-24 mb-8 overflow-hidden rounded-sm border border-zinc-700 bg-black flex items-center justify-center shrink-0">
-            {logo ? <img src={logo} alt="Logo" className="w-full h-full object-contain p-3 bg-white" /> : avatar ? <img src={avatar} alt="Profile" className="w-full h-full object-cover grayscale" /> : <span className="text-3xl text-zinc-500 font-light uppercase">{(displayName || 'C')[0]}</span>}
+   const bgImage = coverPhoto || "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=1200&q=80";
+
+   const expertiseTags = tags && tags.length > 0 ? tags : ["Brand Strategy", "UX Design", "Visual Identity", "Editorial"];
+
+   const getSocialUrl = (platform, value) => {
+      if (!value) return null;
+      if (value.startsWith('http')) return value;
+      switch (platform) {
+         case 'linkedin': return `https://linkedin.com/in/${value.replace('@', '')}`;
+         case 'instagram': return `https://instagram.com/${value.replace('@', '')}`;
+         case 'twitter': return `https://twitter.com/${value.replace('@', '')}`;
+         case 'facebook': return `https://facebook.com/${value}`;
+         case 'website': return `https://${value}`;
+         default: return `https://${value}`;
+      }
+   };
+
+   return (
+      <div className="min-h-screen bg-[#0a0a0a] font-sans pb-16 text-zinc-200 selection:bg-[#c2a05f]/30">
+
+         {/* Banner */}
+         <div
+            className="w-full h-56 bg-cover bg-center relative"
+            style={{ backgroundImage: `url(${bgImage})` }}
+         >
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/50 to-transparent"></div>
          </div>
-         <h1 className="text-3xl font-light tracking-wide text-zinc-100 mb-3 text-center">{displayName || 'Classic Refined'}</h1>
-         <div className="h-px w-12 bg-zinc-600 mb-4" />
-         <p className="text-xs font-['Inter'] text-zinc-400 uppercase tracking-[0.3em] text-center">{displayRole}</p>
-         {companyName && <p className="text-[10px] font-['Inter'] font-semibold text-zinc-500 uppercase tracking-[0.4em] mt-4 text-center">{companyName}</p>}
-      </div>
 
-      <div className="px-6 mt-12 space-y-12 max-w-md mx-auto">
-         
-         {/* Bio */}
-         {bio && (
-            <div className="text-center px-4">
-               <p className="text-sm leading-loose text-zinc-400 font-light italic">"{bio}"</p>
+         <div className="px-6 max-w-md mx-auto relative z-10 -mt-16 flex flex-col items-center">
+            {/* Profile Image */}
+            <div className="w-28 h-28 rounded-full overflow-hidden border-[2px] border-[#c2a05f] bg-[#0a0a0a] shadow-[0_0_30px_rgba(194,160,95,0.15)] mb-5 flex items-center justify-center p-[3px]">
+               <div className="w-full h-full rounded-full overflow-hidden bg-zinc-900 flex items-center justify-center">
+                  {avatar ? (
+                     <img src={avatar} alt="Profile" className="w-full h-full object-cover" />
+                  ) : logo ? (
+                     <img src={logo} alt="Logo" className="w-full h-full object-contain p-2" />
+                  ) : (
+                     <span className="text-4xl text-zinc-600 uppercase font-light">{(displayName || 'J')[0]}</span>
+                  )}
+               </div>
             </div>
-         )}
 
-         {/* Refined Contact List */}
-         <div className="space-y-6">
-            <h3 className="text-[9px] font-['Inter'] uppercase tracking-[0.4em] text-zinc-600 text-center border-b border-zinc-800 pb-4 mb-8">Private Directory</h3>
-            
-            {displayPhone && (
-               <div className="flex flex-col items-center gap-2 group">
-                  <span className="text-[9px] font-['Inter'] uppercase tracking-[0.3em] text-zinc-500 text-center">Direct Contact</span>
-                  <a href={`tel:${displayPhone}`} className="text-lg text-zinc-200 hover:text-white transition-colors text-center">{displayPhone}</a>
-               </div>
-            )}
-            
-            {email && (
-               <div className="flex flex-col items-center gap-2 group pt-4">
-                  <span className="text-[9px] font-['Inter'] uppercase tracking-[0.3em] text-zinc-500 text-center">Electronic Mail</span>
-                  <a href={`mailto:${email}`} className="text-sm text-zinc-200 hover:text-white transition-colors tracking-wider text-center truncate w-full px-4">{email}</a>
-               </div>
+            {/* Identity Info */}
+            <h1 className="text-2xl font-serif tracking-[0.15em] text-white uppercase text-center mb-1">
+               {displayName || 'Julian Sterling'}
+            </h1>
+            {companyName && (
+               <p className="text-[13px] text-zinc-400 mt-2 text-center tracking-wide font-serif">
+                  {companyName || 'Sterling & Co.'}
+               </p>
             )}
 
-            {website && (
-               <div className="flex flex-col items-center gap-2 group pt-4">
-                  <span className="text-[9px] font-['Inter'] uppercase tracking-[0.3em] text-zinc-500 text-center">Private Portal</span>
-                  <a href={website?.startsWith('http') ? website : `https://${website}`} target="_blank" rel="noopener noreferrer" className="text-sm text-zinc-200 hover:text-white transition-colors tracking-wider text-center flex items-center justify-center gap-2 truncate w-full px-4">
-                     <span className="truncate">{website}</span> <FiIcons.FiArrowUpRight size={12} className="text-zinc-600 shrink-0" />
+            {/* Action Buttons */}
+            <div className="flex w-full gap-4 mt-8">
+               <button
+                  onClick={() => downloadVCard(userData)}
+                  className="flex-1 py-3.5 border border-[#c2a05f] text-[#c2a05f] hover:bg-[#c2a05f] hover:text-black transition-all rounded-[0.25rem] flex items-center justify-center gap-2 text-[10px] font-bold tracking-[0.15em] uppercase"
+               >
+                  <FiIcons.FiCreditCard size={14} />
+                  Save Card
+               </button>
+               <button
+                  onClick={() => displayPhone ? window.open(`https://wa.me/${displayPhone.replace(/[^0-9+]/g, '')}`) : email ? window.open(`mailto:${email}`) : null}
+                  className="flex-1 py-3.5 border border-zinc-800 bg-[#141414] text-zinc-300 hover:border-zinc-600 transition-all rounded-[0.25rem] flex items-center justify-center gap-2 text-[10px] font-bold tracking-[0.15em] uppercase shadow-md"
+               >
+                  <FiIcons.FiSend size={14} />
+                  Message
+               </button>
+            </div>
+
+            {/* Digital HQ */}
+            <div className="w-full mt-6 bg-[#141414] border border-[#2a2a2a] p-5 rounded-[0.25rem] shadow-lg">
+               <p className="text-[9px] font-bold tracking-[0.15em] text-[#c2a05f] uppercase mb-2">Digital HQ</p>
+               {email ? (
+                  <a href={`mailto:${email}`} className="text-lg font-serif text-zinc-200 hover:text-white transition-colors truncate block">
+                     {email}
                   </a>
-               </div>
-            )}
+               ) : (
+                  <p className="text-lg font-serif text-zinc-500 italic">julian@sterling.co</p>
+               )}
+            </div>
 
-            {finalAddress && (
-               <div className="flex flex-col items-center gap-2 pt-4">
-                  <span className="text-[9px] font-['Inter'] uppercase tracking-[0.3em] text-zinc-500 text-center">Offices</span>
-                  <p className="text-sm text-zinc-300 leading-relaxed text-center max-w-[250px] truncate">{finalAddress}</p>
+            {/* 2-Column Grid */}
+            <div className="w-full grid grid-cols-2 gap-4 mt-4">
+               <div className="bg-[#141414] border border-[#2a2a2a] p-5 rounded-[0.25rem] shadow-lg flex flex-col justify-between">
+                  <FiIcons.FiPhoneCall size={18} className="text-[#c2a05f] mb-6" />
+                  <div>
+                     <p className="text-[8px] font-bold tracking-[0.15em] text-zinc-600 uppercase mb-1">Direct</p>
+                     {displayPhone ? (
+                        <a href={`tel:${displayPhone}`} className="text-[13px] text-zinc-200 hover:text-white transition-colors font-medium">
+                           {displayPhone}
+                        </a>
+                     ) : (
+                        <span className="text-[13px] text-zinc-200">+1 212 555 0198</span>
+                     )}
+                  </div>
                </div>
-            )}
-         </div>
 
-         {/* Social Icons */}
-         <div className="flex flex-wrap justify-center gap-8 pt-8 border-t border-zinc-800">
-            {[
-               { icon: FiIcons.FiLinkedin, val: linkedin },
-               { icon: FiIcons.FiTwitter, val: twitter },
-               { icon: FiIcons.FiInstagram, val: instagram },
-               { icon: FiIcons.FiFacebook, val: facebook }
-            ].map((social, idx) => social.val && (
-               <a key={idx} href={social.val.startsWith('http') ? social.val : `https://${social.val}`} target="_blank" rel="noopener noreferrer" className="text-zinc-600 hover:text-zinc-300 transition-colors shrink-0">
-                  <social.icon size={20} />
+               <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(finalAddress || "Manhattan, NY")}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="bg-[#141414] border border-[#2a2a2a] p-5 rounded-[0.25rem] shadow-lg flex flex-col justify-between hover:border-zinc-600 transition-all cursor-pointer group block"
+               >
+                  <FiIcons.FiMapPin size={18} className="text-[#c2a05f] mb-6 group-hover:scale-110 transition-transform" />
+                  <div>
+                     <p className="text-[8px] font-bold tracking-[0.15em] text-zinc-600 uppercase mb-1">Studio</p>
+                     <p className="text-[13px] text-zinc-200 font-medium truncate group-hover:text-white transition-colors">
+                        {finalAddress || "Manhattan, NY"}
+                     </p>
+                  </div>
                </a>
-            ))}
-         </div>
+            </div>
 
-         <div className="pt-8">
-            <button onClick={() => downloadVCard(userData)} className="w-full py-5 border border-zinc-700 bg-transparent text-zinc-300 font-['Inter'] font-bold text-[10px] uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-500 flex items-center justify-center gap-3 active:scale-[0.98]">
-               Acquire Card
-            </button>
-         </div>
+            {/* Website Button */}
+            {website && (
+               <a
+                  href={getSocialUrl('website', website)}
+                  target="_blank" rel="noopener noreferrer"
+                  className="w-full mt-4 bg-[#141414] border border-[#2a2a2a] p-5 rounded-[0.25rem] shadow-lg flex items-center justify-between hover:border-zinc-600 transition-all cursor-pointer group"
+               >
+                  <div>
+                     <p className="text-[9px] font-bold tracking-[0.15em] text-[#c2a05f] uppercase mb-1">Official Website</p>
+                     <p className="text-lg font-[Mulish] text-zinc-200 group-hover:text-white transition-colors truncate">
+                        Visit site
+                     </p>
+                  </div>
+                  <FiIcons.FiArrowRight size={20} className="text-[#c2a05f] group-hover:translate-x-1 transition-transform" />
+               </a>
+            )}
 
-         <p className="text-center text-[7px] font-['Inter'] font-bold tracking-[0.6em] text-zinc-700 uppercase mt-12">Cardyn Exclusive</p>
+            {/* Portfolio & Presence */}
+            <div className="w-full mt-10 text-center">
+               <p className="text-[9px] font-bold tracking-[0.15em] text-zinc-500 uppercase mb-6">Portfolio & Presence</p>
+               <div className="flex justify-center gap-8 items-center flex-wrap">
+                  {[
+                     { icon: FiIcons.FiLinkedin, platform: 'linkedin', val: linkedin },
+                     { icon: FiIcons.FiInstagram, platform: 'instagram', val: instagram },
+                     { icon: FiIcons.FiTwitter, platform: 'twitter', val: twitter },
+                     { icon: FiIcons.FiFacebook, platform: 'facebook', val: facebook },
+                  ].map((social, idx) => social.val && (
+                     <a key={idx} href={getSocialUrl(social.platform, social.val)} target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:text-[#c2a05f] transition-colors">
+                        <social.icon size={22} />
+                     </a>
+                  ))}
+                  {!linkedin && !instagram && !twitter && !facebook && (
+                     <span className="text-[10px] text-zinc-600 italic">No social links connected</span>
+                  )}
+               </div>
+            </div>
+
+            {/* Core Expertise */}
+            <div className="w-full mt-12 text-center">
+               <p className="text-[9px] font-bold tracking-[0.15em] text-[#c2a05f] uppercase mb-4">Core Expertise</p>
+               <div className="flex flex-wrap justify-center gap-3">
+                  {expertiseTags.map((tag, idx) => (
+                     <span
+                        key={idx}
+                        className="px-4 py-2 bg-transparent border border-[#2a2a2a] rounded-full text-[9px] font-bold tracking-[0.1em] text-zinc-400 uppercase"
+                     >
+                        {tag}
+                     </span>
+                  ))}
+               </div>
+            </div>
+
+            {/* Bio / Quote */}
+            <div className="w-full mt-12 px-4 text-center">
+               <p className="text-[13px] leading-relaxed text-zinc-500 font-serif italic">
+                  "{bio || "Design is the silent ambassador of your brand."}"
+               </p>
+            </div>
+
+            {/* Footer */}
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-12 text-[8px] font-black tracking-[0.5em] text-zinc-600 hover:text-[#c2a05f] transition-colors uppercase text-center pb-8">
+               Powered by Cardyn
+            </a>
+
+         </div>
       </div>
-    </div>
-  );
+   );
 };
 export default ClassicRefined;

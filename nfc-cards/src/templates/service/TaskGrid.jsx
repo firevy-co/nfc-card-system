@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiCheckCircle, FiPhone, FiMail, FiGlobe, FiTool, FiMapPin, FiLinkedin, FiInstagram, FiTwitter, FiFacebook, FiYoutube } from 'react-icons/fi';
-import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
+import { downloadVCard } from '../common/StandardComponents';
 
 const TaskGrid = ({ userData }) => {
   const { displayName, email, phone, website, address, linkedin, instagram, facebook, twitter, youtube, logo } = userData || {};
@@ -23,17 +23,17 @@ const TaskGrid = ({ userData }) => {
         </div>
         
         <div className="space-y-3 relative z-10 mb-8">
-           <StandardContactLink icon={FiGlobe} value={website} href={website} />
-           <StandardContactLink icon={FiMail} value={email} href={`mailto:${email}`} />
-           <StandardContactLink icon={FiPhone} value={phone} href={`tel:${phone}`} />
-           <StandardContactLink icon={FiMapPin} value={address} />
+           {website && <a href={website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiGlobe size={18} /> <span className="text-sm">{website}</span></a>}
+           {email && <a href={`mailto:${email}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiMail size={18} /> <span className="text-sm">{email}</span></a>}
+           {phone && <a href={`tel:${phone}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiPhone size={18} /> <span className="text-sm">{phone}</span></a>}
+           {address && <div className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80"><FiMapPin size={18} /> <span className="text-sm">{address}</span></div>}
            
            {/* Social Integrations */}
-           <StandardContactLink icon={FiInstagram} value={instagram} href={instagram} />
-           <StandardContactLink icon={FiLinkedin} value={linkedin} href={linkedin} />
-           <StandardContactLink icon={FiTwitter} value={twitter} href={twitter} />
-           <StandardContactLink icon={FiFacebook} value={facebook} href={facebook} />
-           <StandardContactLink icon={FiYoutube} value={youtube} href={youtube} />
+           {instagram && <a href={instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiInstagram size={18} /> <span className="text-sm">{instagram}</span></a>}
+           {linkedin && <a href={linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiLinkedin size={18} /> <span className="text-sm">{linkedin}</span></a>}
+           {twitter && <a href={twitter} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiTwitter size={18} /> <span className="text-sm">{twitter}</span></a>}
+           {facebook && <a href={facebook} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiFacebook size={18} /> <span className="text-sm">{facebook}</span></a>}
+           {youtube && <a href={youtube} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiYoutube size={18} /> <span className="text-sm">{youtube}</span></a>}
         </div>
         
         {website && (
@@ -45,11 +45,11 @@ const TaskGrid = ({ userData }) => {
         )}
 
         <div className="mt-6 relative z-10">
-           <StandardMapPreview address={address} />
+           {address && (<a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="block w-full py-4 mt-4 border rounded-xl text-center text-xs font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity">View on Map</a>)}
         </div>
         
         <div className="mt-6 relative z-10">
-           <StandardSaveContactButton userData={userData} />
+           <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
         </div>
         
         <footer className="mt-12 text-center opacity-40 hover:opacity-100 transition-opacity">

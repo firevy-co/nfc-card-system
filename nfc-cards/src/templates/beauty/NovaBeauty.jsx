@@ -1,6 +1,6 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
-import { downloadVCard } from "../common/StandardComponents";
+import { downloadVCard } from '../common/StandardComponents';
 
 const NovaBeauty = ({ userData }) => {
   const { 

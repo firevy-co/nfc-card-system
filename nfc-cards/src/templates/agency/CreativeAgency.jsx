@@ -7,7 +7,7 @@ import {
    FiArrowRight, FiExternalLink, FiClock, FiStar
 } from 'react-icons/fi';
 import { FaWhatsapp, FaTiktok, FaYoutube, FaDiscord, FaTelegram, FaSkype, FaPaypal, FaFacebook } from 'react-icons/fa';
-import { downloadVCard } from "../common/StandardComponents";
+import { downloadVCard } from '../common/StandardComponents';
 
 const CreativeAgency = ({ userData }) => {
    const {

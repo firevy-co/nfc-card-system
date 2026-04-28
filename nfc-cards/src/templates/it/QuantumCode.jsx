@@ -1,7 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { FaWhatsapp, FaFacebook, FaYoutube, FaTiktok, FaDiscord, FaTelegram, FaSkype, FaPaypal } from 'react-icons/fa';
-import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
+import { downloadVCard } from '../common/StandardComponents';
 
 const QuantumCode = ({ userData }) => {
   const { 
@@ -59,9 +59,9 @@ const QuantumCode = ({ userData }) => {
 
            {/* CORE UPLINKS */}
            <div className="space-y-4">
-              {email && <StandardContactLink icon={FiIcons.FiMail} value={email} href={`mailto:${email}`} />}
-              {phone && <StandardContactLink icon={FiIcons.FiPhone} value={phone} href={`tel:${phone}`} />}
-              {address && <StandardContactLink icon={FiIcons.FiMapPin} value="Deployment Sector" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} />}
+              {email && <a href={`mailto:${email}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiMail size={18} /> <span className="text-sm">{email}</span></a>}
+              {phone && <a href={`tel:${phone}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiPhone size={18} /> <span className="text-sm">{phone}</span></a>}
+              {address && <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiMapPin size={18} /> <span className="text-sm">Deployment Sector</span></a>}
            </div>
 
            {/* TECH SOCIAL MATRIX */}
@@ -103,11 +103,11 @@ const QuantumCode = ({ userData }) => {
            )}
 
            {/* MAP PROTOCOL */}
-           {address && <StandardMapPreview address={address} />}
+           {address && <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="block w-full py-4 mt-4 border rounded-xl text-center text-xs font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity">View on Map</a>}
 
            {/* SAVE CONTACT PROTOCOL */}
            <div className="pt-2">
-              <StandardSaveContactButton userData={userData} />
+              <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
            </div>
 
            {/* SYSTEM FOOTER */}

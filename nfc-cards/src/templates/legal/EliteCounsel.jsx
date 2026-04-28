@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiPhone, FiMail, FiMapPin, FiStar, FiGlobe, FiLinkedin, FiInstagram } from 'react-icons/fi';
-import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
+import { downloadVCard } from '../common/StandardComponents';
 
 const EliteCounsel = ({ userData }) => {
   const { displayName, email, role, phone, website, address } = userData || {};
@@ -22,14 +22,14 @@ const EliteCounsel = ({ userData }) => {
            
            
            <div className="space-y-3 relative z-10 text-left">
-              <StandardContactLink icon={FiGlobe} value={website} href={website} />
-              <StandardContactLink icon={FiMail} value={email} href={`mailto:${email}`} />
-              <StandardContactLink icon={FiPhone} value={phone} href={`tel:${phone}`} />
-              <StandardContactLink icon={FiMapPin} value={address} />
+              {website && <a href={website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiGlobe size={18} /> <span className="text-sm">{website}</span></a>}
+              {email && <a href={`mailto:${email}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiMail size={18} /> <span className="text-sm">{email}</span></a>}
+              {phone && <a href={`tel:${phone}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiPhone size={18} /> <span className="text-sm">{phone}</span></a>}
+              {address && <div className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80"><FiMapPin size={18} /> <span className="text-sm">{address}</span></div>}
 
               {/* Legal Social Matrix */}
-              <StandardContactLink icon={FiLinkedin} value={userData?.linkedin} href={userData?.linkedin} />
-              <StandardContactLink icon={FiInstagram} value={userData?.instagram} href={userData?.instagram} />
+              {userData?.linkedin && <a href={userData?.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiLinkedin size={18} /> <span className="text-sm">{userData?.linkedin}</span></a>}
+              {userData?.instagram && <a href={userData?.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiInstagram size={18} /> <span className="text-sm">{userData?.instagram}</span></a>}
            </div>
            
            <div className="mt-8 flex flex-col gap-3">
@@ -38,9 +38,9 @@ const EliteCounsel = ({ userData }) => {
               </button>
            </div>
            
-           <StandardMapPreview address={address} />
+           {address && (<a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="block w-full py-4 mt-4 border rounded-xl text-center text-xs font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity">View on Map</a>)}
            
-           <StandardSaveContactButton userData={userData} />
+           <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
         </div>
         <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-center text-[7px] text-white/20 font-black tracking-[0.8em] py-8 uppercase hover:opacity-70 transition-opacity">Powered by Cardyn</a>
       </div>

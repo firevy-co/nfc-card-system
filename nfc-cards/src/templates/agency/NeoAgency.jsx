@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FiZap, FiPhone, FiMail, FiGlobe, FiInstagram, FiLinkedin, FiTwitter, FiMapPin, FiUserPlus, FiGithub } from 'react-icons/fi';
 import { FaWhatsapp, FaFacebook, FaYoutube, FaTelegram } from 'react-icons/fa';
-import { downloadVCard } from "../common/StandardComponents";
+import { downloadVCard } from '../common/StandardComponents';
 
 const NeoAgency = ({ userData }) => {
   const {

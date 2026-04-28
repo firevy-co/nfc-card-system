@@ -12,7 +12,7 @@ import {
   FiGithub
 } from 'react-icons/fi';
 import { FaWhatsapp, FaFacebook, FaYoutube, FaTiktok, FaDiscord, FaTelegram, FaSkype, FaPaypal } from 'react-icons/fa';
-import { downloadVCard } from "../common/StandardComponents";
+import { downloadVCard } from '../common/StandardComponents';
 
 const PrismCreative = ({ userData }) => {
   const {

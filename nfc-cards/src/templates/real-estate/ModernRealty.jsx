@@ -1,6 +1,6 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
-import { downloadVCard } from "../common/StandardComponents";
+import { downloadVCard } from '../common/StandardComponents';
 
 const ModernRealty = ({ userData }) => {
   const { displayName, email, role, mobileNumber, phone, companyName, designation, website, address, city, linkedin, instagram, facebook, twitter, bio, avatar, logo } = userData || {};

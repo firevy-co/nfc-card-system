@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Fi from 'react-icons/fi';
 import * as Fa from 'react-icons/fa';
-import { StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
+import { downloadVCard } from '../common/StandardComponents';
 
 /**
  * CLOUD NEXUS IDENTITY ARCHITECTURE
@@ -15,7 +15,6 @@ const CloudNexus = ({ userData }) => {
    const {
       displayName,
       email,
-      role,
       phone,
       website,
       address,
@@ -116,7 +115,7 @@ const CloudNexus = ({ userData }) => {
 
                {/* SAVE CONTACT PROTOCOL */}
                <div className="pt-4">
-                  <StandardSaveContactButton userData={userData} />
+                  <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
                </div>
             </div>
 

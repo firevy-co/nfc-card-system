@@ -1,7 +1,7 @@
 import React from 'react';
 import { FiPhone, FiMail, FiGlobe, FiMapPin, FiLinkedin, FiInstagram, FiTwitter, FiGithub } from 'react-icons/fi';
 import { FaWhatsapp, FaFacebook, FaYoutube, FaTiktok, FaDiscord, FaTelegram, FaSkype, FaPaypal } from 'react-icons/fa';
-import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
+import { downloadVCard } from '../common/StandardComponents';
 
 const ClinicaElite = ({ userData }) => {
   const { 
@@ -47,10 +47,10 @@ const ClinicaElite = ({ userData }) => {
              <p className="text-[10px] text-white/20 font-black tracking-[0.5em] uppercase mb-8">
                 Secure Uplink
              </p>
-             {email && <StandardContactLink icon={FiMail} value={email} href={`mailto:${email}`} />}
-             {phone && <StandardContactLink icon={FiPhone} value={phone} href={`tel:${phone}`} />}
-             {website && <StandardContactLink icon={FiGlobe} value={website.replace(/(^\w+:|^)\/\//, '')} href={website.startsWith('http') ? website : `https://${website}`} />}
-             {address && <StandardContactLink icon={FiMapPin} value={address} href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} />}
+             {email && <a href={`mailto:${email}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiMail size={18} /> <span className="text-sm">{email}</span></a>}
+             {phone && <a href={`tel:${phone}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiPhone size={18} /> <span className="text-sm">{phone}</span></a>}
+             {website && <a href={website.startsWith('http') ? website : `https://${website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiGlobe size={18} /> <span className="text-sm">{website.replace(/(^\w+:|^)\/\//, '')}</span></a>}
+             {address && <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiMapPin size={18} /> <span className="text-sm">{address}</span></a>}
           </div>
 
           {/* SOCIAL MATRIX */}
@@ -86,10 +86,10 @@ const ClinicaElite = ({ userData }) => {
                    Initialize Portal
                 </a>
              )}
-             <StandardSaveContactButton userData={userData} />
+             <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
           </div>
 
-          {address && <div className="mt-12"><StandardMapPreview address={address} /></div>}
+          {address && <div className="mt-12">{address && (<a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="block w-full py-4 mt-4 border rounded-xl text-center text-xs font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity">View on Map</a>)}</div>}
           
           <div className="mt-16 pb-8 flex justify-between items-center opacity-20">
              <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[7px] font-black tracking-[0.6em] text-white hover:opacity-100 transition-opacity">POWERED BY CARDYN</a>

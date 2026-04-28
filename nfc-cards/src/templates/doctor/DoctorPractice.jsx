@@ -1,6 +1,6 @@
 import React from "react";
 import * as FiIcons from 'react-icons/fi';
-import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
+import { downloadVCard } from '../common/StandardComponents';
 
 const HospitalCard = ({ userData }) => {
    const {
@@ -67,19 +67,19 @@ const HospitalCard = ({ userData }) => {
 
             {/* CONTACT LIST */}
             <div className="space-y-3 mb-10">
-               <StandardContactLink icon={FiIcons.FiGlobe} value={website} href={website} />
-               <StandardContactLink icon={FiIcons.FiMail} value={email} href={`mailto:${email}`} />
-               <StandardContactLink icon={FiIcons.FiPhone} value={phone} href={`tel:${phone}`} />
-               <StandardContactLink icon={FiIcons.FiMapPin} value={address} />
+               {website && <a href={website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiGlobe size={18} /> <span className="text-sm">{website}</span></a>}
+               {email && <a href={`mailto:${email}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiMail size={18} /> <span className="text-sm">{email}</span></a>}
+               {phone && <a href={`tel:${phone}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiPhone size={18} /> <span className="text-sm">{phone}</span></a>}
+               {address && <div className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80"><FiIcons.FiMapPin size={18} /> <span className="text-sm">{address}</span></div>}
 
                {/* Medical Socials */}
-               <StandardContactLink icon={FiIcons.FiLinkedin} value={linkedin} href={linkedin} />
-               <StandardContactLink icon={FiIcons.FiInstagram} value={instagram} href={instagram} />
+               {linkedin && <a href={linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiLinkedin size={18} /> <span className="text-sm">{linkedin}</span></a>}
+               {instagram && <a href={instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiInstagram size={18} /> <span className="text-sm">{instagram}</span></a>}
             </div>
 
-            <StandardMapPreview address={address} />
+            {address && (<a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="block w-full py-4 mt-4 border rounded-xl text-center text-xs font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity">View on Map</a>)}
 
-            <StandardSaveContactButton userData={userData} />
+            <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
 
             <footer className="mt-12 text-center opacity-20">
                <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-[0.5em] text-gray-400 hover:text-teal-700 transition-colors uppercase">Powered by Cardyn</a>

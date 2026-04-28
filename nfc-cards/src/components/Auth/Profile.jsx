@@ -272,23 +272,10 @@ const CardPreview = ({ formData }) => {
     };
 
     return (
-        <div className={`rounded-3xl w-[320px] min-h-[520px] shadow-2xl transition-all duration-700 relative overflow-hidden flex flex-col bg-white`}>
-            <div className="flex-1 w-full relative overflow-hidden flex justify-center rounded-[1.6rem]">
-                <div className="origin-top" style={{ transform: 'scale(0.853)' }}>
-                    <div className="w-[375px] h-[600px] overflow-hidden relative">
-                        <TemplateRenderer 
-                            templateId={formData.templateId} 
-                            userData={{
-                                ...formData,
-                                // Map display name to name if missing for the renderer
-                                displayName: formData.displayName || formData.name,
-                            }} 
-                        />
-                    </div>
-                </div>
-            </div>
-            <div className="pb-4 text-center bg-white border-t">
-                <a href="https://cardyn.shop" target="_blank" rel="noopener noreferrer" className={`text-[9px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-100 text-black/30`}>
+        <div className={`rounded-3xl w-[320px] min-h-[520px] p-6 shadow-2xl transition-all duration-700 relative overflow-hidden flex flex-col ${light ? "text-gray-900" : "text-white"}`} style={{ background: themeColor }}>
+            {renderLayout()}
+            <div className="mt-auto pt-8 pb-2 text-center">
+                <a href="https://cardyn.shop" target="_blank" rel="noopener noreferrer" className={`text-[9px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-100 ${light ? "text-black/30" : "text-white/30"}`}>
                     Powered by cardyn
                 </a>
             </div>
