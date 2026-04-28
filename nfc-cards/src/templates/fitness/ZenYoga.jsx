@@ -29,7 +29,7 @@ const ZenYoga = ({ userData }) => {
   const { displayName, email, phone, website, address, youtube, linkedin, twitter, instagram, logo } = userData || {};
   
   return (
-    <div className="min-h-screen bg-[#fafaf9] flex items-center justify-center p-6 font-['Inter',sans-serif]">
+    <div className="min-h-screen bg-[#fafaf9] flex items-center justify-center p-6 font-['Inter',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-white border border-[#f1f1ee] rounded-[5rem] p-10 shadow-[0_40px_80px_-20px_rgba(180,180,170,0.5)] flex flex-col items-center group">
         
         <div className="w-24 h-24 rounded-full bg-[#f1f1ee] flex items-center justify-center text-slate-400 mb-8 shadow-inner overflow-hidden border-4 border-white relative">

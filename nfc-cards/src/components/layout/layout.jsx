@@ -60,8 +60,8 @@ const Layout = ({
           />
         )}
 
-        <main className={`flex-1 overflow-y-auto animate-in fade-in slide-in-from-bottom-4 duration-700 bg-muted/10 ${hideTopNav ? 'p-0' : (actualHideTopNav ? 'p-0 pt-10 lg:pt-28 pb-32 lg:pb-0' : 'p-4 sm:p-6 lg:p-10')}`}>
-          <div className="max-w-[1600px] mt-10 mx-auto">
+        <main className={`flex-1 overflow-y-auto animate-in fade-in slide-in-from-bottom-4 duration-700 bg-muted/10 ${hideTopNav ? 'p-0' : (actualHideTopNav ? 'p-0 pt-14 lg:pt-28 pb-24 lg:pb-8' : 'p-4 sm:p-6 lg:p-10')}`}>
+          <div className="max-w-[1600px] mx-auto">
             {children}
           </div>
         </main>

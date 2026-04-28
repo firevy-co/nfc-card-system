@@ -89,7 +89,7 @@ const ITSolutions = ({ userData }) => {
    };
 
    return (
-      <div className="min-h-screen bg-[#030303] text-white flex justify-center px-4 py-10 font-['Mulish']">
+      <div className="min-h-screen bg-[#030303] text-white flex justify-center px-4 py-10 font-['Mulish'] md:bg-neutral-950 md:items-center py-0 md:py-12">
          <div className="w-full max-w-sm">
 
             {/* Main Card */}

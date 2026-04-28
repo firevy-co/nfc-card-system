@@ -5,7 +5,7 @@ import { downloadVCard } from '../common/StandardComponents';
 const ExpertNode = ({ userData }) => {
   const { displayName, email, phone, website, address, linkedin, instagram, facebook, twitter, youtube, logo } = userData || {};
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-6 font-['Mulish',sans-serif]">
+    <div className="min-h-screen bg-black flex items-center justify-center p-6 font-['Mulish',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-neutral-900 border border-white/5 rounded-[3rem] p-10 shadow-2xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-500" />
         

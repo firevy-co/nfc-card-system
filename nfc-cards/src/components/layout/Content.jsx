@@ -220,20 +220,37 @@ export default function Content({ userData }) {
 
   return (
     <div className="flex-1 min-w-0">
-      <div className="p-4 sm:p-10 max-w-[1700px] mx-auto">
-        <div className="flex flex-col lg:flex-row gap-10">
+      <div className="p-4 sm:p-6 lg:p-10 max-w-[1700px] mx-auto">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
 
-          {/* LEFT SIDEBAR: CATEGORY FILTERS */}
+          {/* LEFT SIDEBAR: CATEGORY FILTERS — horizontal scroll on mobile, vertical on desktop */}
           <aside className="w-full lg:w-72 flex-shrink-0">
-            <div className="sticky top-10">
-              <div className="mb-8">
-                <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-4">
+            <div className="lg:sticky lg:top-10">
+              <div className="mb-4 lg:mb-8">
+                <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-2 lg:mb-4">
                   Industry Nodes
                 </h2>
                 <div className="h-1 w-12 bg-accent rounded-full"></div>
               </div>
 
-              <div className="flex flex-col gap-2 max-h-[calc(100vh-12rem)] overflow-y-auto custom-scrollbar pr-2 pb-4">
+              {/* Mobile: horizontal scrollable chips */}
+              <div className="flex lg:hidden gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`flex-shrink-0 px-4 py-2 rounded-full font-bold text-xs tracking-wider transition-all border cursor-pointer ${selectedCategory === category
+                      ? "bg-primary text-primary-foreground border-primary shadow-lg"
+                      : "bg-white text-muted-foreground border-border hover:border-accent/40 hover:text-foreground"
+                    }`}
+                  >
+                    {category === "All" ? "All" : category}
+                  </button>
+                ))}
+              </div>
+
+              {/* Desktop: vertical list */}
+              <div className="hidden lg:flex flex-col gap-2 max-h-[calc(100vh-12rem)] overflow-y-auto custom-scrollbar pr-2 pb-4">
                 {categories.map((category) => (
                   <button
                     key={category}
@@ -241,7 +258,7 @@ export default function Content({ userData }) {
                     className={`group flex items-center justify-between px-6 py-4 rounded-lg font-bold text-xs tracking-wider transition-all border cursor-pointer flex-shrink-0 ${selectedCategory === category
                       ? "bg-primary text-primary-foreground border-primary shadow-lg"
                       : "bg-white text-muted-foreground border-border hover:border-accent/40 hover:text-foreground"
-                      }`}
+                    }`}
                   >
                     <span>{category === "All" ? "Discovery All" : category}</span>
                     {selectedCategory === category && (
@@ -253,7 +270,7 @@ export default function Content({ userData }) {
 
               {/* STATS OR INFO PANEL */}
               {!isAdmin && selectedCategory !== "All" && (
-                <div className="mt-8 p-6 bg-accent/5 border border-accent/20 rounded-lg animate-in fade-in slide-in-from-left-4 duration-500">
+                <div className="hidden lg:block mt-8 p-6 bg-accent/5 border border-accent/20 rounded-lg animate-in fade-in slide-in-from-left-4 duration-500">
                   <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">
                     Industry Optimization
                   </p>
@@ -312,7 +329,7 @@ export default function Content({ userData }) {
             </div>
 
             {/* IDENTITY GRID */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {loading ? (
                 <div className="col-span-full py-48 flex flex-col items-center justify-center gap-6">
                   <div className="w-12 h-12 border-4 border-accent/10 border-t-accent rounded-full animate-spin"></div>

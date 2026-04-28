@@ -29,7 +29,7 @@ const NightConnect = ({ userData }) => {
   const { displayName, email, phone, website, address, youtube, linkedin, twitter, instagram, logo } = userData || {};
   
   return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 font-['Inter',sans-serif]">
+    <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 font-['Inter',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-gradient-to-b from-indigo-900/20 to-transparent border border-white/5 rounded-[3rem] p-10 shadow-2xl relative overflow-hidden flex flex-col items-center">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl opacity-50 pointer-events-none" />
         

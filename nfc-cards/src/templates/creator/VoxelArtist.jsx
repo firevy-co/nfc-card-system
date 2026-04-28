@@ -26,7 +26,7 @@ const VoxelArtist = ({ userData }) => {
   const { displayName, email, phone, website, address, youtube, linkedin, twitter, twitch, instagram, logo } = userData || {};
   
   return (
-    <div className="min-h-screen bg-[#f0f0f5] flex items-center justify-center p-6 font-['Space_Grotesk',sans-serif]">
+    <div className="min-h-screen bg-[#f0f0f5] flex items-center justify-center p-6 font-['Space_Grotesk',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-white border-2 border-slate-900 rounded-[2.5rem] p-8 shadow-[10px_10px_0px_#0f172a] relative overflow-hidden group">
         <div className="absolute -top-10 -right-10 w-40 h-40 bg-slate-900/5 rounded-full pointer-events-none" />
         

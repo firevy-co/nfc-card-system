@@ -38,7 +38,7 @@ const DataMatrix = ({ userData }) => {
    };
 
    return (
-      <div className="min-h-screen bg-black flex justify-center items-center px-4 py-10 font-['Space_Grotesk'] overflow-hidden relative">
+      <div className="min-h-screen bg-black flex justify-center items-center px-4 py-10 font-['Space_Grotesk'] overflow-hidden relative md:bg-neutral-950 md:items-center py-0 md:py-12">
 
          {/* Background Effects */}
          <div className="absolute top-10 left-10 w-72 h-72 bg-emerald-500/10 blur-[120px] rounded-full" />

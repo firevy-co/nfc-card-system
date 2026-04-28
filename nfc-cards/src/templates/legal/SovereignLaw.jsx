@@ -4,7 +4,7 @@ import { downloadVCard } from '../common/StandardComponents';
 const SovereignLaw = ({ userData }) => {
   const { displayName, email, role, phone, website, address } = userData || {};
   return (
-    <div className="min-h-screen bg-[#020617] flex items-center justify-center p-6 font-['Mulish']">
+    <div className="min-h-screen bg-[#020617] flex items-center justify-center p-6 font-['Mulish'] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-[#1e293b]/20 border border-white/5 rounded-[2.5rem] p-10 shadow-2xl backdrop-blur-xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl group-hover:bg-white/10 transition-all duration-1000 opacity-20" />
         

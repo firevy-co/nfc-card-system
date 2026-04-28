@@ -14,7 +14,7 @@ const ExecutiveMinimal = ({ userData }) => {
   const finalAddress = address || city;
 
   return (
-    <div className="min-h-screen bg-white text-black font-['Inter'] px-8 py-16 flex flex-col justify-center max-w-md mx-auto">
+    <div className="min-h-screen bg-white text-black font-['Inter'] px-8 py-16 flex flex-col justify-center max-w-md mx-auto md:bg-neutral-950 md:items-center py-0 md:py-12">
       
       {/* Minimal Header */}
       <div className="flex justify-between items-start mb-16">

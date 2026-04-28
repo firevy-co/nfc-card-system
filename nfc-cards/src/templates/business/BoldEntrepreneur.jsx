@@ -14,7 +14,7 @@ const BoldEntrepreneur = ({ userData }) => {
   const finalAddress = address || city;
 
   return (
-    <div className="w-full min-h-screen bg-yellow-400 font-['Inter'] pb-12 flex flex-col justify-center px-4">
+    <div className="w-full min-h-screen bg-yellow-400 font-['Inter'] pb-12 flex flex-col justify-center px-4 md:bg-neutral-950 md:items-center py-0 md:py-12">
       
       {/* High Impact Card Bento */}
       <div className="bg-black rounded-[2.5rem] p-8 text-white relative overflow-hidden shadow-2xl mt-8">

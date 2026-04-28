@@ -4,7 +4,7 @@ import { FiShield, FiPhone, FiMail, FiMapPin, FiBriefcase } from 'react-icons/fi
 const JusticePartners = ({ userData }) => {
   const { displayName, email, role, mobileNumber, city, country } = userData || {};
   return (
-    <div className="min-h-screen bg-[#fcf9f5] flex items-center justify-center p-6 font-serif">
+    <div className="min-h-screen bg-[#fcf9f5] flex items-center justify-center p-6 font-serif md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-white border border-[#e8dfd3] rounded-3xl p-10 shadow-2xl relative">
         <div className="absolute top-8 right-10 text-[#c5a176]"><FiShield size={32} opacity={0.2} /></div>
         <div className="mb-12">

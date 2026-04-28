@@ -30,7 +30,7 @@ const GourmetRestaurant = ({ userData }) => {
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-[#FDFCF8] flex justify-center items-start py-10 px-4 text-[#2C2C2C] font-['Mulish',sans-serif]">
+      <div className="min-h-screen bg-[#FDFCF8] flex justify-center items-start py-10 px-4 text-[#2C2C2C] font-['Mulish',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
          <div className="w-full max-w-sm bg-white rounded-[3.5rem] shadow-2xl overflow-hidden border border-[#EDECE4] p-8 relative">
             
             {/* HERITAGE LOGO SECTION */}

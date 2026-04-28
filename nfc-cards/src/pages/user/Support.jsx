@@ -121,20 +121,20 @@ const Support = ({ userData }) => {
 
     return (
         <Layout userData={userData} title="Support Terminal">
-            <div className="w-full mb-20 mt-10 space-y-12 animate-in fade-in duration-1000 font-['Mulish']">
+            <div className="w-full mb-20 mt-4 sm:mt-10 space-y-8 sm:space-y-12 animate-in fade-in duration-1000 font-['Mulish']">
 
                 {/* Header Section */}
-                <header className="flex flex-col gap-3 border-b border-black/[0.05] pb-10">
+                <header className="flex flex-col gap-3 border-b border-black/[0.05] pb-6 sm:pb-10">
                     <div className="space-y-1">
-                        <h2 className="text-4xl font-black text-foreground">Support Terminal</h2>
+                        <h2 className="text-2xl sm:text-4xl font-black text-foreground">Support Terminal</h2>
                         <p className="text-muted-foreground font-bold tracking-tight text-sm opacity-60">Direct neural link to technical architecture nodes. Dispatch your operational briefs below.</p>
                     </div>
                 </header>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-12 items-start">
 
                     {/* INQUIRY CONSOLE */}
-                    <div className="bg-white rounded-xl shadow-[0_30px_100px_-20px_rgba(0,0,0,0.2)] border border-slate-50 p-8 md:p-14 relative overflow-hidden group transition-all duration-700 hover:shadow-[0_40px_120px_-20px_rgba(123,185,212,0.15)]">
+                    <div className="bg-white rounded-xl shadow-[0_30px_100px_-20px_rgba(0,0,0,0.2)] border border-slate-50 p-6 sm:p-8 md:p-14 relative overflow-hidden group transition-all duration-700 hover:shadow-[0_40px_120px_-20px_rgba(123,185,212,0.15)]">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-[#7BB9D4]/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none group-hover:bg-[#7BB9D4]/10 transition-all duration-1000" />
 
                         <form onSubmit={handleSubmit} className="space-y-10 relative z-10">
@@ -189,7 +189,7 @@ const Support = ({ userData }) => {
                     </div>
 
                     {/* CONVERSATION HISTORY (Continuous Chat Section) */}
-                    <div className="bg-white rounded-xl shadow-[0_30px_100px_-20px_rgba(0,0,0,0.2)] border border-slate-50 p-8 md:p-14 space-y-10 transition-all duration-700 hover:shadow-[0_40px_120px_-20px_rgba(123,185,212,0.15)]">
+                    <div className="bg-white rounded-xl shadow-[0_30px_100px_-20px_rgba(0,0,0,0.2)] border border-slate-50 p-6 sm:p-8 md:p-14 space-y-8 sm:space-y-10 transition-all duration-700 hover:shadow-[0_40px_120px_-20px_rgba(123,185,212,0.15)]">
                         <div className="flex items-center justify-between px-4">
                             <h3 className="text-xl font-black tracking-tight flex items-center gap-3">
                                 <FiMessageSquare className="text-[#7BB9D4]" />
@@ -260,7 +260,7 @@ const Support = ({ userData }) => {
             {selectedConv && (
                 <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4">
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={() => setSelectedConv(null)}></div>
-                    <div className="bg-white w-full max-w-2xl rounded-[3rem] p-6 sm:p-10 relative z-10 shadow-2xl border border-slate-100 flex flex-col h-[80vh]">
+                    <div className="bg-white w-full max-w-2xl rounded-[2rem] sm:rounded-[3rem] p-5 sm:p-10 relative z-10 shadow-2xl border border-slate-100 flex flex-col h-[85vh]">
                         <div className="flex items-center justify-between mb-8">
                             <div>
                                 <h4 className="text-2xl font-black tracking-tighter">Node Brief: {selectedConv.vector}</h4>

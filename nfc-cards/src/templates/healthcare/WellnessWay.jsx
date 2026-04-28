@@ -29,7 +29,7 @@ const WellnessWay = ({ userData }) => {
   const { displayName, email, phone, website, address, youtube, linkedin, twitter, instagram, logo } = userData || {};
   
   return (
-    <div className="min-h-screen bg-[#faf9f6] flex items-center justify-center p-6 font-['Outfit',sans-serif]">
+    <div className="min-h-screen bg-[#faf9f6] flex items-center justify-center p-6 font-['Outfit',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-white border border-[#f0ede5] rounded-[4rem] p-10 shadow-[0_40px_80px_-20px_rgba(235,230,215,0.7)] flex flex-col items-center group">
         
         <div className="w-24 h-24 rounded-[2rem] bg-[#f0ede5] flex items-center justify-center text-[#8e8d8a] mb-8 shadow-inner overflow-hidden border-4 border-white relative group-hover:shadow-[0_10px_30px_rgba(0,0,0,0.05)] transition-all">

@@ -208,7 +208,7 @@ const Users = ({ userData }) => {
                 </div>
             )}
 
-            <header className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-8 p-4">
+            <header className="mb-8 sm:mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6 p-4">
                 <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                         <FiActivity className="text-foreground w-4 h-4 opacity-70" />
@@ -243,14 +243,68 @@ const Users = ({ userData }) => {
                 </div>
             </header>
 
-            <div className="bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden transition-all relative">
+            <div className="bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl overflow-hidden transition-all relative">
                 {isDeleting && (
                     <div className="absolute inset-0 bg-background/40 backdrop-blur-sm z-50 flex items-center justify-center font-black text-destructive capitalize tracking-[0.5em] animate-pulse">
                         Identity Purge in Progress
                     </div>
                 )}
 
-                <div className="overflow-x-auto">
+                {/* MOBILE CARD LIST (< md) */}
+                <div className="md:hidden divide-y divide-black/5 dark:divide-white/5">
+                    {loading ? (
+                        <div className="p-10 flex flex-col items-center gap-4 opacity-40">
+                            <div className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+                            <p className="font-black uppercase tracking-[0.3em] text-[10px]">Accessing Registry...</p>
+                        </div>
+                    ) : filteredUsers.length > 0 ? (
+                        filteredUsers.map((user) => (
+                            <div key={user.uid} className="p-5 hover:bg-black/[0.02] transition-all">
+                                <div className="flex items-center justify-between mb-3">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-xl bg-foreground text-background flex items-center justify-center text-base font-black capitalize shadow-lg">
+                                            {(user.displayName || user.email || 'U').charAt(0)}
+                                        </div>
+                                        <div>
+                                            <p className="font-black tracking-tighter text-sm text-foreground">{user.displayName || 'Architect'}</p>
+                                            <p className="text-[9px] text-muted-foreground font-black uppercase tracking-wider opacity-40">UID: {user.uid.substring(0, 8)}</p>
+                                        </div>
+                                    </div>
+                                    <div className={`inline-flex items-center px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider border ${user.role === 'Admin'
+                                        ? 'bg-foreground text-background border-foreground'
+                                        : 'bg-black/[0.03] text-muted-foreground border-black/5'}`}>
+                                        {user.role === 'Admin' ? <FiShield size={9} className="mr-1" /> : <FiUser size={9} className="mr-1" />}
+                                        {user.role || 'User'}
+                                    </div>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-xs font-bold text-foreground/80">{user.email || 'N/A'}</p>
+                                        <p className="text-[9px] text-muted-foreground font-bold opacity-40">{user.businessName || 'Personal Node'}</p>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <button onClick={() => openEditModal(user)}
+                                            className="px-4 py-1.5 rounded-lg bg-foreground text-background font-black uppercase tracking-wider text-[9px] active:scale-95 transition-all">
+                                            Edit
+                                        </button>
+                                        <button onClick={() => handleDeleteUser(user.uid)}
+                                            className="px-4 py-1.5 rounded-lg bg-red-500/10 text-red-500 font-black uppercase tracking-wider text-[9px] hover:bg-red-500 hover:text-white active:scale-95 transition-all">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="p-16 flex flex-col items-center gap-4 opacity-30">
+                            <FiActivity size={36} className="text-muted-foreground animate-pulse" />
+                            <p className="text-muted-foreground font-black capitalize tracking-[0.3em] text-[10px] text-center">No identities found</p>
+                        </div>
+                    )}
+                </div>
+
+                {/* DESKTOP TABLE (≥ md) */}
+                <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left">
                         <thead>
                             <tr className="bg-black/5 dark:bg-white/5 border-b border-black/5 dark:border-white/10">

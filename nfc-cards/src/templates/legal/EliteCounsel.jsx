@@ -5,7 +5,7 @@ import { downloadVCard } from '../common/StandardComponents';
 const EliteCounsel = ({ userData }) => {
   const { displayName, email, role, phone, website, address } = userData || {};
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-6 font-['Mulish']">
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-6 font-['Mulish'] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-slate-900 rounded-[3rem] p-1 shadow-2xl overflow-hidden group">
         <div className="bg-white p-10 rounded-[2.8rem] text-center relative overflow-hidden">
            <div className="absolute top-4 right-10 text-slate-100"><FiStar size={40} /></div>

@@ -38,31 +38,30 @@ const Analytics = ({ user, userData }) => {
 
    return (
       <Layout userData={userData} title="Dashboard">
-         <div className="p-6 transition-colors duration-500">
+         <div className="p-4 sm:p-6 lg:p-8 transition-colors duration-500">
 
             {/* HEADER */}
-            <div className="flex justify-between items-center mb-8">
-               <h1 className="text-2xl font-black tracking-tight text-foreground">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
+               <h1 className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
                   Project Management Overview
                </h1>
-
-               <button className="bg-foreground text-background px-6 py-2.5 rounded-full text-xs font-bold hover:brightness-110 transition-all shadow-lg active:scale-95">
+               <button className="w-full sm:w-auto bg-foreground text-background px-6 py-2.5 rounded-full text-xs font-bold hover:brightness-110 transition-all shadow-lg active:scale-95">
                   + New Task
                </button>
             </div>
 
             {/* TOP CARDS */}
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
                <Card title="Active Projects" value="426" color="bg-emerald-500" />
                <Card title="Total Tasks" value="1,234" color="bg-blue-500" />
                <Card title="Team Members" value="102" color="bg-pink-500" />
             </div>
 
             {/* MAIN GRID */}
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
 
                {/* TASK PROGRESS */}
-               <div className="bg-white  backdrop-blur-xl border border-black/5  p-6 rounded-[2rem] shadow-sm transition-all">
+               <div className="bg-white  backdrop-blur-xl border border-black/5  p-5 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] shadow-sm transition-all">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">Task Progress</h3>
                   <h1 className="text-4xl font-black text-foreground mb-6">70%</h1>
 
@@ -74,7 +73,7 @@ const Analytics = ({ user, userData }) => {
                </div>
 
                {/* PROJECT STATUS */}
-               <div className="bg-white  backdrop-blur-xl border border-black/5  p-6 rounded-[2rem] shadow-sm flex flex-col items-center transition-all">
+               <div className="bg-white  backdrop-blur-xl border border-black/5  p-5 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] shadow-sm flex flex-col items-center transition-all">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-6 w-full text-left">Project Status</h3>
 
                   <div className="relative">
@@ -106,7 +105,7 @@ const Analytics = ({ user, userData }) => {
                </div>
 
                {/* PRODUCTIVITY TREND */}
-               <div className="bg-white  backdrop-blur-xl border border-black/5  p-6 rounded-[2rem] shadow-sm transition-all">
+               <div className="bg-white  backdrop-blur-xl border border-black/5  p-5 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] shadow-sm transition-all md:col-span-2 lg:col-span-1">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">Productivity Trend</h3>
 
                   <div className="h-[200px] w-full mt-4">
@@ -146,10 +145,10 @@ const Analytics = ({ user, userData }) => {
             </div>
 
             {/* EXTRA SECTION (OPTIONAL) */}
-            <div className="grid md:grid-cols-2 gap-6 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:mt-8">
 
                {/* ACTIVITY */}
-               <div className="bg-white  backdrop-blur-xl border border-black/5  p-6 rounded-[2rem] shadow-sm transition-all">
+               <div className="bg-white  backdrop-blur-xl border border-black/5  p-5 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] shadow-sm transition-all">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-6">Recent Activity</h3>
 
                   <div className="space-y-4">
@@ -173,7 +172,7 @@ const Analytics = ({ user, userData }) => {
                </div>
 
                {/* TEAM */}
-               <div className="bg-white  backdrop-blur-xl border border-black/5  p-6 rounded-[2rem] shadow-sm transition-all">
+               <div className="bg-white  backdrop-blur-xl border border-black/5  p-5 sm:p-6 rounded-[1.5rem] sm:rounded-[2rem] shadow-sm transition-all">
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-6">Team Overview</h3>
 
                   <div className="flex items-center gap-5 p-4 bg-black/5  rounded-[1.5rem] border border-black/5 ">

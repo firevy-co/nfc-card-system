@@ -9,6 +9,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '@/firebase.config';
 import AdminNav from '../../components/layout/AdminNav';
 import TopNav from '../../components/layout/TopNav';
+import MobileFooter from '../../components/layout/MobileFooter';
 
 const Settings = ({ userData }) => {
     const navigate = useNavigate();
@@ -54,7 +55,7 @@ const Settings = ({ userData }) => {
             <TopNav title="System Configuration" />
             <AdminNav userData={userData} />
 
-            <main className="flex-1 p-6 lg:p-12 mt-20 max-w-[1600px] mx-auto w-full">
+            <main className="flex-1 p-4 sm:p-6 lg:p-12 mt-14 lg:mt-20 pb-28 lg:pb-8 max-w-[1600px] mx-auto w-full">
                 <header className="mb-14 animate-in fade-in slide-in-from-top-4 duration-1000">
                     <div className="flex items-center gap-3 mb-3">
                         <div className="w-1 h-1 bg-black rounded-full shadow-lg"></div>
@@ -65,7 +66,7 @@ const Settings = ({ userData }) => {
 
                 <div className="space-y-6">
                     {/* --- ACCOUNT BRIEF --- */}
-                    <div className="bg-white border border-zinc-100 rounded-[3rem] p-10 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.03)] flex flex-col md:flex-row md:items-center justify-between gap-8">
+                    <div className="bg-white border border-zinc-100 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-10 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.03)] flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                         <div className="flex items-center gap-8">
                             <div className="w-24 h-24 rounded-[2.5rem] flex items-center justify-center bg-zinc-50 border-4 border-zinc-50 shadow-xl text-3xl font-black text-black">
                                 {userData?.displayName?.charAt(0) || 'A'}
@@ -82,7 +83,7 @@ const Settings = ({ userData }) => {
 
                         <button
                             onClick={handleLogout}
-                            className="px-10 py-5 rounded-[1.5rem] bg-red-50 text-red-500 font-black uppercase tracking-[0.2em] text-[11px] hover:bg-red-500 hover:text-white transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3 group"
+                            className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 rounded-[1.5rem] bg-red-50 text-red-500 font-black uppercase tracking-[0.2em] text-[11px] hover:bg-red-500 hover:text-white transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3 group"
                         >
                             <FiLogOut size={16} className="group-hover:rotate-12 transition-transform" />
                             Terminate Session
@@ -90,11 +91,11 @@ const Settings = ({ userData }) => {
                     </div>
 
                     {/* --- CLASSIC SETTINGS LIST --- */}
-                    <div className="bg-white border border-zinc-100 rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.03)] overflow-hidden">
+                    <div className="bg-white border border-zinc-100 rounded-[2rem] sm:rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.03)] overflow-hidden">
                         {settingSections.map((section, idx) => (
                             <div
                                 key={idx}
-                                className={`p-10 flex items-center justify-between hover:bg-zinc-50 transition-all cursor-pointer border-b border-zinc-50 last:border-0 ${!section.active ? 'opacity-50 grayscale select-none cursor-not-allowed' : ''}`}
+                                className={`p-6 sm:p-10 flex items-center justify-between hover:bg-zinc-50 transition-all cursor-pointer border-b border-zinc-50 last:border-0 ${!section.active ? 'opacity-50 grayscale select-none cursor-not-allowed' : ''}`}
                             >
                                 <div className="flex items-center gap-8">
                                     <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${section.active ? 'bg-zinc-950 text-white' : 'bg-zinc-100 text-zinc-400'}`}>
@@ -117,15 +118,15 @@ const Settings = ({ userData }) => {
                     </div>
 
                     {/* --- SYSTEM STATS --- */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="bg-white border border-zinc-100 rounded-[2.5rem] p-10 flex items-center justify-between">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                        <div className="bg-white border border-zinc-100 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 flex items-center justify-between">
                             <div>
                                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-2">Network Version</p>
                                 <h5 className="text-2xl font-black">X-Identity 4.2</h5>
                             </div>
                             <FiCheckCircle size={32} className="text-emerald-500" />
                         </div>
-                        <div className="bg-white border border-zinc-100 rounded-[2.5rem] p-10 flex items-center justify-between">
+                        <div className="bg-white border border-zinc-100 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 flex items-center justify-between">
                             <div>
                                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-2">Operational Uptime</p>
                                 <h5 className="text-2xl font-black">99.998%</h5>
@@ -139,6 +140,9 @@ const Settings = ({ userData }) => {
                     </footer>
                 </div>
             </main>
+
+            {/* Mobile Footer Navigation */}
+            <MobileFooter userData={userData} />
         </div>
     );
 };

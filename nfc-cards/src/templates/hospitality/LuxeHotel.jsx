@@ -5,7 +5,7 @@ const LuxeHotel = ({ userData }) => {
   const { displayName, email, phone, website, address, logo, linkedin, instagram, facebook, twitter } = userData || {};
   
   return (
-    <div className="min-h-screen bg-[#020617] flex items-center justify-center p-6 font-['Mulish',sans-serif]">
+    <div className="min-h-screen bg-[#020617] flex items-center justify-center p-6 font-['Mulish',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-[#1e293b]/20 border border-white/5 rounded-[2.5rem] p-10 shadow-2xl backdrop-blur-xl relative overflow-hidden flex flex-col items-center group">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 via-indigo-600 to-cyan-400 opacity-50" />
 

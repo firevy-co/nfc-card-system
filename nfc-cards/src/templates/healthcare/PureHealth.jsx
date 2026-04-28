@@ -29,7 +29,7 @@ const PureHealth = ({ userData }) => {
   const { displayName, email, phone, website, address, youtube, linkedin, twitter, instagram, logo } = userData || {};
   
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-6 font-['Inter',sans-serif]">
+    <div className="min-h-screen bg-white flex items-center justify-center p-6 font-['Inter',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm mt-8 relative">
         <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-20">
            <div className="w-28 h-28 rounded-full bg-emerald-500 border-[8px] border-white flex items-center justify-center text-white shadow-2xl overflow-hidden group">

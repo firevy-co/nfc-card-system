@@ -5,7 +5,7 @@ const TrustMedical = ({ userData }) => {
   const { displayName, email, phone, website, address, linkedin, instagram, facebook, twitter, logo } = userData || {};
   
   return (
-    <div className="min-h-screen bg-[#020617] text-white flex items-start justify-center py-16 px-6 font-['Mulish']">
+    <div className="min-h-screen bg-[#020617] text-white flex items-start justify-center py-16 px-6 font-['Mulish'] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-[#1e293b]/20 border border-white/5 rounded-[2.5rem] p-10 shadow-2xl backdrop-blur-xl relative overflow-hidden group">
         
         <div className="flex flex-col items-center text-center mb-10">

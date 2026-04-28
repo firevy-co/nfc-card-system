@@ -4,7 +4,7 @@ import { FiTriangle, FiPhone, FiMail, FiGlobe, FiCommand } from 'react-icons/fi'
 const SiliconStream = ({ userData }) => {
   const { displayName, email, role, mobileNumber, website } = userData || {};
   return (
-    <div className="min-h-screen bg-[#f0f2f5] flex items-center justify-center p-6 font-['Inter']">
+    <div className="min-h-screen bg-[#f0f2f5] flex items-center justify-center p-6 font-['Inter'] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-white rounded-[2rem] p-8 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.1)] border border-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-500/5 rounded-full -translate-y-1/2 translate-x-1/2" />
         <div className="flex flex-col items-center mb-10">

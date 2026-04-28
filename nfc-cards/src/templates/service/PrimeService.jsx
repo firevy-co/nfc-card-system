@@ -29,7 +29,7 @@ const PrimeService = ({ userData }) => {
   const { displayName, email, phone, website, address, youtube, linkedin, twitter, instagram, logo } = userData || {};
   
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-6 font-['Inter',sans-serif]">
+    <div className="min-h-screen bg-white flex items-center justify-center p-6 font-['Inter',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-white border-8 border-slate-900 rounded-[3rem] p-10 shadow-2xl relative overflow-hidden flex flex-col items-center group">
         <div className="absolute top-0 right-0 w-32 h-32 bg-slate-900/5 rotate-45 transform translate-x-12 -translate-y-12 pointer-events-none" />
         <div className="w-16 h-1 bg-slate-900 mb-8 group-hover:w-24 group-hover:bg-blue-600 transition-all" />

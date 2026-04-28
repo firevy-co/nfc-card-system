@@ -20,7 +20,7 @@ const CreatorMatrix = ({ userData }) => {
   const { displayName, email, phone, website, address, youtube, linkedin, twitter, twitch, instagram, logo } = userData || {};
   
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-6 font-['Space_Grotesk',sans-serif]">
+    <div className="min-h-screen bg-black flex items-center justify-center p-6 font-['Space_Grotesk',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm border-2 border-white/5 bg-zinc-950 rounded-[3rem] p-10 relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-full h-full opacity-5 pointer-events-none">
            <div className="grid grid-cols-10 gap-2 h-full">

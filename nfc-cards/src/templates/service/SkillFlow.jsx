@@ -6,7 +6,7 @@ const SkillFlow = ({ userData }) => {
   const { displayName, email, phone, website, address, linkedin, instagram, facebook, twitter, youtube, logo } = userData || {};
   
   return (
-    <div className="min-h-screen bg-[#fafafc] flex items-start justify-center py-8 px-6 font-['Mulish',sans-serif] text-slate-800">
+    <div className="min-h-screen bg-[#fafafc] flex items-start justify-center py-8 px-6 font-['Mulish',sans-serif] text-slate-800 md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-white border border-[#f1f1f5] rounded-[2.5rem] p-10 shadow-[0_40px_80px_-20px_rgba(200,200,230,0.3)] flex flex-col items-center group overflow-hidden">
         
         <div className="w-24 h-24 rounded-[2rem] bg-indigo-50 text-indigo-400 flex items-center justify-center mb-8 transition-all group-hover:bg-indigo-600 group-hover:text-white group-hover:scale-105 shadow-sm overflow-hidden p-1">

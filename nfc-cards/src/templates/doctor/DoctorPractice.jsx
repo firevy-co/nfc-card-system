@@ -14,7 +14,7 @@ const HospitalCard = ({ userData }) => {
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-gray-100 flex justify-center py-10 px-4 font-['Mulish']">
+      <div className="min-h-screen bg-gray-100 flex justify-center py-10 px-4 font-['Mulish'] md:bg-neutral-950 md:items-center py-0 md:py-12">
          <div className="w-full max-w-sm bg-[#F4F6F7] rounded-[3rem] shadow-xl p-8 relative overflow-hidden">
 
             {/* IMAGE */}

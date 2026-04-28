@@ -51,7 +51,7 @@ const UserSettings = ({ userData }) => {
 
     return (
         <Layout userData={userData} title="Account Configuration">
-            <div className="w-full mb-20 space-y-8 animate-in fade-in duration-1000">
+            <div className="w-full mb-20 space-y-8 animate-in fade-in duration-1000 px-1 sm:px-0">
                 {/* Hub Header */}
                 <header className="flex flex-col gap-4 border-b border-black/[0.05] dark:border-black/[0.1] pb-8">
                     <div className="flex items-center gap-3">
@@ -66,7 +66,7 @@ const UserSettings = ({ userData }) => {
 
                 <div className="space-y-6">
                     {/* --- ACCOUNT BRIEF --- */}
-                    <div className="bg-white dark:bg-white border border-slate-100 dark:border-slate-100 rounded-[2.5rem] p-8 md:p-10 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-8 relative overflow-hidden">
+                    <div className="bg-white dark:bg-white border border-slate-100 dark:border-slate-100 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 md:p-10 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-6 relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-64 h-64 bg-[#7BB9D4]/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
                         <div className="flex items-center gap-8 relative z-10">
@@ -85,7 +85,7 @@ const UserSettings = ({ userData }) => {
 
                         <button
                             onClick={handleLogout}
-                            className="px-10 py-5 rounded-[1.5rem] bg-rose-500/10 text-rose-500 font-black uppercase tracking-[0.2em] text-[11px] hover:bg-rose-500 hover:text-white transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3 group relative z-10"
+                            className="w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 rounded-[1.5rem] bg-rose-500/10 text-rose-500 font-black uppercase tracking-[0.2em] text-[11px] hover:bg-rose-500 hover:text-white transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3 group relative z-10"
                         >
                             <FiLogOut size={16} className="group-hover:rotate-12 transition-transform" />
                             Terminate Session
@@ -93,12 +93,12 @@ const UserSettings = ({ userData }) => {
                     </div>
 
                     {/* --- SETTINGS LIST --- */}
-                    <div className="bg-white dark:bg-white border border-slate-100 dark:border-slate-100 rounded-[2.5rem] shadow-xl overflow-hidden">
+                    <div className="bg-white dark:bg-white border border-slate-100 dark:border-slate-100 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl overflow-hidden">
                         {settingSections.map((section, idx) => (
                             <div
                                 key={idx}
                                 onClick={() => section.path && navigate(section.path)}
-                                className={`p-8 md:p-10 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-50 transition-all cursor-pointer border-b border-slate-100 dark:border-slate-100 last:border-0 ${!section.active ? 'opacity-40 grayscale select-none cursor-not-allowed' : ''}`}
+                                className={`p-5 sm:p-8 md:p-10 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-50 transition-all cursor-pointer border-b border-slate-100 dark:border-slate-100 last:border-0 ${!section.active ? 'opacity-40 grayscale select-none cursor-not-allowed' : ''}`}
                             >
                                 <div className="flex items-center gap-8">
                                     <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${section.active ? 'bg-[#7BB9D4] text-white' : 'bg-slate-100 text-zinc-400'}`}>
@@ -121,15 +121,15 @@ const UserSettings = ({ userData }) => {
                     </div>
 
                     {/* --- SYSTEM STATS --- */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="bg-white dark:bg-white border border-slate-100 dark:border-slate-100 rounded-[2rem] p-8 md:p-10 flex items-center justify-between shadow-xl">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                        <div className="bg-white dark:bg-white border border-slate-100 dark:border-slate-100 rounded-[1.5rem] sm:rounded-[2rem] p-6 sm:p-8 md:p-10 flex items-center justify-between shadow-xl">
                             <div>
                                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 dark:text-black/40 mb-2">Service Version</p>
                                 <h5 className="text-2xl font-black text-black dark:text-black">v4.2.0-Production</h5>
                             </div>
                             <FiCheckCircle size={32} className="text-emerald-500" />
                         </div>
-                        <div className="bg-white dark:bg-white border border-slate-100 dark:border-slate-100 rounded-[2rem] p-8 md:p-10 flex items-center justify-between shadow-xl">
+                        <div className="bg-white dark:bg-white border border-slate-100 dark:border-slate-100 rounded-[1.5rem] sm:rounded-[2rem] p-6 sm:p-8 md:p-10 flex items-center justify-between shadow-xl">
                             <div>
                                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 dark:text-black/40 mb-2">Network Status</p>
                                 <h5 className="text-2xl font-black text-black dark:text-black">Optimized</h5>

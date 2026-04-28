@@ -8,6 +8,7 @@ import {
 } from 'react-icons/fi';
 import AdminNav from '../../components/layout/AdminNav';
 import TopNav from '../../components/layout/TopNav';
+import MobileFooter from '../../components/layout/MobileFooter';
 import toast from 'react-hot-toast';
 
 const Inquiry = ({ userData }) => {
@@ -123,14 +124,14 @@ const Inquiry = ({ userData }) => {
             <TopNav title="Operational Inbox" />
             <AdminNav />
 
-            <main className="flex-1 p-6 lg:p-12 mt-20 max-w-[1600px] mx-auto w-full">
-                <header className="mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-10 animate-in fade-in slide-in-from-top-4 duration-1000">
+            <main className="flex-1 p-4 sm:p-6 lg:p-12 mt-14 lg:mt-20 pb-28 lg:pb-8 max-w-[1600px] mx-auto w-full">
+                <header className="mb-8 sm:mb-14 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-10 animate-in fade-in slide-in-from-top-4 duration-1000">
                     <div className="flex-1">
-                        <h2 className="text-4xl font-black text-black tracking-tighter capitalize">Inquiry Hub</h2>
+                        <h2 className="text-2xl sm:text-4xl font-black text-black tracking-tighter capitalize">Inquiry Hub</h2>
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <div className="relative group">
+                        <div className="relative group w-full sm:w-auto">
                             <FiSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-black transition-colors" />
                             <input
                                 type="text"
@@ -143,9 +144,61 @@ const Inquiry = ({ userData }) => {
                     </div>
                 </header>
 
-                <div className="w-full">
-                    <div className="bg-white border border-zinc-100 rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.05)] overflow-hidden">
-                        <div className="overflow-x-auto">
+                <div className="w-full px-0 sm:px-0">
+                    <div className="bg-white border border-zinc-100 rounded-[2rem] sm:rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.05)] overflow-hidden">
+
+                        {/* MOBILE CARDS (< md) */}
+                        <div className="md:hidden divide-y divide-zinc-50">
+                            {loading ? (
+                                Array.from({ length: 4 }).map((_, i) => (
+                                    <div key={i} className="p-5">
+                                        <div className="w-40 h-8 skeleton-box rounded-xl mb-2" />
+                                        <div className="w-24 h-5 skeleton-box rounded-lg" />
+                                    </div>
+                                ))
+                            ) : filteredInquiries.length > 0 ? (
+                                filteredInquiries.map((iq) => (
+                                    <div key={iq.id} className="p-5 hover:bg-zinc-50 transition-all">
+                                        <div className="flex items-start justify-between mb-2">
+                                            <div>
+                                                <p className="font-black text-black tracking-tighter">{iq.name}</p>
+                                                <p className="text-[10px] text-zinc-400 font-bold">{iq.email}</p>
+                                            </div>
+                                            <div className={`px-2 py-1 rounded-md text-[7px] font-black uppercase tracking-widest ${iq.status === 'Unread' ? 'bg-amber-500/10 text-amber-500' :
+                                                iq.status === 'Resolved' ? 'bg-emerald-500/10 text-emerald-500' :
+                                                    'bg-black/10 text-zinc-500'}`}>
+                                                {iq.status}
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[10px] font-black uppercase tracking-wider bg-zinc-50 border border-zinc-100 px-3 py-1 rounded-lg text-zinc-600">{iq.vector}</span>
+                                            <div className="flex items-center gap-2">
+                                                <button
+                                                    onClick={() => setSelectedInquiry(iq)}
+                                                    className="px-4 py-1.5 rounded-xl bg-black text-white font-black uppercase tracking-wider text-[9px] active:scale-95 transition-all"
+                                                >
+                                                    View
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(iq.id)}
+                                                    className="w-8 h-8 rounded-xl bg-red-50 text-red-400 flex items-center justify-center active:scale-95"
+                                                >
+                                                    <FiTrash2 size={14} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="p-16 text-center opacity-30">
+                                    <FiMessageSquare size={36} className="mx-auto mb-4 text-black" />
+                                    <p className="font-black uppercase tracking-[0.3em] text-xs text-black">No active inquiries</p>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* DESKTOP TABLE (≥ md) */}
+                        <div className="hidden md:block overflow-x-auto">
                             <table className="w-full border-collapse">
                                 <thead>
                                     <tr className="border-b border-zinc-50 bg-zinc-50/50">
@@ -244,7 +297,7 @@ const Inquiry = ({ userData }) => {
                             initial={{ opacity: 0, scale: 0.9, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                            className="bg-white border border-zinc-100 w-full max-w-4xl rounded-[3.5rem] flex flex-col md:flex-row h-[85vh] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.1)] relative z-10 overflow-hidden font-['Mulish']"
+                            className="bg-white border border-zinc-100 w-full max-w-4xl rounded-[2rem] sm:rounded-[3.5rem] flex flex-col md:flex-row h-[90vh] sm:h-[85vh] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.1)] relative z-10 overflow-hidden font-['Mulish']"
                         >
                             {/* LEFT SIDE: DETAILS */}
                             <div className="w-full md:w-80 bg-zinc-50/50 border-r border-zinc-100 p-10 flex flex-col justify-between">
@@ -346,6 +399,9 @@ const Inquiry = ({ userData }) => {
                     </div>
                 )}
             </AnimatePresence>
+
+            {/* Mobile Footer Navigation */}
+            <MobileFooter userData={userData} />
         </div>
     );
 };

@@ -29,7 +29,7 @@ const NeonInfluence = ({ userData }) => {
   const { displayName, email, phone, website, address, youtube, linkedin, twitter, twitch, instagram, logo } = userData || {};
   
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-6 font-['Outfit',sans-serif]">
+    <div className="min-h-screen bg-black flex items-center justify-center p-6 font-['Outfit',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-black border border-white/5 rounded-[4rem] p-1 shadow-2xl relative overflow-hidden flex flex-col items-center group">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-rose-500 to-amber-500" />
         

@@ -6,7 +6,7 @@ const TaskGrid = ({ userData }) => {
   const { displayName, email, phone, website, address, linkedin, instagram, facebook, twitter, youtube, logo } = userData || {};
   
   return (
-    <div className="min-h-screen bg-slate-50 flex items-start justify-center py-8 px-6 font-['Mulish',sans-serif] text-slate-900">
+    <div className="min-h-screen bg-slate-50 flex items-start justify-center py-8 px-6 font-['Mulish',sans-serif] text-slate-900 md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-white border border-slate-200 rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 p-8 text-slate-100 opacity-20 pointer-events-none"><FiTool size={120} /></div>
         

@@ -4,7 +4,7 @@ import { FiLayout, FiPhone, FiMail, FiMapPin } from 'react-icons/fi';
 const LegaNode = ({ userData }) => {
   const { displayName, email, role, mobileNumber, website, city } = userData || {};
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 font-['Inter']">
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 font-['Inter'] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-white rounded-[4rem] p-12 shadow-2xl overflow-hidden text-center border border-slate-100 flex flex-col items-center">
         <div className="w-20 h-2 bg-slate-900 rounded-full mb-12 opacity-5" />
         <div className="w-24 h-24 rounded-[3rem] bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-800 mb-8 shadow-sm group-hover:rotate-6 transition-transform">

@@ -7,7 +7,6 @@ import {
   FiPieChart,
   FiUsers,
   FiActivity,
-  FiSettings,
   FiHelpCircle
 } from 'react-icons/fi';
 import { useTheme } from '../../context/ThemeContext';
@@ -34,32 +33,36 @@ const MobileFooter = ({ userData }) => {
   const links = isAdmin ? adminLinks : userLinks;
 
   return (
-    <div className={`lg:hidden fixed bottom-0 left-0 right-0 z-[1000]`}>
-      <div className={`
-        flex items-center justify-around py-1 px-1 border shadow-2xl backdrop-blur-xl transition-all duration-500
-        ${theme === 'dark'
-          ? 'bg-zinc-950/90 border-white/10 shadow-black'
-          : 'bg-white/90 border-black/5 shadow-zinc-200'}
-      `}>
+    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[1000]">
+      <div
+        className={`
+          flex items-center justify-around py-2 px-2 border-t backdrop-blur-xl transition-all duration-500
+          pb-safe
+          ${theme === 'dark'
+            ? 'bg-zinc-950/95 border-white/10 shadow-black'
+            : 'bg-white/95 border-black/5 shadow-lg shadow-zinc-200'}
+        `}
+        style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}
+      >
         {links.map((link) => (
           <NavLink
             key={link.name}
             to={link.path}
             className={({ isActive }) => `
-              flex flex-col items-center gap-1 px-4 py-2 rounded-2xl transition-all duration-300
+              flex-1 flex flex-col items-center gap-0.5 py-1.5 px-1 rounded-2xl transition-all duration-300 min-w-0
               ${isActive
-                ? (theme === 'dark' ? 'text-white scale-110' : 'text-black scale-110')
-                : 'text-zinc-500 opacity-60'}
+                ? (theme === 'dark' ? 'text-white' : 'text-black')
+                : 'text-zinc-400'}
             `}
           >
             {({ isActive }) => (
               <>
-                <div className={`transition-transform duration-300`}>
+                <div className={`transition-transform duration-300 ${isActive ? 'scale-110' : ''}`}>
                   {link.icon}
                 </div>
-                <span className="text-[9px] font-black uppercase tracking-tighter">{link.name}</span>
+                <span className="text-[9px] font-black uppercase tracking-tighter truncate">{link.name}</span>
                 {isActive && (
-                  <div className={`w-1 h-1 rounded-full mt-0.5 ${theme === 'dark' ? 'bg-white' : 'bg-black'} animate-pulse`} />
+                  <div className={`w-4 h-0.5 rounded-full ${theme === 'dark' ? 'bg-white' : 'bg-black'}`} />
                 )}
               </>
             )}

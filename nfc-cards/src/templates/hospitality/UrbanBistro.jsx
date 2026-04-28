@@ -31,7 +31,7 @@ const UrbanBistro = ({ userData }) => {
   const { displayName, email, phone, website, address, youtube, linkedin, twitter, instagram, logo } = userData || {};
   
   return (
-    <div className="min-h-screen bg-[#f3f1ed] flex items-center justify-center p-6 font-['Inter',sans-serif]">
+    <div className="min-h-screen bg-[#f3f1ed] flex items-center justify-center p-6 font-['Inter',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-white rounded-[2rem] p-8 shadow-2xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 p-8 text-[#e67e22] opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
            <FiCoffee size={180} />

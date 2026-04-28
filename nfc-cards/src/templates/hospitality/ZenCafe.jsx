@@ -5,7 +5,7 @@ import { downloadVCard } from '../common/StandardComponents';
 const ZenCafe = ({ userData }) => {
   const { displayName, email, role, phone, website, address, instagram } = userData || {};
   return (
-    <div className="min-h-screen bg-[#fafaf7] flex items-center justify-center p-6 font-['Mulish']">
+    <div className="min-h-screen bg-[#fafaf7] flex items-center justify-center p-6 font-['Mulish'] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-white border border-[#e5e5e0] rounded-[5rem] p-10 shadow-2xl overflow-hidden flex flex-col items-center">
         <div className="w-20 h-20 rounded-full bg-[#f4f4f0] flex items-center justify-center text-[#86867e] mb-8 overflow-hidden">
            {userData?.logo ? (

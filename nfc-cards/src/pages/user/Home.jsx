@@ -30,34 +30,34 @@ const Home = ({ userData }) => {
 
     return (
         <Layout userData={userData} title="Dashboard">
-            <div className="p-6 lg:p-12 font-['Mulish'] min-h-screen">
+            <div className="p-4 sm:p-6 lg:p-12 font-['Mulish'] min-h-screen">
 
                 {/* --- HEADER (DYNAMIC) --- */}
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 lg:mb-12">
                     <div>
-                        <h1 className="text-3xl font-black tracking-tight text-black">
+                        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-black">
                             Welcome, {userData.displayName || 'Architect'}
                         </h1>
                         <p className="text-xs font-bold text-zinc-400 uppercase tracking-[0.3em] mt-1 opacity-60">
                             {userData.role} Protocol Dashboard
                         </p>
                     </div>
-                    <button className="bg-black text-white px-10 py-4 rounded-full text-[11px] font-black uppercase tracking-widest hover:brightness-110 transition-all shadow-xl active:scale-95">
+                    <button className="w-full sm:w-auto bg-black text-white px-8 py-3.5 rounded-full text-[11px] font-black uppercase tracking-widest hover:brightness-110 transition-all shadow-xl active:scale-95">
                         + Deploy New Identity
                     </button>
                 </div>
 
                 {/* --- TOP CARDS (IDENTITY THEMED) --- */}
-                <div className="grid md:grid-cols-3 gap-8 mb-12">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 lg:mb-12">
                     <MetricCard title="Identity Nodes" value="1" color="bg-emerald-500" />
                     <MetricCard title="Node Impressions" value="1,234" color="bg-blue-500" />
                     <MetricCard title="Digital Connections" value="86" color="bg-pink-500" />
                 </div>
 
                 {/* --- MAIN ANALYTICS GRID (EXACT ADMIN STYLE) --- */}
-                <div className="grid md:grid-cols-3 gap-8 mb-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 lg:mb-10">
                     {/* TASK PROGRESS */}
-                    <div className="bg-white border border-zinc-100 p-8 rounded-[2.5rem] shadow-sm">
+                    <div className="bg-white border border-zinc-100 p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] shadow-sm">
                         <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-2">Task Progress</h3>
                         <h1 className="text-4xl font-black text-black mb-10">70%</h1>
                         <div className="space-y-6">
@@ -68,7 +68,7 @@ const Home = ({ userData }) => {
                     </div>
 
                     {/* IDENTITY NODE STATUS */}
-                    <div className="bg-white border border-zinc-100 p-8 rounded-[2.5rem] shadow-sm flex flex-col items-center">
+                    <div className="bg-white border border-zinc-100 p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] shadow-sm flex flex-col items-center">
                         <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-10 w-full text-left">Node Deployment Status</h3>
                         <div className="relative">
                             <PieChart width={180} height={180}>
@@ -98,7 +98,7 @@ const Home = ({ userData }) => {
                     </div>
 
                     {/* PRODUCTIVITY TREND */}
-                    <div className="bg-white border border-zinc-100 p-8 rounded-[2.5rem] shadow-sm">
+                    <div className="bg-white border border-zinc-100 p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] shadow-sm md:col-span-2 lg:col-span-1">
                         <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-4">Productivity Trend</h3>
                         <div className="h-[200px] w-full mt-4">
                             <ResponsiveContainer width="100%" height="100%">
@@ -122,10 +122,10 @@ const Home = ({ userData }) => {
                 </div>
 
                 {/* --- EXTRA SECTION (EXACT ADMIN STYLE) --- */}
-                <div className="grid md:grid-cols-2 gap-10 mb-14">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-10 mb-10 lg:mb-14">
                     {/* ACTIVITY */}
-                    <div className="bg-white border border-zinc-100 p-10 rounded-[3rem] shadow-sm transition-all">
-                        <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-8">Recent Activity</h3>
+                    <div className="bg-white border border-zinc-100 p-6 sm:p-10 rounded-[2rem] sm:rounded-[3rem] shadow-sm transition-all">
+                        <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-6 sm:mb-8">Recent Activity</h3>
                         <div className="space-y-6">
                             {[
                                 { label: "Task Protocol Completed", time: "2m ago" },
@@ -147,7 +147,7 @@ const Home = ({ userData }) => {
                     </div>
 
                     {/* NETWORK INSIGHTS */}
-                    <div className="bg-white border border-zinc-100 p-10 rounded-[3rem] shadow-sm transition-all flex flex-col justify-between">
+                    <div className="bg-white border border-zinc-100 p-6 sm:p-10 rounded-[2rem] sm:rounded-[3rem] shadow-sm transition-all flex flex-col justify-between">
                         <div>
                             <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-8">Network Insights</h3>
                             <div className="flex items-center gap-6 p-6 bg-zinc-50 rounded-[2rem] border border-zinc-100">

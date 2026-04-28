@@ -32,7 +32,7 @@ const StreamNode = ({ userData }) => {
   const hasSocials = youtube || twitter || instagram || linkedin || (mainStreamLink !== twitch && twitch);
   
   return (
-    <div className="min-h-screen bg-[#6441a5] flex items-center justify-center p-6 font-['Mulish',sans-serif]">
+    <div className="min-h-screen bg-[#6441a5] flex items-center justify-center p-6 font-['Mulish',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-[#19171c] border border-white/10 rounded-[2.5rem] p-1 shadow-2xl overflow-hidden group">
         <div className="bg-[#6441a5] p-10 rounded-[2.3rem] text-center relative overflow-hidden">
            <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">

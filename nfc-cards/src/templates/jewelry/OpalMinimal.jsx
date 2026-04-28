@@ -91,7 +91,7 @@ const OpalMinimal = ({ userData }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center px-5 py-14 font-['Mulish']">
+    <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center px-5 py-14 font-['Mulish'] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-md">
 
         {/* Main Card */}
