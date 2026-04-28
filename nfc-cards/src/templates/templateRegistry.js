@@ -9,7 +9,6 @@ export const TEMPLATES = [
     id: "cardyn_classic",
     name: "Classic Refined",
     category: "Luxury",
-    restrictedAccess: true,
     description: "Premium tile-based identity with high-impact 'Connect With Us' suite.",
     previewColor: "bg-slate-900",
     tags: ["Premium", "Classic", "Interactive", "Featured"]

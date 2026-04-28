@@ -36,12 +36,18 @@ export default function Content({ userData }) {
           userQuery.includes(t.category.toLowerCase()) ||
           t.tags?.some(tag => userQuery.includes(tag.toLowerCase())));
       })?.category)
-    : (isAdmin ? "Business" : null);
-
+    : null;
   // Logic to determine categories: Admins see all, Users see matched + Discovery All
   const categories = isAdmin
     ? allCategories
     : ["All", matchedCategory].filter(Boolean);
+
+  // Default selection for Admins should be 'All' to see everything properly
+  useEffect(() => {
+    if (isAdmin) {
+      setSelectedCategory("All");
+    }
+  }, [isAdmin]);
 
   // FETCH: Sync with Cloud Orchestrator (with Local Persistence Deduplication)
   const fetchTemplates = useCallback(async () => {
@@ -63,12 +69,12 @@ export default function Content({ userData }) {
         if (!isAdmin && userData) {
           const userRole = (userData.businessRole || "").toLowerCase();
           const userQuery = (userData.businessName || userData.companyName || "").toLowerCase();
-          
-          const match = combined.find(t => 
+
+          const match = combined.find(t =>
             t.category.toLowerCase() === userRole ||
             (userQuery && (t.category.toLowerCase().includes(userQuery) ||
-            userQuery.includes(t.category.toLowerCase()) ||
-            t.tags?.some(tag => userQuery.includes(tag.toLowerCase()))))
+              userQuery.includes(t.category.toLowerCase()) ||
+              t.tags?.some(tag => userQuery.includes(tag.toLowerCase()))))
           );
           if (match) setSelectedCategory(match.category);
         }
@@ -88,12 +94,12 @@ export default function Content({ userData }) {
       if (!isAdmin && userData) {
         const userRole = (userData.businessRole || "").toLowerCase();
         const userQuery = (userData.businessName || userData.companyName || "").toLowerCase();
-        
-        const match = combined.find(t => 
+
+        const match = combined.find(t =>
           t.category.toLowerCase() === userRole ||
           (userQuery && (t.category.toLowerCase().includes(userQuery) ||
-          userQuery.includes(t.category.toLowerCase()) ||
-          t.tags?.some(tag => userQuery.includes(tag.toLowerCase()))))
+            userQuery.includes(t.category.toLowerCase()) ||
+            t.tags?.some(tag => userQuery.includes(tag.toLowerCase()))))
         );
         if (match) setSelectedCategory(match.category);
       }
@@ -183,7 +189,7 @@ export default function Content({ userData }) {
       const userRef = doc(db, "users", userData.uid);
 
       await updateDoc(userRef, {
-        selectedTemplateId: templateId,
+        templateId: templateId,
         lastTemplateUpdate: new Date().toISOString()
       });
 
@@ -197,24 +203,17 @@ export default function Content({ userData }) {
   };
 
   const filteredTemplates = localTemplates.filter(t => {
-    // SECURITY: Restricted Access Filter
-    // Hide restricted templates from Admins as requested, 
-    // but ALWAYS allow the authorized user to see their exclusive nodes in the gallery.
-    if (t.restrictedAccess && isAdmin) {
-      return false;
-    }
-
     const matchesSearch = t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.category.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     // EXCLUSIVE BYPASS: Restricted templates bypass category filters for authorized users
-    const matchesCategory = selectedCategory === "All" || t.category === selectedCategory || (t.restrictedAccess && !isAdmin);
-    
+    const matchesCategory = selectedCategory === "All" || t.category === selectedCategory || t.restrictedAccess;
+
     return matchesSearch && matchesCategory;
   }).sort((a, b) => (b.restrictedAccess ? 1 : 0) - (a.restrictedAccess ? 1 : 0));
 
-  const globalLink = userData?.selectedTemplateId
-    ? `${window.location.origin}/url/${userData.selectedTemplateId}?u=${userData?.uid}`
+  const globalLink = userData?.templateId
+    ? `${window.location.origin}/url/${userData.templateId}?u=${userData?.uid}`
     : null;
 
 
@@ -354,7 +353,7 @@ export default function Content({ userData }) {
                           onDelete={() => handleDeleteNode(template.id)}
                           onEdit={() => handleEditNode(template)}
                           onSelect={() => handleSelectTemplate(template.templateId || template.id)}
-                          isSelected={userData?.selectedTemplateId === (template.templateId || template.id)}
+                          isSelected={userData?.templateId === (template.templateId || template.id)}
                         />
                       </motion.div>
                     ))}

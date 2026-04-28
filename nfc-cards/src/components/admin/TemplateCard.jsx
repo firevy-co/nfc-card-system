@@ -57,14 +57,14 @@ export default function TemplateCard({
                 </div>
 
                 {/* The Device Frame Preview */}
-                <div className="w-[180px] h-[320px] bg-white  rounded-[2rem] border-[6px] border-black/10  shadow-2xl relative overflow-hidden transform group-hover:scale-[1.05] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] flex flex-col z-10">
-                    {/* Device Notch */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-4 bg-black/5  rounded-b-xl z-30"></div>
+                <div className="w-[165px] h-[320px] bg-black rounded-[2rem] p-[6px] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.3)] relative transform group-hover:scale-[1.05] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] z-10 flex-shrink-0 mx-auto ring-1 ring-black/5 dark:ring-white/10 overflow-hidden isolate" style={{ WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}>
+                    {/* Device Notch / Dynamic Island */}
+                    <div className="absolute top-[14px] left-1/2 -translate-x-1/2 w-16 h-4 bg-black rounded-full z-30"></div>
 
                     {/* Inner Content Scale */}
-                    <div className="flex-1 w-full relative overflow-hidden flex justify-center rounded-[1.6rem]">
-                        <div className="origin-top" style={{ transform: 'scale(0.52)' }}>
-                            <div className="w-[375px] h-[667px] overflow-hidden relative rounded-[3.5rem]">
+                    <div className="w-full h-full relative bg-background overflow-hidden rounded-[1.6rem] border border-black/10 dark:border-white/10 isolate" style={{ WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}>
+                        <div className="origin-top-left absolute top-0 left-0" style={{ transform: 'scale(0.408)', width: '375px', height: '800px' }}>
+                            <div className="w-full h-full relative pointer-events-none select-none">
                                 <TemplateRenderer templateId={templateId} userData={previewData} />
                             </div>
                         </div>

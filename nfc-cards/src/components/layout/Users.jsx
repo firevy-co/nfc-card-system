@@ -101,9 +101,11 @@ const Users = ({ userData }) => {
     };
 
     const filteredUsers = usersList.filter(user =>
+        user.role !== 'Template' && (
         (user.displayName?.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (user.email?.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (user.uid?.toLowerCase().includes(searchQuery.toLowerCase()))
+        )
     );
 
     return (

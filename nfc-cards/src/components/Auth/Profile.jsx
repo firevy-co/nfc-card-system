@@ -23,6 +23,7 @@ import {
 } from 'react-icons/fi';
 import { Country, State, City } from "country-state-city";
 import { TEMPLATES } from '../../templates/templateRegistry';
+import TemplateRenderer from '../../templates/TemplateRenderer';
 import Layout from '../layout/layout';
 import toast from 'react-hot-toast';
 import { HexColorPicker } from "react-colorful";
@@ -73,11 +74,11 @@ const CardPreview = ({ formData }) => {
     };
 
     const LocationDisplay = ({ formData, light }) => {
-        const addressText = formData.address || `${formData.city}${formData.city && formData.state ? ', ' : ''}${formData.state}${ (formData.city || formData.state) && formData.country ? ' | ' : ''}${formData.country}`;
+        const addressText = formData.address || `${formData.city}${formData.city && formData.state ? ', ' : ''}${formData.state}${(formData.city || formData.state) && formData.country ? ' | ' : ''}${formData.country}`;
         if (!addressText || addressText.trim() === '' || addressText.trim() === ',' || addressText.trim() === '|') return null;
-        
+
         return (
-            <a 
+            <a
                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressText)}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -271,10 +272,23 @@ const CardPreview = ({ formData }) => {
     };
 
     return (
-        <div className={`rounded-3xl w-[280px] min-h-[480px] p-6 shadow-2xl transition-all duration-700 relative overflow-hidden flex flex-col ${light ? "text-gray-900" : "text-white"}`} style={{ background: themeColor }}>
-            {renderLayout()}
-            <div className="mt-auto pt-8 pb-2 text-center">
-                <a href="https://cardyn.shop" target="_blank" rel="noopener noreferrer" className={`text-[9px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-100 ${light ? "text-black/30" : "text-white/30"}`}>
+        <div className={`rounded-3xl w-[320px] min-h-[520px] shadow-2xl transition-all duration-700 relative overflow-hidden flex flex-col bg-white`}>
+            <div className="flex-1 w-full relative overflow-hidden flex justify-center rounded-[1.6rem]">
+                <div className="origin-top" style={{ transform: 'scale(0.853)' }}>
+                    <div className="w-[375px] h-[600px] overflow-hidden relative">
+                        <TemplateRenderer 
+                            templateId={formData.templateId} 
+                            userData={{
+                                ...formData,
+                                // Map display name to name if missing for the renderer
+                                displayName: formData.displayName || formData.name,
+                            }} 
+                        />
+                    </div>
+                </div>
+            </div>
+            <div className="pb-4 text-center bg-white border-t">
+                <a href="https://cardyn.shop" target="_blank" rel="noopener noreferrer" className={`text-[9px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-100 text-black/30`}>
                     Powered by cardyn
                 </a>
             </div>
@@ -694,67 +708,74 @@ const Profile = ({ userData }) => {
                                                 <div className="space-y-6">
                                                     <h4 className="text-sm font-black uppercase tracking-[0.3em] text-orange-500">02. Layout Architecture</h4>
                                                     <div className="grid grid-cols-5 gap-4">
-                                                         {[
-                                                             { id: 'layout_1', name: 'Standard' },
-                                                             { id: 'layout_2', name: 'Hero' },
-                                                             { id: 'layout_3', name: 'Matrix' },
-                                                             { id: 'layout_4', name: 'Lead' },
-                                                             { id: 'layout_5', name: 'Ultra' },
-                                                         ].map((layout) => {
-                                                             const isSelected = formData.templateId === layout.id;
-                                                             return (
-                                                                 <div key={layout.id} onClick={() => isEditing && handleInputChange('templateId', layout.id)} className={`cursor-pointer group ${!isEditing && 'pointer-events-none opacity-50'}`}>
-                                                                     <div className={`relative aspect-[3/4] rounded-xl overflow-hidden border-2 transition-all duration-300 ${isSelected ? 'border-blue-600 bg-white shadow-xl scale-105' : 'border-gray-100 bg-gray-50 opacity-60 group-hover:opacity-100'}`}>
-                                                                         <div className="w-full h-full p-2 flex flex-col gap-1 opacity-40">
-                                                                             {layout.id === 'layout_1' && (
-                                                                                 <div className="flex flex-col items-center gap-1">
-                                                                                     <div className="w-4 h-4 rounded-full bg-gray-400" />
-                                                                                     <div className="w-full h-1 bg-gray-300 rounded" />
-                                                                                     <div className="w-full h-4 bg-gray-200 rounded" />
-                                                                                     <div className="w-full h-4 bg-gray-200 rounded" />
-                                                                                 </div>
-                                                                             )}
-                                                                             {layout.id === 'layout_2' && (
-                                                                                 <div className="flex flex-col gap-1">
-                                                                                     <div className="w-full h-6 bg-gray-300 rounded" />
-                                                                                     <div className="w-4 h-4 rounded-full bg-gray-400 mx-auto -mt-3" />
-                                                                                     <div className="w-full h-4 bg-gray-200 rounded mt-1" />
-                                                                                 </div>
-                                                                             )}
-                                                                             {layout.id === 'layout_3' && (
-                                                                                 <div className="grid grid-cols-2 gap-1">
-                                                                                     <div className="aspect-square bg-gray-300 rounded" />
-                                                                                     <div className="aspect-square bg-gray-300 rounded" />
-                                                                                     <div className="col-span-2 h-4 bg-gray-200 rounded" />
-                                                                                 </div>
-                                                                             )}
-                                                                             {layout.id === 'layout_4' && (
-                                                                                 <div className="flex flex-col items-center gap-1">
-                                                                                     <div className="w-6 h-6 rounded-full bg-gray-300" />
-                                                                                     <div className="w-full h-2 bg-gray-200 rounded" />
-                                                                                     <div className="w-full h-6 bg-gray-400 rounded mt-1" />
-                                                                                 </div>
-                                                                             )}
-                                                                             {layout.id === 'layout_5' && (
-                                                                                 <div className="flex flex-col gap-1">
-                                                                                     <div className="flex gap-1 items-center">
-                                                                                         <div className="w-4 h-4 bg-gray-400 rounded" />
-                                                                                         <div className="flex-1 h-2 bg-gray-200 rounded" />
-                                                                                     </div>
-                                                                                     <div className="w-full h-10 bg-gray-200 rounded-xl mt-1" />
-                                                                                 </div>
-                                                                             )}
-                                                                         </div>
-                                                                         {isSelected && (
-                                                                             <div className="absolute inset-0 bg-blue-600/5 flex items-center justify-center">
-                                                                                 <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                                                                             </div>
-                                                                         )}
-                                                                     </div>
-                                                                     <p className={`text-[7px] font-black uppercase text-center mt-2 tracking-widest ${isSelected ? 'text-blue-600' : 'text-gray-400'}`}>{layout.name}</p>
-                                                                 </div>
-                                                             );
-                                                         })}
+                                                        {[
+                                                            { id: 'layout_1', name: 'Standard' },
+                                                            { id: 'layout_2', name: 'Hero' },
+                                                            { id: 'layout_3', name: 'Matrix' },
+                                                            { id: 'layout_4', name: 'Lead' },
+                                                            { id: 'layout_5', name: 'Ultra' },
+                                                        ].map((layout) => {
+                                                            const isSelected = formData.templateId === layout.id;
+                                                            return (
+                                                                <div 
+                                                                    key={layout.id} 
+                                                                    onClick={() => {
+                                                                        if (!isEditing) setIsEditing(true);
+                                                                        handleInputChange('templateId', layout.id);
+                                                                    }} 
+                                                                    className="cursor-pointer group"
+                                                                >
+                                                                    <div className={`relative aspect-[3/4] rounded-xl overflow-hidden border-2 transition-all duration-300 ${isSelected ? 'border-blue-600 bg-white shadow-xl scale-105' : 'border-gray-100 bg-gray-50 opacity-60 group-hover:opacity-100'}`}>
+                                                                        <div className="w-full h-full p-2 flex flex-col gap-1 opacity-40">
+                                                                            {layout.id === 'layout_1' && (
+                                                                                <div className="flex flex-col items-center gap-1">
+                                                                                    <div className="w-4 h-4 rounded-full bg-gray-400" />
+                                                                                    <div className="w-full h-1 bg-gray-300 rounded" />
+                                                                                    <div className="w-full h-4 bg-gray-200 rounded" />
+                                                                                    <div className="w-full h-4 bg-gray-200 rounded" />
+                                                                                </div>
+                                                                            )}
+                                                                            {layout.id === 'layout_2' && (
+                                                                                <div className="flex flex-col gap-1">
+                                                                                    <div className="w-full h-6 bg-gray-300 rounded" />
+                                                                                    <div className="w-4 h-4 rounded-full bg-gray-400 mx-auto -mt-3" />
+                                                                                    <div className="w-full h-4 bg-gray-200 rounded mt-1" />
+                                                                                </div>
+                                                                            )}
+                                                                            {layout.id === 'layout_3' && (
+                                                                                <div className="grid grid-cols-2 gap-1">
+                                                                                    <div className="aspect-square bg-gray-300 rounded" />
+                                                                                    <div className="aspect-square bg-gray-300 rounded" />
+                                                                                    <div className="col-span-2 h-4 bg-gray-200 rounded" />
+                                                                                </div>
+                                                                            )}
+                                                                            {layout.id === 'layout_4' && (
+                                                                                <div className="flex flex-col items-center gap-1">
+                                                                                    <div className="w-6 h-6 rounded-full bg-gray-300" />
+                                                                                    <div className="w-full h-2 bg-gray-200 rounded" />
+                                                                                    <div className="w-full h-6 bg-gray-400 rounded mt-1" />
+                                                                                </div>
+                                                                            )}
+                                                                            {layout.id === 'layout_5' && (
+                                                                                <div className="flex flex-col gap-1">
+                                                                                    <div className="flex gap-1 items-center">
+                                                                                        <div className="w-4 h-4 bg-gray-400 rounded" />
+                                                                                        <div className="flex-1 h-2 bg-gray-200 rounded" />
+                                                                                    </div>
+                                                                                    <div className="w-full h-10 bg-gray-200 rounded-xl mt-1" />
+                                                                                </div>
+                                                                            )}
+                                                                        </div>
+                                                                        {isSelected && (
+                                                                            <div className="absolute inset-0 bg-blue-600/5 flex items-center justify-center">
+                                                                                <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                    <p className={`text-[7px] font-black uppercase text-center mt-2 tracking-widest ${isSelected ? 'text-blue-600' : 'text-gray-400'}`}>{layout.name}</p>
+                                                                </div>
+                                                            );
+                                                        })}
                                                     </div>
                                                 </div>
                                             </div>
@@ -893,16 +914,16 @@ const Profile = ({ userData }) => {
                                 </div>
 
                                 <div className="md:col-span-2 space-y-1">
-                                     <label className={labelClasses}>Precise Identity Address</label>
-                                     <textarea
-                                         disabled={!isEditing}
-                                         rows={2}
-                                         value={formData.address || ""}
-                                         onChange={(e) => handleInputChange('address', e.target.value)}
-                                         className={`${inputClasses} rounded-3xl resize-none min-h-[80px] leading-relaxed`}
-                                         placeholder="e.g. 123 Tech Avenue, Silicon Valley, CA"
-                                     />
-                                 </div>
+                                    <label className={labelClasses}>Precise Identity Address</label>
+                                    <textarea
+                                        disabled={!isEditing}
+                                        rows={2}
+                                        value={formData.address || ""}
+                                        onChange={(e) => handleInputChange('address', e.target.value)}
+                                        className={`${inputClasses} rounded-3xl resize-none min-h-[80px] leading-relaxed`}
+                                        placeholder="e.g. 123 Tech Avenue, Silicon Valley, CA"
+                                    />
+                                </div>
 
                                 <div className="space-y-1">
                                     <label className={labelClasses}>Zip Code</label>

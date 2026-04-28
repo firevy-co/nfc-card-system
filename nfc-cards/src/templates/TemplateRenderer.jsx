@@ -156,6 +156,13 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
       activeId = 'cardyn_classic';
     }
 
+    // MAP ARCHITECTURE LAYOUTS TO PREMIUM TEMPLATES
+    if (activeId === 'layout_1') activeId = 'cardyn_classic';
+    if (activeId === 'layout_2') activeId = 'business_leader';
+    if (activeId === 'layout_3') activeId = 'it_data';
+    if (activeId === 'layout_4') activeId = 'service_prime';
+    if (activeId === 'layout_5') activeId = 'auto_pinnacle';
+
     switch (activeId) {
       // --- BUSINESS ---
       case 'cardyn_classic': return <ClassicRefined userData={userData} />;

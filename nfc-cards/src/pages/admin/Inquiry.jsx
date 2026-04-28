@@ -9,7 +9,6 @@ import {
 import AdminNav from '../../components/layout/AdminNav';
 import TopNav from '../../components/layout/TopNav';
 import toast from 'react-hot-toast';
-import logo from '../../assets/logo (2).png';
 
 const Inquiry = ({ userData }) => {
     const [inquiries, setInquiries] = useState([]);
@@ -120,14 +119,13 @@ const Inquiry = ({ userData }) => {
     );
 
     return (
-        <div className="min-h-screen bg-zinc-50 text-black flex flex-col overflow-x-hidden">
+        <div className="min-h-screen bg-[#F8EDEB] text-black flex flex-col overflow-x-hidden">
             <TopNav title="Operational Inbox" />
             <AdminNav />
 
             <main className="flex-1 p-6 lg:p-12 mt-20 max-w-[1600px] mx-auto w-full">
                 <header className="mb-14 flex flex-col md:flex-row md:items-end md:justify-between gap-10 animate-in fade-in slide-in-from-top-4 duration-1000">
                     <div className="flex-1">
-                        <img src={logo} alt="Logo" className="h-4 object-contain mb-4 opacity-50" />
                         <h2 className="text-4xl font-black text-black tracking-tighter capitalize">Inquiry Hub</h2>
                     </div>
 

@@ -41,7 +41,7 @@ const TemplatePreview = ({ userData }) => {
             const userRef = doc(db, "users", userData.uid);
             
             await updateDoc(userRef, {
-                selectedTemplateId: id,
+                templateId: id,
                 lastTemplateUpdate: new Date().toISOString()
             });
 
