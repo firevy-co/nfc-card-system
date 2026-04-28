@@ -1,106 +1,130 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
-import { FaWhatsapp, FaFacebook, FaYoutube, FaTiktok, FaDiscord, FaTelegram, FaSkype, FaPaypal } from 'react-icons/fa';
-import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
+import { downloadVCard } from "../common/StandardComponents";
 
 const ClassicExecutive = ({ userData }) => {
-   const {
-      displayName, email, role, phone, website, address,
-      linkedin, instagram, facebook, twitter, github,
-      whatsapp, youtube, tiktok, discord, telegram, skype, paypal,
-      bio, company, businessName, logo, profileImage
-   } = userData || {};
+  const { 
+    displayName, email, role, mobileNumber, phone, 
+    companyName, designation, website, address, city,
+    linkedin, instagram, facebook, twitter, bio, avatar, logo 
+  } = userData || {};
 
-   return (
-      <div className="w-full bg-[#020617] text-white font-['Mulish']">
-         <div className="w-full bg-[#1e293b]/20 border-b border-white/5 shadow-2xl backdrop-blur-xl relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-400/10 rounded-full translate-x-32 -translate-y-32 blur-[100px] group-hover:bg-cyan-400/20 transition-all duration-700"></div>
+  const displayPhone = mobileNumber || phone;
+  const displayRole = designation || role || "Senior Executive";
+  const finalAddress = address || city;
 
-            {/* Header: Photo & Identity */}
-            <header className="flex flex-col items-center p-12 relative z-10">
-               <div className="w-32 h-32 rounded-[2.5rem] bg-gradient-to-br from-cyan-400 to-indigo-600 mb-8 flex items-center justify-center p-1.5 shadow-2xl">
-                  <div className="w-full h-full bg-[#020617] border border-white/10 rounded-[2.2rem] flex items-center justify-center text-4xl font-black capitalize overflow-hidden">
-                      <img src={logo || profileImage} alt={displayName} className="w-full h-full object-cover" />
-                  </div>
+  return (
+    <div className="min-h-screen bg-[#f8f9fa] text-slate-800 font-['Inter'] pb-16">
+      {/* Formal Header */}
+      <div className="bg-[#0f172a] text-white pt-16 pb-24 px-8 text-center relative shadow-xl">
+         <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/diagonal-striped-brick.png')]" />
+         <div className="relative z-10 flex flex-col items-center">
+            {logo ? (
+               <div className="bg-white p-4 rounded-lg shadow-lg mb-6 max-w-[120px]">
+                  <img src={logo} alt="Company Logo" className="w-full h-auto object-contain" />
                </div>
-               <h1 className="text-4xl font-black tracking-tight mb-3 text-white capitalize leading-tight text-center">
-                  {displayName || "No Name Set"}
-               </h1>
-               
-               {(company || businessName) && (
-                  <p className="text-white/30 text-[10px] font-bold mt-6 uppercase tracking-[0.4em]">
-                     {company || businessName}
-                  </p>
-               )}
-               {bio && (
-                  <p className="mt-8 text-white/40 text-sm leading-relaxed text-center max-w-sm font-medium">
-                     {bio}
-                  </p>
-               )}
-            </header>
-
-            {/* Content Section */}
-            <div className="p-8 space-y-12 relative z-10">
-               {/* Contact Matrix */}
-               <div className="space-y-4">
-                  {email && <StandardContactLink icon={FiIcons.FiMail} value={email} href={`mailto:${email}`} />}
-                  {phone && <StandardContactLink icon={FiIcons.FiPhone} value={phone} href={`tel:${phone}`} />}
-                  {website && <StandardContactLink icon={FiIcons.FiGlobe} value={website.replace(/(^\w+:|^)\/\//, '')} href={website.startsWith('http') ? website : `https://${website}`} />}
-                  {address && <StandardContactLink icon={FiIcons.FiMapPin} value={address} href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} />}
-               </div>
-
-               {/* Social Grid */}
-               <div className="grid grid-cols-4 gap-4 py-8 border-y border-white/5">
-                  {[
-                     { id: 'linkedin', val: linkedin, icon: FiIcons.FiLinkedin, color: 'hover:bg-[#0077b5]' },
-                     { id: 'instagram', val: instagram, icon: FiIcons.FiInstagram, color: 'hover:bg-[#e1306c]' },
-                     { id: 'twitter', val: twitter, icon: FiIcons.FiTwitter, color: 'hover:bg-black' },
-                     { id: 'github', val: github, icon: FiIcons.FiGithub, color: 'hover:bg-zinc-800' },
-                     { id: 'whatsapp', val: whatsapp, icon: FaWhatsapp, color: 'hover:bg-[#25d366]' },
-                     { id: 'facebook', val: facebook, icon: FaFacebook, color: 'hover:bg-[#1877f2]' },
-                     { id: 'youtube', val: youtube, icon: FaYoutube, color: 'hover:bg-[#ff0000]' },
-                     { id: 'telegram', val: telegram, icon: FaTelegram, color: 'hover:bg-[#0088cc]' }
-                  ].map((social, i) => social.val && (
-                     <a
-                        key={i}
-                        href={social.id === 'whatsapp' ? `https://wa.me/${social.val.replace(/\D/g, '')}` : (social.val.startsWith('http') ? social.val : `https://${social.id}.com/${social.val}`)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`aspect-square rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center text-white/40 hover:text-white transition-all ${social.color}`}
-                     >
-                        <social.icon size={22} />
-                     </a>
-                  ))}
-               </div>
-
-               {/* Action Buttons */}
-               <div className="space-y-4">
-                  {website && (
-                     <a 
-                        href={website.startsWith('http') ? website : `https://${website}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full flex items-center justify-center bg-white text-black py-5 rounded-2xl font-black text-xs uppercase tracking-[0.4em] shadow-2xl hover:bg-cyan-400 transition-all active:scale-95"
-                     >
-                        Enter Portal
-                     </a>
-                  )}
-                  <StandardSaveContactButton userData={userData} />
-               </div>
-
-               {/* Map Preview */}
-               {address && <StandardMapPreview address={address} />}
-
-               {/* Branding */}
-               <footer className="pt-8 pb-4 text-center">
-                  <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="inline-block text-[9px] font-black uppercase tracking-[0.6em] text-white/10 hover:text-cyan-400 transition-colors py-3 px-8 border border-white/5 rounded-full">
-                     Powered by Cardyn
-                  </a>
-               </footer>
-            </div>
+            ) : null}
+            <h1 className="text-3xl font-bold tracking-tight mb-2 font-serif">{displayName || 'Jonathan Sterling'}</h1>
+            <p className="text-sm text-blue-300 font-medium tracking-wide uppercase">{displayRole}</p>
+            {companyName && <p className="text-xs text-slate-400 mt-2 uppercase tracking-widest">{companyName}</p>}
          </div>
       </div>
-   );
-};
 
+      <div className="px-6 -mt-16 relative z-20 space-y-6 max-w-lg mx-auto">
+         {/* Profile / Avatar Overlap */}
+         <div className="bg-white rounded-xl shadow-lg border border-slate-100 p-6 flex flex-col items-center">
+            <div className="w-24 h-24 rounded-full border-4 border-white shadow-md -mt-16 mb-4 bg-slate-100 overflow-hidden shrink-0 flex items-center justify-center">
+               {avatar ? <img src={avatar} alt="Profile" className="w-full h-full object-cover" /> : <FiIcons.FiUser size={40} className="text-slate-400" />}
+            </div>
+            {bio ? (
+               <div className="text-center">
+                  <p className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-2">Executive Summary</p>
+                  <p className="text-sm text-slate-600 leading-relaxed">"{bio}"</p>
+               </div>
+            ) : (
+               <p className="text-sm text-slate-400 italic">No summary provided.</p>
+            )}
+         </div>
+
+         {/* Areas of Expertise */}
+         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 border-b border-slate-100 pb-2">Core Competencies</h3>
+            <div className="grid grid-cols-2 gap-4">
+               {[
+                  { title: "Strategic Planning", icon: FiIcons.FiTrendingUp },
+                  { title: "Global Operations", icon: FiIcons.FiGlobe },
+                  { title: "Corporate Finance", icon: FiIcons.FiPieChart },
+                  { title: "Board Leadership", icon: FiIcons.FiUsers }
+               ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                     <div className="text-blue-600 bg-blue-50 p-2 rounded-lg"><item.icon size={16} /></div>
+                     <span className="text-xs font-semibold text-slate-700">{item.title}</span>
+                  </div>
+               ))}
+            </div>
+         </div>
+
+         {/* Corporate Contact Suite */}
+         <div className="space-y-3">
+            {displayPhone && (
+               <a href={`tel:${displayPhone}`} className="flex items-center gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all group">
+                  <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-500 group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0"><FiIcons.FiPhoneCall /></div>
+                  <div className="overflow-hidden">
+                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Direct Line</p>
+                     <p className="text-sm font-semibold text-slate-800">{displayPhone}</p>
+                  </div>
+               </a>
+            )}
+            {email && (
+               <a href={`mailto:${email}`} className="flex items-center gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all group">
+                  <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-500 group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0"><FiIcons.FiMail /></div>
+                  <div className="overflow-hidden">
+                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Corporate Email</p>
+                     <p className="text-sm font-semibold text-slate-800 truncate">{email}</p>
+                  </div>
+               </a>
+            )}
+            {website && (
+               <a href={website?.startsWith('http') ? website : `https://${website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all group">
+                  <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-500 group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0"><FiIcons.FiGlobe /></div>
+                  <div className="overflow-hidden">
+                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Enterprise Portal</p>
+                     <p className="text-sm font-semibold text-slate-800 truncate">{website}</p>
+                  </div>
+               </a>
+            )}
+            {finalAddress && (
+               <div className="flex items-center gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                  <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-500 shrink-0"><FiIcons.FiBriefcase /></div>
+                  <div className="overflow-hidden">
+                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Headquarters</p>
+                     <p className="text-sm font-semibold text-slate-800 leading-snug truncate">{finalAddress}</p>
+                  </div>
+               </div>
+            )}
+         </div>
+
+         {/* Professional Network */}
+         <div className="flex justify-center gap-4 py-2 border-t border-slate-200 pt-6">
+            {[
+               { icon: FiIcons.FiLinkedin, val: linkedin },
+               { icon: FiIcons.FiTwitter, val: twitter },
+               { icon: FiIcons.FiInstagram, val: instagram },
+               { icon: FiIcons.FiFacebook, val: facebook }
+            ].map((social, idx) => social.val && (
+               <a key={idx} href={social.val.startsWith('http') ? social.val : `https://${social.val}`} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-blue-600 transition-colors p-2 bg-white rounded-full shadow-sm border border-slate-100">
+                  <social.icon size={20} />
+               </a>
+            ))}
+         </div>
+
+         <button onClick={() => downloadVCard(userData)} className="w-full py-4 bg-[#0f172a] text-white rounded-xl font-bold text-[11px] uppercase tracking-widest shadow-lg hover:bg-blue-600 transition-all flex items-center justify-center gap-2 mt-4 active:scale-[0.98]">
+            <FiIcons.FiUserPlus size={16} /> Save to Contacts
+         </button>
+         
+         <p className="text-center text-[9px] font-bold tracking-[0.5em] text-slate-300 uppercase mt-8 pb-4">Powered by Cardyn</p>
+      </div>
+    </div>
+  );
+};
 export default ClassicExecutive;

@@ -1,142 +1,105 @@
-import React from "react";
-import {
-   FiHome,
-   FiMapPin,
-   FiPhone,
-   FiMail,
-   FiGlobe,
-   FiInstagram,
-   FiLinkedin,
-   FiTwitter,
-   FiGithub
-} from "react-icons/fi";
-import { FaWhatsapp, FaFacebook, FaYoutube, FaTiktok, FaDiscord, FaTelegram, FaSkype, FaPaypal } from "react-icons/fa";
-import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
+import React from 'react';
+import * as FiIcons from 'react-icons/fi';
+import { downloadVCard } from "../common/StandardComponents";
 
 const ModernRealty = ({ userData }) => {
-   const {
-      displayName, email, role, phone, website, address, bio,
-      whatsapp, facebook, youtube, tiktok, discord, telegram, skype, paypal,
-      linkedin, instagram, twitter, github, company, businessName, logo, profileImage
-   } = userData || {};
+  const { displayName, email, role, mobileNumber, phone, companyName, designation, website, address, city, linkedin, instagram, facebook, twitter, bio, avatar, logo } = userData || {};
+  const displayPhone = mobileNumber || phone;
+  const displayRole = designation || role || "Real Estate Agent";
+  const finalAddress = address || city;
 
-   return (
-      <div className="w-full bg-[#020617] text-white font-['Mulish']">
-         <div className="w-full bg-[#1e293b]/20 border-b border-white/5 shadow-2xl backdrop-blur-xl overflow-hidden">
-            
-            {/* HERO SECTION */}
-            <div className="relative h-72 bg-zinc-900">
-               <img 
-                  src="https://images.unsplash.com/photo-1560518883-ce09059eeffa" 
-                  className="w-full h-full object-cover opacity-60"
-                  alt="Modern House"
-               />
-               <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent"></div>
-               <div className="absolute bottom-8 left-8 flex items-end gap-6 translate-y-4">
-                  <div className="w-24 h-24 bg-white/10 backdrop-blur-md rounded-3xl border border-white/10 shadow-2xl p-2 flex items-center justify-center shrink-0 overflow-hidden">
-                     <img src={logo || profileImage} className="w-full h-full object-cover" alt={displayName} />
-                  </div>
-                  <div className="pb-4">
-                     <div className="flex items-center gap-2 text-cyan-400 bg-cyan-400/10 border border-cyan-400/20 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-3 w-max">
-                        <FiHome size={12} />
-                        PREMIUM LISTINGS
-                     </div>
-                     <h1 className="text-4xl font-black text-white tracking-tight leading-none capitalize">
-                        {displayName || "Agency Name"}
-                     </h1>
-                     
-                  </div>
+  return (
+    <div className="min-h-screen bg-slate-50 font-['Inter'] pb-12 overflow-x-hidden">
+      <div className="bg-emerald-700 text-white p-8 pt-16 rounded-b-[2rem] shadow-lg text-center relative overflow-hidden">
+         <div className="absolute inset-0 bg-emerald-800/50" style={{ backgroundImage: 'linear-gradient(45deg, transparent 20%, rgba(255,255,255,0.05) 25%, transparent 30%)', backgroundSize: '10px 10px' }} />
+         
+         <div className="flex justify-center mb-6 relative z-10">
+            <div className="w-28 h-28 bg-white rounded-full p-1 shadow-xl shrink-0">
+               <div className="w-full h-full rounded-full bg-slate-100 flex items-center justify-center overflow-hidden">
+                  {avatar ? <img src={avatar} alt="Profile" className="w-full h-full object-cover" /> : logo ? <img src={logo} alt="Logo" className="w-full h-full object-contain p-3" /> : <FiIcons.FiHome size={36} className="text-emerald-700" />}
                </div>
-            </div>
-
-            <div className="p-8 space-y-12">
-               {bio && (
-                  <div className="text-center px-4 pt-4">
-                     <p className="text-sm text-white/50 leading-relaxed font-medium italic">
-                        "{bio}"
-                     </p>
-                  </div>
-               )}
-
-               {/* FEATURED PROPERTIES */}
-               <div className="grid grid-cols-2 gap-4">
-                  <div className="relative rounded-[2rem] overflow-hidden h-40 border border-white/5 shadow-2xl">
-                     <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750" className="w-full h-full object-cover" alt="Luxury Villa" />
-                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
-                        <span className="text-white text-[10px] font-black uppercase tracking-widest">Luxe Villa</span>
-                     </div>
-                  </div>
-                  <div className="relative rounded-[2rem] overflow-hidden h-40 border border-white/5 shadow-2xl">
-                     <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858" className="w-full h-full object-cover" alt="Modern Loft" />
-                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
-                        <span className="text-white text-[10px] font-black uppercase tracking-widest">Modern Loft</span>
-                     </div>
-                  </div>
-               </div>
-
-               {/* CONTACT STACK */}
-               <div className="space-y-4">
-                  <p className="text-[10px] text-white/20 font-black tracking-[0.5em] uppercase mb-8 text-center">
-                     Direct Uplink
-                  </p>
-                  {email && <StandardContactLink icon={FiMail} value={email} href={`mailto:${email}`} />}
-                  {phone && <StandardContactLink icon={FiPhone} value={phone} href={`tel:${phone}`} />}
-                  {website && <StandardContactLink icon={FiGlobe} value={website.replace(/(^\w+:|^)\/\//, '')} href={website.startsWith('http') ? website : `https://${website}`} />}
-                  {address && <StandardContactLink icon={FiMapPin} value={address} href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} />}
-               </div>
-
-               {/* SOCIAL NEXUS */}
-               <div className="grid grid-cols-4 gap-4 py-8 border-y border-white/5">
-                  {[
-                     { id: 'linkedin', val: linkedin, icon: FiLinkedin, color: 'hover:bg-[#0077b5]' },
-                     { id: 'instagram', val: instagram, icon: FiInstagram, color: 'hover:bg-[#e1306c]' },
-                     { id: 'facebook', val: facebook, icon: FaFacebook, color: 'hover:bg-[#1877f2]' },
-                     { id: 'twitter', val: twitter, icon: FiTwitter, color: 'hover:bg-black' },
-                     { id: 'whatsapp', val: whatsapp, icon: FaWhatsapp, color: 'hover:bg-[#25d366]' },
-                     { id: 'youtube', val: youtube, icon: FaYoutube, color: 'hover:bg-[#ff0000]' },
-                     { id: 'telegram', val: telegram, icon: FaTelegram, color: 'hover:bg-[#0088cc]' },
-                     { id: 'github', val: github, icon: FiGithub, color: 'hover:bg-zinc-800' }
-                  ].map(social => social.val && (
-                     <a 
-                       key={social.id} 
-                       href={social.id === 'whatsapp' ? `https://wa.me/${social.val.replace(/\D/g, '')}` : (social.val.startsWith('http') ? social.val : `https://${social.id}.com/${social.val}`)} 
-                       target="_blank" 
-                       rel="noopener noreferrer" 
-                       className={`aspect-square rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center text-white/40 hover:text-white transition-all shadow-lg ${social.color}`}
-                     >
-                        <social.icon size={22} />
-                     </a>
-                  ))}
-               </div>
-
-               {/* Action Buttons */}
-               <div className="space-y-4 pt-4">
-                  {website && (
-                     <a 
-                       href={website.startsWith('http') ? website : `https://${website}`}
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       className="w-full flex items-center justify-center bg-white text-black py-6 rounded-[2.5rem] font-black text-xs uppercase tracking-[0.4em] shadow-2xl hover:bg-cyan-400 transition-all active:scale-95"
-                     >
-                        Enter Portal
-                     </a>
-                  )}
-                  <StandardSaveContactButton userData={userData} />
-               </div>
-
-               {/* Map Preview */}
-               {address && <StandardMapPreview address={address} />}
-
-               {/* Branding */}
-               <footer className="pt-10 pb-8 text-center">
-                  <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="inline-block text-[9px] font-black uppercase tracking-[0.6em] text-white/10 hover:text-cyan-400 transition-colors py-3 px-8 border border-white/5 rounded-full">
-                     Powered by Cardyn
-                  </a>
-               </footer>
             </div>
          </div>
+         <h1 className="text-3xl font-bold tracking-tight relative z-10 px-2 truncate">{displayName || 'Modern Realty'}</h1>
+         <p className="text-emerald-200 font-medium tracking-widest text-xs mt-2 uppercase relative z-10 px-2 truncate">{displayRole}</p>
+         {companyName && <p className="text-sm font-semibold mt-3 bg-black/20 inline-block px-4 py-1.5 rounded-full relative z-10 px-2 truncate max-w-full">{companyName}</p>}
       </div>
-   );
-};
 
+      <div className="px-6 mt-8 space-y-6 max-w-md mx-auto">
+         {bio && (
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 text-center">
+               <FiIcons.FiHeart className="mx-auto text-emerald-500 mb-3" size={24} />
+               <p className="text-sm text-slate-600 leading-relaxed">"{bio}"</p>
+            </div>
+         )}
+
+         {/* Property Highlights */}
+         <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col items-center justify-center text-center">
+               <span className="text-2xl font-black text-emerald-700">12+</span>
+               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mt-1">Active Listings</span>
+            </div>
+            <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col items-center justify-center text-center">
+               <span className="text-2xl font-black text-emerald-700">50+</span>
+               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 mt-1">Homes Sold</span>
+            </div>
+         </div>
+
+         {/* Direct Contact */}
+         <div className="space-y-3">
+            {displayPhone && (
+               <a href={`tel:${displayPhone}`} className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-200 hover:border-emerald-500 transition-colors">
+                  <div className="bg-emerald-50 text-emerald-600 p-3 rounded-xl shrink-0"><FiIcons.FiPhone size={18} /></div>
+                  <div className="overflow-hidden">
+                     <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Call Me</p>
+                     <p className="text-sm font-bold text-slate-800 truncate">{displayPhone}</p>
+                  </div>
+               </a>
+            )}
+            {email && (
+               <a href={`mailto:${email}`} className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-200 hover:border-emerald-500 transition-colors">
+                  <div className="bg-emerald-50 text-emerald-600 p-3 rounded-xl shrink-0"><FiIcons.FiMail size={18} /></div>
+                  <div className="overflow-hidden">
+                     <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Email Me</p>
+                     <p className="text-sm font-bold text-slate-800 truncate">{email}</p>
+                  </div>
+               </a>
+            )}
+            {finalAddress && (
+               <div className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                  <div className="bg-emerald-50 text-emerald-600 p-3 rounded-xl shrink-0"><FiIcons.FiMapPin size={18} /></div>
+                  <div className="overflow-hidden">
+                     <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Office</p>
+                     <p className="text-sm font-bold text-slate-800 truncate">{finalAddress}</p>
+                  </div>
+               </div>
+            )}
+         </div>
+
+         {website && (
+            <a href={website?.startsWith('http') ? website : `https://${website}`} target="_blank" rel="noopener noreferrer" className="w-full bg-slate-900 text-white p-5 rounded-2xl flex items-center justify-between hover:bg-slate-800 transition-colors shadow-lg group">
+               <div className="flex items-center gap-3 overflow-hidden">
+                  <FiIcons.FiSearch size={20} className="text-emerald-400 shrink-0" />
+                  <span className="font-bold text-sm tracking-wide truncate">Search Properties</span>
+               </div>
+               <FiIcons.FiArrowRight className="group-hover:translate-x-1 transition-transform shrink-0 ml-2" />
+            </a>
+         )}
+
+         {/* Social Network */}
+         <div className="flex flex-wrap justify-center gap-4 pt-4">
+            {[ { icon: FiIcons.FiLinkedin, val: linkedin }, { icon: FiIcons.FiInstagram, val: instagram }, { icon: FiIcons.FiFacebook, val: facebook }, { icon: FiIcons.FiTwitter, val: twitter } ].map((social, idx) => social.val && (
+               <a key={idx} href={social.val.startsWith('http') ? social.val : `https://${social.val}`} target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-emerald-600 transition-colors bg-white p-3 rounded-xl shadow-sm border border-slate-200 shrink-0">
+                  <social.icon size={20} />
+               </a>
+            ))}
+         </div>
+
+         <button onClick={() => downloadVCard(userData)} className="w-full py-5 bg-emerald-600 text-white rounded-2xl font-bold text-[11px] uppercase tracking-[0.2em] shadow-lg hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 mt-4 active:scale-[0.98]">
+            <FiIcons.FiDownload size={16} /> Save Contact
+         </button>
+      </div>
+    </div>
+  );
+};
 export default ModernRealty;

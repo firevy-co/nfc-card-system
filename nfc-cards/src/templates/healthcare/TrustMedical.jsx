@@ -2,17 +2,22 @@ import * as FiIcons from 'react-icons/fi';
 import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
 
 const TrustMedical = ({ userData }) => {
-  const { displayName, email, role, phone, website, address, linkedin, instagram, facebook, twitter } = userData || {};
+  const { displayName, email, phone, website, address, linkedin, instagram, facebook, twitter, logo } = userData || {};
+  
   return (
     <div className="min-h-screen bg-[#020617] text-white flex items-start justify-center py-16 px-6 font-['Mulish']">
       <div className="w-full max-w-sm bg-[#1e293b]/20 border border-white/5 rounded-[2.5rem] p-10 shadow-2xl backdrop-blur-xl relative overflow-hidden group">
         
         <div className="flex flex-col items-center text-center mb-10">
-           <div className="w-16 h-16 rounded-2xl bg-cyan-400 text-black mb-8 flex items-center justify-center p-2 shadow-xl shadow-cyan-400/20 transform group-hover:scale-110 transition-transform">
-              <FiIcons.FiPlusSquare size={32} />
+           <div className="w-20 h-20 rounded-2xl bg-cyan-400 text-black mb-8 flex items-center justify-center shadow-xl shadow-cyan-400/20 transform group-hover:scale-105 transition-transform overflow-hidden p-0.5">
+              {logo ? (
+                  <img src={logo} alt="Logo" className="w-full h-full object-cover rounded-[14px] bg-black" />
+              ) : (
+                  <FiIcons.FiPlusSquare size={32} />
+              )}
            </div>
            <h1 className="text-2xl font-black text-white tracking-tight leading-none">{displayName || 'Medical Node'}</h1>
-           
+           <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-[0.2em] mt-3">Health Professional</p>
         </div>
         
         <div className="space-y-3 relative z-10">
@@ -26,19 +31,21 @@ const TrustMedical = ({ userData }) => {
            <StandardContactLink icon={FiIcons.FiTwitter} value={twitter} href={twitter} />
         </div>
 
-        <div className="flex flex-col gap-3 mt-10">
-            <button className="w-full bg-white text-black py-4 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:bg-white/90 transition-all">
-                Book Appointment
-            </button>
-        </div>
+        {website && (
+            <div className="flex flex-col gap-3 mt-10">
+                <a href={website} target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-center bg-white text-black py-4 rounded-[1.5rem] font-black text-[11px] uppercase tracking-[0.2em] shadow-xl hover:bg-white/90 transition-all active:scale-95">
+                    Book Appointment
+                </a>
+            </div>
+        )}
 
         {/* Map Preview */}
         <StandardMapPreview address={address} />
 
         <StandardSaveContactButton userData={userData} />
 
-        <footer className="mt-12 text-center opacity-20">
-            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-[0.5em] text-gray-300 hover:text-white transition-colors uppercase">Powered by Cardyn</a>
+        <footer className="mt-12 text-center opacity-20 hover:opacity-100 transition-opacity">
+            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-[0.5em] text-gray-300 hover:text-white uppercase">Powered by Cardyn</a>
         </footer>
       </div>
     </div>

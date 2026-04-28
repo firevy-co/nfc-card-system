@@ -24,7 +24,11 @@ const ZenCafe = ({ userData }) => {
            <StandardContactLink icon={FiIcons.FiMapPin} value={address} />
 
            {/* Socials */}
-           <StandardContactLink icon={FiIcons.FiInstagram} value={instagram} href={instagram} />
+           <StandardContactLink icon={FiIcons.FiInstagram} value={userData?.instagram} href={userData?.instagram} />
+           <StandardContactLink icon={FiIcons.FiTwitter} value={userData?.twitter} href={userData?.twitter} />
+           <StandardContactLink icon={FiIcons.FiFacebook} value={userData?.facebook} href={userData?.facebook} />
+           <StandardContactLink icon={FiIcons.FiLinkedin} value={userData?.linkedin} href={userData?.linkedin} />
+           <StandardContactLink icon={FiIcons.FiYoutube} value={userData?.youtube} href={userData?.youtube} />
         </div>
 
         <div className="w-full mt-6">

@@ -6,6 +6,7 @@ import {
   FiPlus,
   FiSearch,
   FiLink,
+  FiChevronRight,
 } from "react-icons/fi";
 import { TEMPLATES } from "../../templates/templateRegistry";
 import toast from 'react-hot-toast';
@@ -232,12 +233,12 @@ export default function Content({ userData }) {
                 <div className="h-1 w-12 bg-accent rounded-full"></div>
               </div>
 
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 max-h-[calc(100vh-12rem)] overflow-y-auto custom-scrollbar pr-2 pb-4">
                 {categories.map((category) => (
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`group flex items-center justify-between px-6 py-4 rounded-lg font-bold text-xs tracking-wider transition-all border cursor-pointer ${selectedCategory === category
+                    className={`group flex items-center justify-between px-6 py-4 rounded-lg font-bold text-xs tracking-wider transition-all border cursor-pointer flex-shrink-0 ${selectedCategory === category
                       ? "bg-primary text-primary-foreground border-primary shadow-lg"
                       : "bg-white text-muted-foreground border-border hover:border-accent/40 hover:text-foreground"
                       }`}
@@ -293,16 +294,19 @@ export default function Content({ userData }) {
                 )}
 
                 {!isAdmin && globalLink && (
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(globalLink);
-                      toast.success("Broadcast identity copied.");
-                    }}
-                    className="flex items-center justify-center gap-3 bg-white border border-border text-foreground cursor-pointer px-8 py-4 rounded-lg font-black text-[10px] uppercase tracking-[0.2em] hover:bg-gray-50 transition-all shadow-sm active:scale-95 group"
-                  >
-                    <FiLink size={16} className="text-accent" />
-                    Live Link
-                  </button>
+                  <>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(globalLink);
+                        toast.success("Broadcast identity copied.");
+                      }}
+                      className="flex items-center justify-center gap-3 bg-white border border-border text-foreground cursor-pointer px-8 py-4 rounded-lg font-black text-[10px] uppercase tracking-[0.2em] hover:bg-gray-50 transition-all shadow-sm active:scale-95 group"
+                    >
+                      <FiLink size={16} className="text-accent" />
+                      Live Link
+                    </button>
+                    {/* <button className="flex items-center gap-2 border px-8 py-4 bg-black text-white rounded-xl font-semibold text-sm shadow-sm cursor-pointer hover:bg-black/80">Customize the template <FiChevronRight /></button> */}
+                  </>
                 )}
               </div>
             </div>

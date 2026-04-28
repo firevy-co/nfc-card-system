@@ -1,53 +1,99 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
-import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
+import { downloadVCard } from "../common/StandardComponents";
 
 const CorporateGlass = ({ userData }) => {
-  const { displayName, email, role, phone, website, address, bio, linkedin, facebook } = userData || {};
+  const { 
+    displayName, email, role, mobileNumber, phone, 
+    companyName, designation, website, address, city,
+    linkedin, instagram, facebook, twitter, bio, avatar, logo 
+  } = userData || {};
+
+  const displayPhone = mobileNumber || phone;
+  const displayRole = designation || role || "Tech Executive";
+  const finalAddress = address || city;
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-6 font-['Mulish']">
-      <div className="w-full max-w-sm bg-white/10 backdrop-blur-2xl border border-white/20 rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-        <div className="relative z-10">
-          <div className="flex items-center gap-5 mb-8">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-3xl font-black shadow-xl shadow-blue-500/30 overflow-hidden">
-              {userData?.logo ? (
-                <img src={userData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
-              ) : (
-                displayName?.charAt(0) || 'C'
-              )}
+    <div className="w-full min-h-screen bg-slate-900 font-['Outfit'] pb-12 relative overflow-hidden">
+      {/* Deep Mesh Gradients */}
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600/40 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-cyan-500/30 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute top-[40%] left-[20%] w-[30%] h-[30%] bg-indigo-500/30 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="pt-16 px-6 relative z-10 space-y-6">
+         {/* Identity Glass Panel */}
+         <div className="bg-white/10 backdrop-blur-2xl border border-white/20 p-8 rounded-[2rem] shadow-2xl flex flex-col items-center">
+            <div className="w-24 h-24 rounded-full border border-white/30 p-1 mb-6 bg-white/5 shadow-inner shrink-0">
+               <div className="w-full h-full rounded-full bg-slate-800 flex items-center justify-center overflow-hidden relative">
+                  {logo ? <img src={logo} alt="Logo" className="w-full h-full object-contain p-2" /> : avatar ? <img src={avatar} alt="Profile" className="w-full h-full object-cover" /> : <FiIcons.FiBox size={32} className="text-blue-400" />}
+               </div>
             </div>
-            <div>
-              <h1 className="text-xl font-black text-white capitalize leading-none">{displayName || 'Corporate Lead'}</h1>
-              
+            <h1 className="text-3xl font-black text-white tracking-tight text-center">{displayName || 'Corporate Glass'}</h1>
+            <div className="mt-3 bg-blue-500/20 border border-blue-400/30 px-4 py-1.5 rounded-full">
+               <p className="text-[10px] font-bold text-blue-300 uppercase tracking-widest text-center">{displayRole}</p>
             </div>
-          </div>
-          {bio && <p className="text-white/60 text-[11px] font-bold mb-8 leading-relaxed italic border-l-2 border-blue-500/30 pl-4">{bio}</p>}
+            {companyName && <p className="text-sm font-semibold text-slate-300 mt-4 uppercase tracking-wider text-center">{companyName}</p>}
+         </div>
 
-          <div className="space-y-3">
-            <StandardContactLink icon={FiIcons.FiGlobe} value={website} href={website} />
-            <StandardContactLink icon={FiIcons.FiMail} value={email} href={`mailto:${email}`} />
-            <StandardContactLink icon={FiIcons.FiPhone} value={phone} href={`tel:${phone}`} />
-            <StandardContactLink icon={FiIcons.FiMapPin} value={address} />
+         {/* Bio / Mission */}
+         {bio && (
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[2rem] text-center">
+               <FiIcons.FiTarget size={20} className="text-cyan-400 mb-3 mx-auto" />
+               <p className="text-sm font-medium text-slate-300 leading-relaxed">"{bio}"</p>
+            </div>
+         )}
 
-            {/* Corporate Socials */}
-            <StandardContactLink icon={FiIcons.FiLinkedin} value={linkedin} href={linkedin} />
-            <StandardContactLink icon={FiIcons.FiFacebook} value={facebook} href={facebook} />
-          </div>
+         {/* Global Divisions Mockup */}
+         <div className="grid grid-cols-2 gap-4">
+            <div className="bg-gradient-to-br from-blue-500/20 to-cyan-400/5 border border-white/10 p-5 rounded-[1.5rem] backdrop-blur-md flex flex-col justify-center items-center text-center">
+               <FiIcons.FiGlobe size={24} className="text-blue-400 mb-2" />
+               <span className="text-lg font-black text-white">12+</span>
+               <span className="text-[8px] uppercase tracking-widest text-slate-400 mt-1">Global Regions</span>
+            </div>
+            <div className="bg-gradient-to-br from-indigo-500/20 to-purple-400/5 border border-white/10 p-5 rounded-[1.5rem] backdrop-blur-md flex flex-col justify-center items-center text-center">
+               <FiIcons.FiUsers size={24} className="text-indigo-400 mb-2" />
+               <span className="text-lg font-black text-white">5k+</span>
+               <span className="text-[8px] uppercase tracking-widest text-slate-400 mt-1">Team Members</span>
+            </div>
+         </div>
 
-          <div className="mt-8">
-            <button className="w-full py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl shadow-blue-500/30 hover:scale-[1.02] transition-all">Connect Now</button>
-          </div>
+         {/* Communication Nodes */}
+         <div className="space-y-3">
+            {[
+               { val: displayPhone, href: displayPhone ? `tel:${displayPhone}` : null, icon: FiIcons.FiPhone, label: "Phone" },
+               { val: email, href: email ? `mailto:${email}` : null, icon: FiIcons.FiMail, label: "Email" },
+               { val: website, href: website?.startsWith('http') ? website : `https://${website}`, icon: FiIcons.FiLink, label: "Portal" },
+               { val: finalAddress, href: null, icon: FiIcons.FiMapPin, label: "HQ" }
+            ].map((link, idx) => link.val && (
+               <a key={idx} href={link.href} target={link.href?.startsWith('http') ? '_blank' : undefined} className={`flex items-center gap-4 bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-[1.5rem] ${link.href ? 'hover:bg-white/10 hover:border-blue-400/50 cursor-pointer' : 'cursor-default'} transition-all`}>
+                  <div className="bg-blue-500/20 p-2.5 rounded-xl text-blue-400 shrink-0"><link.icon size={18} /></div>
+                  <div className="overflow-hidden">
+                     <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">{link.label}</p>
+                     <p className="text-sm font-semibold text-white truncate">{link.val}</p>
+                  </div>
+               </a>
+            ))}
+         </div>
 
-          <StandardMapPreview address={address} />
+         {/* Social Cluster */}
+         <div className="flex flex-wrap justify-center gap-4 py-4">
+            {[
+               { icon: FiIcons.FiLinkedin, val: linkedin },
+               { icon: FiIcons.FiTwitter, val: twitter },
+               { icon: FiIcons.FiFacebook, val: facebook },
+               { icon: FiIcons.FiInstagram, val: instagram }
+            ].map((social, idx) => social.val && (
+               <a key={idx} href={social.val.startsWith('http') ? social.val : `https://${social.val}`} target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-md border border-white/10 rounded-xl text-slate-300 hover:text-white hover:bg-blue-500 transition-all shadow-lg shrink-0">
+                  <social.icon size={20} />
+               </a>
+            ))}
+         </div>
 
-          <StandardSaveContactButton userData={userData} />
-
-          <footer className="mt-10 text-center opacity-10">
-            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] text-white font-black tracking-[0.5em] uppercase hover:opacity-100 transition-opacity">Powered by Cardyn</a>
-          </footer>
-        </div>
+         <button onClick={() => downloadVCard(userData)} className="w-full py-5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-[1.5rem] font-black text-xs uppercase tracking-[0.3em] shadow-[0_10px_30px_rgba(59,130,246,0.3)] hover:shadow-[0_15px_40px_rgba(59,130,246,0.5)] transition-all flex items-center justify-center gap-3 active:scale-[0.98]">
+            <FiIcons.FiDatabase size={16} /> Sync Identity
+         </button>
+         
+         <p className="text-center text-[8px] font-black tracking-[0.8em] text-slate-600 uppercase mt-8">Powered by Cardyn</p>
       </div>
     </div>
   );

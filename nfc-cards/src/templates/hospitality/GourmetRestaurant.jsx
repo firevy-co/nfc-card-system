@@ -10,6 +10,8 @@ import {
    FiCalendar,
    FiLinkedin,
    FiInstagram,
+   FiTwitter,
+   FiFacebook
 } from "react-icons/fi";
 import { StandardContactLink, StandardSaveContactButton, StandardMapPreview } from "../common/StandardComponents";
 
@@ -20,23 +22,28 @@ const GourmetRestaurant = ({ userData }) => {
       email,
       phone,
       address,
+      instagram,
+      linkedin,
+      facebook,
+      twitter,
+      logo
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-[#FDFCF8] flex justify-center items-start py-10 px-4 text-[#2C2C2C] font-['Mulish']">
+      <div className="min-h-screen bg-[#FDFCF8] flex justify-center items-start py-10 px-4 text-[#2C2C2C] font-['Mulish',sans-serif]">
          <div className="w-full max-w-sm bg-white rounded-[3.5rem] shadow-2xl overflow-hidden border border-[#EDECE4] p-8 relative">
             
             {/* HERITAGE LOGO SECTION */}
             <div className="flex flex-col items-center text-center mt-6">
-               <div className="w-20 h-20 border-[1.5px] border-[#D1B16B] rounded-3xl flex items-center justify-center mb-8 shadow-sm">
-                  {userData?.logo ? (
-                    <img src={userData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
+               <div className="w-24 h-24 border-[1.5px] border-[#D1B16B] rounded-3xl flex items-center justify-center mb-8 shadow-sm overflow-hidden p-1">
+                  {logo ? (
+                    <img src={logo} alt="Logo" className="w-full h-full object-cover rounded-[20px]" />
                   ) : (
                     <FiCoffee size={32} className="text-[#D1B16B]" />
                   )}
                </div>
 
-               <h1 className="text-3xl font-black text-[#1A1A1A] tracking-tighter capitalize leading-none mb-1">
+               <h1 className="text-3xl font-black text-[#1A1A1A] tracking-tighter capitalize leading-none mb-2">
                   {displayName || "Bistro Luxe & Terrace"}
                </h1>
 
@@ -47,18 +54,18 @@ const GourmetRestaurant = ({ userData }) => {
 
             {/* QUICK ACTIONS GRID */}
             <div className="grid grid-cols-2 gap-3 mb-10">
-               <button className="h-28 bg-[#FDFCF8] hover:bg-[#D1B16B] hover:text-white rounded-[2.5rem] border border-[#EDECE4] transition-all flex flex-col items-center justify-center gap-3 group">
+               <a href={website ? website : '#'} target={website ? "_blank" : undefined} rel="noopener noreferrer" className="h-28 bg-[#FDFCF8] hover:bg-[#D1B16B] hover:text-white rounded-[2.5rem] border border-[#EDECE4] transition-all flex flex-col items-center justify-center gap-3 group active:scale-95">
                   <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-[#D1B16B] transition-colors group-hover:bg-[#1A1A1A] group-hover:text-white">
                      <FiMenu size={20} />
                   </div>
                   <span className="text-[9px] font-black capitalize tracking-widest">Le Menu</span>
-               </button>
-               <button className="h-28 bg-[#FDFCF8] hover:bg-[#D1B16B] hover:text-white rounded-[2.5rem] border border-[#EDECE4] transition-all flex flex-col items-center justify-center gap-3 group">
+               </a>
+               <a href={`mailto:${email}`} className="h-28 bg-[#FDFCF8] hover:bg-[#D1B16B] hover:text-white rounded-[2.5rem] border border-[#EDECE4] transition-all flex flex-col items-center justify-center gap-3 group active:scale-95">
                   <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-[#D1B16B] transition-colors group-hover:bg-[#1A1A1A] group-hover:text-white">
                      <FiCalendar size={20} />
                   </div>
                   <span className="text-[9px] font-black capitalize tracking-widest">Bookings</span>
-               </button>
+               </a>
             </div>
 
             {/* OPENING HOURS */}
@@ -68,7 +75,7 @@ const GourmetRestaurant = ({ userData }) => {
                   <FiClock className="text-[#D1B16B]" />
                   <span className="text-[10px] font-black capitalize tracking-widest text-[#D1B16B]">Service Hours</span>
                </div>
-               <div className="space-y-4">
+               <div className="space-y-4 relative z-10">
                   <div className="flex justify-between items-center text-xs">
                      <span className="text-zinc-400 font-medium">Lundi - Vendredi</span>
                      <span className="font-bold">12:00 — 23:00</span>
@@ -81,22 +88,26 @@ const GourmetRestaurant = ({ userData }) => {
             </div>
 
             {/* CONTACT STACK - MINIMALIST */}
-            <div className="space-y-3 relative z-10 mb-10">
+            <div className="space-y-3 relative z-10 mb-8">
                <StandardContactLink icon={FiGlobe} value={website} href={website} />
                <StandardContactLink icon={FiMail} value={email} href={`mailto:${email}`} />
                <StandardContactLink icon={FiPhone} value={phone} href={`tel:${phone}`} />
                <StandardContactLink icon={FiMapPin} value={address} />
 
                {/* Hospitality Socials */}
-               <StandardContactLink icon={FiLinkedin} value={userData?.linkedin} href={userData?.linkedin} />
-               <StandardContactLink icon={FiInstagram} value={userData?.instagram} href={userData?.instagram} />
+               <StandardContactLink icon={FiInstagram} value={instagram} href={instagram} />
+               <StandardContactLink icon={FiFacebook} value={facebook} href={facebook} />
+               <StandardContactLink icon={FiTwitter} value={twitter} href={twitter} />
+               <StandardContactLink icon={FiLinkedin} value={linkedin} href={linkedin} />
             </div>
 
             <StandardMapPreview address={address} />
 
-            <StandardSaveContactButton userData={userData} />
+            <div className="mt-8">
+               <StandardSaveContactButton userData={userData} />
+            </div>
 
-            <footer className="mt-12 text-center opacity-40">
+            <footer className="mt-12 text-center opacity-40 hover:opacity-100 transition-opacity">
                <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-[0.5em] text-[#D1B16B] hover:text-[#1A1A1A] transition-colors uppercase">Powered by Cardyn</a>
             </footer>
          </div>

@@ -33,7 +33,7 @@ export default function TemplateCard({
     };
 
     return (
-        <div className={`h-full rounded-[2.5rem] backdrop-blur-xl border transition-all duration-700 group flex flex-col overflow-hidden relative ${isSelected
+        <div className={`h-full rounded-2xl backdrop-blur-xl border transition-all duration-700 group flex flex-col overflow-hidden relative ${isSelected
             ? 'border-primary/50 bg-primary/[0.03] shadow-[0_0_50px_rgba(0,0,0,0.12)] ring-1 ring-primary/20'
             : 'border-black/5  bg-white shadow-[0_0_30px_rgba(0,0,0,0.06)]  hover:border-primary/30 hover:shadow-[0_0_50px_rgba(0,0,0,0.1)]'
             }`}>
