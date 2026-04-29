@@ -20,7 +20,7 @@ const Inquiry = ({ userData }) => {
     const [reply, setReply] = useState('');
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
-    
+
     // Modal states
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [inquiryToDelete, setInquiryToDelete] = useState(null);
@@ -88,7 +88,7 @@ const Inquiry = ({ userData }) => {
 
     const handleDelete = async () => {
         if (!inquiryToDelete) return;
-        
+
         setIsDeleting(true);
         try {
             const response = await fetch(`${API_BASE_URL}/api/inquiries/${inquiryToDelete.id}`, {
@@ -99,7 +99,7 @@ const Inquiry = ({ userData }) => {
                 toast.success("Inquiry and message thread purged.");
                 // OPTIMISTIC UI: Remove from local state immediately
                 setInquiries(prev => prev.filter(iq => iq.id !== inquiryToDelete.id));
-                
+
                 if (selectedInquiry?.id === inquiryToDelete.id) setSelectedInquiry(null);
                 setIsDeleteModalOpen(false);
                 setInquiryToDelete(null);
@@ -377,7 +377,7 @@ const Inquiry = ({ userData }) => {
                                     onClick={() => setSelectedInquiry(null)}
                                     className="w-full py-4 rounded-2xl bg-zinc-100 text-zinc-400 font-black uppercase tracking-[0.2em] text-[9px] hover:bg-zinc-200 transition-all border border-zinc-200"
                                 >
-                                    Terminate Audit
+                                    Close
                                 </button>
                             </div>
 

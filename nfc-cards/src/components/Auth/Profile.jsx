@@ -24,7 +24,10 @@ import {
 import { Country, State, City } from "country-state-city";
 import { TEMPLATES } from '../../templates/templateRegistry';
 import TemplateRenderer from '../../templates/TemplateRenderer';
-import Layout from '../layout/layout';
+import TopNav from '../layout/TopNav';
+import AdminNav from '../layout/AdminNav';
+import UserNav from '../layout/UserNav';
+import MobileFooter from '../layout/MobileFooter';
 import toast from 'react-hot-toast';
 import { HexColorPicker } from "react-colorful";
 import * as Fa from 'react-icons/fa';
@@ -470,17 +473,31 @@ const Profile = ({ userData }) => {
 
     const inputClasses = `w-full bg-white border border-gray-200 rounded-full px-6 py-4 text-sm font-medium text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all placeholder:text-gray-300 disabled:bg-gray-50 disabled:text-gray-600 cursor-pointer`;
     const labelClasses = `text-sm font-bold text-gray-900 mb-3 block px-1`;
-
-
+    const isAdmin = userData?.role === "Admin";
 
     return (
-        <Layout userData={userData}>
-            <div className="w-[92%] lg:w-[95%] max-w-7xl mx-auto font-['Mulish'] bg-white min-h-screen rounded-t-[3rem] shadow-2xl border-x border-zinc-50 overflow-hidden">
+        <div className="min-h-screen bg-[#f5f7fa] text-black font-['Mulish'] flex flex-col overflow-x-hidden">
+            <TopNav title="Profile" />
+            {isAdmin ? <AdminNav userData={userData} /> : <UserNav userData={userData} />}
+
+            <main className="flex-1 max-w-[1600px] mx-auto w-full px-4 sm:px-6 lg:px-10 pt-20 pb-28">
+
+                {/* PAGE HEADER */}
+                <div className="mb-8">
+                    <p className="text-xs uppercase tracking-[0.35em] text-zinc-400 font-bold mb-2">
+                        {isAdmin ? "Administration" : "User Hub"}
+                    </p>
+                    <h1 className="text-4xl sm:text-5xl font-black tracking-tight">
+                        Identity Hub
+                    </h1>
+                </div>
+
+                <div className="bg-white rounded-[2rem] sm:rounded-[3rem] shadow-xl border border-zinc-100 overflow-hidden relative">
 
                 {/* --- PREMIUM SOCIAL BANNER HEADER --- */}
                 <div className="relative mb-32">
                     <div
-                        className="h-64 md:h-80 w-full rounded-t-[3rem] relative overflow-hidden shadow-inner"
+                        className="h-64 md:h-80 w-full relative overflow-hidden shadow-inner"
                         style={{ background: 'linear-gradient(90deg, #5f5bff 0%, #8f88ff 30%, #d6d2ff 55%, #f1d6e6 80%, #f6eaf1 100%)' }}
                     >
                         <div className="absolute top-10 left-20 w-32 h-32 bg-white/20 rounded-full blur-3xl animate-pulse" />
@@ -704,12 +721,12 @@ const Profile = ({ userData }) => {
                                                         ].map((layout) => {
                                                             const isSelected = formData.templateId === layout.id;
                                                             return (
-                                                                <div 
-                                                                    key={layout.id} 
+                                                                <div
+                                                                    key={layout.id}
                                                                     onClick={() => {
                                                                         if (!isEditing) setIsEditing(true);
                                                                         handleInputChange('templateId', layout.id);
-                                                                    }} 
+                                                                    }}
                                                                     className="cursor-pointer group"
                                                                 >
                                                                     <div className={`relative aspect-[3/4] rounded-xl overflow-hidden border-2 transition-all duration-300 ${isSelected ? 'border-blue-600 bg-white shadow-xl scale-105' : 'border-gray-100 bg-gray-50 opacity-60 group-hover:opacity-100'}`}>
@@ -974,20 +991,23 @@ const Profile = ({ userData }) => {
                     </div>
                 </div>
 
-                <div className="mt-16 border-t border-gray-100 pt-10 flex flex-col items-center text-center">
-                    <div className="max-w-md bg-red-50/50 p-8 rounded-[2.5rem] border border-red-100/50">
-                        <h4 className="text-lg font-black text-red-600 mb-1">Authority Terminal</h4>
-                        <p className="text-[11px] font-bold text-red-400 leading-relaxed mb-6">Termination of this session will de-synchronize your current cloud access.</p>
-                        <button
-                            onClick={handleLogout}
-                            className="w-full px-12 py-4 rounded-full bg-red-500 text-white font-black text-[11px] uppercase tracking-widest hover:brightness-110 shadow-xl transition-all"
-                        >
-                            Terminate Session
-                        </button>
+                    <div className="mt-16 border-t border-gray-100 pt-10 flex flex-col items-center text-center pb-20">
+                        <div className="max-w-md bg-red-50/50 p-8 rounded-[2.5rem] border border-red-100/50">
+                            <h4 className="text-lg font-black text-red-600 mb-1">Authority Terminal</h4>
+                            <p className="text-[11px] font-bold text-red-400 leading-relaxed mb-6">Termination of this session will de-synchronize your current cloud access.</p>
+                            <button
+                                onClick={handleLogout}
+                                className="w-full px-12 py-4 rounded-full bg-red-500 text-white font-black text-[11px] uppercase tracking-widest hover:brightness-110 shadow-xl transition-all"
+                            >
+                                Logout
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Layout>
+            </main>
+
+            <MobileFooter userData={userData} />
+        </div>
     );
 };
 
