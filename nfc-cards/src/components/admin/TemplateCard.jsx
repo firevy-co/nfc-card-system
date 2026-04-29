@@ -52,7 +52,7 @@ export default function TemplateCard({
                         ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
                         : 'bg-white/20  text-muted-foreground border-black/5 '
                         }`}>
-                        {isSelected ? 'Active Node' : category || 'Premium'}
+                        {isSelected ? 'Active Template' : category || 'Premium'}
                     </div>
                 </div>
 
@@ -99,14 +99,14 @@ export default function TemplateCard({
                                 className="flex items-center justify-center gap-2 bg-white/5  text-foreground py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-black/10 :bg-white/20 transition-all border border-black/5  active:scale-95"
                             >
                                 <FiEdit size={14} />
-                                Edit Node
+                                Edit Template
                             </button>
                             <button
                                 onClick={onDelete}
                                 className="col-span-2 flex items-center justify-center gap-2 bg-red-500/10 text-red-500 py-3 rounded-2xl text-[9px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all border border-red-500/20 active:scale-95"
                             >
                                 <FiTrash2 size={14} />
-                                Retire Identity Node
+                                Retire Identity Template
                             </button>
                         </div>
                     ) : (
@@ -132,7 +132,7 @@ export default function TemplateCard({
                                         Active
                                     </>
                                 ) : (
-                                    'Select Node'
+                                    'Select Template'
                                 )}
                             </button>
                         </div>

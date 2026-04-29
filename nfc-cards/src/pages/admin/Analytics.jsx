@@ -154,7 +154,7 @@ const Analytics = ({ user, userData }) => {
                   <div className="space-y-4">
                      {[
                         { label: "Task Protocol Completed", time: "2m ago" },
-                        { label: "New Node Member Added", time: "12m ago" },
+                        { label: "New Template Member Added", time: "12m ago" },
                         { label: "Blueprint Project Updated", time: "45m ago" },
                         { label: "Architecture Deadline Reached", time: "1h ago" },
                      ].map((item, i) => (
@@ -182,7 +182,7 @@ const Analytics = ({ user, userData }) => {
                      <div>
                         <p className="text-2xl font-black text-foreground">102 Members</p>
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">
-                           Synchronized Team Nodes
+                           Synchronized Team Templates
                         </p>
                      </div>
                   </div>

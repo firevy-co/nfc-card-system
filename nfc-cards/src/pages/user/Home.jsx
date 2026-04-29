@@ -49,8 +49,8 @@ const Home = ({ userData }) => {
 
                 {/* --- TOP CARDS (IDENTITY THEMED) --- */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 lg:mb-12">
-                    <MetricCard title="Identity Nodes" value="1" color="bg-emerald-500" />
-                    <MetricCard title="Node Impressions" value="1,234" color="bg-blue-500" />
+                    <MetricCard title="Identity Templates" value="1" color="bg-emerald-500" />
+                    <MetricCard title="Template Impressions" value="1,234" color="bg-blue-500" />
                     <MetricCard title="Digital Connections" value="86" color="bg-pink-500" />
                 </div>
 
@@ -67,9 +67,9 @@ const Home = ({ userData }) => {
                         </div>
                     </div>
 
-                    {/* IDENTITY NODE STATUS */}
+                    {/* IDENTITY TEMPLATE STATUS */}
                     <div className="bg-white border border-zinc-100 p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] shadow-sm flex flex-col items-center">
-                        <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-10 w-full text-left">Node Deployment Status</h3>
+                        <h3 className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.3em] mb-10 w-full text-left">Template Deployment Status</h3>
                         <div className="relative">
                             <PieChart width={180} height={180}>
                                 <Pie
@@ -129,7 +129,7 @@ const Home = ({ userData }) => {
                         <div className="space-y-6">
                             {[
                                 { label: "Task Protocol Completed", time: "2m ago" },
-                                { label: "New Node Member Added", time: "12m ago" },
+                                { label: "New Template Member Added", time: "12m ago" },
                                 { label: "Blueprint Project Updated", time: "45m ago" },
                                 { label: "Architecture Deadline Reached", time: "1h ago" },
                             ].map((item, i) => (
@@ -157,7 +157,7 @@ const Home = ({ userData }) => {
                                 <div>
                                     <p className="text-3xl font-black text-black tracking-tighter">86 Contacts</p>
                                     <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest opacity-60 mt-1">
-                                        Active Network Nodes
+                                        Active Network Templates
                                     </p>
                                 </div>
                             </div>

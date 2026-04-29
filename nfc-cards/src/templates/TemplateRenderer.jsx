@@ -61,7 +61,7 @@ const LegalConsultant = lazy(() => import('./legal/LegalConsultant'));
 const JusticePartners = lazy(() => import('./legal/JusticePartners'));
 const EliteCounsel = lazy(() => import('./legal/EliteCounsel'));
 const SovereignLaw = lazy(() => import('./legal/SovereignLaw'));
-const LegaNode = lazy(() => import('./legal/LegaNode'));
+const LegaTemplate = lazy(() => import('./legal/LegaTemplate'));
 
 // --- HOSPITALITY ---
 const GourmetRestaurant = lazy(() => import('./hospitality/GourmetRestaurant'));
@@ -93,7 +93,7 @@ const NovaBeauty = lazy(() => import('./beauty/NovaBeauty'));
 
 // --- CREATOR ---
 const DigitalCreator = lazy(() => import('./creator/DigitalCreator'));
-const StreamNode = lazy(() => import('./creator/StreamNode'));
+const StreamTemplate = lazy(() => import('./creator/StreamTemplate'));
 const VoxelArtist = lazy(() => import('./creator/VoxelArtist'));
 const NeonInfluence = lazy(() => import('./creator/NeonInfluence'));
 const CreatorMatrix = lazy(() => import('./creator/CreatorMatrix'));
@@ -101,7 +101,7 @@ const CreatorMatrix = lazy(() => import('./creator/CreatorMatrix'));
 // --- SERVICE ---
 const ServicePortfolio = lazy(() => import('./service/ServicePortfolio'));
 const TaskGrid = lazy(() => import('./service/TaskGrid'));
-const ExpertNode = lazy(() => import('./service/ExpertNode'));
+const ExpertTemplate = lazy(() => import('./service/ExpertTemplate'));
 const SkillFlow = lazy(() => import('./service/SkillFlow'));
 const PrimeService = lazy(() => import('./service/PrimeService'));
 
@@ -148,13 +148,13 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
   } : {};
 
   const renderTemplate = () => {
-    // RESOLUTION LAYER: Handle dynamic node IDs by checking for underlying blueprint references
-    let activeId = (templateId?.startsWith('node_') || !templateId) 
+    // RESOLUTION LAYER: Handle dynamic template IDs by checking for underlying blueprint references
+    let activeId = (templateId?.startsWith('template_') || !templateId) 
       ? (userData.templateId || 'cardyn_classic') 
       : templateId;
 
-    // FAIL-SAFE: If activeId is still a dynamic node ID (resolution failed), default to a reliable blueprint
-    if (activeId?.startsWith('node_')) {
+    // FAIL-SAFE: If activeId is still a dynamic template ID (resolution failed), default to a reliable blueprint
+    if (activeId?.startsWith('template_')) {
       activeId = 'cardyn_classic';
     }
 
@@ -221,7 +221,7 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
       case 'legal_justice': return <JusticePartners userData={userData} />;
       case 'legal_elite': return <EliteCounsel userData={userData} />;
       case 'legal_sovereign': return <SovereignLaw userData={userData} />;
-      case 'legal_node': return <LegaNode userData={userData} />;
+      case 'legal_template': return <LegaTemplate userData={userData} />;
 
       // --- HOSPITALITY ---
       case 'hospitality_bistro': return <GourmetRestaurant userData={userData} />;
@@ -253,7 +253,7 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
 
       // --- CREATOR ---
       case 'digital_creator': return <DigitalCreator userData={userData} />;
-      case 'creator_stream': return <StreamNode userData={userData} />;
+      case 'creator_stream': return <StreamTemplate userData={userData} />;
       case 'creator_voxel': return <VoxelArtist userData={userData} />;
       case 'creator_neon': return <NeonInfluence userData={userData} />;
       case 'creator_matrix': return <CreatorMatrix userData={userData} />;
@@ -261,7 +261,7 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
       // --- SERVICE ---
       case 'service_list': return <ServicePortfolio userData={userData} />;
       case 'service_task': return <TaskGrid userData={userData} />;
-      case 'service_expert': return <ExpertNode userData={userData} />;
+      case 'service_expert': return <ExpertTemplate userData={userData} />;
       case 'service_flow': return <SkillFlow userData={userData} />;
       case 'service_prime': return <PrimeService userData={userData} />;
 

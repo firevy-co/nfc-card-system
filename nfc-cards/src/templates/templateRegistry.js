@@ -342,12 +342,12 @@ export const TEMPLATES = [
     tags: ['Sovereign', 'Defense', 'Law']
   },
   {
-    id: 'legal_node',
-    name: 'Lega Node',
+    id: 'legal_template',
+    name: 'Lega Template',
     category: 'Legal',
     description: 'Ultra-clean modernist structure for compliance officers.',
     previewColor: 'bg-slate-900',
-    tags: ['Node', 'Compliance', 'Legal']
+    tags: ['Template', 'Compliance', 'Legal']
   },
 
   // --- HOSPITALITY ---
@@ -529,7 +529,7 @@ export const TEMPLATES = [
   },
   {
     id: 'creator_stream',
-    name: 'Stream Node',
+    name: 'Stream Template',
     category: 'Creator',
     description: 'Twitch-inspired purple aesthetic for live streamers.',
     previewColor: 'bg-indigo-600',
@@ -579,7 +579,7 @@ export const TEMPLATES = [
   },
   {
     id: 'service_expert',
-    name: 'Expert Node',
+    name: 'Expert Template',
     category: 'Service',
     description: 'Verified partner aesthetic with premium amber contrast.',
     previewColor: 'bg-amber-500',

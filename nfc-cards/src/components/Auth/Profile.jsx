@@ -507,7 +507,7 @@ const Profile = ({ userData }) => {
                             {isSaving && (
                                 <div className="flex items-center gap-2 text-white font-black text-[10px] uppercase tracking-widest bg-black/20 backdrop-blur-md px-5 py-3 rounded-full border border-white/20">
                                     <FiActivity className="animate-spin" size={12} />
-                                    <span>Syncing Node</span>
+                                    <span>Syncing Template</span>
                                 </div>
                             )}
                             {!isEditing ? (
@@ -580,7 +580,7 @@ const Profile = ({ userData }) => {
 
                                 {/* --- NEW INTEGRATED BRANDING HUB --- */}
                                 <div className="md:col-span-2 mb-12">
-                                    <div className="bg-gray-100 p-12 rounded-2xl shadow-md border border-gray-50 flex flex-col md:flex-row items-center gap-12">
+                                    <div className="bg-gray-100 p-6 md:p-12 rounded-2xl shadow-md border border-gray-50 flex flex-col md:flex-row items-center gap-6 md:gap-12">
                                         <div className="flex-shrink-0 relative group">
                                             {/* Logo Preview Container */}
                                             <div className="w-40 h-40 rounded-2xl bg-white shadow-md border border-gray-50 flex items-center justify-center overflow-hidden group relative">
@@ -655,7 +655,7 @@ const Profile = ({ userData }) => {
 
                                 {/* --- NEW IDENTITY STUDIO SECTION --- */}
                                 <div className="md:col-span-2 mb-16">
-                                    <div className="bg-white p-6 md:p-12 rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden relative">
+                                    <div className="bg-white p-4 md:p-12 rounded-[2rem] sm:rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden relative">
                                         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-[100px] -mr-32 -mt-32 opacity-50" />
 
                                         <div className="flex items-center gap-4 mb-12 relative z-10">
@@ -670,7 +670,7 @@ const Profile = ({ userData }) => {
 
                                         <div className="grid lg:grid-cols-2 gap-16 items-start relative z-10">
                                             {/* LIVE PREVIEW */}
-                                            <div className="flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-white rounded-[3rem] p-4 md:p-12 border border-dashed border-gray-200 overflow-hidden">
+                                            <div className="flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-white rounded-[2rem] sm:rounded-[3rem] p-4 md:p-12 border border-dashed border-gray-200 overflow-hidden">
                                                 <CardPreview formData={formData} />
                                                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-300 mt-8">Real-time Identity Preview</p>
                                             </div>

@@ -127,7 +127,7 @@ const Support = ({ userData }) => {
                 <header className="flex flex-col gap-3 border-b border-black/[0.05] pb-6 sm:pb-10">
                     <div className="space-y-1">
                         <h2 className="text-2xl sm:text-4xl font-black text-foreground">Support Terminal</h2>
-                        <p className="text-muted-foreground font-bold tracking-tight text-sm opacity-60">Direct neural link to technical architecture nodes. Dispatch your operational briefs below.</p>
+                        <p className="text-muted-foreground font-bold tracking-tight text-sm opacity-60">Direct neural link to technical architecture templates. Dispatch your operational briefs below.</p>
                     </div>
                 </header>
 
@@ -196,7 +196,7 @@ const Support = ({ userData }) => {
                                 Conversation Log
                             </h3>
                             <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 bg-slate-100 px-3 py-1 rounded-full">
-                                {conversations.length} Active Nodes
+                                {conversations.length} Active Templates
                             </span>
                         </div>
 
@@ -249,7 +249,7 @@ const Support = ({ userData }) => {
                             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#7BB9D4] shadow-sm">
                                 <FiCheckCircle size={20} />
                             </div>
-                            <p className="text-[10px] font-bold text-slate-500 leading-tight">Secure administrative handshake enabled. All transmissions are encrypted via the Identity Node network.</p>
+                            <p className="text-[10px] font-bold text-slate-500 leading-tight">Secure administrative handshake enabled. All transmissions are encrypted via the Identity Template network.</p>
                         </div>
                     </div>
 
@@ -263,7 +263,7 @@ const Support = ({ userData }) => {
                     <div className="bg-white w-full max-w-2xl rounded-[2rem] sm:rounded-[3rem] p-5 sm:p-10 relative z-10 shadow-2xl border border-slate-100 flex flex-col h-[85vh]">
                         <div className="flex items-center justify-between mb-8">
                             <div>
-                                <h4 className="text-2xl font-black tracking-tighter">Node Brief: {selectedConv.vector}</h4>
+                                <h4 className="text-2xl font-black tracking-tighter">Template Brief: {selectedConv.vector}</h4>
                                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Ref: {selectedConv.id}</p>
                             </div>
                             <button onClick={() => setSelectedConv(null)} className="w-10 h-10 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center hover:bg-slate-100 transition-all">✕</button>

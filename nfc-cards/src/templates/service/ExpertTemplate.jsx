@@ -2,7 +2,7 @@ import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
 
-const ExpertNode = ({ userData }) => {
+const ExpertTemplate = ({ userData }) => {
    const { displayName, email, phone, website, address, linkedin, instagram, facebook, twitter, youtube, logo, role, designation } = userData || {};
    const displayRole = designation || role;
   return (
@@ -57,4 +57,4 @@ const ExpertNode = ({ userData }) => {
     </div>
   );
 };
-export default ExpertNode;
+export default ExpertTemplate;

@@ -173,7 +173,7 @@ const CardPreview = ({ formData }) => {
                                 <h3 className="text-xl font-black italic tracking-tighter">{formData.name || "Your Name"}</h3>
                                 <div className="h-1 w-10 bg-[#b8955d] mt-1"></div>
                             </div>
-                            <p className="text-[10px] opacity-80 leading-relaxed font-bold">{formData.bio || "Crafting digital experiences through innovative architecture nodes."}</p>
+                            <p className="text-[10px] opacity-80 leading-relaxed font-bold">{formData.bio || "Crafting digital experiences through innovative architecture templates."}</p>
                             <div className="pt-4 border-t border-current border-opacity-10 space-y-3">
                                 <a
                                     href={`mailto:${formData.email}`}
@@ -210,7 +210,7 @@ const CardPreview = ({ formData }) => {
                                 </div>
                                 <div className="pb-1">
                                     <h3 className="text-lg font-black tracking-tighter leading-none">{formData.name || "NAME"}</h3>
-                                    <p className="text-[8px] font-black uppercase text-[#b8955d] tracking-[0.2em] mt-1">Authorized Node</p>
+                                    <p className="text-[8px] font-black uppercase text-[#b8955d] tracking-[0.2em] mt-1">Authorized Template</p>
                                 </div>
                             </div>
                             <div className="grid grid-cols-4 gap-2 mb-8">

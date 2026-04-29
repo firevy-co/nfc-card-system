@@ -25,7 +25,7 @@ const StreamSocial = ({ icon: Icon, href }) => {
   );
 };
 
-const StreamNode = ({ userData }) => {
+const StreamTemplate = ({ userData }) => {
   const { displayName, email, phone, website, address, youtube, linkedin, twitter, twitch, instagram, logo } = userData || {};
   
   const mainStreamLink = twitch || youtube || website;
@@ -47,7 +47,7 @@ const StreamNode = ({ userData }) => {
               )}
            </div>
            
-           <h1 className="text-3xl font-black text-white tracking-tighter uppercase leading-none relative z-10 mb-2">{displayName || 'Stream Node'}</h1>
+           <h1 className="text-3xl font-black text-white tracking-tighter uppercase leading-none relative z-10 mb-2">{displayName || 'Stream Template'}</h1>
            <p className="text-[10px] text-white/70 font-black uppercase tracking-[0.3em] relative z-10">Live Broadcaster</p>
         </div>
         
@@ -89,4 +89,4 @@ const StreamNode = ({ userData }) => {
     </div>
   );
 };
-export default StreamNode;
+export default StreamTemplate;

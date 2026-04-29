@@ -1,7 +1,7 @@
 import React from 'react';
 import { FiLayout, FiPhone, FiMail, FiMapPin } from 'react-icons/fi';
 
-const LegaNode = ({ userData }) => {
+const LegaTemplate = ({ userData }) => {
   const { displayName, email, role, mobileNumber, website, city } = userData || {};
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 font-['Inter'] md:bg-neutral-950 md:items-center py-0 md:py-12">
@@ -10,7 +10,7 @@ const LegaNode = ({ userData }) => {
         <div className="w-24 h-24 rounded-[3rem] bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-800 mb-8 shadow-sm group-hover:rotate-6 transition-transform">
            <FiLayout size={32} />
         </div>
-        <h1 className="text-2xl font-black text-slate-900 tracking-tight">{displayName || 'Lega Node'}</h1>
+        <h1 className="text-2xl font-black text-slate-900 tracking-tight">{displayName || 'Lega Template'}</h1>
         
         
         <div className="w-full space-y-3">
@@ -35,4 +35,4 @@ const LegaNode = ({ userData }) => {
     </div>
   );
 };
-export default LegaNode;
+export default LegaTemplate;

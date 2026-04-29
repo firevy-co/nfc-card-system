@@ -17,14 +17,14 @@ const MobileFooter = ({ userData }) => {
 
   const userLinks = [
     { name: 'Home', path: '/user/home', icon: <FiHome size={20} /> },
-    { name: 'Nodes', path: '/user/templates', icon: <FiLayout size={20} /> },
+    { name: 'Templates', path: '/user/templates', icon: <FiLayout size={20} /> },
     { name: 'Support', path: '/user/support', icon: <FiHelpCircle size={20} /> },
     { name: 'Profile', path: '/user/profile', icon: <FiUser size={20} /> },
   ];
 
   const adminLinks = [
     { name: 'Stats', path: '/admin/analytics', icon: <FiPieChart size={20} /> },
-    { name: 'Nodes', path: '/admin/templates', icon: <FiLayout size={20} /> },
+    { name: 'Templates', path: '/admin/templates', icon: <FiLayout size={20} /> },
     { name: 'Users', path: '/admin/users', icon: <FiUsers size={20} /> },
     { name: 'Inquiry', path: '/admin/inquiry', icon: <FiActivity size={20} /> },
     { name: 'Profile', path: '/admin/profile', icon: <FiUser size={20} /> },

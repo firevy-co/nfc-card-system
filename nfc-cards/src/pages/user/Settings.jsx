@@ -27,7 +27,7 @@ const UserSettings = ({ userData }) => {
     const menus = [
         {
             title: "Identity Profile",
-            desc: "Update your personal credentials and public node visibility.",
+            desc: "Update your personal credentials and public template visibility.",
             icon: FiUser,
             path: "/user/profile",
             active: true
@@ -150,7 +150,7 @@ const UserSettings = ({ userData }) => {
                             <div className="bg-white rounded-[2rem] p-6 border border-zinc-100 shadow-lg">
                                 <div className="flex justify-between items-center">
                                     <span className="text-zinc-500 font-semibold text-sm">
-                                        Node Performance
+                                        Template Performance
                                     </span>
                                     <FiZap />
                                 </div>
@@ -211,7 +211,7 @@ const UserSettings = ({ userData }) => {
                         <div className="bg-gradient-to-r from-black to-zinc-800 text-white rounded-[2rem] p-8 shadow-xl">
                             <h3 className="text-2xl font-black">X-Identity Support</h3>
                             <p className="text-zinc-300 mt-2 max-w-xl">
-                                Need assistance with your identity node? Our dedicated support team is
+                                Need assistance with your identity template? Our dedicated support team is
                                 available 24/7 to ensure your network remains online and optimized.
                             </p>
                         </div>

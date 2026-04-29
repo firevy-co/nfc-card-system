@@ -231,7 +231,7 @@ const Inquiry = ({ userData }) => {
                             <table className="w-full border-collapse">
                                 <thead>
                                     <tr className="border-b border-zinc-50 bg-zinc-50/50">
-                                        <th className="px-10 py-7 text-left text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Origin Node</th>
+                                        <th className="px-10 py-7 text-left text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Origin Identity</th>
                                         <th className="px-10 py-7 text-left text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Primary Vector</th>
                                         <th className="px-10 py-7 text-left text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Status</th>
                                         <th className="px-10 py-7 text-right text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Actions</th>
@@ -336,7 +336,7 @@ const Inquiry = ({ userData }) => {
                                             <FiMessageSquare size={20} />
                                         </div>
                                         <div>
-                                            <h3 className="text-xl font-black text-black tracking-tighter">Inquiry Node</h3>
+                                            <h3 className="text-xl font-black text-black tracking-tighter">Inquiry Hub</h3>
                                             <p className="text-[8px] font-black uppercase tracking-[0.3em] text-zinc-400 mt-0.5">Audit: {selectedInquiry.id.slice(0, 8)}</p>
                                         </div>
                                     </div>
@@ -434,7 +434,7 @@ const Inquiry = ({ userData }) => {
                 isOpen={isDeleteModalOpen}
                 onClose={() => { setIsDeleteModalOpen(false); setInquiryToDelete(null); }}
                 onConfirm={handleDelete}
-                title="Purge Inquiry Node"
+                title="Purge Inquiry Thread"
                 message={`Are you sure you want to permanently delete the inquiry from ${inquiryToDelete?.name}? This will also wipe the entire message thread from the network.`}
                 confirmText="Purge Identity Thread"
                 isLoading={isDeleting}

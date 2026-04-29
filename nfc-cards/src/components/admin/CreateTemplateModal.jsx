@@ -110,7 +110,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                 </div>
                                 <div>
                                     <h2 className="text-xl font-black text-black  leading-none tracking-tight">
-                                        {initialData ? 'Edit Identity Node' : 'New Identity Node'}
+                                        {initialData ? 'Edit Identity Template' : 'New Identity Template'}
                                     </h2>
                                     <p className="text-[10px] text-black/40  font-black capitalize tracking-[0.2em] mt-1 opacity-60">Identity Studio</p>
                                 </div>
