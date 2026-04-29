@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { auth, googleProvider } from '@/firebase.config';
-import { signInWithEmailAndPassword, signInWithRedirect, getRedirectResult } from 'firebase/auth';
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo (2).png';
 import * as Fi from "react-icons/fi";
@@ -13,41 +13,6 @@ const Login = () => {
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
-
-    // Handle Google redirect result on mount
-    useEffect(() => {
-        const handleRedirectResult = async () => {
-            try {
-                setLoading(true);
-                const result = await getRedirectResult(auth);
-                if (!result) { setLoading(false); return; }
-
-                const user = result.user;
-                const { doc, getDoc, setDoc, serverTimestamp } = await import('firebase/firestore');
-                const { db } = await import('@/firebase.config');
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-
-                if (!userDoc.exists()) {
-                    await setDoc(doc(db, "users", user.uid), {
-                        uid: user.uid,
-                        displayName: user.displayName,
-                        email: user.email,
-                        role: 'User',
-                        createdAt: serverTimestamp(),
-                        status: 'Active'
-                    });
-                    navigate('/user/complete-profile');
-                } else {
-                    navigate('/');
-                }
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-        handleRedirectResult();
-    }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -85,11 +50,37 @@ const Login = () => {
         setLoading(true);
         setError('');
         try {
-            // Use redirect instead of popup — works reliably on all browsers & Vercel
-            await signInWithRedirect(auth, googleProvider);
-            // Page will redirect to Google and come back — result handled in useEffect above
+            const result = await signInWithPopup(auth, googleProvider);
+            const user = result.user;
+
+            const { doc, getDoc, setDoc, serverTimestamp } = await import('firebase/firestore');
+            const { db } = await import('@/firebase.config');
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+
+            if (!userDoc.exists()) {
+                await setDoc(doc(db, "users", user.uid), {
+                    uid: user.uid,
+                    displayName: user.displayName,
+                    email: user.email,
+                    role: 'User',
+                    createdAt: serverTimestamp(),
+                    status: 'Active'
+                });
+                navigate('/user/complete-profile');
+            } else {
+                navigate('/');
+            }
         } catch (err) {
-            setError(err.message);
+            let message = "Google sign-in failed.";
+            if (err.code === 'auth/unauthorized-domain') {
+                message = "This domain is not authorized. Please contact support.";
+            } else if (err.code === 'auth/popup-blocked') {
+                message = "Popup was blocked by your browser. Please allow popups for this site.";
+            } else if (err.code === 'auth/popup-closed-by-user') {
+                message = "Sign-in was cancelled.";
+            }
+            setError(message);
+        } finally {
             setLoading(false);
         }
     };
@@ -177,6 +168,7 @@ const Login = () => {
                                 type="button"
                                 onClick={handleGoogleLogin}
                                 className="w-full py-4 rounded-xl bg-white border border-gray-200 text-gray-900 font-bold text-sm hover:bg-gray-50 transition-all flex items-center justify-center gap-3 active:scale-95 shadow-sm"
+                                disabled={loading}
                             >
                                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -184,7 +176,7 @@ const Login = () => {
                                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                                     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                                 </svg>
-                                Continue with Google
+                                {loading ? "Connecting..." : "Continue with Google"}
                             </button>
                         </form>
 
@@ -202,25 +194,17 @@ const Login = () => {
 
             {/* Right Side: Visual Showcase */}
             <div className="hidden lg:flex flex-1 relative bg-[#F8EDEB] items-center justify-center overflow-hidden">
-                {/* Abstract Background Glow (Softened for light mode) */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px] pointer-events-none"></div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-pink-500/5 rounded-full blur-[100px] pointer-events-none delay-700"></div>
 
-                {/* NFC Tap Experience Container */}
                 <div className="relative z-10 w-full h-full flex items-center justify-center scale-110">
-
-                    {/* iPhone Frame */}
                     <div className="relative w-[280px] h-[580px] bg-black rounded-[3rem] p-3 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.8)] border-[6px] border-gray-800">
-                        {/* Dynamic Island */}
                         <div className="absolute top-7 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-full z-30 flex items-center justify-center">
                             <div className="w-1 h-1 rounded-full bg-blue-500/50 mr-12"></div>
                             <div className="w-2 h-2 rounded-full bg-white/5"></div>
                         </div>
 
-                        {/* Screen Content */}
                         <div className="relative w-full h-full rounded-[2.2rem] overflow-hidden bg-[#1c1c1e]">
-
-                            {/* Home Screen (Initial) */}
                             <motion.div
                                 className="absolute inset-0 p-6 flex flex-col pt-16"
                                 animate={{ opacity: [1, 1, 0, 0, 1], filter: ["blur(0px)", "blur(0px)", "blur(20px)", "blur(20px)", "blur(0px)"] }}
@@ -238,7 +222,6 @@ const Login = () => {
                                 </div>
                             </motion.div>
 
-                            {/* Digital Card (After Tap) */}
                             <motion.div
                                 className="absolute inset-0 bg-gray-50 flex flex-col"
                                 initial={{ opacity: 0 }}
@@ -286,7 +269,6 @@ const Login = () => {
                             </motion.div>
                         </div>
 
-                        {/* NFC Waves Animation */}
                         <motion.div
                             className="absolute -top-10 left-1/2 -translate-x-1/2 w-20 h-20 pointer-events-none"
                             initial={{ opacity: 0 }}
@@ -321,7 +303,6 @@ const Login = () => {
                         <div className="absolute bottom-6 right-8 w-12 h-8 rounded bg-white/5 border border-white/10"></div>
                     </motion.div>
 
-                    {/* Static Text Overlay */}
                     <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center w-full">
                         <h2 className="text-2xl font-black text-black mb-2 uppercase tracking-widest">Tap the Future</h2>
                         <p className="text-black/40 text-[10px] font-bold uppercase tracking-[0.3em]">Experience cardless connection</p>
@@ -333,4 +314,3 @@ const Login = () => {
 };
 
 export default Login;
-
