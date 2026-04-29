@@ -3,7 +3,8 @@ import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
 
 const ExpertNode = ({ userData }) => {
-  const { displayName, email, phone, website, address, linkedin, instagram, facebook, twitter, youtube, logo } = userData || {};
+   const { displayName, email, phone, website, address, linkedin, instagram, facebook, twitter, youtube, logo, role, designation } = userData || {};
+   const displayRole = designation || role;
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-6 font-['Mulish',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
       <div className="w-full max-w-sm bg-neutral-900 border border-white/5 rounded-[3rem] p-10 shadow-2xl relative overflow-hidden group">
@@ -17,8 +18,8 @@ const ExpertNode = ({ userData }) => {
                 <FiIcons.FiAward size={36} />
               )}
            </div>
-           <h1 className="text-2xl font-black text-white tracking-widest uppercase text-center italic leading-none">{displayName || 'Expert Node'}</h1>
-           <p className="text-amber-500 text-[9px] font-black uppercase tracking-[0.5em] mt-3">Verified Service Partner</p>
+           <h1 className="text-2xl font-black text-white tracking-widest uppercase text-center italic leading-none">{displayName}</h1>
+           {displayRole && <p className="text-amber-500 text-[9px] font-black uppercase tracking-[0.5em] mt-3">{displayRole}</p>}
         </div>
         
         <div className="space-y-3 relative z-10">

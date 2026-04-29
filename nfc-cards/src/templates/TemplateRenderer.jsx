@@ -117,32 +117,34 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
     email: rawUserData.email || rawUserData.omailAddress || "",
     
     // Identity & Role Mapping
-    displayName: rawUserData.displayName || "Unauthorized Entity",
-    role: rawUserData.role || rawUserData.businessName || "Authorized Member",
+    displayName: rawUserData.displayName || rawUserData.name || "Your Identity",
+    role: rawUserData.role || rawUserData.designation || rawUserData.businessRole || rawUserData.jobTitle || "Professional",
+    companyName: rawUserData.companyName || rawUserData.businessName || rawUserData.organization || "",
     
     // Location Synthesis (Building 'address' from City, State, Country nodes)
     address: rawUserData.address || [
       rawUserData.city,
       rawUserData.state,
       rawUserData.country
-    ].filter(Boolean).join(', ') || "Global Satellite Node",
+    ].filter(Boolean).join(', ') || "",
     
     // Website & Bio
     website: rawUserData.website || "",
-    bio: rawUserData.bio || rawUserData.description || "",
+    bio: rawUserData.bio || rawUserData.description || rawUserData.about || "",
     
     // Social Integrity
     linkedin: rawUserData.linkedin || "",
     instagram: rawUserData.instagram || "",
     facebook: rawUserData.facebook || "",
-    twitter: rawUserData.twitter || "",
+    twitter: rawUserData.twitter || rawUserData.x || "",
     youtube: rawUserData.youtube || "",
     github: rawUserData.github || "",
     
     // Theme & Branding
     themeColor: rawUserData.themeColor || "#0f172a",
     logo: rawUserData.logo || rawUserData.profileImage || defaultLogo,
-    profileImage: rawUserData.profileImage || rawUserData.logo || defaultLogo
+    profileImage: rawUserData.profileImage || rawUserData.logo || defaultLogo,
+    coverPhoto: rawUserData.coverPhoto || rawUserData.bannerImage || ""
   } : {};
 
   const renderTemplate = () => {

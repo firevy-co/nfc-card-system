@@ -2,7 +2,6 @@ const { auth, db, isOffline, admin } = require('../config/firebase');
 
 /**
  * ARCHITECTURAL CACHE: Memory-resident identities for STANDBY MODE testing.
- * This ensures that updates and deletions persist until the Node.js server restarts.
  */
 let mockUsersCache = [
     { uid: 'abc-01', displayName: 'abc@gmail.com', email: 'abc@gmail.com', role: 'User', status: 'Standby' },
@@ -10,10 +9,23 @@ let mockUsersCache = [
 ];
 
 /**
+ * HELPER: Batch-delete all docs in a Firestore collection/subcollection.
+ */
+const deleteCollection = async (collectionRef, batchSize = 100) => {
+    const snapshot = await collectionRef.limit(batchSize).get();
+    if (snapshot.empty) return;
+    const batch = db.batch();
+    snapshot.docs.forEach(doc => batch.delete(doc.ref));
+    await batch.commit();
+    if (snapshot.size === batchSize) {
+        await deleteCollection(collectionRef, batchSize);
+    }
+};
+
+/**
  * IDENTITY AUDIT: Fetching ALL network participants.
  */
 exports.getAllUsers = async (req, res) => {
-
     try {
         if (isOffline) {
             console.warn("[SYNC]: Cloud offline. Serving memory-resident identities.");
@@ -22,6 +34,8 @@ exports.getAllUsers = async (req, res) => {
 
         const listUsersResult = await auth.listUsers(100);
         const snapshot = await db.collection('users').get();
+        console.log(`[IDENTITY AUDIT]: Found ${listUsersResult.users.length} Auth users and ${snapshot.size} Firestore profiles.`);
+        
         const firestoreUsers = {};
         snapshot.forEach(doc => { firestoreUsers[doc.id] = doc.data(); });
 
@@ -41,8 +55,7 @@ exports.getAllUsers = async (req, res) => {
         console.error("Identity Discovery Failure:", error);
         res.status(500).json({
             error: "Failed to audit network identities",
-            details: error.message,
-            stack: error.stack
+            details: error.message
         });
     }
 };
@@ -66,12 +79,11 @@ exports.updateUserDetails = async (req, res) => {
             const authPayload = {};
             if (email) authPayload.email = email;
             if (displayName !== undefined && displayName !== null) authPayload.displayName = displayName;
-
             if (Object.keys(authPayload).length > 0) {
                 await auth.updateUser(uid, authPayload);
             }
         } catch (authError) {
-            console.warn(`[IDENTITY SYNC]: Core Auth sync skipped/failed for ${uid}: ${authError.message}`);
+            console.warn(`[IDENTITY SYNC]: Core Auth sync skipped for ${uid}: ${authError.message}`);
         }
 
         await db.collection('users').doc(uid).set({
@@ -90,7 +102,13 @@ exports.updateUserDetails = async (req, res) => {
 };
 
 /**
- * DE-AUTHORIZATION: Completely purge a participant from the system.
+ * DE-AUTHORIZATION: Completely purge a participant and ALL their data from the system.
+ * Cascade deletes:
+ *   1. Firebase Auth account
+ *   2. Firestore: users/{uid}
+ *   3. Firestore: companyDetails/{uid}
+ *   4. Firestore: cardData/{uid}
+ *   5. Firestore: nfcCards where assignedTo == uid
  */
 exports.deleteUser = async (req, res) => {
     const { uid } = req.params;
@@ -101,19 +119,72 @@ exports.deleteUser = async (req, res) => {
             return res.json({ message: `Identity ${uid} purged from the network (MOCK).` });
         }
 
-        // [PURGE] Stage 1: Core Authentication
-        await auth.deleteUser(uid);
+        const results = {
+            auth: false,
+            userDoc: false,
+            companyDetails: false,
+            cardData: false,
+            nfcCards: 0
+        };
 
-        // [PURGE] Stage 2: Identity Registry
-        await db.collection('users').doc(uid).delete();
+        // [PURGE] Stage 1: Firebase Authentication Account
+        try {
+            await auth.deleteUser(uid);
+            results.auth = true;
+            console.log(`[PURGE] Auth account deleted: ${uid}`);
+        } catch (authErr) {
+            console.warn(`[PURGE] Auth delete skipped (may not exist): ${authErr.message}`);
+        }
 
-        // [PURGE] Stage 3: Organizational Metadata
-        await db.collection('companyDetails').doc(uid).delete();
+        // [PURGE] Stage 2: Firestore users document
+        try {
+            await db.collection('users').doc(uid).delete();
+            results.userDoc = true;
+            console.log(`[PURGE] users/${uid} deleted`);
+        } catch (e) {
+            console.warn(`[PURGE] users doc delete error: ${e.message}`);
+        }
 
-        res.json({ message: `Identity ${uid} and associated business nodes purged from the network.` });
+        // [PURGE] Stage 3: Company Details document
+        try {
+            await db.collection('companyDetails').doc(uid).delete();
+            results.companyDetails = true;
+            console.log(`[PURGE] companyDetails/${uid} deleted`);
+        } catch (e) {
+            console.warn(`[PURGE] companyDetails delete error: ${e.message}`);
+        }
+
+        // [PURGE] Stage 4: Card Data document
+        try {
+            await db.collection('cardData').doc(uid).delete();
+            results.cardData = true;
+            console.log(`[PURGE] cardData/${uid} deleted`);
+        } catch (e) {
+            console.warn(`[PURGE] cardData delete error: ${e.message}`);
+        }
+
+        // [PURGE] Stage 5: NFC Cards assigned to this user
+        try {
+            const nfcQuery = await db.collection('nfcCards').where('assignedTo', '==', uid).get();
+            if (!nfcQuery.empty) {
+                const batch = db.batch();
+                nfcQuery.docs.forEach(doc => batch.delete(doc.ref));
+                await batch.commit();
+                results.nfcCards = nfcQuery.size;
+                console.log(`[PURGE] ${nfcQuery.size} NFC card(s) unlinked for uid: ${uid}`);
+            }
+        } catch (e) {
+            console.warn(`[PURGE] NFC cards purge error: ${e.message}`);
+        }
+
+        res.json({
+            success: true,
+            message: `Identity ${uid} and all associated data permanently purged.`,
+            purged: results
+        });
     } catch (error) {
         console.error("Purge Failure:", error);
-        res.status(500).json({ error: "Failed to de-authorize participant" });
+        res.status(500).json({ error: "Failed to de-authorize participant", details: error.message });
     }
 };
 
@@ -121,7 +192,6 @@ exports.deleteUser = async (req, res) => {
  * CLEARANCE LEVEL: Update a participant's system authority (Admin/User).
  */
 exports.updateUserRole = async (req, res) => {
-    // ... existing implementation ...
     const { uid, role } = req.body;
 
     try {
@@ -138,7 +208,6 @@ exports.updateUserRole = async (req, res) => {
 
 /**
  * IDENTITY ONBOARDING: Commit full organization profiles to the network.
- * Finalizes the transition from basic Auth identity to verified organization node.
  */
 exports.completeProfile = async (req, res) => {
     const { uid, ...profileData } = req.body;
@@ -151,13 +220,11 @@ exports.completeProfile = async (req, res) => {
             });
         }
 
-        // [CORE STORAGE]: Store the Business Identity in a dedicated collection
         await db.collection('companyDetails').doc(uid).set({
             ...profileData,
             updatedAt: admin.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
 
-        // [AUTH SYNC]: Unlock the participant in the main users list with full profile
         await db.collection('users').doc(uid).set({
             ...profileData,
             onboarded: true,

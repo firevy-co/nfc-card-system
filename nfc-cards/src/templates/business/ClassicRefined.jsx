@@ -11,12 +11,12 @@ const ClassicRefined = ({ userData }) => {
    } = userData || {};
 
    const displayPhone = mobileNumber || phone;
-   const displayRole = designation || role || "Creative Director";
+   const displayRole = designation || role;
    const finalAddress = address || city;
 
    const bgImage = coverPhoto || "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=1200&q=80";
 
-   const expertiseTags = tags && tags.length > 0 ? tags : ["Brand Strategy", "UX Design", "Visual Identity", "Editorial"];
+   const expertiseTags = tags && tags.length > 0 ? tags : [];
 
    const getSocialUrl = (platform, value) => {
       if (!value) return null;
@@ -58,11 +58,11 @@ const ClassicRefined = ({ userData }) => {
 
             {/* Identity Info */}
             <h1 className="text-2xl font-serif tracking-[0.15em] text-white uppercase text-center mb-1">
-               {displayName || 'Julian Sterling'}
+               {displayName}
             </h1>
             {companyName && (
                <p className="text-[13px] text-zinc-400 mt-2 text-center tracking-wide font-serif">
-                  {companyName || 'Sterling & Co.'}
+                  {companyName}
                </p>
             )}
 
@@ -107,7 +107,7 @@ const ClassicRefined = ({ userData }) => {
                            {displayPhone}
                         </a>
                      ) : (
-                        <span className="text-[13px] text-zinc-200">+1 212 555 0198</span>
+                        <span className="text-[13px] text-zinc-500 italic">Not provided</span>
                      )}
                   </div>
                </div>
@@ -121,7 +121,7 @@ const ClassicRefined = ({ userData }) => {
                   <div>
                      <p className="text-[8px] font-bold tracking-[0.15em] text-zinc-600 uppercase mb-1">Studio</p>
                      <p className="text-[13px] text-zinc-200 font-medium truncate group-hover:text-white transition-colors">
-                        {finalAddress || "Manhattan, NY"}
+                        {finalAddress || "Location hidden"}
                      </p>
                   </div>
                </a>
@@ -181,9 +181,11 @@ const ClassicRefined = ({ userData }) => {
 
             {/* Bio / Quote */}
             <div className="w-full mt-12 px-4 text-center">
-               <p className="text-[13px] leading-relaxed text-zinc-500 font-serif italic">
-                  "{bio || "Design is the silent ambassador of your brand."}"
-               </p>
+               {bio && (
+                  <p className="text-[13px] leading-relaxed text-zinc-500 font-serif italic">
+                     "{bio}"
+                  </p>
+               )}
             </div>
 
             {/* Footer */}

@@ -10,7 +10,7 @@ const ClassicExecutive = ({ userData }) => {
   } = userData || {};
 
   const displayPhone = mobileNumber || phone;
-  const displayRole = designation || role || "Senior Executive";
+  const displayRole = designation || role;
   const finalAddress = address || city;
 
   return (
@@ -24,8 +24,8 @@ const ClassicExecutive = ({ userData }) => {
                   <img src={logo} alt="Company Logo" className="w-full h-auto object-contain" />
                </div>
             ) : null}
-            <h1 className="text-3xl font-bold tracking-tight mb-2 font-serif">{displayName || 'Jonathan Sterling'}</h1>
-            <p className="text-sm text-blue-300 font-medium tracking-wide uppercase">{displayRole}</p>
+            <h1 className="text-3xl font-bold tracking-tight mb-2 font-serif">{displayName}</h1>
+            {displayRole && <p className="text-sm text-blue-300 font-medium tracking-wide uppercase">{displayRole}</p>}
             {companyName && <p className="text-xs text-slate-400 mt-2 uppercase tracking-widest">{companyName}</p>}
          </div>
       </div>
@@ -46,23 +46,20 @@ const ClassicExecutive = ({ userData }) => {
             )}
          </div>
 
-         {/* Areas of Expertise */}
-         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 border-b border-slate-100 pb-2">Core Competencies</h3>
-            <div className="grid grid-cols-2 gap-4">
-               {[
-                  { title: "Strategic Planning", icon: FiIcons.FiTrendingUp },
-                  { title: "Global Operations", icon: FiIcons.FiGlobe },
-                  { title: "Corporate Finance", icon: FiIcons.FiPieChart },
-                  { title: "Board Leadership", icon: FiIcons.FiUsers }
-               ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                     <div className="text-blue-600 bg-blue-50 p-2 rounded-lg"><item.icon size={16} /></div>
-                     <span className="text-xs font-semibold text-slate-700">{item.title}</span>
-                  </div>
-               ))}
+         {/* Areas of Expertise - Dynamic from tags */}
+         {userData?.tags && userData.tags.length > 0 && (
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+               <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 border-b border-slate-100 pb-2">Core Competencies</h3>
+               <div className="grid grid-cols-2 gap-4">
+                  {userData.tags.map((tag, i) => (
+                     <div key={i} className="flex items-center gap-3">
+                        <div className="text-blue-600 bg-blue-50 p-2 rounded-lg"><FiIcons.FiCheckCircle size={16} /></div>
+                        <span className="text-xs font-semibold text-slate-700">{tag}</span>
+                     </div>
+                  ))}
+               </div>
             </div>
-         </div>
+         )}
 
          {/* Corporate Contact Suite */}
          <div className="space-y-3">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '@/firebase.config';
-import { collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, orderBy, onSnapshot, doc, addDoc, serverTimestamp } from 'firebase/firestore';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     FiMail, FiPhone, FiSearch, FiCheckCircle,
@@ -10,6 +10,8 @@ import AdminNav from '../../components/layout/AdminNav';
 import TopNav from '../../components/layout/TopNav';
 import MobileFooter from '../../components/layout/MobileFooter';
 import toast from 'react-hot-toast';
+import { API_BASE_URL } from "../../config/api";
+import ConfirmationModal from '../../components/layout/ConfirmationModal';
 
 const Inquiry = ({ userData }) => {
     const [inquiries, setInquiries] = useState([]);
@@ -18,6 +20,11 @@ const Inquiry = ({ userData }) => {
     const [reply, setReply] = useState('');
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
+    
+    // Modal states
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [inquiryToDelete, setInquiryToDelete] = useState(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     // Fetch live inquiries
     useEffect(() => {
@@ -58,21 +65,51 @@ const Inquiry = ({ userData }) => {
 
     const handleStatusUpdate = async (id, status) => {
         try {
-            await updateDoc(doc(db, "inquiries", id), { status });
-            toast.success(`Status updated to ${status}`);
+            const response = await fetch(`${API_BASE_URL}/api/inquiries/${id}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+
+            if (response.ok) {
+                toast.success(`Status updated to ${status}`);
+            } else {
+                throw new Error("Update failed");
+            }
         } catch (err) {
             toast.error("Status update failed.");
         }
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("Permanent deletion protocol?")) return;
+    const confirmDelete = (iq) => {
+        setInquiryToDelete(iq);
+        setIsDeleteModalOpen(true);
+    };
+
+    const handleDelete = async () => {
+        if (!inquiryToDelete) return;
+        
+        setIsDeleting(true);
         try {
-            await deleteDoc(doc(db, "inquiries", id));
-            toast.success("Inquiry purged.");
-            if (selectedInquiry?.id === id) setSelectedInquiry(null);
+            const response = await fetch(`${API_BASE_URL}/api/inquiries/${inquiryToDelete.id}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                toast.success("Inquiry and message thread purged.");
+                // OPTIMISTIC UI: Remove from local state immediately
+                setInquiries(prev => prev.filter(iq => iq.id !== inquiryToDelete.id));
+                
+                if (selectedInquiry?.id === inquiryToDelete.id) setSelectedInquiry(null);
+                setIsDeleteModalOpen(false);
+                setInquiryToDelete(null);
+            } else {
+                throw new Error("Purge failed");
+            }
         } catch (err) {
-            toast.error("Purge failure.");
+            toast.error("Purge failure. Cloud sync check required.");
+        } finally {
+            setIsDeleting(false);
         }
     };
 
@@ -92,17 +129,9 @@ const Inquiry = ({ userData }) => {
                 createdAt: serverTimestamp(),
             });
 
-            // 2. Automate status transition to priority processing
+            // 2. Automate status transition via backend to keep logic centralized
             if (selectedInquiry.status === "Unread") {
-                await updateDoc(doc(db, "inquiries", selectedInquiry.id), {
-                    status: "Processing",
-                    lastUpdated: serverTimestamp()
-                });
-            } else {
-                // Just update the timestamp for sorting
-                await updateDoc(doc(db, "inquiries", selectedInquiry.id), {
-                    lastUpdated: serverTimestamp()
-                });
+                await handleStatusUpdate(selectedInquiry.id, "Processing");
             }
 
             toast.success("Security response dispatched.");
@@ -120,7 +149,7 @@ const Inquiry = ({ userData }) => {
     );
 
     return (
-        <div className="min-h-screen bg-[#F8EDEB] text-black flex flex-col overflow-x-hidden">
+        <div className="min-h-screen bg-[#F8EDEB] text-black flex flex-col overflow-x-hidden font-['Mulish']">
             <TopNav title="Operational Inbox" />
             <AdminNav />
 
@@ -180,7 +209,7 @@ const Inquiry = ({ userData }) => {
                                                     View
                                                 </button>
                                                 <button
-                                                    onClick={() => handleDelete(iq.id)}
+                                                    onClick={() => confirmDelete(iq)}
                                                     className="w-8 h-8 rounded-xl bg-red-50 text-red-400 flex items-center justify-center active:scale-95"
                                                 >
                                                     <FiTrash2 size={14} />
@@ -257,8 +286,8 @@ const Inquiry = ({ userData }) => {
                                                                 Audit Brief
                                                             </button>
                                                             <button
-                                                                onClick={() => handleDelete(iq.id)}
-                                                                className="w-10 h-10 rounded-xl bg-red-50 text-red-400 hover:text-red-500 hover:bg-red-100 transition-all flex items-center justify-center"
+                                                                onClick={() => confirmDelete(iq)}
+                                                                className="w-10 h-10 rounded-xl bg-red-50 text-red-400 hover:text-red-500 hover:bg-red-100 transition-all flex items-center justify-center active:scale-95"
                                                             >
                                                                 <FiTrash2 size={16} />
                                                             </button>
@@ -400,6 +429,17 @@ const Inquiry = ({ userData }) => {
                 )}
             </AnimatePresence>
 
+            {/* DELETE CONFIRMATION MODAL */}
+            <ConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => { setIsDeleteModalOpen(false); setInquiryToDelete(null); }}
+                onConfirm={handleDelete}
+                title="Purge Inquiry Node"
+                message={`Are you sure you want to permanently delete the inquiry from ${inquiryToDelete?.name}? This will also wipe the entire message thread from the network.`}
+                confirmText="Purge Identity Thread"
+                isLoading={isDeleting}
+            />
+
             {/* Mobile Footer Navigation */}
             <MobileFooter userData={userData} />
         </div>
@@ -407,4 +447,3 @@ const Inquiry = ({ userData }) => {
 };
 
 export default Inquiry;
-

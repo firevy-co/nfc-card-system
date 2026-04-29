@@ -6,11 +6,11 @@ const ModernLeader = ({ userData }) => {
   const { 
     displayName, email, role, mobileNumber, phone, 
     companyName, designation, website, address, city,
-    linkedin, instagram, facebook, twitter, bio, avatar, logo 
+    linkedin, instagram, facebook, twitter, bio, avatar, logo, tags
   } = userData || {};
 
   const displayPhone = mobileNumber || phone;
-  const displayRole = designation || role || "Thought Leader";
+  const displayRole = designation || role;
   const finalAddress = address || city;
 
   return (
@@ -28,7 +28,7 @@ const ModernLeader = ({ userData }) => {
             </div>
          </div>
 
-         <h1 className="text-3xl font-bold tracking-tight text-white mb-2 relative z-10 px-2">{displayName || 'Modern Leader'}</h1>
+         <h1 className="text-3xl font-bold tracking-tight text-white mb-2 relative z-10 px-2">{displayName}</h1>
          <div className="flex items-center justify-center gap-2 text-blue-400 font-semibold text-xs tracking-widest uppercase relative z-10 flex-wrap px-2">
             <FiIcons.FiShield fill="currentColor" size={14} className="text-blue-500 shrink-0" />
             <span className="text-center">{displayRole}</span>
@@ -46,19 +46,17 @@ const ModernLeader = ({ userData }) => {
             </div>
          )}
 
-         {/* Awards / Certifications (Mockup for thought leader vibe) */}
-         <div className="flex gap-4 overflow-x-auto hide-scrollbar pb-2 pt-2 px-2 snap-x">
-            {[
-               { title: "Top Voice 2024", icon: FiIcons.FiMic },
-               { title: "Certified Expert", icon: FiIcons.FiCheckCircle },
-               { title: "Global Board", icon: FiIcons.FiGlobe }
-            ].map((award, i) => (
-               <div key={i} className="min-w-[150px] bg-slate-700/50 border border-slate-600 rounded-2xl p-4 flex items-center gap-3 shrink-0 backdrop-blur-sm snap-center">
-                  <div className="bg-blue-500/20 text-blue-400 p-2 rounded-lg shrink-0"><award.icon size={16} /></div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300">{award.title}</span>
-               </div>
-            ))}
-         </div>
+         {/* Awards / Certifications - Only shown if tags exist */}
+         {tags && tags.length > 0 && (
+            <div className="flex gap-4 overflow-x-auto hide-scrollbar pb-2 pt-2 px-2 snap-x">
+               {tags.map((tag, i) => (
+                  <div key={i} className="min-w-[150px] bg-slate-700/50 border border-slate-600 rounded-2xl p-4 flex items-center gap-3 shrink-0 backdrop-blur-sm snap-center">
+                     <div className="bg-blue-500/20 text-blue-400 p-2 rounded-lg shrink-0"><FiIcons.FiAward size={16} /></div>
+                     <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300">{tag}</span>
+                  </div>
+               ))}
+            </div>
+         )}
 
          {/* Contacts List */}
          <div className="bg-slate-900 rounded-3xl p-6 border border-slate-800 shadow-lg space-y-2">

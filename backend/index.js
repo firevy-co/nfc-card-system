@@ -22,9 +22,11 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 // --- IDENTITY HUB ROUTES ---
 const userRoutes = require('./routes/userRoutes');
 const templateRoutes = require('./routes/templateRoutes');
+const inquiryRoutes = require('./routes/inquiryRoutes');
 
 app.use('/api/users', userRoutes);
 app.use('/api/templates', templateRoutes);
+app.use('/api/inquiries', inquiryRoutes);
 
 /**
  * SYSTEM HANDSHAKE: GET /api/status

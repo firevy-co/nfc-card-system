@@ -2,6 +2,7 @@ import { FiRefreshCw, FiUserPlus, FiEdit2, FiTrash2, FiShield, FiUser, FiActivit
 import { API_BASE_URL } from "../../config/api";
 import Layout from "./layout";
 import { useState, useEffect } from 'react';
+import ConfirmationModal from './ConfirmationModal';
 
 const Users = ({ userData }) => {
     const [usersList, setUsersList] = useState([]);
@@ -11,6 +12,10 @@ const Users = ({ userData }) => {
     const [isDeleting, setIsDeleting] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [toast, setToast] = useState(null);
+    
+    // Modal states
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [userToDelete, setUserToDelete] = useState(null);
 
     // Form State for Modal
     const [formData, setFormData] = useState({ displayName: '', email: '', role: 'User' });
@@ -80,21 +85,31 @@ const Users = ({ userData }) => {
         }
     };
 
-    const handleDeleteUser = async (uid) => {
-        if (!window.confirm("CRITICAL: De-authorizing this identity will permanently purge it from the network. Proceed?")) return;
+    const confirmDelete = (user) => {
+        setUserToDelete(user);
+        setIsDeleteModalOpen(true);
+    };
+
+    const handleDeleteUser = async () => {
+        if (!userToDelete) return;
 
         setIsDeleting(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/api/users/${uid}`, {
+            const response = await fetch(`${API_BASE_URL}/api/users/${userToDelete.uid}`, {
                 method: 'DELETE'
             });
 
             if (response.ok) {
-                showToast("Identity purged successfully.", "error");
-                fetchUsersFromBackend();
+                showToast("Identity purged successfully.", "success");
+                // OPTIMISTIC UI: Remove from local state immediately
+                setUsersList(prev => prev.filter(user => user.uid !== userToDelete.uid));
+                
+                setIsDeleteModalOpen(false);
+                setUserToDelete(null);
             }
         } catch (error) {
             console.error("De-authorization Failure:", error);
+            showToast("Purge failure. Sync check required.", "error");
         } finally {
             setIsDeleting(false);
         }
@@ -287,7 +302,7 @@ const Users = ({ userData }) => {
                                             className="px-4 py-1.5 rounded-lg bg-foreground text-background font-black uppercase tracking-wider text-[9px] active:scale-95 transition-all">
                                             Edit
                                         </button>
-                                        <button onClick={() => handleDeleteUser(user.uid)}
+                                        <button onClick={() => confirmDelete(user)}
                                             className="px-4 py-1.5 rounded-lg bg-red-500/10 text-red-500 font-black uppercase tracking-wider text-[9px] hover:bg-red-500 hover:text-white active:scale-95 transition-all">
                                             Delete
                                         </button>
@@ -384,7 +399,7 @@ const Users = ({ userData }) => {
                                                     Edit
                                                 </button>
                                                 <button
-                                                    onClick={() => handleDeleteUser(user.uid)}
+                                                    onClick={() => confirmDelete(user)}
                                                     className="px-6 py-2.5 rounded-xl bg-red-500/10 text-red-500 border border-red-500/20 font-black uppercase tracking-[0.2em] text-[9px] hover:bg-red-500 hover:text-white transition-all shadow-lg shadow-red-500/10 cursor-pointer active:scale-95"
                                                 >
                                                     Delete
@@ -407,9 +422,18 @@ const Users = ({ userData }) => {
                     </table>
                 </div>
             </div>
+
+            <ConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => { setIsDeleteModalOpen(false); setUserToDelete(null); }}
+                onConfirm={handleDeleteUser}
+                title="Purge Participant Identity"
+                message={`Are you sure you want to permanently de-authorize ${userToDelete?.displayName || 'this participant'}? This will wipe their entire identity, company data, and card configurations from the network.`}
+                confirmText="Purge Identity Node"
+                isLoading={isDeleting}
+            />
         </Layout>
     );
 };
 
 export default Users;
-

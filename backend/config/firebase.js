@@ -21,6 +21,7 @@ try {
     console.log("[IDENTITY SYSTEM]: CLOUD INFRASTRUCTURE SYNCHRONISED SUCCESSFULLY.");
 } catch (error) {
     console.error("[FIREBASE INIT ERROR]:", error.message);
+    if (error.stack) console.error(error.stack);
     console.warn("[WARNING]: Firebase Service Account Key Missing or Invalid.");
     console.warn("Operating in MOCK/STANDBY MODE until ./serviceAccountKey.json is provided.");
     isOffline = true;

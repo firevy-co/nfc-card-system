@@ -98,8 +98,8 @@ export const StandardContactLink = ({
    HEADER SECTION
 ========================================================= */
 export const JewelleryHeader = ({
-  name = "Royal Gold House",
-  subtitle = "Premium Gold & Diamond Jewellery",
+  name,
+  subtitle,
 }) => {
   return (
     <div className="w-full rounded-[30px] overflow-hidden border border-[#d4af37]/20 bg-[#17120f] shadow-2xl mb-6">
@@ -242,13 +242,13 @@ const VelvetBoutique = ({ userData }) => {
   };
 
   const finalAddress = address || city;
-  const displayRole = designation || role || "Premium Jewellery";
+  const displayRole = designation || role;
 
   return (
     <div className="min-h-screen bg-[#0f0b09] font-sans pb-12 text-[#d4af37] flex flex-col items-center">
       <div className="w-full max-w-[380px] px-5 pt-8 flex flex-col items-center">
 
-        <JewelleryHeader name={displayName || "Velvet Boutique"} subtitle={displayRole} />
+        <JewelleryHeader name={displayName} subtitle={displayRole} />
 
         {logo && (
           <div className="flex justify-center -mt-16 relative z-10 mb-8">

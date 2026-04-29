@@ -13,6 +13,7 @@ const GoldenGrace = ({ userData }) => {
     logo,
     avatar,
     coverPhoto,
+    role: userRole
   } = userData || {};
 
   return (
@@ -73,14 +74,15 @@ const GoldenGrace = ({ userData }) => {
         {/* Content */}
         <div className="px-6 pb-10">
 
-          {/* Role */}
-          <p className="text-[#d4af37] text-[11px] uppercase tracking-[0.35em] font-bold">
-            Premium Jeweller
-          </p>
+          {userRole && (
+            <p className="text-[#d4af37] text-[11px] uppercase tracking-[0.35em] font-bold">
+              {userRole}
+            </p>
+          )}
 
           {/* Name */}
           <h2 className="text-[42px] leading-none mt-2 font-serif text-white">
-            {displayName || "Golden Grace"}
+            {displayName}
           </h2>
 
           {/* Subtitle */}

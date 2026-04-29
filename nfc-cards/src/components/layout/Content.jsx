@@ -11,6 +11,7 @@ import {
 import { TEMPLATES } from "../../templates/templateRegistry";
 import toast from 'react-hot-toast';
 import { API_BASE_URL } from "../../config/api";
+import ConfirmationModal from "./ConfirmationModal";
 
 
 export default function Content({ userData }) {
@@ -21,6 +22,11 @@ export default function Content({ userData }) {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+
+  // Modal states
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [nodeToDelete, setNodeToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const allCategories = [
     "All",
@@ -134,6 +140,7 @@ export default function Content({ userData }) {
         setIsModalOpen(false);
         setEditingTemplate(null);
         fetchTemplates();
+        toast.success(isEditing ? "Node re-architected." : "Node deployed.");
       } else {
         throw new Error("Cloud Sync Failed.");
       }
@@ -159,6 +166,7 @@ export default function Content({ userData }) {
       setIsModalOpen(false);
       setEditingTemplate(null);
       fetchTemplates();
+      toast.success("Identity stored in local cache.");
     }
   };
 
@@ -167,18 +175,38 @@ export default function Content({ userData }) {
     setIsModalOpen(true);
   };
 
-  const handleDeleteNode = async (id) => {
-    if (!window.confirm("Abort Identity Deployment? This action is IRREVERSIBLE.")) return;
+  const confirmDeleteNode = (id) => {
+    setNodeToDelete(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteNode = async () => {
+    if (!nodeToDelete) return;
+
+    setIsDeleting(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/templates/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/templates/${nodeToDelete}`, {
         method: 'DELETE'
       });
-      if (response.ok) fetchTemplates();
-      else throw new Error("Purge Failed.");
+      if (response.ok) {
+        toast.success("Identity node purged.");
+        // OPTIMISTIC UI: Remove from local state immediately
+        setLocalTemplates(prev => prev.filter(n => n.id !== nodeToDelete));
+        
+        setIsDeleteModalOpen(false);
+        setNodeToDelete(null);
+      } else {
+        throw new Error("Purge Failed.");
+      }
     } catch {
       const localCache = JSON.parse(localStorage.getItem('identity_nodes') || '[]');
-      localStorage.setItem('identity_nodes', JSON.stringify(localCache.filter(n => n.id !== id)));
+      localStorage.setItem('identity_nodes', JSON.stringify(localCache.filter(n => n.id !== nodeToDelete)));
       fetchTemplates();
+      setIsDeleteModalOpen(false);
+      setNodeToDelete(null);
+      toast.success("Identity node purged from local cache.");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -204,8 +232,8 @@ export default function Content({ userData }) {
   };
 
   const filteredTemplates = localTemplates.filter(t => {
-    const matchesSearch = t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.category.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = t.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      t.category?.toLowerCase().includes(searchQuery.toLowerCase());
 
     // EXCLUSIVE BYPASS: Restricted templates bypass category filters for authorized users
     const matchesCategory = selectedCategory === "All" || t.category === selectedCategory || t.restrictedAccess;
@@ -219,7 +247,7 @@ export default function Content({ userData }) {
 
 
   return (
-    <div className="flex-1 min-w-0">
+    <div className="flex-1 min-w-0 font-['Mulish']">
       <div className="p-4 sm:p-6 lg:p-10 max-w-[1700px] mx-auto">
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
 
@@ -322,7 +350,6 @@ export default function Content({ userData }) {
                       <FiLink size={16} className="text-accent" />
                       Live Link
                     </button>
-                    {/* <button className="flex items-center gap-2 border px-8 py-4 bg-black text-white rounded-xl font-semibold text-sm shadow-sm cursor-pointer hover:bg-black/80">Customize the template <FiChevronRight /></button> */}
                   </>
                 )}
               </div>
@@ -371,7 +398,7 @@ export default function Content({ userData }) {
                           description={template.description}
                           userData={userData}
                           isAdmin={isAdmin}
-                          onDelete={() => handleDeleteNode(template.id)}
+                          onDelete={() => confirmDeleteNode(template.id)}
                           onEdit={() => handleEditNode(template)}
                           onSelect={() => handleSelectTemplate(template.templateId || template.id)}
                           isSelected={userData?.templateId === (template.templateId || template.id)}
@@ -392,7 +419,16 @@ export default function Content({ userData }) {
         onSave={handleSaveTemplate}
         initialData={editingTemplate}
       />
+
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => { setIsDeleteModalOpen(false); setNodeToDelete(null); }}
+        onConfirm={handleDeleteNode}
+        title="Retire Identity Node"
+        message="Are you sure you want to permanently abort this identity deployment? This node will be purged from the central registry and all connected participants."
+        confirmText="Retire Node"
+        isLoading={isDeleting}
+      />
     </div>
   );
 }
-

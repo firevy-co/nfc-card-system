@@ -272,7 +272,7 @@ const CardPreview = ({ formData }) => {
     };
 
     return (
-        <div className={`rounded-3xl w-[320px] min-h-[520px] p-6 shadow-2xl transition-all duration-700 relative overflow-hidden flex flex-col ${light ? "text-gray-900" : "text-white"}`} style={{ background: themeColor }}>
+        <div className={`rounded-3xl w-full max-w-[320px] scale-[0.9] sm:scale-100 min-h-[520px] p-6 shadow-2xl transition-all duration-700 relative overflow-hidden flex flex-col ${light ? "text-gray-900" : "text-white"}`} style={{ background: themeColor }}>
             {renderLayout()}
             <div className="mt-auto pt-8 pb-2 text-center">
                 <a href="https://cardyn.shop" target="_blank" rel="noopener noreferrer" className={`text-[9px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-100 ${light ? "text-black/30" : "text-white/30"}`}>
@@ -475,12 +475,12 @@ const Profile = ({ userData }) => {
 
     return (
         <Layout userData={userData}>
-            <div className="w-full max-w-8xl mx-auto font-['Mulish'] bg-white min-h-screen rounded-t-[4rem]">
+            <div className="w-[92%] lg:w-[95%] max-w-7xl mx-auto font-['Mulish'] bg-white min-h-screen rounded-t-[3rem] shadow-2xl border-x border-zinc-50 overflow-hidden">
 
                 {/* --- PREMIUM SOCIAL BANNER HEADER --- */}
                 <div className="relative mb-32">
                     <div
-                        className="h-64 md:h-80 w-full rounded-t-[4rem] relative overflow-hidden shadow-inner"
+                        className="h-64 md:h-80 w-full rounded-t-[3rem] relative overflow-hidden shadow-inner"
                         style={{ background: 'linear-gradient(90deg, #5f5bff 0%, #8f88ff 30%, #d6d2ff 55%, #f1d6e6 80%, #f6eaf1 100%)' }}
                     >
                         <div className="absolute top-10 left-20 w-32 h-32 bg-white/20 rounded-full blur-3xl animate-pulse" />
@@ -519,7 +519,7 @@ const Profile = ({ userData }) => {
                         </div>
                     </div>
 
-                    <div className="absolute -bottom-24 left-12 md:left-20 flex flex-col md:flex-row items-end gap-10">
+                    <div className="absolute -bottom-24 left-8 md:left-16 lg:left-24 flex flex-col md:flex-row items-end gap-10">
                         <div className="relative group">
                             {/* Avatar Container */}
                             <div className="w-48 h-48 rounded-full border-[12px] border-white shadow-2xl overflow-hidden bg-gray-50 flex items-center justify-center transition-transform group-hover:scale-[1.02] duration-500">
@@ -555,7 +555,7 @@ const Profile = ({ userData }) => {
                     </div>
                 </div>
 
-                <div className="px-10 py-20">
+                <div className="px-6 md:px-16 lg:px-24 py-16 md:py-24">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
 
                         <div className="lg:col-span-12">
@@ -638,7 +638,7 @@ const Profile = ({ userData }) => {
 
                                 {/* --- NEW IDENTITY STUDIO SECTION --- */}
                                 <div className="md:col-span-2 mb-16">
-                                    <div className="bg-white p-12 rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden relative">
+                                    <div className="bg-white p-6 md:p-12 rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden relative">
                                         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-[100px] -mr-32 -mt-32 opacity-50" />
 
                                         <div className="flex items-center gap-4 mb-12 relative z-10">
@@ -653,7 +653,7 @@ const Profile = ({ userData }) => {
 
                                         <div className="grid lg:grid-cols-2 gap-16 items-start relative z-10">
                                             {/* LIVE PREVIEW */}
-                                            <div className="flex flex-col items-center justify-center bg-gray-50/50 rounded-[3rem] p-12 border border-dashed border-gray-200">
+                                            <div className="flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-white rounded-[3rem] p-4 md:p-12 border border-dashed border-gray-200 overflow-hidden">
                                                 <CardPreview formData={formData} />
                                                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-300 mt-8">Real-time Identity Preview</p>
                                             </div>
@@ -974,10 +974,10 @@ const Profile = ({ userData }) => {
                     </div>
                 </div>
 
-                <div className="mt-32 border-t border-gray-100 pt-20 flex flex-col items-center text-center">
-                    <div className="max-w-md bg-red-50/50 p-10 rounded-[3rem] border border-red-100/50">
-                        <h4 className="text-xl font-black text-red-600 mb-2">Authority Terminal</h4>
-                        <p className="text-xs font-bold text-red-400 leading-relaxed mb-8">Termination of this session will de-synchronize your current cloud access.</p>
+                <div className="mt-16 border-t border-gray-100 pt-10 flex flex-col items-center text-center">
+                    <div className="max-w-md bg-red-50/50 p-8 rounded-[2.5rem] border border-red-100/50">
+                        <h4 className="text-lg font-black text-red-600 mb-1">Authority Terminal</h4>
+                        <p className="text-[11px] font-bold text-red-400 leading-relaxed mb-6">Termination of this session will de-synchronize your current cloud access.</p>
                         <button
                             onClick={handleLogout}
                             className="w-full px-12 py-4 rounded-full bg-red-500 text-white font-black text-[11px] uppercase tracking-widest hover:brightness-110 shadow-xl transition-all"

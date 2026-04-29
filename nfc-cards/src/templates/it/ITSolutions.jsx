@@ -115,7 +115,7 @@ const ITSolutions = ({ userData }) => {
 
                   {/* Name */}
                   <h1 className="mt-5 text-[34px] leading-none font-serif text-white">
-                     {displayName || "Marcus Thorne"}
+                     {displayName}
                   </h1>
 
                   {/* Role */}
@@ -172,7 +172,7 @@ const ITSolutions = ({ userData }) => {
                            Headquarters
                         </p>
                         <p className="text-white text-sm mt-1">
-                           {address || "Palo Alto, CA"}
+                           {address}
                         </p>
                      </div>
                   </div>
