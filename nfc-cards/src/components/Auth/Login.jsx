@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { auth, googleProvider } from '@/firebase.config';
-import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { signInWithEmailAndPassword, signInWithRedirect, getRedirectResult } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
-import Layout from '../layout/layout';
 import logo from '../../assets/logo (2).png';
 import * as Fi from "react-icons/fi";
 import { motion } from 'framer-motion';
@@ -14,6 +13,41 @@ const Login = () => {
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+
+    // Handle Google redirect result on mount
+    useEffect(() => {
+        const handleRedirectResult = async () => {
+            try {
+                setLoading(true);
+                const result = await getRedirectResult(auth);
+                if (!result) { setLoading(false); return; }
+
+                const user = result.user;
+                const { doc, getDoc, setDoc, serverTimestamp } = await import('firebase/firestore');
+                const { db } = await import('@/firebase.config');
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+
+                if (!userDoc.exists()) {
+                    await setDoc(doc(db, "users", user.uid), {
+                        uid: user.uid,
+                        displayName: user.displayName,
+                        email: user.email,
+                        role: 'User',
+                        createdAt: serverTimestamp(),
+                        status: 'Active'
+                    });
+                    navigate('/user/complete-profile');
+                } else {
+                    navigate('/');
+                }
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        handleRedirectResult();
+    }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -51,29 +85,11 @@ const Login = () => {
         setLoading(true);
         setError('');
         try {
-            const result = await signInWithPopup(auth, googleProvider);
-            const user = result.user;
-
-            const { doc, getDoc, setDoc, serverTimestamp } = await import('firebase/firestore');
-            const { db } = await import('@/firebase.config');
-            const userDoc = await getDoc(doc(db, "users", user.uid));
-
-            if (!userDoc.exists()) {
-                await setDoc(doc(db, "users", user.uid), {
-                    uid: user.uid,
-                    displayName: user.displayName,
-                    email: user.email,
-                    role: 'User',
-                    createdAt: serverTimestamp(),
-                    status: 'Active'
-                });
-                navigate('/user/complete-profile');
-            } else {
-                navigate('/');
-            }
+            // Use redirect instead of popup — works reliably on all browsers & Vercel
+            await signInWithRedirect(auth, googleProvider);
+            // Page will redirect to Google and come back — result handled in useEffect above
         } catch (err) {
             setError(err.message);
-        } finally {
             setLoading(false);
         }
     };
