@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const ArchConstruction = ({ userData }) => {
   const { 
@@ -111,7 +112,7 @@ const ArchConstruction = ({ userData }) => {
             <FiIcons.FiDownload size={16} /> Save Identity
          </button>
       </div>
-      <p className="text-center text-[8px] font-black tracking-[0.8em] text-slate-400 uppercase mt-12 pb-4">Powered by Cardyn</p>
+      <PoweredBy />
     </div>
   );
 };

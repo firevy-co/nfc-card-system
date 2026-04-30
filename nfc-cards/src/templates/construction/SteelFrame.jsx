@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const SteelFrame = ({ userData }) => {
   const { 
@@ -112,7 +113,7 @@ const SteelFrame = ({ userData }) => {
             <FiIcons.FiDatabase size={18} /> Save Contact Data
          </button>
 
-         <p className="text-center text-[8px] font-black tracking-[0.8em] text-white/20 uppercase mt-12">Powered by Cardyn</p>
+         <PoweredBy />
       </div>
     </div>
   );

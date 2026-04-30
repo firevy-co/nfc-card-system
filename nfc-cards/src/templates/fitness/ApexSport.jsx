@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiTriangle, FiPhone, FiMail, FiGlobe, FiTarget, FiMapPin, FiInstagram, FiTwitter, FiLinkedin, FiYoutube, FiUserPlus, FiActivity } from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const ApexLink = ({ icon: Icon, label, value, href, isPrimary }) => {
   if (!value || value === "" || value.includes('resolving')) return null;
@@ -76,7 +77,7 @@ const ApexSport = ({ userData }) => {
            <FiUserPlus size={16} /> Save Contact
         </button>
         
-        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-12 text-[7px] text-slate-300 font-black tracking-[1em] uppercase hover:text-slate-500 transition-colors">Powered by Cardyn</a>
+        <PoweredBy />
       </div>
     </div>
   );

@@ -29,3 +29,14 @@ export const downloadVCard = (userData) => {
   link.click();
   document.body.removeChild(link);
 };
+
+export const StandardSaveContactButton = ({ userData, children, className }) => {
+  return (
+    <button
+      onClick={() => downloadVCard(userData)}
+      className={className}
+    >
+      {children || "Save Contact"}
+    </button>
+  );
+};

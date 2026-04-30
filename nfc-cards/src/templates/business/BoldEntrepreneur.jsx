@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const BoldEntrepreneur = ({ userData }) => {
   const { 
@@ -94,7 +95,7 @@ const BoldEntrepreneur = ({ userData }) => {
 
       </div>
       
-      <p className="text-center text-[10px] font-black tracking-[0.5em] text-black/40 uppercase mt-8 pb-4">Powered by Cardyn</p>
+      <PoweredBy />
     </div>
   );
 };

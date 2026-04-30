@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const CarShowroom = ({ userData }) => {
   const { displayName, email, role, mobileNumber, phone, companyName, designation, website, address, city, linkedin, instagram, facebook, twitter, bio, avatar, logo } = userData || {};
@@ -95,6 +96,7 @@ const CarShowroom = ({ userData }) => {
          <button onClick={() => downloadVCard(userData)} className="w-full py-5 bg-red-600 text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.3em] hover:bg-red-700 transition-all flex items-center justify-center gap-2 active:scale-[0.98]">
             <FiIcons.FiDownload size={16} /> Save VIP Contact
          </button>
+         <PoweredBy />
       </div>
     </div>
   );

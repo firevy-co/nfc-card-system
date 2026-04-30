@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiCoffee, FiPhone, FiMail, FiMapPin, FiGlobe, FiInstagram, FiTwitter, FiLinkedin, FiYoutube, FiUserPlus } from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const BistroLink = ({ icon: Icon, label, value, href }) => {
   if (!value || value === "" || value.includes('resolving')) return null;
@@ -69,9 +70,7 @@ const UrbanBistro = ({ userData }) => {
            </button>
         </div>
         
-        <div className="mt-12 text-center opacity-30 relative z-10">
-           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-[0.5em] text-[#2c3e50] uppercase italic hover:opacity-100 transition-opacity">Powered by Cardyn</a>
-        </div>
+        <PoweredBy />
       </div>
     </div>
   );

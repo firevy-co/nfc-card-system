@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { FiPhone, FiMail, FiGlobe, FiInstagram, FiLinkedin, FiTwitter, FiMapPin, FiUserPlus, FiGithub } from 'react-icons/fi';
 import { FaWhatsapp, FaFacebook, FaYoutube, FaTelegram } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const AbstractMedia = ({ userData }) => {
   const {
@@ -230,14 +231,7 @@ const AbstractMedia = ({ userData }) => {
         </motion.div>
 
         {/* Powered By Branding */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-12 pb-12 text-center"
-        >
-          <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="inline-block text-[9px] font-black tracking-[0.3em] text-white/10 hover:text-white/40 transition-colors uppercase py-2 px-6 border border-white/5 rounded-full backdrop-blur-sm">
-            Powered by Cardyn
-          </a>
-        </motion.div>
+        <PoweredBy />
       </motion.div>
 
       {/* Tailwind Style Extension for Shimmer */}

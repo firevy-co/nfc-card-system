@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiShield, FiPhone, FiMail, FiMapPin, FiBriefcase } from 'react-icons/fi';
+import PoweredBy from "../PoweredBy";
 
 const JusticePartners = ({ userData }) => {
   const { displayName, email, role, mobileNumber, city, country } = userData || {};
@@ -36,7 +37,7 @@ const JusticePartners = ({ userData }) => {
               <FiBriefcase size={16} /> Consult Counsel
            </button>
         </div>
-        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-12 text-[7px] text-center text-[#c5a176] font-bold uppercase tracking-[0.6em] font-sans hover:opacity-70 transition-opacity">Powered by Cardyn</a>
+        <PoweredBy />
       </div>
     </div>
   );

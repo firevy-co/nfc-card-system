@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiSquare, FiPhone, FiMail, FiMapPin, FiGlobe, FiInstagram, FiTwitter, FiLinkedin, FiYoutube, FiUserPlus, FiActivity } from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const ForgeLink = ({ icon: Icon, label, value, href }) => {
   if (!value || value === "" || value.includes('resolving')) return null;
@@ -74,9 +75,7 @@ const IronForge = ({ userData }) => {
            <FiSquare size={16} className="rotate-45" />
         </div>
 
-        <div className="mt-8 mb-2 text-center relative z-10">
-           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[10px] font-black tracking-[0.2em] text-gray-500 hover:text-white transition-colors uppercase font-mulish">Powered by Cardyn</a>
-        </div>
+        <PoweredBy />
       </div>
     </div>
   );

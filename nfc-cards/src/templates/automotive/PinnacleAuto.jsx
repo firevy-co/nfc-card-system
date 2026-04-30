@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const PinnacleAuto = ({ userData }) => {
   const { displayName, email, role, mobileNumber, phone, companyName, designation, website, address, city, linkedin, instagram, facebook, twitter, bio, avatar, logo } = userData || {};
@@ -82,6 +83,7 @@ const PinnacleAuto = ({ userData }) => {
          <button onClick={() => downloadVCard(userData)} className="w-full py-5 border-2 border-neutral-700 text-neutral-300 font-bold text-[10px] uppercase tracking-[0.3em] hover:bg-neutral-800 hover:text-white hover:border-neutral-500 transition-colors flex items-center justify-center gap-3 active:scale-[0.98]">
             <FiIcons.FiHardDrive size={16} /> Sync Master Data
          </button>
+         <PoweredBy />
       </div>
     </div>
   );

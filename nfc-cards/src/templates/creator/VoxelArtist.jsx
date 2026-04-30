@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiBox, FiPhone, FiMail, FiGlobe, FiYoutube, FiTwitter, FiInstagram, FiLinkedin, FiTwitch, FiMapPin, FiUserPlus, FiImage } from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const VoxelLink = ({ icon: Icon, value, href }) => {
   if (!value || value === "" || value.includes('resolving')) return null;
@@ -68,9 +69,7 @@ const VoxelArtist = ({ userData }) => {
            </button>
         </div>
         
-        <div className="mt-12 text-center opacity-30 relative z-10">
-           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-[0.5em] text-slate-900 uppercase italic hover:opacity-70 transition-opacity">Powered by Cardyn</a>
-        </div>
+        <PoweredBy />
       </div>
     </div>
   );

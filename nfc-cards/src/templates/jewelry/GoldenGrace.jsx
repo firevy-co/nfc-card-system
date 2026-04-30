@@ -1,6 +1,7 @@
 import React from "react";
 import * as FiIcons from "react-icons/fi";
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const GoldenGrace = ({ userData }) => {
   const {
@@ -46,10 +47,10 @@ const GoldenGrace = ({ userData }) => {
         {/* Hero Section */}
         <div className="relative h-72 flex items-center justify-center bg-[#050505] overflow-hidden">
           {/* Background Image */}
-          <img 
-             src={coverPhoto || "https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=1200&q=80"}
-             alt="Cover"
-             className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity"
+          <img
+            src={coverPhoto || "https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=1200&q=80"}
+            alt="Cover"
+            className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity"
           />
 
           {/* Radial Effect Overlay */}
@@ -57,17 +58,17 @@ const GoldenGrace = ({ userData }) => {
 
           {/* Center Profile/Jewelry Image */}
           <div className="absolute w-36 h-36 rounded-full bg-[#0a0a0a] border border-[#d4af37]/40 shadow-[0_0_35px_rgba(212,175,55,0.2)] overflow-hidden flex items-center justify-center p-1.5 z-10">
-             {avatar ? (
-                <img src={avatar} alt="Profile" className="w-full h-full object-cover rounded-full" />
-             ) : logo ? (
-                <img src={logo} alt="Logo" className="w-full h-full object-contain rounded-full" />
-             ) : (
-                <img 
-                   src="https://images.unsplash.com/photo-1599643478514-4a734800e238?auto=format&fit=crop&w=800&q=80" 
-                   alt="Jewelry" 
-                   className="w-full h-full object-cover rounded-full" 
-                />
-             )}
+            {avatar ? (
+              <img src={avatar} alt="Profile" className="w-full h-full object-cover rounded-full" />
+            ) : logo ? (
+              <img src={logo} alt="Logo" className="w-full h-full object-contain rounded-full" />
+            ) : (
+              <img
+                src="https://images.unsplash.com/photo-1599643478514-4a734800e238?auto=format&fit=crop&w=800&q=80"
+                alt="Jewelry"
+                className="w-full h-full object-cover rounded-full"
+              />
+            )}
           </div>
         </div>
 
@@ -177,18 +178,10 @@ const GoldenGrace = ({ userData }) => {
 
           {/* Footer */}
           <div className="mt-12 pt-6 border-t border-white/5 text-center">
-            <p className="text-[#d4af37] text-[10px] tracking-[0.35em] uppercase">
+            <p className="text-[#d4af37] text-[10px] tracking-[0.35em] uppercase mb-4">
               Crafted With Trust
             </p>
-
-            <a
-              href="https://cardyn.shop/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block mt-3 text-white/40 text-xs"
-            >
-              Powered by Cardyn
-            </a>
+            <PoweredBy />
           </div>
 
         </div>

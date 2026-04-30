@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiTv, FiPhone, FiMail, FiGlobe, FiYoutube, FiTwitter, FiInstagram, FiLinkedin, FiTwitch, FiMapPin, FiUserPlus, FiMonitor } from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const StreamLink = ({ icon: Icon, label, value, href }) => {
   if (!value || value === "" || value.includes('resolving')) return null;
@@ -84,7 +85,7 @@ const StreamTemplate = ({ userData }) => {
            </div>
         </div>
         
-        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-center text-[7px] text-white/10 font-black tracking-[1em] pb-8 uppercase italic hover:text-white/40 transition-colors">Powered by Cardyn</a>
+        <PoweredBy />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { FiGlobe, FiMail, FiPhone, FiMapPin, FiInstagram, FiLinkedin, FiTwitter, FiUserPlus, FiArrowUpRight, FiGithub } from 'react-icons/fi';
 import { FaWhatsapp, FaFacebook, FaYoutube, FaTiktok, FaDiscord, FaTelegram } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const VividStudio = ({ userData }) => {
   const {
@@ -205,14 +206,7 @@ const VividStudio = ({ userData }) => {
         </div>
 
         {/* Footer Sequence */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-12 pb-12 text-center"
-        >
-          <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="inline-block text-[10px] font-black tracking-[0.3em] uppercase text-white/40 hover:text-white transition-colors py-2.5 px-8 border border-white/20 rounded-full backdrop-blur-sm">
-            Powered by Cardyn
-          </a>
-        </motion.div>
+        <PoweredBy />
       </motion.div>
 
       <style dangerouslySetInnerHTML={{

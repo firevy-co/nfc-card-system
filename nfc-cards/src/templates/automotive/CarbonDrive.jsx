@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const CarbonDrive = ({ userData }) => {
   const { displayName, email, role, mobileNumber, phone, companyName, designation, website, address, city, linkedin, instagram, facebook, twitter, bio, avatar, logo } = userData || {};
@@ -90,6 +91,7 @@ const CarbonDrive = ({ userData }) => {
          <button onClick={() => downloadVCard(userData)} className="w-full py-4 border-2 border-red-600 text-red-500 font-black text-xs uppercase tracking-[0.2em] hover:bg-red-600 hover:text-white transition-all flex items-center justify-center gap-2 active:scale-[0.98]">
             <FiIcons.FiDownload size={14} /> Download File
          </button>
+         <PoweredBy />
       </div>
     </div>
   );

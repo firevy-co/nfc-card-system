@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const VelocityElite = ({ userData }) => {
   const { displayName, email, role, mobileNumber, phone, companyName, designation, website, address, city, linkedin, instagram, facebook, twitter, bio, avatar, logo } = userData || {};
@@ -91,6 +92,7 @@ const VelocityElite = ({ userData }) => {
          <button onClick={() => downloadVCard(userData)} className="w-full py-5 bg-blue-600 text-white rounded-xl font-bold text-[11px] uppercase tracking-[0.2em] shadow-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 mt-4 active:scale-[0.98]">
             <FiIcons.FiDownload size={16} /> Save Contact Details
          </button>
+         <PoweredBy />
       </div>
     </div>
   );

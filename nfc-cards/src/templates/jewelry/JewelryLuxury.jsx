@@ -12,6 +12,7 @@ import {
 } from "react-icons/fi";
 import { FaGem, FaWhatsapp, FaYoutube, FaTiktok, FaDiscord, FaTelegram, FaSkype, FaPaypal } from "react-icons/fa";
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const JewelryLuxury = ({ userData }) => {
    const {
@@ -147,12 +148,7 @@ const JewelryLuxury = ({ userData }) => {
                   <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
                </div>
 
-               {/* BRANDING FOOTER */}
-               <div className="pb-10 pt-10 text-center">
-                  <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="inline-block text-[9px] text-white/10 font-black tracking-[0.6em] uppercase hover:text-amber-500 transition-colors py-3 px-8 border border-white/5 rounded-full">
-                     Powered by Cardyn Identity
-                  </a>
-               </div>
+               <PoweredBy />
             </div>
          </div>
       </div>

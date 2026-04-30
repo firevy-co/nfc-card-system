@@ -13,6 +13,7 @@ import {
 } from 'react-icons/fi';
 import { FaWhatsapp, FaFacebook, FaYoutube, FaTiktok, FaDiscord, FaTelegram, FaSkype, FaPaypal } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const PrismCreative = ({ userData }) => {
   const {
@@ -190,17 +191,7 @@ const PrismCreative = ({ userData }) => {
           </div>
         </div>
 
-        {/* FOOTER */}
-        <motion.div variants={itemVariants} className="text-center py-10">
-          <a
-            href="https://cardyn.shop/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-gray-500 hover:text-white transition"
-          >
-            Powered by Cardyn
-          </a>
-        </motion.div>
+        <PoweredBy />
       </motion.div>
 
       {/* ICON STYLE */}

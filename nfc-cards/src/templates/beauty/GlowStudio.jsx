@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const GlowStudio = ({ userData }) => {
   const { 
@@ -115,7 +116,7 @@ const GlowStudio = ({ userData }) => {
             <FiIcons.FiDownload size={16} /> Save Identity
          </button>
 
-         <p className="text-[7px] font-black tracking-[0.6em] text-rose-200 uppercase italic mt-8">Powered by Cardyn</p>
+         <PoweredBy />
       </div>
       <style dangerouslySetInnerHTML={{__html: `.hide-scrollbar::-webkit-scrollbar { display: none; }`}} />
     </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import {
    FiGlobe,
    FiMail,
@@ -6,202 +6,334 @@ import {
    FiMapPin,
    FiLinkedin,
    FiCpu,
-   FiFileText,
-   FiArrowUpRight
-} from "react-icons/fi";
+   FiArrowUpRight,
+   FiInstagram,
+   FiDownload,
+   FiShield,
+   FiLayers,
+   FiCode,
+   FiDatabase,
+   FiCloud,
+   FiCheckCircle,
+   FiBarChart2,
+   FiMonitor,
+   FiSettings,
+   FiChevronDown
+} from 'react-icons/fi';
 
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from '../PoweredBy';
 
-const ITSolutions = ({ userData }) => {
+const ITSolutions = ({ userData = {} }) => {
+   const [openFaq, setOpenFaq] = useState(null);
+
    const {
-      displayName,
-      role,
-      website,
-      email,
-      phone,
-      address,
-      linkedin,
-      instagram
-   } = userData || {};
+      displayName = 'Aiden Brooks',
+      role = 'Technology Strategist',
+      website = 'https://example.com',
+      email = 'admin@gmail.com',
+      phone = '+1 555 555 5555',
+      address = 'New York, USA',
+      linkedin = '',
+      instagram = '',
+      logo,
+      banner = 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop'
+   } = userData;
 
-   const SpineLink = ({ icon: Icon, label, url }) => {
-      if (!url) return null;
-      return (
-         <a href={url} target="_blank" rel="noopener noreferrer" className="relative flex items-center py-4 group block">
-            {/* Spine Decor */}
-            <div className="absolute left-0 top-0 bottom-0 w-12 flex flex-col items-center overflow-hidden z-0 pointer-events-none">
-               <div className="w-[1px] h-full bg-[#d4af37]/30 absolute"></div>
-               <div className="absolute top-1/2 -translate-y-1/2 w-16 h-24 border border-[#d4af37]/20 rounded-[2rem] bg-black group-hover:bg-[#d4af37]/5 transition-colors duration-500"></div>
-            </div>
+   const links = [
+      { icon: FiGlobe, label: 'Website', value: 'Open Site', url: website },
+      { icon: FiMail, label: 'Email', value: email, url: `mailto:${email}` },
+      { icon: FiPhone, label: 'Phone', value: phone, url: `tel:${phone}` },
+      { icon: FiLinkedin, label: 'LinkedIn', value: 'View Profile', url: linkedin },
+      { icon: FiInstagram, label: 'Instagram', value: 'Follow Now', url: instagram },
+      {
+         icon: FiMapPin,
+         label: 'Location',
+         value: address,
+         url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`
+      }
+   ].filter((x) => x.url);
 
-            {/* Icon Box */}
-            <div className="w-[50px] h-[50px] ml-4 rounded-[1.2rem] bg-black border border-[#d4af37]/40 shadow-[0_0_15px_rgba(212,175,55,0.15)] flex items-center justify-center z-10 relative transition-colors group-hover:border-[#d4af37]">
-               <Icon size={20} className="text-[#d4af37]" />
-            </div>
+   const services = [
+      {
+         icon: FiShield,
+         title: 'Cyber Security',
+         text: 'Advanced protection systems, firewall setup, penetration testing, and threat monitoring.'
+      },
+      {
+         icon: FiCloud,
+         title: 'Cloud Infrastructure',
+         text: 'AWS, Azure, Google Cloud deployment, scaling, migration, and maintenance.'
+      },
+      {
+         icon: FiCode,
+         title: 'Software Development',
+         text: 'Custom websites, web apps, mobile apps, enterprise portals, dashboards.'
+      },
+      {
+         icon: FiDatabase,
+         title: 'Database Solutions',
+         text: 'MySQL, PostgreSQL, MongoDB architecture, optimization, backup systems.'
+      },
+      {
+         icon: FiMonitor,
+         title: 'UI / UX Design',
+         text: 'Premium modern interfaces with responsive and user-friendly experiences.'
+      },
+      {
+         icon: FiSettings,
+         title: 'Automation',
+         text: 'CRM, ERP, workflow automation, API integrations and AI tools.'
+      }
+   ];
 
-            {/* Text */}
-            <div className="ml-5 flex-1 z-10">
-               <p className="text-[#d4af37] text-[8px] font-bold tracking-[0.3em] uppercase mb-1">Tech Connect</p>
-               <p className="text-white text-[15px] font-medium tracking-wide group-hover:text-[#d4af37] transition-colors">
-                  {label}
-               </p>
-            </div>
+   const industries = [
+      'Healthcare IT',
+      'Finance & Banking',
+      'E-commerce',
+      'Manufacturing',
+      'Education',
+      'Real Estate',
+      'Government',
+      'Startups'
+   ];
 
-            {/* Arrow */}
-            <div className="ml-2 pr-4 z-10">
-               <FiArrowUpRight size={18} className="text-zinc-600 group-hover:text-[#d4af37] transition-colors" />
-            </div>
-         </a>
-      );
-   };
+   const technologies = [
+      'React JS',
+      'Node JS',
+      'Python',
+      '.NET',
+      'Laravel',
+      'MongoDB',
+      'AWS',
+      'Azure'
+   ];
 
-   const CustomMapPreview = ({ address }) => {
-      if (!address || address === "" || address.includes("resolving")) return null;
-      const encodedAddress = encodeURIComponent(address);
-
-      return (
-         <a
-            href={`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block relative w-full h-52 rounded-[2rem] overflow-hidden group shadow-md border border-[#1a1a1a]"
-         >
-            <img
-               src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80"
-               alt="Headquarters"
-               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-70"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
-            
-            <div className="absolute bottom-6 left-6 right-6">
-               <p className="text-[#d4af37] text-[10px] font-bold uppercase tracking-[0.25em] mb-1">
-                  Visit Headquarters
-               </p>
-               <p className="text-white text-[17px] font-medium truncate mb-4 drop-shadow-md">
-                  {address}
-               </p>
-               <div className="inline-block bg-[#d4af37] text-black px-6 py-2.5 rounded-full text-[9px] font-bold uppercase tracking-[0.2em] shadow-lg group-hover:bg-[#ebbb67] transition-colors">
-                  Open Map
-               </div>
-            </div>
-         </a>
-      );
-   };
+   const faq = [
+      {
+         q: 'Do you build custom software?',
+         a: 'Yes, we create custom web apps, CRM systems, ERP software, mobile apps and dashboards.'
+      },
+      {
+         q: 'Do you offer IT support?',
+         a: 'Yes, we provide maintenance, monitoring, server management and security support.'
+      },
+      {
+         q: 'Can you migrate to cloud?',
+         a: 'Yes, we migrate businesses to AWS, Azure and modern cloud platforms.'
+      }
+   ];
 
    return (
-      <div className="min-h-screen bg-[#030303] text-white flex justify-center px-4 py-10 font-['Mulish'] md:bg-neutral-950 md:items-center py-0 md:py-12">
-         <div className="w-full max-w-sm">
+      <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-black to-zinc-900 text-white px-4 py-8 flex justify-center">
+         <div className="w-full max-w-sm rounded-[34px] overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_30px_90px_rgba(0,0,0,0.45)]">
 
-            {/* Main Card */}
-            <div className="rounded-[2.2rem] border border-[#1a1a1a] bg-black p-5 shadow-2xl">
+            {/* HERO */}
+            <div className="relative h-56">
+               <img src={banner} className="w-full h-full object-cover" />
+               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
 
-               {/* Profile Section */}
-               <div className="text-center">
+               <div className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.35em] text-amber-300 font-bold">
+                  IT SOLUTIONS
+               </div>
 
-                  {/* Profile Image */}
-                  <div className="mx-auto w-24 h-24 rounded-full border border-[#d4af37]/60 p-1 shadow-lg">
-                     <div className="w-full h-full rounded-full overflow-hidden bg-[#111] flex items-center justify-center">
-                        {userData?.logo ? (
-                           <img
-                              src={userData.logo}
-                              alt="Profile"
-                              className="w-full h-full object-cover"
+               <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-24 h-24 rounded-3xl p-1 bg-gradient-to-br from-amber-300 to-yellow-600 shadow-2xl">
+                  <div className="w-full h-full rounded-3xl overflow-hidden bg-zinc-900 flex items-center justify-center">
+                     {logo ? (
+                        <img src={logo} className="w-full h-full object-cover" />
+                     ) : (
+                        <FiCpu size={34} className="text-amber-300" />
+                     )}
+                  </div>
+               </div>
+            </div>
+
+            {/* PROFILE */}
+            <div className="pt-16 px-5 text-center">
+               <h1 className="text-3xl font-black tracking-tight">{displayName}</h1>
+               <p className="text-amber-300 text-xs uppercase tracking-[0.3em] mt-2">{role}</p>
+               <p className="text-zinc-400 text-sm leading-6 mt-4">
+                  Helping businesses scale through software engineering, cybersecurity,
+                  cloud systems and enterprise digital transformation.
+               </p>
+            </div>
+
+            {/* QUICK LINKS */}
+            <div className="px-5 mt-6 grid gap-3">
+               {links.map((item, i) => {
+                  const Icon = item.icon;
+                  return (
+                     <a
+                        key={i}
+                        href={item.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="group rounded-2xl border border-white/10 bg-white/[0.03] p-4 flex items-center gap-4 hover:bg-white/[0.07] transition-all"
+                     >
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-300 to-yellow-600 text-black flex items-center justify-center shadow-lg">
+                           <Icon size={18} />
+                        </div>
+
+                        <div className="flex-1 text-left">
+                           <div className="text-[10px] uppercase tracking-[0.28em] text-zinc-500">
+                              {item.label}
+                           </div>
+                           <div className="font-semibold text-sm text-white truncate">
+                              {item.value}
+                           </div>
+                        </div>
+
+                        <FiArrowUpRight className="text-zinc-500 group-hover:text-amber-300" />
+                     </a>
+                  );
+               })}
+            </div>
+
+            {/* STATS */}
+            <div className="px-5 mt-7">
+               <div className="rounded-2xl p-4 bg-gradient-to-r from-amber-300/10 to-transparent border border-amber-300/20">
+                  <div className="text-center font-black text-lg">Company Highlights</div>
+
+                  <div className="grid grid-cols-3 gap-2 mt-4 text-center">
+                     <div>
+                        <div className="text-amber-300 font-black text-xl">250+</div>
+                        <div className="text-[10px] text-zinc-400">Projects</div>
+                     </div>
+
+                     <div>
+                        <div className="text-amber-300 font-black text-xl">15+</div>
+                        <div className="text-[10px] text-zinc-400">Years</div>
+                     </div>
+
+                     <div>
+                        <div className="text-amber-300 font-black text-xl">24/7</div>
+                        <div className="text-[10px] text-zinc-400">Support</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            {/* SERVICES */}
+            <div className="px-5 mt-7">
+               <h2 className="text-center font-black text-lg mb-4">IT Services</h2>
+
+               <div className="space-y-3">
+                  {services.map((s, i) => {
+                     const Icon = s.icon;
+
+                     return (
+                        <div
+                           key={i}
+                           className="rounded-2xl p-4 bg-gradient-to-r from-zinc-900 to-zinc-800 border border-white/10 flex gap-4"
+                        >
+                           <div className="w-11 h-11 rounded-2xl bg-amber-300/10 text-amber-300 flex items-center justify-center">
+                              <Icon />
+                           </div>
+
+                           <div>
+                              <div className="font-bold">{s.title}</div>
+                              <div className="text-xs text-zinc-400 mt-1 leading-5">
+                                 {s.text}
+                              </div>
+                           </div>
+                        </div>
+                     );
+                  })}
+               </div>
+            </div>
+
+            {/* INDUSTRIES */}
+            <div className="px-5 mt-7">
+               <h2 className="text-center font-black text-lg mb-4">Industries We Serve</h2>
+
+               <div className="grid grid-cols-2 gap-2">
+                  {industries.map((item, i) => (
+                     <div
+                        key={i}
+                        className="rounded-xl px-3 py-3 bg-white/[0.03] border border-white/10 text-sm text-zinc-300 text-center"
+                     >
+                        {item}
+                     </div>
+                  ))}
+               </div>
+            </div>
+
+            {/* TECHNOLOGY STACK */}
+            <div className="px-5 mt-7">
+               <h2 className="text-center font-black text-lg mb-4">Technology Stack</h2>
+
+               <div className="flex flex-wrap gap-2 justify-center">
+                  {technologies.map((tech, i) => (
+                     <span
+                        key={i}
+                        className="px-3 py-2 rounded-full bg-amber-300/10 border border-amber-300/20 text-amber-300 text-xs font-semibold"
+                     >
+                        {tech}
+                     </span>
+                  ))}
+               </div>
+            </div>
+
+            {/* CLIENT SATISFACTION */}
+            <div className="px-5 mt-7">
+               <div className="rounded-2xl p-4 bg-white/[0.03] border border-white/10 text-center">
+                  <div className="text-sm text-zinc-400">Client Satisfaction</div>
+
+                  <div className="mt-3 h-2 rounded-full bg-zinc-800 overflow-hidden">
+                     <div className="h-full w-[97%] bg-gradient-to-r from-amber-300 to-yellow-600"></div>
+                  </div>
+
+                  <div className="mt-2 text-amber-300 font-bold">
+                     97% Positive Reviews
+                  </div>
+               </div>
+            </div>
+
+            {/* FAQ */}
+            <div className="px-5 mt-7">
+               <h2 className="text-center font-black text-lg mb-4">FAQ</h2>
+
+               <div className="space-y-3">
+                  {faq.map((item, i) => (
+                     <div
+                        key={i}
+                        className="rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden"
+                     >
+                        <button
+                           onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                           className="w-full px-4 py-4 flex justify-between items-center text-left"
+                        >
+                           <span className="font-semibold text-sm">{item.q}</span>
+                           <FiChevronDown
+                              className={`transition-all ${openFaq === i ? 'rotate-180 text-amber-300' : ''
+                                 }`}
                            />
-                        ) : (
-                           <FiCpu className="text-[#d4af37] text-3xl" />
+                        </button>
+
+                        {openFaq === i && (
+                           <div className="px-4 pb-4 text-sm text-zinc-400 leading-6">
+                              {item.a}
+                           </div>
                         )}
                      </div>
-                  </div>
-
-                  {/* Name */}
-                  <h1 className="mt-5 text-[34px] leading-none font-serif text-white">
-                     {displayName}
-                  </h1>
-
-                  {/* Role */}
-                  {/* <p className="mt-3 text-[10px] tracking-[0.35em] uppercase font-bold text-[#d4af37]">
-                     {role || "Chief Technology Officer"}
-                  </p> */}
-
-                  <div className="w-14 h-[1px] bg-[#d4af37]/60 mx-auto mt-4"></div>
+                  ))}
                </div>
+            </div>
 
-               {/* Connect Links (Spine UI) */}
-               <div className="mt-8 mb-6 relative z-10">
-                  <SpineLink icon={FiGlobe} label="Visit Website" url={website ? (website.startsWith("http") ? website : `https://${website}`) : null} />
-                  <SpineLink icon={FiMail} label="Email Me" url={email ? `mailto:${email}` : null} />
-                  <SpineLink icon={FiPhone} label="Call Now" url={phone ? `tel:${phone}` : null} />
-                  <SpineLink icon={FiLinkedin} label="LinkedIn Profile" url={linkedin ? (linkedin.startsWith("http") ? linkedin : `https://linkedin.com/in/${linkedin.replace('@', '')}`) : null} />
-               </div>
+            {/* SAVE CONTACT */}
+            <div className="px-5 mt-7">
+               <button
+                  onClick={() => downloadVCard(userData)}
+                  className="w-full h-12 rounded-2xl bg-gradient-to-r from-amber-300 to-yellow-600 text-black font-bold flex items-center justify-center gap-2 hover:scale-[1.02] transition-all"
+               >
+                  <FiDownload />
+                  Save Contact
+               </button>
+            </div>
 
-               {/* Service Card */}
-               <div className="mt-7 rounded-2xl border border-[#2c2c2c] bg-gradient-to-br from-[#1a1a1a] to-[#111] p-6 text-center">
-
-                  <div className="w-10 h-10 rounded-full bg-[#d4af37]/10 flex items-center justify-center mx-auto mb-4">
-                     <FiCpu className="text-[#d4af37]" />
-                  </div>
-
-                  <h3 className="text-2xl font-serif text-white">
-                     Enterprise Solutions
-                  </h3>
-
-                  <p className="mt-3 text-sm text-gray-400 leading-6">
-                     Scalable infrastructure and cybersecurity frameworks for the modern age.
-                  </p>
-
-                  <button className="mt-5 px-6 h-10 rounded-full border border-[#d4af37] text-[#d4af37] text-[10px] uppercase tracking-[0.25em] font-bold hover:bg-[#d4af37] hover:text-black transition">
-                     View Solutions
-                  </button>
-               </div>
-
-               {/* Banner Image Card */}
-               <div className="mt-7 rounded-2xl overflow-hidden border border-[#1d1d1d]">
-
-                  <div
-                     className="h-40 bg-cover bg-center relative"
-                     style={{
-                        backgroundImage: `url(${userData?.banner ||
-                           "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80"
-                           })`
-                     }}
-                  >
-                     <div className="absolute inset-0 bg-black/45"></div>
-
-                     <div className="absolute bottom-4 left-4 z-10">
-                        <p className="text-[10px] uppercase tracking-[0.28em] font-bold text-[#d4af37]">
-                           Headquarters
-                        </p>
-                        <p className="text-white text-sm mt-1">
-                           {address}
-                        </p>
-                     </div>
-                  </div>
-               </div>
-
-               {/* Contact Links removed as they are now in the spine */}
-
-               {/* Map */}
-               <div className="mt-7">
-                  <CustomMapPreview address={address} />
-               </div>
-
-               {/* Save Contact */}
-               <div className="mt-7">
-                  <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
-               </div>
-
-               {/* Footer */}
-               <div className="mt-8 text-center">
-                  <a
-                     href="https://cardyn.shop/"
-                     target="_blank"
-                     rel="noopener noreferrer"
-                     className="text-[8px] uppercase tracking-[0.45em] font-bold text-[#d4af37]/70 hover:text-[#d4af37]"
-                  >
-                     Powered by Cardyn
-                  </a>
-               </div>
-
+            {/* FOOTER */}
+            <div className="px-5 py-6">
+               <PoweredBy />
             </div>
          </div>
       </div>

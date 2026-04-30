@@ -1,140 +1,290 @@
-import React from 'react';
-import * as FiIcons from 'react-icons/fi';
+import React from "react";
+import * as FiIcons from "react-icons/fi";
 import { downloadVCard } from "../common/StandardComponents";
+import PoweredBy from "../PoweredBy";
 
 const DiamondElite = ({ userData }) => {
-  const { displayName, email, role, phone, website, address, city, instagram, facebook, linkedin, twitter, logo, avatar, designation } = userData || {};
+  const {
+    displayName = "DIAMOND ELITE",
+    email = "hello@diamondelite.com",
+    role = "Premium Jewellery Studio",
+    phone = "+91 98765 43210",
+    website = "diamondelite.com",
+    address = "Ahmedabad, Gujarat, India",
+    city,
+    instagram = "diamondelite.jewels",
+    facebook = "diamondelitejewels",
+    linkedin = "diamondelite",
+    twitter = "diamondelite",
+    logo,
+    avatar,
+    designation,
+  } = userData || {};
 
-  const displayPhone = phone;
-  const displayRole = designation || role || "Identity & Space";
+  const displayRole = designation || role;
   const finalAddress = address || city;
-  const mapImage = "https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000&auto=format&fit=crop";
 
   const getSocialUrl = (platform, value) => {
-    if (!value) return null;
-    if (value.startsWith('http')) return value;
+    if (!value) return "#";
+    if (value.startsWith("http")) return value;
+
     switch (platform) {
-      case 'linkedin': return `https://linkedin.com/in/${value.replace('@', '')}`;
-      case 'instagram': return `https://instagram.com/${value.replace('@', '')}`;
-      case 'twitter': return `https://twitter.com/${value.replace('@', '')}`;
-      case 'facebook': return `https://facebook.com/${value}`;
-      case 'website': return `https://${value}`;
-      default: return `https://${value}`;
+      case "instagram":
+        return `https://instagram.com/${value.replace("@", "")}`;
+      case "facebook":
+        return `https://facebook.com/${value}`;
+      case "linkedin":
+        return `https://linkedin.com/in/${value}`;
+      case "twitter":
+        return `https://twitter.com/${value}`;
+      case "website":
+        return `https://${value}`;
+      default:
+        return value;
     }
   };
 
-  const ActionLink = ({ icon: Icon, label, url }) => {
-    if (!url) return null;
-    return (
-      <a
-        href={url}
-        target={url.startsWith('http') ? '_blank' : '_self'}
-        rel="noopener noreferrer"
-        className="w-full bg-[#151515] border border-[#2a2a2a] p-4 rounded-xl flex items-center gap-4 hover:border-[#444] hover:bg-[#1a1a1a] transition-all cursor-pointer shadow-sm group"
-      >
-        <Icon size={20} className="text-[#0ea5e9]" />
-        <span className="text-[13px] font-medium text-[#e0e0e0] group-hover:text-white transition-colors">{label}</span>
-        <FiIcons.FiChevronRight size={18} className="text-zinc-600 ml-auto group-hover:text-zinc-300 transition-colors" />
-      </a>
-    );
-  };
+  const ActionCard = ({ icon: Icon, title, subtitle, url }) => (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-full bg-white/80 backdrop-blur-xl border border-[#eadfca] rounded-2xl p-4 flex items-center gap-4 hover:shadow-xl transition-all"
+    >
+      <div className="w-11 h-11 rounded-full bg-[#f8f3eb] flex items-center justify-center">
+        <Icon size={18} className="text-[#b68d40]" />
+      </div>
+
+      <div className="flex-1">
+        <p className="text-[11px] uppercase tracking-[0.18em] text-[#2c2418] font-semibold">
+          {title}
+        </p>
+        {subtitle && (
+          <p className="text-[10px] text-[#7a6b57] mt-1 truncate">
+            {subtitle}
+          </p>
+        )}
+      </div>
+
+      <FiIcons.FiArrowUpRight
+        size={16}
+        className="text-[#b68d40]"
+      />
+    </a>
+  );
+
+  const gallery = [
+    "https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1603974372039-adc49044b6bd?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=900&q=80",
+  ];
 
   return (
-    <div className="min-h-screen bg-[#111111] font-sans pb-12 text-zinc-200 flex flex-col items-center">
-      <div className="w-full max-w-[360px] px-6 pt-16 flex flex-col items-center">
+    <div className="min-h-screen bg-gradient-to-b from-[#f9f6f1] via-[#f7f1e8] to-[#efe5d6] font-sans pb-12 flex justify-center">
+      <div className="w-full max-w-[380px] px-5 pt-8">
 
-        {/* Profile Image */}
-        <div className="w-24 h-24 rounded-full overflow-hidden border-[1.5px] border-[#fbbf24] bg-[#111] shadow-[0_0_15px_rgba(251,191,36,0.15)] mb-5 p-[2px]">
-          <div className="w-full h-full rounded-full overflow-hidden bg-black flex items-center justify-center">
-            {avatar ? (
-              <img src={avatar} alt="Profile" className="w-full h-full object-cover" />
-            ) : logo ? (
-              <img src={logo} alt="Logo" className="w-full h-full object-contain p-2" />
-            ) : (
-              <span className="text-4xl text-amber-500 uppercase font-light">{(displayName || 'A')[0]}</span>
-            )}
+        {/* Hero Card */}
+        <div className="rounded-[30px] overflow-hidden shadow-2xl bg-white border border-[#eadfca]">
+
+          {/* Banner */}
+          <div className="relative h-56 overflow-hidden">
+            <img
+              src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=1200&q=80"
+              className="w-full h-full object-cover"
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+
+            <div className="absolute bottom-5 left-5">
+              <p className="text-[#f8d99d] text-[10px] tracking-[0.3em] uppercase">
+                Exclusive Collection
+              </p>
+              <h2 className="text-white text-2xl font-serif mt-1">
+                Elegant Jewellery
+              </h2>
+            </div>
+          </div>
+
+          {/* Profile */}
+          <div className="px-5 pb-6 text-center relative">
+            <div className="-mt-14 mx-auto w-28 h-28 rounded-full border-[4px] border-white shadow-xl overflow-hidden bg-[#f4ede2]">
+              {avatar ? (
+                <img
+                  src={avatar}
+                  className="w-full h-full object-cover"
+                />
+              ) : logo ? (
+                <img
+                  src={logo}
+                  className="w-full h-full object-contain p-3"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-3xl font-bold text-[#b68d40]">
+                  {displayName[0]}
+                </div>
+              )}
+            </div>
+
+            <h1 className="mt-4 text-[24px] font-serif tracking-[0.12em] text-[#2c2418] uppercase">
+              {displayName}
+            </h1>
+
+            <p className="text-[10px] tracking-[0.28em] text-[#8c7a61] uppercase mt-1">
+              {displayRole}
+            </p>
+
+            <p className="text-[12px] text-[#6b5a45] leading-6 mt-4 px-2">
+              Fine diamond jewellery, handcrafted gold pieces, bridal elegance
+              and bespoke luxury designs for every occasion.
+            </p>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-3 mt-6">
+              <div className="bg-[#faf6ef] rounded-2xl py-3">
+                <p className="text-[#b68d40] text-lg font-semibold">800+</p>
+                <p className="text-[10px] text-[#7a6b57] uppercase">
+                  Designs
+                </p>
+              </div>
+
+              <div className="bg-[#faf6ef] rounded-2xl py-3">
+                <p className="text-[#b68d40] text-lg font-semibold">20+</p>
+                <p className="text-[10px] text-[#7a6b57] uppercase">
+                  Years
+                </p>
+              </div>
+
+              <div className="bg-[#faf6ef] rounded-2xl py-3">
+                <p className="text-[#b68d40] text-lg font-semibold">100%</p>
+                <p className="text-[10px] text-[#7a6b57] uppercase">
+                  Trusted
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact */}
+          <div className="px-4 pb-2 space-y-3">
+            <ActionCard
+              icon={FiIcons.FiGlobe}
+              title="Visit Website"
+              subtitle={website}
+              url={getSocialUrl("website", website)}
+            />
+
+            <ActionCard
+              icon={FiIcons.FiPhone}
+              title="Call Showroom"
+              subtitle={phone}
+              url={`tel:${phone}`}
+            />
+
+            <ActionCard
+              icon={FiIcons.FiMail}
+              title="Email Us"
+              subtitle={email}
+              url={`mailto:${email}`}
+            />
+          </div>
+
+          {/* Collections */}
+          <div className="px-5 pt-6">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-[#b68d40] mb-4">
+              Signature Collection
+            </p>
+
+            <div className="grid grid-cols-2 gap-3">
+              {gallery.map((img, i) => (
+                <div
+                  key={i}
+                  className="h-32 rounded-2xl overflow-hidden"
+                >
+                  <img
+                    src={img}
+                    className="w-full h-full object-cover hover:scale-110 transition duration-700"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Social */}
+          <div className="px-5 pt-6">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-[#b68d40] mb-4">
+              Connect With Us
+            </p>
+
+            <div className="flex justify-center gap-5">
+              {[
+                {
+                  icon: FiIcons.FiInstagram,
+                  link: getSocialUrl("instagram", instagram),
+                },
+                {
+                  icon: FiIcons.FiFacebook,
+                  link: getSocialUrl("facebook", facebook),
+                },
+                {
+                  icon: FiIcons.FiLinkedin,
+                  link: getSocialUrl("linkedin", linkedin),
+                },
+                {
+                  icon: FiIcons.FiTwitter,
+                  link: getSocialUrl("twitter", twitter),
+                },
+              ].map((item, i) => (
+                <a
+                  key={i}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-11 h-11 rounded-full bg-[#faf6ef] flex items-center justify-center text-[#b68d40] hover:bg-[#b68d40] hover:text-white transition"
+                >
+                  <item.icon size={18} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Map */}
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+              finalAddress
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mx-5 mt-7 h-36 rounded-2xl overflow-hidden relative block"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1508057198894-247b23fe5ade?auto=format&fit=crop&w=1200&q=80"
+              className="w-full h-full object-cover"
+            />
+
+            <div className="absolute inset-0 bg-black/35"></div>
+
+            <div className="absolute bottom-4 left-4">
+              <p className="text-white text-sm font-medium">
+                {finalAddress}
+              </p>
+              <p className="text-white/80 text-[10px] uppercase tracking-[0.2em]">
+                Visit Showroom
+              </p>
+            </div>
+          </a>
+
+          {/* Save */}
+          <div className="px-5 py-6">
+            <button
+              onClick={() => downloadVCard(userData)}
+              className="w-full py-4 rounded-2xl bg-[#b68d40] hover:bg-[#9f7833] text-white uppercase tracking-[0.22em] text-[11px] font-semibold transition"
+            >
+              Save Contact
+            </button>
           </div>
         </div>
 
-        {/* Identity Info */}
-        <h1 className="text-[28px] font-serif tracking-[0.1em] text-[#f4f4f4] uppercase text-center mb-1">
-          {displayName || 'ARCHITECT'}
-        </h1>
-        <p className="text-[9px] font-bold tracking-[0.2em] text-[#888] uppercase text-center font-sans mb-10">
-          {displayRole}
-        </p>
-
-        {/* Stacked Links */}
-        <div className="w-full flex flex-col gap-3">
-          <ActionLink icon={FiIcons.FiGlobe} label="Visit Website" url={website ? getSocialUrl('website', website) : null} />
-          <ActionLink icon={FiIcons.FiMail} label="Email Me" url={email ? `mailto:${email}` : null} />
-          <ActionLink icon={FiIcons.FiPhone} label="Call Now" url={phone ? `tel:${phone}` : null} />
-        </div>
-
-        {/* Social Icons */}
-        <div className="w-full mt-8 flex justify-center gap-8 items-center flex-wrap">
-          {[
-            { icon: FiIcons.FiCamera, platform: 'instagram', val: instagram },
-            { icon: FiIcons.FiUsers, platform: 'facebook', val: facebook },
-            { icon: FiIcons.FiGlobe, platform: 'website', val: website },
-            { icon: FiIcons.FiLinkedin, platform: 'linkedin', val: linkedin },
-            { icon: FiIcons.FiTwitter, platform: 'twitter', val: twitter },
-          ].map((social, idx) => social.val && (
-            <a key={idx} href={getSocialUrl(social.platform, social.val)} target="_blank" rel="noopener noreferrer" className="text-[#0ea5e9] hover:text-white transition-colors">
-              <social.icon size={24} />
-            </a>
-          ))}
-          {/* Fallback to show icons even if links aren't provided to match UI presentation exactly if desired */}
-          {!instagram && !facebook && !website && (
-            <>
-              <button className="text-[#0ea5e9] hover:text-white transition-colors"><FiIcons.FiCamera size={24} /></button>
-              <button className="text-[#0ea5e9] hover:text-white transition-colors"><FiIcons.FiUsers size={24} /></button>
-              <button className="text-[#0ea5e9] hover:text-white transition-colors"><FiIcons.FiGlobe size={24} /></button>
-            </>
-          )}
-        </div>
-
-        {/* View Collection */}
-        <button className="w-full mt-8 py-4 border border-[#ea580c] rounded-xl flex justify-center items-center gap-3 text-[10px] font-bold tracking-[0.2em] text-[#ea580c] hover:bg-[#ea580c] hover:text-[#111] transition-colors uppercase">
-          View Collection
-          <FiIcons.FiGrid size={16} />
-        </button>
-
-        {/* Map Block */}
-        <a
-          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(finalAddress || "5th Ave, Manhattan")}`}
-          target="_blank" rel="noopener noreferrer"
-          className="w-full h-36 mt-8 rounded-xl overflow-hidden relative group block shadow-lg border border-[#2a2a2a] bg-[#e5e5e5]"
-        >
-          <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000&auto=format&fit=crop" alt="Map" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-90" />
-
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
-
-          <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between z-10">
-            <div className="max-w-[70%]">
-              <p className="text-[9px] font-medium tracking-wide text-zinc-400 uppercase mb-0.5">Principal Office</p>
-              <p className="text-[13px] text-white font-medium truncate">{finalAddress || "5th Ave, Manhattan"}</p>
-            </div>
-            <div className="bg-[#222]/80 backdrop-blur-sm border border-[#333] text-zinc-200 px-3 py-1.5 rounded-md text-[9px] font-bold tracking-widest hover:bg-white hover:text-black transition-colors uppercase">
-              Open Map
-            </div>
-          </div>
-        </a>
-
-        {/* Save Contact */}
-        <button
-          onClick={() => downloadVCard(userData)}
-          className="w-full mt-8 py-4 bg-[#0ea5e9] hover:bg-[#0284c7] text-white rounded-xl flex justify-center items-center gap-3 text-[11px] font-bold tracking-[0.1em] uppercase transition-colors shadow-lg"
-        >
-          <FiIcons.FiUserPlus size={18} />
-          Save Contact
-        </button>
-
-        {/* Footer */}
-        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-12 text-[8px] font-black tracking-[0.6em] text-[#333] hover:text-[#555] transition-colors uppercase text-center pb-8">
-          Powered by Cardyn
-        </a>
-
+        <PoweredBy />
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const ClassicRefined = ({ userData }) => {
    const {
@@ -189,9 +190,7 @@ const ClassicRefined = ({ userData }) => {
             </div>
 
             {/* Footer */}
-            <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-12 text-[8px] font-black tracking-[0.5em] text-zinc-600 hover:text-[#c2a05f] transition-colors uppercase text-center pb-8">
-               Powered by Cardyn
-            </a>
+            <PoweredBy />
 
          </div>
       </div>

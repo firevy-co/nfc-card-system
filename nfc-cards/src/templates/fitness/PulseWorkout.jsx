@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiActivity, FiPhone, FiMail, FiMapPin, FiCalendar, FiGlobe, FiInstagram, FiTwitter, FiLinkedin, FiYoutube, FiUserPlus } from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const PulseLink = ({ icon: Icon, label, value, href }) => {
   if (!value || value === "" || value.includes('resolving')) return null;
@@ -85,7 +86,7 @@ const PulseWorkout = ({ userData }) => {
               </a>
            )}
            
-           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-center text-[7px] text-white/10 font-bold tracking-[0.8em] pt-8 uppercase italic hover:text-white/40 transition-colors">Powered by Cardyn</a>
+           <PoweredBy />
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const RigidBuild = ({ userData }) => {
   const { 
@@ -123,7 +124,7 @@ const RigidBuild = ({ userData }) => {
             <FiIcons.FiHardDrive size={18} /> Sync Credentials
          </button>
 
-         <p className="text-center text-[8px] font-black tracking-[0.5em] text-slate-400 uppercase pt-4">Powered by Cardyn</p>
+         <PoweredBy />
       </div>
     </div>
   );

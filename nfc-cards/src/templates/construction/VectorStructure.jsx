@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const VectorStructure = ({ userData }) => {
   const { 
@@ -103,9 +104,7 @@ const VectorStructure = ({ userData }) => {
             <FiIcons.FiDownload size={14} /> Extract V-Card Data
          </button>
          
-         <div className="mt-8 border-t border-[#38bdf8]/30 pt-2 text-right">
-            <p className="text-[8px] uppercase tracking-widest opacity-50">SYS: CARDYN // VER: 1.0</p>
-         </div>
+         <PoweredBy />
       </div>
     </div>
   );

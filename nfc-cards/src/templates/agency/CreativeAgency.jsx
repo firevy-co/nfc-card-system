@@ -8,6 +8,7 @@ import {
 } from 'react-icons/fi';
 import { FaWhatsapp, FaTiktok, FaYoutube, FaDiscord, FaTelegram, FaSkype, FaPaypal, FaFacebook } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const CreativeAgency = ({ userData }) => {
    const {
@@ -245,11 +246,7 @@ const CreativeAgency = ({ userData }) => {
                </motion.div>
 
                {/* POWERED BY: Brand Sequence */}
-               <motion.footer variants={sectionVariants} className="mt-12 text-center pb-8">
-                  <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="inline-block py-3 px-8 rounded-full border border-white/5 bg-white/[0.02] backdrop-blur-sm text-[9px] font-black uppercase tracking-[0.6em] text-white/10 hover:text-white/40 transition-all">
-                     Powered by Cardyn
-                  </a>
-               </motion.footer>
+               <PoweredBy />
             </div>
          </motion.div>
 

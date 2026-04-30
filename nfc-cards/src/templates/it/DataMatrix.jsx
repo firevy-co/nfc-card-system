@@ -1,197 +1,346 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-   FiGrid,
    FiPhone,
    FiMail,
    FiGlobe,
    FiMapPin,
    FiBriefcase,
    FiUser,
+   FiChevronDown,
+   FiDownload,
    FiArrowUpRight,
-   FiShield,
-   FiClock,
+   FiStar
 } from "react-icons/fi";
 
-const DataMatrix = ({ userData }) => {
-   const {
-      displayName,
-      email,
-      role,
-      mobileNumber,
-      website,
-      company,
-      address,
-      bio,
-   } = userData || {};
+import { downloadVCard } from "../common/StandardComponents";
+import PoweredBy from "../PoweredBy";
 
-   const user = {
-      name: displayName || "cardyn",
-      role: role || "Creative Developer",
-      phone: mobileNumber || "+91 99999 99999",
-      email: email || "hello@cardyn.shop",
-      website: website || "https://cardyn.shop/",
-      company: company || "Cardyn Digital Systems",
-      address: address || "Ahmedabad, Gujarat, India",
-      bio:
-         bio ||
-         "Building modern brands, websites, software solutions and next generation business identities.",
-   };
+const DataMatrix = ({ userData = {} }) => {
+   const [openInfo, setOpenInfo] = useState(false);
+
+   const {
+      displayName = "Cardyn Identity",
+      email = "hello@cardyn.shop",
+      role = "Creative Developer",
+      mobileNumber = "+91 99999 99999",
+      website = "https://cardyn.shop/",
+      company = "Cardyn Digital Systems",
+      address = "Ahmedabad, Gujarat, India",
+      bio = "We create modern websites, premium branding, scalable software products and next generation business identity systems.",
+      logo,
+      banner,
+      profileImage
+   } = userData;
+
+   const coverImage =
+      banner ||
+      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop";
+
+   const showcase =
+      userData.showcase ||
+      "https://images.unsplash.com/photo-1497366412874-3415097a27e7?q=80&w=1200&auto=format&fit=crop";
+
+   const services = [
+      "Web Design",
+      "Software",
+      "Branding",
+      "Automation",
+      "Marketing",
+      "Apps"
+   ];
+
+   const infoCards = [
+      {
+         icon: FiPhone,
+         label: "Phone",
+         value: mobileNumber,
+         link: `tel:${mobileNumber}`
+      },
+      {
+         icon: FiMail,
+         label: "Email",
+         value: email,
+         link: `mailto:${email}`
+      },
+      {
+         icon: FiGlobe,
+         label: "Website",
+         value: "Visit Website",
+         link: website
+      },
+      {
+         icon: FiBriefcase,
+         label: "Company",
+         value: company
+      },
+      {
+         icon: FiMapPin,
+         label: "Location",
+         value: address
+      }
+   ];
 
    return (
-      <div className="min-h-screen bg-black flex justify-center items-center px-4 py-10 font-['Space_Grotesk'] overflow-x-hidden relative md:bg-neutral-950 md:items-center py-0 md:py-12">
+      <div className="min-h-screen bg-[#050505] px-4 py-10 flex justify-center font-['Space_Grotesk'] relative overflow-hidden">
 
-         {/* Background Effects */}
-         <div className="absolute top-10 left-10 w-72 h-72 bg-emerald-500/10 blur-[120px] rounded-full" />
-         <div className="absolute bottom-10 right-10 w-72 h-72 bg-cyan-500/10 blur-[120px] rounded-full" />
+         {/* BACKGROUND */}
+         <div className="absolute top-0 left-0 w-72 h-72 bg-violet-500/10 blur-[160px] rounded-full" />
+         <div className="absolute bottom-0 right-0 w-72 h-72 bg-cyan-500/10 blur-[160px] rounded-full" />
 
-         {/* Main Card */}
-         <div className="relative w-full max-w-md rounded-[34px] border border-white/10 bg-white/[0.03] backdrop-blur-2xl shadow-[0_0_60px_rgba(0,0,0,0.55)] overflow-hidden">
+         <div className="w-full max-w-sm rounded-[36px] overflow-hidden bg-[#0c0c0c]/95 border border-white/10 shadow-[0_30px_90px_rgba(0,0,0,0.65)] backdrop-blur-2xl relative z-10">
 
-            {/* Top Grid */}
-            <div className="absolute top-0 right-0 opacity-[0.04] p-5">
-               <FiGrid size={170} />
-            </div>
+            {/* TOP COVER */}
+            <div className="relative h-44">
+               <img src={coverImage} className="w-full h-full object-cover" />
 
-            {/* Header */}
-            <div className="p-7 border-b border-white/5 relative z-10">
-               <div className="flex justify-between items-start gap-4">
+               <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-black/30 to-transparent" />
 
-                  <div>
-                     <p className="text-[9px] uppercase tracking-[0.45em] text-white/30 font-bold mb-3">
-                        Cardyn Identity 2026
-                     </p>
-
-                     <h1 className="text-3xl sm:text-4xl font-black text-white leading-none capitalize">
-                        {user.name}
-                     </h1>
-
-                     <p className="mt-3 text-emerald-400 text-sm uppercase tracking-[0.25em] font-semibold">
-                        {user.role}
-                     </p>
-                  </div>
-
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                     <FiShield className="text-emerald-400" size={18} />
-                  </div>
-               </div>
-
-               {/* Bio */}
-               <p className="mt-5 text-sm text-white/60 leading-relaxed">
-                  {user.bio}
-               </p>
-            </div>
-
-            {/* Info Section */}
-            <div className="p-6 space-y-4">
-
-               {/* Phone */}
-               <a
-                  href={`tel:${user.phone}`}
-                  className="group flex items-center gap-4 rounded-2xl p-4 border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-all"
-               >
-                  <div className="w-11 h-11 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-                     <FiPhone className="text-emerald-400" />
-                  </div>
-
-                  <div className="flex-1">
-                     <p className="text-[10px] text-white/35 uppercase tracking-[0.3em] font-bold">
-                        Contact
-                     </p>
-                     <p className="text-white font-bold">{user.phone}</p>
-                  </div>
-
-                  <FiArrowUpRight className="text-white/25 group-hover:text-emerald-400" />
-               </a>
-
-               {/* Email */}
-               <a
-                  href={`mailto:${user.email}`}
-                  className="group flex items-center gap-4 rounded-2xl p-4 border border-white/5 bg-white/[0.02] hover:bg-white/[0.05] transition-all"
-               >
-                  <div className="w-11 h-11 rounded-xl bg-white/5 flex items-center justify-center">
-                     <FiMail className="text-white" />
-                  </div>
-
-                  <div className="flex-1 min-w-0">
-                     <p className="text-[10px] text-white/35 uppercase tracking-[0.3em] font-bold">
-                        Email
-                     </p>
-                     <p className="text-white font-bold truncate">{user.email}</p>
-                  </div>
-
-                  <FiArrowUpRight className="text-white/25 group-hover:text-emerald-400" />
-               </a>
-
-               {/* Company */}
-               <div className="flex items-center gap-4 rounded-2xl p-4 border border-white/5 bg-white/[0.02]">
-                  <div className="w-11 h-11 rounded-xl bg-white/5 flex items-center justify-center">
-                     <FiBriefcase className="text-white" />
-                  </div>
-
-                  <div>
-                     <p className="text-[10px] text-white/35 uppercase tracking-[0.3em] font-bold">
-                        Company
-                     </p>
-                     <p className="text-white font-bold">{user.company}</p>
-                  </div>
-               </div>
-
-               {/* Location */}
-               <div className="flex items-center gap-4 rounded-2xl p-4 border border-white/5 bg-white/[0.02]">
-                  <div className="w-11 h-11 rounded-xl bg-white/5 flex items-center justify-center">
-                     <FiMapPin className="text-white" />
-                  </div>
-
-                  <div>
-                     <p className="text-[10px] text-white/35 uppercase tracking-[0.3em] font-bold">
-                        Location
-                     </p>
-                     <p className="text-white font-bold">{user.address}</p>
-                  </div>
+               <div className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.35em] text-white font-bold px-3 py-1 rounded-full bg-white/10 border border-white/10">
+                  Data Matrix
                </div>
             </div>
 
-            {/* Bottom Section */}
-            <div className="p-6 border-t border-white/5">
+            {/* FLOAT PROFILE SECTION */}
+            <div className="px-5 relative">
 
-               {/* Website CTA */}
-               <a
-                  href={user.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center justify-between bg-emerald-500 hover:bg-emerald-400 text-black rounded-2xl px-5 py-4 font-black text-xs uppercase tracking-[0.28em] transition-all"
-               >
-                  <span>Visit Website</span>
-                  <FiGlobe />
-               </a>
+               <div className="-mt-14 rounded-[28px] bg-[#111111] border border-white/10 p-4 shadow-xl">
 
-               {/* Bottom Status */}
-               <div className="mt-6 flex justify-between items-center text-white/35 text-[11px] uppercase tracking-[0.2em]">
+                  <div className="flex items-center gap-4">
 
-                  <div className="flex items-center gap-2">
-                     <FiClock size={13} />
-                     Active Identity
+                     {/* LOGO */}
+                     <div className="w-20 h-20 rounded-3xl bg-white p-2 shrink-0 border border-white/20">
+                        <div className="w-full h-full rounded-2xl bg-white overflow-hidden flex items-center justify-center">
+                           {logo || profileImage ? (
+                              <img
+                                 src={logo || profileImage}
+                                 className="w-full h-full object-contain p-1"
+                              />
+                           ) : (
+                              <FiUser size={28} className="text-violet-600" />
+                           )}
+                        </div>
+                     </div>
+
+                     {/* INFO */}
+                     <div className="min-w-0 flex-1">
+                        <h1 className="text-white text-2xl font-black truncate">
+                           {displayName}
+                        </h1>
+
+                        <p className="text-cyan-400 text-[11px] uppercase tracking-[0.28em] mt-1 font-bold">
+                           {role}
+                        </p>
+
+                        <div className="mt-3 flex items-center gap-2 text-[11px] text-zinc-400">
+                           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                           Active Business
+                        </div>
+                     </div>
                   </div>
 
-                  <div className="flex gap-2">
-                     <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-                     Online
+                  <p className="text-zinc-400 text-sm leading-6 mt-4">
+                     {bio}
+                  </p>
+               </div>
+            </div>
+
+            {/* STATS BAR */}
+            <div className="px-5 mt-5">
+               <div className="grid grid-cols-3 gap-3">
+                  {[
+                     ["300+", "Projects"],
+                     ["24/7", "Support"],
+                     ["10Y", "Growth"]
+                  ].map((item, i) => (
+                     <div
+                        key={i}
+                        className="rounded-2xl bg-white/[0.03] border border-white/5 p-4 text-center"
+                     >
+                        <div className="text-violet-400 font-black text-xl">
+                           {item[0]}
+                        </div>
+                        <div className="text-[10px] uppercase tracking-[0.25em] text-zinc-500 mt-1">
+                           {item[1]}
+                        </div>
+                     </div>
+                  ))}
+               </div>
+            </div>
+
+            {/* CONTACT STACK */}
+            <div className="px-5 mt-6 space-y-3">
+               {infoCards.map((item, i) => {
+                  const Icon = item.icon;
+
+                  const content = (
+                     <div className="stackCard">
+                        <div className="iconWrap">
+                           <Icon />
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                           <div className="text-[10px] uppercase tracking-[0.25em] text-zinc-500 font-bold">
+                              {item.label}
+                           </div>
+
+                           <div className="text-white font-semibold truncate">
+                              {item.value}
+                           </div>
+                        </div>
+
+                        {item.link && (
+                           <FiArrowUpRight className="text-zinc-500" />
+                        )}
+                     </div>
+                  );
+
+                  return item.link ? (
+                     <a
+                        key={i}
+                        href={item.link}
+                        target="_blank"
+                        rel="noreferrer"
+                     >
+                        {content}
+                     </a>
+                  ) : (
+                     <div key={i}>{content}</div>
+                  );
+               })}
+            </div>
+
+            {/* SHOWCASE IMAGE */}
+            <div className="px-5 mt-6">
+               <div className="rounded-3xl overflow-hidden h-40 relative border border-white/5">
+                  <img src={showcase} className="w-full h-full object-cover" />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+
+                  <div className="absolute bottom-4 left-4">
+                     <div className="text-[10px] uppercase tracking-[0.3em] text-cyan-300 font-bold">
+                        Workspace
+                     </div>
+                     <div className="text-white font-semibold mt-1">
+                        Premium Innovation Studio
+                     </div>
                   </div>
                </div>
+            </div>
 
-               {/* Footer */}
-               <div className="mt-6 text-center">
-                  <a
-                     href="https://cardyn.shop/"
-                     target="_blank"
-                     rel="noopener noreferrer"
-                     className="text-[10px] uppercase tracking-[0.25em] text-white/35 hover:text-emerald-400"
+            {/* SERVICES PILLS */}
+            <div className="px-5 mt-6">
+               <h3 className="sectionTitle">Capabilities</h3>
+
+               <div className="flex flex-wrap gap-2 justify-center">
+                  {services.map((item, i) => (
+                     <div key={i} className="pill">
+                        {item}
+                     </div>
+                  ))}
+               </div>
+            </div>
+
+            {/* TOGGLE INFO */}
+            <div className="px-5 mt-6">
+               <div className="rounded-3xl bg-white/[0.03] border border-white/5 overflow-hidden">
+                  <button
+                     onClick={() => setOpenInfo(!openInfo)}
+                     className="w-full px-5 py-4 flex justify-between items-center"
                   >
-                     Powered by Cardyn
-                  </a>
+                     <span className="font-bold text-white">
+                        Why Choose Us
+                     </span>
+
+                     <FiChevronDown
+                        className={`transition-all ${openInfo ? "rotate-180 text-cyan-400" : "text-zinc-500"
+                           }`}
+                     />
+                  </button>
+
+                  {openInfo && (
+                     <div className="px-5 pb-5 text-sm text-zinc-400 leading-6">
+                        We deliver premium websites, modern branding systems,
+                        custom software, mobile apps, automation tools and
+                        business growth solutions.
+                     </div>
+                  )}
                </div>
+            </div>
+
+            {/* CTA */}
+            <div className="px-5 mt-6 grid grid-cols-2 gap-3">
+               <button
+                  onClick={() => downloadVCard(userData)}
+                  className="h-12 rounded-2xl bg-violet-500 text-white font-bold hover:bg-violet-400 transition"
+               >
+                  Save Contact
+               </button>
+
+               <a
+                  href={website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="h-12 rounded-2xl border border-cyan-400 text-cyan-300 font-bold flex items-center justify-center hover:bg-cyan-400 hover:text-black transition"
+               >
+                  Launch
+               </a>
+            </div>
+
+            {/* FOOTER */}
+            <div className="px-5 py-6">
+               <PoweredBy />
             </div>
          </div>
+
+         <style>{`
+        .stackCard {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 16px;
+          border-radius: 20px;
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(255,255,255,0.05);
+          transition: 0.3s ease;
+        }
+
+        .stackCard:hover {
+          background: rgba(255,255,255,0.06);
+          transform: translateY(-2px);
+        }
+
+        .iconWrap {
+          width: 44px;
+          height: 44px;
+          border-radius: 14px;
+          background: rgba(139,92,246,0.12);
+          color: #a78bfa;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+
+        .sectionTitle {
+          text-align: center;
+          font-size: 12px;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          color: #22d3ee;
+          font-weight: 800;
+          margin-bottom: 12px;
+        }
+
+        .pill {
+          padding: 10px 14px;
+          border-radius: 999px;
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(255,255,255,0.05);
+          color: #e5e7eb;
+          font-size: 12px;
+          font-weight: 700;
+        }
+      `}</style>
       </div>
    );
 };

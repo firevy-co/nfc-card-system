@@ -1,5 +1,6 @@
 import React from "react";
 import * as FiIcons from "react-icons/fi";
+import PoweredBy from "../PoweredBy";
 
 /* =========================================================
    PREMIUM JEWELLERY CONTACT COMPONENTS
@@ -279,9 +280,7 @@ const VelvetBoutique = ({ userData }) => {
 
         <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
 
-        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-12 text-[8px] font-bold tracking-[0.5em] text-[#d4af37]/40 hover:text-[#d4af37] transition-colors uppercase text-center pb-8">
-          Powered by Cardyn
-        </a>
+        <PoweredBy />
 
       </div>
     </div>

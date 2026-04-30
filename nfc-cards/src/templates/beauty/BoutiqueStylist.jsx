@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from 'framer-motion';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const BoutiqueStylist = ({ userData }) => {
    const {
@@ -125,7 +126,7 @@ const BoutiqueStylist = ({ userData }) => {
                <FiIcons.FiDownload size={18} /> Book & Save Contact
             </button>
             
-            <p className="text-center text-[8px] font-black tracking-[0.4em] text-gray-400 uppercase mt-8">Powered by Cardyn</p>
+            <PoweredBy />
          </div>
       </div>
    );

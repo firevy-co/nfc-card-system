@@ -1,13 +1,13 @@
 const PoweredBy = () => {
   return (
-    <div className="mt-8 mb-4 text-center">
+    <div className="pb-6 text-center">
       <a
         href="https://cardyn.shop/"
         target="_blank"
         rel="noopener noreferrer"
-        className="text-[10px] font-black tracking-[0.2em] text-gray-400 hover:text-primary transition-colors uppercase"
+        className="text-[10px] text-zinc-500 uppercase tracking-[0.25em] hover:text-zinc-400 transition-all duration-300"
       >
-        Powered by cardyn
+        Powered by Cardyn
       </a>
     </div>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import { FiPhone, FiMail, FiGlobe, FiMapPin, FiLinkedin, FiInstagram, FiTwitter, FiGithub } from 'react-icons/fi';
 import { FaWhatsapp, FaFacebook, FaYoutube, FaTiktok, FaDiscord, FaTelegram, FaSkype, FaPaypal } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const ClinicaElite = ({ userData }) => {
   const { 
@@ -91,13 +92,7 @@ const ClinicaElite = ({ userData }) => {
 
           {address && <div className="mt-12">{address && (<a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="block w-full py-4 mt-4 border rounded-xl text-center text-xs font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity">View on Map</a>)}</div>}
           
-          <div className="mt-16 pb-8 flex justify-between items-center opacity-20">
-             <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[7px] font-black tracking-[0.6em] text-white hover:opacity-100 transition-opacity">POWERED BY CARDYN</a>
-             <div className="flex gap-1">
-                <div className="w-4 h-0.5 bg-white" />
-                <div className="w-1 h-0.5 bg-white" />
-             </div>
-          </div>
+          <PoweredBy />
         </div>
       </div>
     </div>

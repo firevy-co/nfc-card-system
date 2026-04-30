@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiZap, FiPhone, FiMail, FiGlobe, FiYoutube, FiLinkedin, FiTwitter, FiInstagram, FiTwitch, FiMapPin, FiUserPlus } from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const NeonLink = ({ icon: Icon, label, value, href }) => {
   if (!value || value === "" || value.includes('resolving')) return null;
@@ -65,7 +66,7 @@ const NeonInfluence = ({ userData }) => {
            <NeonSocial icon={FiLinkedin} href={linkedin} hoverColor="text-blue-500" />
         </div>
         
-        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-6 text-[7px] text-white/10 font-black tracking-[1em] uppercase pb-8 hover:text-white/40 transition-colors">Powered by Cardyn</a>
+        <PoweredBy />
       </div>
     </div>
   );

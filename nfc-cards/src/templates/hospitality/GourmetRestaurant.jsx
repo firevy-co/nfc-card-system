@@ -14,6 +14,7 @@ import {
    FiFacebook
 } from "react-icons/fi";
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const GourmetRestaurant = ({ userData }) => {
    const {
@@ -107,9 +108,7 @@ const GourmetRestaurant = ({ userData }) => {
                <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
             </div>
 
-            <footer className="mt-12 text-center opacity-40 hover:opacity-100 transition-opacity">
-               <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-[0.5em] text-[#D1B16B] hover:text-[#1A1A1A] transition-colors uppercase">Powered by Cardyn</a>
-            </footer>
+            <PoweredBy />
          </div>
       </div>
    );

@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const ClassicExecutive = ({ userData }) => {
   const { 
@@ -119,7 +120,7 @@ const ClassicExecutive = ({ userData }) => {
             <FiIcons.FiUserPlus size={16} /> Save to Contacts
          </button>
          
-         <p className="text-center text-[9px] font-bold tracking-[0.5em] text-slate-300 uppercase mt-8 pb-4">Powered by Cardyn</p>
+         <PoweredBy />
       </div>
     </div>
   );

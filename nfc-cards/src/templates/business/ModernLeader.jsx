@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const ModernLeader = ({ userData }) => {
   const { 
@@ -100,7 +101,7 @@ const ModernLeader = ({ userData }) => {
             <FiIcons.FiDownload size={18} /> Download Profile
          </button>
 
-         <p className="text-center text-[8px] font-black tracking-[0.5em] text-slate-600 uppercase mt-8 pb-4">Powered by Cardyn</p>
+         <PoweredBy />
       </div>
       <style dangerouslySetInnerHTML={{__html: `.hide-scrollbar::-webkit-scrollbar { display: none; }`}} />
     </div>

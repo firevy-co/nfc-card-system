@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const NovaBeauty = ({ userData }) => {
   const { 
@@ -104,7 +105,7 @@ const NovaBeauty = ({ userData }) => {
          </button>
       </div>
 
-      <p className="text-center text-[7px] text-slate-400 font-black tracking-[1em] uppercase mt-12">Powered by Cardyn</p>
+       <PoweredBy />
     </div>
   );
 };

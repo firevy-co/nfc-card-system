@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const ConcreteCore = ({ userData }) => {
   const { 
@@ -121,7 +122,7 @@ const ConcreteCore = ({ userData }) => {
          <FiIcons.FiDownload size={18} /> Add to System
       </button>
 
-      <p className="text-center text-[9px] font-black tracking-[0.5em] text-[#111]/40 uppercase mt-8">Powered by Cardyn</p>
+      <PoweredBy />
     </div>
   );
 };

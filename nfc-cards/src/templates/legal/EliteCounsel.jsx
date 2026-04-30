@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiPhone, FiMail, FiMapPin, FiStar, FiGlobe, FiLinkedin, FiInstagram } from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const EliteCounsel = ({ userData }) => {
   const { displayName, email, role, phone, website, address } = userData || {};
@@ -42,7 +43,7 @@ const EliteCounsel = ({ userData }) => {
            
            <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
         </div>
-        <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-center text-[7px] text-white/20 font-black tracking-[0.8em] py-8 uppercase hover:opacity-70 transition-opacity">Powered by Cardyn</a>
+        <PoweredBy />
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiActivity, FiPhone, FiMail, FiMapPin, FiGlobe, FiInstagram, FiTwitter, FiLinkedin, FiYoutube, FiUserPlus } from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const PureLink = ({ icon: Icon, label, value, href }) => {
   if (!value || value === "" || value.includes('resolving')) return null;
@@ -68,7 +69,7 @@ const PureHealth = ({ userData }) => {
               <div className="w-2 h-2 rounded-full bg-emerald-600" />
               <div className="w-2 h-2 rounded-full bg-emerald-600" />
            </div>
-           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block mt-4 text-[8px] font-black tracking-[0.6em] uppercase text-emerald-900/30 hover:opacity-100 transition-opacity">Powered by Cardyn</a>
+           <PoweredBy />
         </div>
       </div>
     </div>

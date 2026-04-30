@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiWind, FiPhone, FiMail, FiMapPin, FiGlobe, FiInstagram, FiTwitter, FiLinkedin, FiYoutube, FiUserPlus } from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const ZenSocial = ({ icon: Icon, href }) => {
   if (!href) return null;
@@ -68,9 +69,7 @@ const ZenYoga = ({ userData }) => {
            <div className="w-1.5 h-1.5 rounded-full bg-slate-400" />
         </div>
 
-        <div className="mt-8 mb-2 text-center opacity-40 hover:opacity-100 transition-opacity">
-           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[9px] font-bold tracking-[0.2em] text-slate-500 uppercase font-mulish">Powered by Cardyn</a>
-        </div>
+        <PoweredBy />
       </div>
     </div>
   );

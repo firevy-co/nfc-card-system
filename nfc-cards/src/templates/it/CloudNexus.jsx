@@ -2,132 +2,137 @@ import React from 'react';
 import * as Fi from 'react-icons/fi';
 import * as Fa from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from '../PoweredBy';
 
-/**
- * CLOUD NEXUS IDENTITY ARCHITECTURE
- * A high-fidelity, glassmorphic design optimized for cloud architects and DevOps professionals.
- * Features a decentralized node aesthetic with dynamic identity projection.
- */
-const CloudNexus = ({ userData }) => {
-   const themeColor = userData?.themeColor || "#2563eb";
+const coverImg = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop';
+const profileImg = 'https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?q=80&w=400&auto=format&fit=crop';
+const gallery = [
+   'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=800&auto=format&fit=crop',
+   'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=800&auto=format&fit=crop',
+   'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop'
+];
 
-   // NORMALIZE DATA
+export default function CloudNexus({ userData = {} }) {
    const {
-      displayName,
-      email,
-      phone,
-      website,
-      address,
-      bio,
-      logo
-   } = userData || {};
+      displayName = 'Mary Arden',
+      role = 'Full Stack Developer',
+      email = 'jackide@gmail.com',
+      phone = '+140528961236',
+      whatsapp = '+140528961236',
+      website = 'https://example.com',
+      address = 'New York, USA',
+      facebook = '',
+      instagram = '',
+      linkedin = '',
+      twitter = '',
+      github = '',
+      logo,
+   } = userData;
+
+   const socialLinks = [
+      { key: 'whatsapp', icon: Fa.FaWhatsapp, url: `https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}`, color: 'from-green-400 to-green-600' },
+      { key: 'facebook', icon: Fa.FaFacebookF, url: facebook, color: 'from-blue-500 to-blue-700' },
+      { key: 'instagram', icon: Fa.FaInstagram, url: instagram, color: 'from-pink-500 to-orange-500' },
+      { key: 'linkedin', icon: Fa.FaLinkedinIn, url: linkedin, color: 'from-sky-500 to-blue-700' },
+      { key: 'twitter', icon: Fa.FaTwitter, url: twitter, color: 'from-cyan-400 to-sky-600' },
+      { key: 'github', icon: Fa.FaGithub, url: github, color: 'from-zinc-700 to-black' }
+   ].filter(item => item.url);
 
    return (
-      <div className="min-h-screen bg-[#020617] flex items-center justify-center p-4 font-['Inter'] relative overflow-x-hidden md:bg-neutral-950 md:items-center py-0 md:py-12">
-         {/* AMBIENT BACKGROUND NODES */}
-         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse"></div>
-         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-cyan-500/10 rounded-full blur-[120px] animate-pulse delay-700"></div>
+      <div className='min-h-screen bg-gradient-to-br from-slate-100 via-white to-sky-100 py-6 px-3 flex justify-center'>
+         <div className='w-full max-w-sm bg-white/95 backdrop-blur-xl rounded-[30px] overflow-hidden shadow-[0_25px_100px_rgba(0,0,0,0.18)] border border-white/70 relative'>
+            <div className='absolute top-10 -left-10 w-28 h-28 bg-sky-200 rounded-full blur-3xl opacity-50'></div>
+            <div className='absolute bottom-20 -right-10 w-28 h-28 bg-indigo-200 rounded-full blur-3xl opacity-50'></div>
 
-         {/* MAIN ARCHITECTURE CONTAINER */}
-         <div className="w-full max-w-sm bg-white/5 border border-white/10 rounded-[3rem] p-1 shadow-[0_0_50px_rgba(0,0,0,0.3)] backdrop-blur-3xl overflow-hidden relative z-10">
-
-            {/* IDENTITY HEADER BLOCK */}
-            <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-8 rounded-[2.8rem] text-center relative overflow-hidden group">
-               {/* NEXUS PATTERN OVERLAY */}
-               <div className="absolute inset-0 opacity-10 pointer-events-none">
-                  <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
-               </div>
-
-               {/* BRAND IDENTITY NODE */}
-               <div className="w-24 h-24 rounded-[2rem] bg-white p-0.5 shadow-2xl mx-auto mb-6 relative z-10 transform group-hover:rotate-3 transition-transform duration-500">
-                  <div className="w-full h-full rounded-[1.8rem] bg-white flex items-center justify-center overflow-hidden">
-                     {logo ? (
-                        <img src={logo} alt="Logo" className="w-full h-full object-cover" />
-                     ) : (
-                        <Fi.FiCloud size={40} className="text-blue-600" />
-                     )}
-                  </div>
-                  {/* Status Beacon */}
-                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 border-4 border-blue-600 rounded-full"></div>
-               </div>
-
-               <h1 className="text-2xl font-black text-white tracking-tighter leading-none relative z-10">{displayName || 'Cloud Architect'}</h1>
-            </div>
-
-            {/* INTERACTION SUITE */}
-            <div className="p-6 space-y-3">
-               {/* BIO NODE */}
-               {bio && (
-                  <div className="bg-white/[0.03] border border-white/5 p-5 rounded-2xl mb-4">
-                     <p className="text-[11px] text-white/50 leading-relaxed italic font-medium">
-                        "{bio}"
-                     </p>
-                  </div>
-               )}
-
-               {/* ACTION TILES */}
-               <div className="grid grid-cols-2 gap-3">
-                  <a href={`tel:${phone}`} className="flex flex-col items-center justify-center gap-2 bg-white/[0.03] border border-white/5 p-5 rounded-3xl hover:bg-white/[0.08] transition-all group active:scale-95">
-                     <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center shadow-inner group-hover:text-blue-300">
-                        <Fa.FaPhoneAlt size={16} />
-                     </div>
-                     <span className="text-[9px] font-black uppercase text-white/40 tracking-widest">Deploy Call</span>
-                  </a>
-                  <a href={`mailto:${email}`} className="flex flex-col items-center justify-center gap-2 bg-white/[0.03] border border-white/5 p-5 rounded-3xl hover:bg-white/[0.08] transition-all group active:scale-95">
-                     <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center shadow-inner group-hover:text-blue-300">
-                        <Fi.FiMail size={20} />
-                     </div>
-                     <span className="text-[9px] font-black uppercase text-white/40 tracking-widest">Send Signal</span>
-                  </a>
-               </div>
-
-               {/* PRIMARY OBJECTIVE (WEBSITE) */}
-               <a href={website} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 bg-white text-blue-700 py-4.5 rounded-3xl font-black text-[11px] uppercase tracking-[0.2em] shadow-[0_10px_30px_rgba(255,255,255,0.1)] hover:brightness-110 hover:scale-[1.02] active:scale-95 transition-all mt-4">
-                  <Fi.FiGlobe size={18} /> Access Portal
-               </a>
-
-               {/* LOCATION NODE */}
-               {address && (
-                  <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 bg-white/[0.02] border border-white/5 p-5 rounded-3xl hover:bg-white/[0.05] transition-all group">
-                     <div className="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center group-hover:text-cyan-300">
-                        <Fi.FiMapPin size={18} />
-                     </div>
-                     <div className="flex-1">
-                        <p className="text-[8px] font-black text-white/30 uppercase tracking-[0.2em]">Deployment Zone</p>
-                        <p className="text-[10px] font-bold text-white/70 truncate">{address}</p>
-                     </div>
-                  </a>
-               )}
-
-               {/* SOCIAL MATRIX */}
-               <div className="flex items-center justify-center gap-3 pt-4">
-                  {[
-                     { id: 'linkedin', icon: Fa.FaLinkedin, color: 'text-blue-400' },
-                     { id: 'instagram', icon: Fa.FaInstagram, color: 'text-pink-400' },
-                     { id: 'twitter', icon: Fa.FaTwitter, color: 'text-sky-400' },
-                     { id: 'github', icon: Fa.FaGithub, color: 'text-white' },
-                  ].map(social => userData[social.id] && (
-                     <a key={social.id} href={social.id === 'github' ? `https://github.com/${userData[social.id]}` : `https://www.linkedin.com/in/${userData[social.id]}`} className={`w-10 h-10 rounded-full bg-white/[0.03] border border-white/5 flex items-center justify-center ${social.color} hover:bg-white/10 transition-all shadow-lg`}>
-                        <social.icon size={16} />
-                     </a>
-                  ))}
-               </div>
-
-               {/* SAVE CONTACT PROTOCOL */}
-               <div className="pt-4">
-                  <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
+            <div className='relative'>
+               <img src={coverImg} className='h-44 w-full object-cover' />
+               <div className='absolute inset-0 bg-gradient-to-t from-black/40 to-transparent' />
+               <div className='absolute -bottom-14 left-1/2 -translate-x-1/2 w-28 h-28 rounded-3xl p-1 bg-sky-400 shadow-xl'>
+                  <img src={logo || profileImg} className='w-full h-full rounded-3xl object-cover' />
                </div>
             </div>
 
-            {/* BRANDING FOOTER */}
-            <div className="pb-8 pt-4 text-center">
-               <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="text-[7px] text-white/20 font-black tracking-[0.6em] uppercase hover:text-white/40 transition-colors">
-                  Powered by Cardyn Identity Network
-               </a>
+            <div className='pt-16 px-5 text-center'>
+               <h1 className='text-2xl font-black text-zinc-800 tracking-tight'>{displayName}</h1>
+               <p className='text-zinc-500 text-sm'>{role}</p>
+
+               <div className='flex flex-wrap justify-center gap-3 mt-4'>
+                  {socialLinks.map((item, i) => {
+                     const Icon = item.icon;
+                     return (
+                        <a key={i} href={item.url} target='_blank' rel='noreferrer' className={`w-11 h-11 rounded-full bg-gradient-to-r ${item.color} text-white flex items-center justify-center shadow-lg hover:scale-110 hover:-translate-y-1 transition-all duration-300`}>
+                           <Icon size={16} />
+                        </a>
+                     )
+                  })}
+               </div>
+
+               <p className='text-xs text-zinc-500 leading-5 mt-4'>Creative developer focused on websites, mobile apps, branding solutions, UI/UX design and business growth strategies for modern companies.</p>
             </div>
+
+            <div className='grid grid-cols-2 gap-3 p-5'>
+               <Info icon={<Fi.FiMail />} title='E-mail Address' value={email} link={`mailto:${email}`} />
+               <Info icon={<Fi.FiPhone />} title='Mobile Number' value={phone} link={`tel:${phone}`} />
+               <Info icon={<Fi.FiGlobe />} title='Website' value='Visit Site' link={website} />
+               <Info icon={<Fi.FiMapPin />} title='Location' value={address} link={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} />
+            </div>
+
+
+
+            <Section title='Why Choose Me'>
+               <div className='grid grid-cols-3 gap-3 text-center mb-5'>
+                  <div className='p-3 rounded-2xl bg-sky-50'><div className='text-xl font-black text-sky-600'>50+</div><div className='text-[10px] text-zinc-500'>Projects</div></div>
+                  <div className='p-3 rounded-2xl bg-indigo-50'><div className='text-xl font-black text-indigo-600'>5★</div><div className='text-[10px] text-zinc-500'>Rating</div></div>
+                  <div className='p-3 rounded-2xl bg-pink-50'><div className='text-xl font-black text-pink-600'>24/7</div><div className='text-[10px] text-zinc-500'>Support</div></div>
+               </div>
+            </Section>
+
+            <Section title='Gallery'>
+               <div className='grid grid-cols-3 gap-2'>
+                  {gallery.map((img, i) => <img key={i} src={img} className='h-24 w-full object-cover rounded-2xl hover:scale-105 transition-all' />)}
+               </div>
+            </Section>
+
+            <Section title='Testimonials'>
+               <div className='bg-gradient-to-r from-sky-500 to-indigo-600 rounded-3xl p-5 text-white text-center mb-5'>
+                  <p className='text-sm leading-6'>Amazing developer! Fast delivery, modern design and professional support.</p>
+                  <div className='mt-3 font-bold'>— Happy Client</div>
+               </div>
+            </Section>
+
+            <Section title='Contact Us'>
+               <div className='space-y-3'>
+                  <input className='input' placeholder='Full Name' />
+                  <input className='input' placeholder='E-mail Address' />
+                  <textarea className='input h-24 resize-none' placeholder='Type a message here...' />
+                  <button className='btn'>Send Message</button>
+               </div>
+            </Section>
+
+            <div className='px-5 pb-5'>
+               <button onClick={() => downloadVCard(userData)} className='btn'>Add To Contact</button>
+               <a href={website} target='_blank' rel='noreferrer' className='btn mt-3 text-center block'>Visit Portfolio</a>
+            </div>
+
+            <PoweredBy />
          </div>
       </div>
    );
-};
+}
 
-export default CloudNexus;
+function Section({ title, children }) {
+   return <div className='px-5 pb-5'><h2 className='text-center text-lg font-black text-zinc-800 mb-4'>{title}</h2>{children}</div>;
+}
+
+function Info({ icon, title, value, link }) {
+   return (
+      <a href={link || '#'} target='_blank' rel='noreferrer' className='block' >
+         <div className='bg-gradient-to-br from-white to-slate-50 border border-zinc-100 rounded-2xl p-4 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all min-h-[105px]'>
+            <div className='text-sky-500 mb-2'>{icon}</div>
+            <div className='text-[10px] text-zinc-400 uppercase'>{title}</div>
+            <div className='text-xs font-bold text-zinc-700 mt-1 truncate'>{value}</div>
+         </div>
+      </a >
+
+   );
+}

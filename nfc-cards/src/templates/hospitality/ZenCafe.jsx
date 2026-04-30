@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const ZenCafe = ({ userData }) => {
   const { displayName, email, role, phone, website, address, instagram } = userData || {};
@@ -46,9 +47,7 @@ const ZenCafe = ({ userData }) => {
            <div className="w-2 h-2 rounded-full bg-[#83a493]" />
            <div className="w-2 h-2 rounded-full bg-[#d9c49d]" />
         </div>
-        <footer className="mt-8 text-center opacity-20">
-           <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[7px] font-black tracking-[0.6em] text-[#444440] uppercase hover:opacity-100 transition-opacity">Powered by Cardyn</a>
-        </footer>
+        <PoweredBy />
       </div>
     </div>
   );

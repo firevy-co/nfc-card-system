@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const VelvetSkin = ({ userData }) => {
   const { 
@@ -112,7 +113,7 @@ const VelvetSkin = ({ userData }) => {
             <FiIcons.FiCreditCard size={18} /> Acquire Identity
          </button>
 
-         <p className="text-center text-[8px] text-white/20 font-black tracking-[0.8em] uppercase mt-12 pb-4">Velvet Identity System</p>
+         <PoweredBy />
       </div>
     </div>
   );

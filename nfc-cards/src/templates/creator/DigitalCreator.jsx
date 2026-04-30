@@ -1,6 +1,7 @@
 import React from "react";
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const DigitalCreator = ({ userData }) => {
    const {
@@ -68,9 +69,7 @@ const DigitalCreator = ({ userData }) => {
 
             <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
 
-            <footer className="mt-12 text-center opacity-20">
-                <a href="https://cardyn.shop/" target="_blank" rel="noopener noreferrer" className="block text-[8px] font-black tracking-[0.5em] text-gray-300 hover:text-white transition-colors uppercase">Powered by Cardyn</a>
-            </footer>
+            <PoweredBy />
          </div>
       </div>
    );

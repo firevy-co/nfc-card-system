@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const ExecutiveMinimal = ({ userData }) => {
   const { 
@@ -104,7 +105,7 @@ const ExecutiveMinimal = ({ userData }) => {
          <FiIcons.FiPlus size={14} /> Add Connection
       </button>
 
-      <p className="text-left text-[8px] font-bold tracking-[0.5em] text-zinc-300 uppercase mt-8">Cardyn Identity</p>
+      <PoweredBy />
     </div>
   );
 };

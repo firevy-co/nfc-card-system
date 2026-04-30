@@ -1,6 +1,7 @@
 import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
+import PoweredBy from "../PoweredBy";
 
 const PureAura = ({ userData }) => {
   const { 
@@ -96,7 +97,7 @@ const PureAura = ({ userData }) => {
             <FiIcons.FiPlus size={16} /> Add to Device
          </button>
 
-         <p className="text-center text-[8px] font-black tracking-[0.8em] text-slate-300 uppercase mt-12">Powered by Cardyn</p>
+         <PoweredBy />
       </div>
     </div>
   );

@@ -1,101 +1,258 @@
-import React from 'react';
-import * as FiIcons from 'react-icons/fi';
-import { downloadVCard } from '../common/StandardComponents';
+import React from "react";
+import * as FiIcons from "react-icons/fi";
+import { downloadVCard } from "../common/StandardComponents";
+import PoweredBy from "../PoweredBy";
 
 const PixelProperty = ({ userData }) => {
-  const { displayName, email, role, mobileNumber, phone, companyName, designation, website, address, city, linkedin, instagram, facebook, twitter, bio, avatar, logo } = userData || {};
-  const displayPhone = mobileNumber || phone;
-  const displayRole = designation || role || "Digital Agent";
-  const finalAddress = address || city;
+   const {
+      displayName,
+      email,
+      role,
+      mobileNumber,
+      phone,
+      companyName,
+      designation,
+      website,
+      address,
+      city,
+      linkedin,
+      instagram,
+      facebook,
+      twitter,
+      bio,
+      avatar,
+      logo,
+   } = userData || {};
 
-  return (
-    <div className="min-h-screen bg-[#050505] font-mono text-emerald-400 pb-12 overflow-x-hidden relative">
-      <div className="absolute inset-0 pointer-events-none opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
+   const displayPhone = mobileNumber || phone;
+   const displayRole = designation || role || "Digital Agent";
+   const finalAddress = address || city;
 
-      <div className="p-6 relative z-10 max-w-md mx-auto">
-         {/* Tech Header */}
-         <div className="border border-emerald-500/30 bg-emerald-950/20 p-6 mb-8 mt-4 backdrop-blur-sm relative">
-            <div className="absolute top-0 left-0 w-2 h-2 bg-emerald-500" />
-            <div className="absolute top-0 right-0 w-2 h-2 bg-emerald-500" />
-            <div className="absolute bottom-0 left-0 w-2 h-2 bg-emerald-500" />
-            <div className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500" />
+   const services = [
+      {
+         icon: <FiIcons.FiHome size={20} />,
+         title: "Smart Homes",
+         text: "Modern homes with premium facilities",
+      },
+      {
+         icon: <FiIcons.FiMap size={20} />,
+         title: "Area Scan",
+         text: "Best locations & investment zones",
+      },
+      {
+         icon: <FiIcons.FiVideo size={20} />,
+         title: "Virtual Tours",
+         text: "Live property walkthrough online",
+      },
+      {
+         icon: <FiIcons.FiTrendingUp size={20} />,
+         title: "Growth Deals",
+         text: "High ROI investment properties",
+      },
+   ];
 
-            <div className="flex flex-col items-center">
-               <div className="w-24 h-24 mb-6 border-2 border-emerald-500/50 p-1 shrink-0 bg-black">
-                  <div className="w-full h-full bg-emerald-950/50 flex items-center justify-center overflow-hidden">
-                     {logo ? <img src={logo} alt="Logo" className="w-full h-full object-contain p-2 bg-white" /> : avatar ? <img src={avatar} alt="Profile" className="w-full h-full object-cover mix-blend-luminosity opacity-80" /> : <FiIcons.FiMonitor size={32} className="text-emerald-500" />}
+   return (
+      <div className="min-h-screen bg-[#020202] font-mono text-emerald-400 pb-12 overflow-x-hidden relative">
+         {/* GRID BACKGROUND */}
+         <div className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(#10b981_1px,transparent_1px),linear-gradient(90deg,#10b981_1px,transparent_1px)] bg-[size:24px_24px]" />
+
+         <div className="relative z-10 max-w-md mx-auto px-5 pt-6">
+
+            {/* HERO IMAGE */}
+            <div className="relative rounded-2xl overflow-hidden border border-emerald-500/30 shadow-2xl mb-6">
+               <img
+                  src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80"
+                  alt="Property"
+                  className="w-full h-52 object-cover"
+               />
+
+               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+
+               <div className="absolute bottom-4 left-4 right-4 flex items-end gap-4">
+                  <div className="w-20 h-20 rounded-xl overflow-hidden border-2 border-emerald-400 bg-black shrink-0">
+                     {logo ? (
+                        <img
+                           src={logo}
+                           alt="Logo"
+                           className="w-full h-full object-cover"
+                        />
+                     ) : avatar ? (
+                        <img
+                           src={avatar}
+                           alt="Avatar"
+                           className="w-full h-full object-cover"
+                        />
+                     ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                           <FiIcons.FiMonitor size={28} />
+                        </div>
+                     )}
+                  </div>
+
+                  <div className="overflow-hidden">
+                     <h1 className="text-xl font-bold uppercase tracking-wide text-white truncate">
+                        {displayName || "Pixel Property"}
+                     </h1>
+
+                     <p className="text-[11px] text-emerald-400 uppercase tracking-[0.3em] truncate">
+                        {displayRole}
+                     </p>
                   </div>
                </div>
-               <h1 className="text-2xl font-bold uppercase tracking-tight text-emerald-400 text-center px-2 w-full truncate">{displayName || 'Pixel Property'}</h1>
-               <p className="text-emerald-600 text-xs mt-2 uppercase tracking-widest text-center px-2 w-full truncate">{displayRole}</p>
-               {companyName && <p className="mt-3 text-[10px] uppercase tracking-[0.2em] text-emerald-200/50 bg-emerald-500/10 px-3 py-1 text-center px-2 w-full truncate">{companyName}</p>}
             </div>
-         </div>
 
-         {bio && (
-            <div className="mb-8 border-l-2 border-emerald-500/50 pl-4 py-1">
-               <p className="text-[10px] uppercase tracking-widest text-emerald-600 mb-2">SYS_BIO</p>
-               <p className="text-xs leading-relaxed text-emerald-300/80">"{bio}"</p>
-            </div>
-         )}
-
-         {/* Digital Tools */}
-         <div className="grid grid-cols-2 gap-3 mb-8">
-            <div className="bg-emerald-950/30 border border-emerald-500/20 p-4 text-center hover:bg-emerald-900/40 transition-colors">
-               <FiIcons.FiVideo className="mx-auto text-emerald-500 mb-2" size={20} />
-               <p className="text-[9px] uppercase tracking-widest">Virtual Tours</p>
-            </div>
-            <div className="bg-emerald-950/30 border border-emerald-500/20 p-4 text-center hover:bg-emerald-900/40 transition-colors">
-               <FiIcons.FiFileText className="mx-auto text-emerald-500 mb-2" size={20} />
-               <p className="text-[9px] uppercase tracking-widest">Digital Escrow</p>
-            </div>
-         </div>
-
-         {/* Data Links */}
-         <div className="space-y-3 mb-8">
-            <p className="text-[10px] uppercase tracking-widest text-emerald-600 mb-2 pl-1">CONNECT_NODES</p>
-            {displayPhone && (
-               <a href={`tel:${displayPhone}`} className="flex items-center gap-4 bg-black border border-emerald-500/30 p-4 hover:bg-emerald-950/50 transition-colors">
-                  <FiIcons.FiPhone size={16} className="text-emerald-500 shrink-0" />
-                  <span className="text-xs uppercase tracking-wider text-emerald-300 truncate w-full">{displayPhone}</span>
-               </a>
-            )}
-            {email && (
-               <a href={`mailto:${email}`} className="flex items-center gap-4 bg-black border border-emerald-500/30 p-4 hover:bg-emerald-950/50 transition-colors px-4">
-                  <FiIcons.FiMail size={16} className="text-emerald-500 shrink-0" />
-                  <span className="text-xs uppercase tracking-wider text-emerald-300 truncate w-full">{email}</span>
-               </a>
-            )}
-            {website && (
-               <a href={website?.startsWith('http') ? website : `https://${website}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between gap-4 bg-emerald-600/10 border border-emerald-500 p-4 hover:bg-emerald-600/20 transition-colors px-4 group">
-                  <div className="flex items-center gap-4 overflow-hidden">
-                     <FiIcons.FiGlobe size={16} className="text-emerald-400 shrink-0" />
-                     <span className="text-xs uppercase font-bold tracking-widest text-emerald-400 truncate">Explore Listings</span>
-                  </div>
-                  <FiIcons.FiArrowRight size={16} className="text-emerald-500 group-hover:translate-x-1 transition-transform shrink-0" />
-               </a>
-            )}
-            {finalAddress && (
-               <div className="flex items-center gap-4 bg-black border border-emerald-500/30 p-4 px-4">
-                  <FiIcons.FiMapPin size={16} className="text-emerald-500/50 shrink-0" />
-                  <span className="text-xs uppercase tracking-wider text-emerald-500/70 truncate w-full">{finalAddress}</span>
+            {/* COMPANY */}
+            {companyName && (
+               <div className="mb-5 border border-emerald-500/20 bg-emerald-950/20 rounded-xl p-4">
+                  <p className="text-[10px] uppercase tracking-widest text-emerald-600 mb-2">
+                     COMPANY_NODE
+                  </p>
+                  <p className="text-sm text-emerald-300 font-bold">{companyName}</p>
                </div>
             )}
-         </div>
 
-         <div className="flex flex-wrap justify-center gap-3 mb-8">
-            {[ { icon: FiIcons.FiLinkedin, val: linkedin, label: "LNKD" }, { icon: FiIcons.FiTwitter, val: twitter, label: "TWTR" }, { icon: FiIcons.FiInstagram, val: instagram, label: "INST" }, { icon: FiIcons.FiFacebook, val: facebook, label: "FCBK" } ].map((social, idx) => social.val && (
-               <a key={idx} href={social.val.startsWith('http') ? social.val : `https://${social.val}`} target="_blank" rel="noopener noreferrer" className="text-emerald-500/70 border border-emerald-500/30 hover:bg-emerald-950 hover:text-emerald-400 transition-colors px-3 py-2 text-[10px] uppercase font-bold flex items-center gap-2 shrink-0">
-                  <social.icon size={12} /> {social.label}
-               </a>
-            ))}
-         </div>
+            {/* BIO */}
+            {bio && (
+               <div className="mb-6 border-l-2 border-emerald-500 pl-4">
+                  <p className="text-[10px] uppercase tracking-widest text-emerald-600 mb-2">
+                     PROFILE_DATA
+                  </p>
+                  <p className="text-xs text-emerald-300/80 leading-6">"{bio}"</p>
+               </div>
+            )}
 
-         <button onClick={() => downloadVCard(userData)} className="w-full py-4 border-2 border-emerald-500 bg-emerald-500/10 text-emerald-400 font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-emerald-500 hover:text-black transition-all flex items-center justify-center gap-3 active:scale-[0.98]">
-            <FiIcons.FiDownload size={14} /> EXTRACT_DATA
-         </button>
+            {/* CONTACT */}
+            <div className="space-y-3 mb-7">
+               {displayPhone && (
+                  <a
+                     href={`tel:${displayPhone}`}
+                     className="flex items-center gap-4 bg-black border border-emerald-500/30 rounded-xl p-4 hover:bg-emerald-950/30 transition-all"
+                  >
+                     <FiIcons.FiPhone />
+                     <span className="text-xs uppercase truncate">
+                        {displayPhone}
+                     </span>
+                  </a>
+               )}
+
+               {email && (
+                  <a
+                     href={`mailto:${email}`}
+                     className="flex items-center gap-4 bg-black border border-emerald-500/30 rounded-xl p-4 hover:bg-emerald-950/30 transition-all"
+                  >
+                     <FiIcons.FiMail />
+                     <span className="text-xs uppercase truncate">{email}</span>
+                  </a>
+               )}
+
+               {website && (
+                  <a
+                     href={website}
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     className="flex items-center justify-between bg-emerald-500/10 border border-emerald-500 rounded-xl p-4 hover:bg-emerald-500/20 transition-all"
+                  >
+                     <div className="flex items-center gap-4 overflow-hidden">
+                        <FiIcons.FiGlobe />
+                        <span className="text-xs uppercase font-bold truncate">
+                           View Listings
+                        </span>
+                     </div>
+                     <FiIcons.FiArrowRight />
+                  </a>
+               )}
+
+               {finalAddress && (
+                  <div className="flex items-center gap-4 bg-black border border-emerald-500/30 rounded-xl p-4">
+                     <FiIcons.FiMapPin />
+                     <span className="text-xs uppercase truncate">
+                        {finalAddress}
+                     </span>
+                  </div>
+               )}
+            </div>
+
+            {/* SERVICES */}
+            <div className="mb-8">
+               <p className="text-[10px] uppercase tracking-widest text-emerald-600 mb-4">
+                  SERVICE_MODULES
+               </p>
+
+               <div className="grid grid-cols-2 gap-3">
+                  {services.map((item, i) => (
+                     <div
+                        key={i}
+                        className="border border-emerald-500/20 bg-emerald-950/20 rounded-xl p-4 hover:bg-emerald-900/20 transition-all"
+                     >
+                        <div className="mb-3 text-emerald-400">{item.icon}</div>
+                        <h3 className="text-[11px] font-bold uppercase mb-2">
+                           {item.title}
+                        </h3>
+                        <p className="text-[10px] text-emerald-300/70 leading-5">
+                           {item.text}
+                        </p>
+                     </div>
+                  ))}
+               </div>
+            </div>
+
+            {/* STATS */}
+            <div className="grid grid-cols-3 gap-3 mb-8">
+               <div className="border border-emerald-500/20 p-4 rounded-xl text-center">
+                  <p className="text-lg font-bold">150+</p>
+                  <p className="text-[9px] uppercase">Deals</p>
+               </div>
+
+               <div className="border border-emerald-500/20 p-4 rounded-xl text-center">
+                  <p className="text-lg font-bold">4.9</p>
+                  <p className="text-[9px] uppercase">Rating</p>
+               </div>
+
+               <div className="border border-emerald-500/20 p-4 rounded-xl text-center">
+                  <p className="text-lg font-bold">24/7</p>
+                  <p className="text-[9px] uppercase">Support</p>
+               </div>
+            </div>
+
+            {/* SOCIAL */}
+            <div className="flex flex-wrap justify-center gap-3 mb-8">
+               {linkedin && (
+                  <a href={linkedin} className="px-3 py-2 border border-emerald-500/30 text-[10px] rounded-lg">
+                     LINKEDIN
+                  </a>
+               )}
+               {instagram && (
+                  <a href={instagram} className="px-3 py-2 border border-emerald-500/30 text-[10px] rounded-lg">
+                     INSTA
+                  </a>
+               )}
+               {facebook && (
+                  <a href={facebook} className="px-3 py-2 border border-emerald-500/30 text-[10px] rounded-lg">
+                     FACEBOOK
+                  </a>
+               )}
+               {twitter && (
+                  <a href={twitter} className="px-3 py-2 border border-emerald-500/30 text-[10px] rounded-lg">
+                     TWITTER
+                  </a>
+               )}
+            </div>
+
+            {/* SAVE BUTTON */}
+            <button
+               onClick={() => downloadVCard(userData)}
+               className="w-full py-4 border-2 border-emerald-500 bg-emerald-500/10 text-emerald-400 font-bold text-[10px] uppercase tracking-[0.25em] hover:bg-emerald-500 hover:text-black transition-all flex items-center justify-center gap-3 rounded-xl active:scale-[0.98]"
+            >
+               <FiIcons.FiDownload size={14} />
+               EXTRACT_DATA
+            </button>
+
+            <div className="mt-6">
+               <PoweredBy />
+            </div>
+         </div>
       </div>
-    </div>
-  );
+   );
 };
+
 export default PixelProperty;
