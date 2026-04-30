@@ -275,7 +275,7 @@ const CardPreview = ({ formData }) => {
     };
 
     return (
-        <div className={`rounded-3xl w-full max-w-[320px] scale-[0.9] sm:scale-100 min-h-[520px] p-6 shadow-2xl transition-all duration-700 relative overflow-hidden flex flex-col ${light ? "text-gray-900" : "text-white"}`} style={{ background: themeColor }}>
+        <div className={`rounded-3xl w-full max-w-[320px] scale-[0.85] sm:scale-95 min-h-[450px] p-5 shadow-2xl transition-all duration-700 relative overflow-hidden flex flex-col ${light ? "text-gray-900" : "text-white"}`} style={{ background: themeColor }}>
             {renderLayout()}
             <div className="mt-auto pt-8 pb-2 text-center">
                 <a href="https://cardyn.shop" target="_blank" rel="noopener noreferrer" className={`text-[9px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-100 ${light ? "text-black/30" : "text-white/30"}`}>
@@ -471,19 +471,20 @@ const Profile = ({ userData }) => {
         }
     };
 
-    const inputClasses = `w-full bg-white border border-gray-200 rounded-full px-6 py-4 text-sm font-medium text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all placeholder:text-gray-300 disabled:bg-gray-50 disabled:text-gray-600 cursor-pointer`;
+const inputClasses = `w-full bg-white border border-gray-200 rounded-full px-6 py-4 text-sm font-medium text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all placeholder:text-gray-300 disabled:bg-gray-50 disabled:text-gray-600 cursor-pointer`;
     const labelClasses = `text-sm font-bold text-gray-900 mb-3 block px-1`;
     const isAdmin = userData?.role === "Admin";
 
     return (
-        <div className="min-h-screen bg-[#f5f7fa] text-black font-['Mulish'] flex flex-col overflow-x-hidden">
-            <TopNav title="Profile" />
+        <div className="min-h-screen bg-[#F8EDEB] text-black font-['Mulish'] flex flex-col overflow-x-hidden">
             {isAdmin ? <AdminNav userData={userData} /> : <UserNav userData={userData} />}
 
-            <main className="flex-1 max-w-[1600px] mx-auto w-full px-4 sm:px-6 lg:px-10 pt-20 pb-28">
+            <main className="flex-1 max-w-[1600px] mx-auto w-full px-4 sm:px-8 lg:px-16 pb-28">
+                {/* NAVIGATION SPACER */}
+                <div className="h-28 sm:h-32 lg:h-40" />
 
                 {/* PAGE HEADER */}
-                <div className="mb-8">
+                <div className="mb-10">
                     <p className="text-xs uppercase tracking-[0.35em] text-zinc-400 font-bold mb-2">
                         {isAdmin ? "Administration" : "User Hub"}
                     </p>
@@ -494,504 +495,504 @@ const Profile = ({ userData }) => {
 
                 <div className="bg-white rounded-[2rem] sm:rounded-[3rem] shadow-xl border border-zinc-100 overflow-hidden relative">
 
-                {/* --- PREMIUM SOCIAL BANNER HEADER --- */}
-                <div className="relative mb-32">
-                    <div
-                        className="h-64 md:h-80 w-full relative overflow-hidden shadow-inner"
-                        style={{ background: 'linear-gradient(90deg, #5f5bff 0%, #8f88ff 30%, #d6d2ff 55%, #f1d6e6 80%, #f6eaf1 100%)' }}
-                    >
-                        <div className="absolute top-10 left-20 w-32 h-32 bg-white/20 rounded-full blur-3xl animate-pulse" />
-                        <div className="absolute bottom-10 right-40 w-64 h-64 bg-white/30 rounded-full blur-[100px]" />
+                    {/* --- PREMIUM SOCIAL BANNER HEADER --- */}
+                    <div className="relative mb-32">
+                        <div
+                            className="h-64 md:h-80 w-full relative overflow-hidden shadow-inner"
+                            style={{ background: 'linear-gradient(90deg, #5f5bff 0%, #8f88ff 30%, #d6d2ff 55%, #f1d6e6 80%, #f6eaf1 100%)' }}
+                        >
+                            <div className="absolute top-10 left-20 w-32 h-32 bg-white/20 rounded-full blur-3xl animate-pulse" />
+                            <div className="absolute bottom-10 right-40 w-64 h-64 bg-white/30 rounded-full blur-[100px]" />
 
-                        <div className="absolute top-8 right-8 z-20 flex gap-4">
-                            {isSaving && (
-                                <div className="flex items-center gap-2 text-white font-black text-[10px] uppercase tracking-widest bg-black/20 backdrop-blur-md px-5 py-3 rounded-full border border-white/20">
-                                    <FiActivity className="animate-spin" size={12} />
-                                    <span>Syncing Template</span>
-                                </div>
-                            )}
-                            {!isEditing ? (
-                                <button
-                                    onClick={() => setIsEditing(true)}
-                                    className="px-10 py-4 rounded-full bg-white text-black font-black text-[11px] uppercase tracking-widest hover:scale-105 shadow-2xl transition-all active:scale-95"
-                                >
-                                    Edit Identity
-                                </button>
-                            ) : (
-                                <div className="flex gap-4">
+                            <div className="absolute top-8 right-8 z-20 flex gap-4">
+                                {isSaving && (
+                                    <div className="flex items-center gap-2 text-white font-black text-[10px] uppercase tracking-widest bg-black/20 backdrop-blur-md px-5 py-3 rounded-full border border-white/20">
+                                        <FiActivity className="animate-spin" size={12} />
+                                        <span>Syncing Template</span>
+                                    </div>
+                                )}
+                                {!isEditing ? (
                                     <button
-                                        onClick={() => setIsEditing(false)}
-                                        className="px-8 py-4 rounded-full bg-black/40 backdrop-blur-md text-white font-black text-[11px] uppercase tracking-widest hover:bg-black/60 transition-all border border-white/10"
+                                        onClick={() => setIsEditing(true)}
+                                        className="px-10 py-4 rounded-full bg-white text-black font-black text-[11px] uppercase tracking-widest hover:scale-105 shadow-2xl transition-all active:scale-95"
                                     >
-                                        Discard
+                                        Edit Identity
                                     </button>
-                                    <button
-                                        onClick={handleSave}
-                                        className="px-10 py-4 rounded-full bg-white text-black font-black text-[11px] uppercase tracking-widest hover:scale-105 shadow-2xl transition-all"
-                                    >
-                                        Apply Changes
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="absolute -bottom-24 left-8 md:left-16 lg:left-24 flex flex-col md:flex-row items-end gap-10">
-                        <div className="relative group">
-                            {/* Avatar Container */}
-                            <div className="w-48 h-48 rounded-full border-[12px] border-white shadow-2xl overflow-hidden bg-gray-50 flex items-center justify-center transition-transform group-hover:scale-[1.02] duration-500">
-                                {formData.profileImage ? (
-                                    <img src={formData.profileImage} alt="Profile" className="w-full h-full object-cover" />
                                 ) : (
-                                    <FiUser size={64} className="text-gray-200" />
+                                    <div className="flex gap-4">
+                                        <button
+                                            onClick={() => setIsEditing(false)}
+                                            className="px-8 py-4 rounded-full bg-black/40 backdrop-blur-md text-white font-black text-[11px] uppercase tracking-widest hover:bg-black/60 transition-all border border-white/10"
+                                        >
+                                            Discard
+                                        </button>
+                                        <button
+                                            onClick={handleSave}
+                                            className="px-10 py-4 rounded-full bg-white text-black font-black text-[11px] uppercase tracking-widest hover:scale-105 shadow-2xl transition-all"
+                                        >
+                                            Apply Changes
+                                        </button>
+                                    </div>
                                 )}
                             </div>
+                        </div>
 
-                            {/* Actions Overlay */}
-                            {isEditing && (
-                                <>
-                                    {/* Upload Button */}
-                                    <label className="absolute -bottom-2 -right-2 w-12 h-12 bg-black rounded-2xl flex items-center justify-center cursor-pointer hover:scale-110 transition-all shadow-xl border-4 border-white">
-                                        <FiEdit3 className="text-white w-5 h-5" />
-                                        <input type="file" className="hidden" accept="image/*" onChange={handleProfileImageUpload} />
-                                    </label>
-
-                                    {/* Remove Button */}
-                                    {formData.profileImage && (
-                                        <button
-                                            onClick={() => handleInputChange('profileImage', '')}
-                                            className="absolute -top-2 -right-2 w-10 h-10 bg-white rounded-xl flex items-center justify-center cursor-pointer hover:scale-110 transition-all shadow-xl border-4 border-white text-red-500 z-10"
-                                            title="Remove Image"
-                                        >
-                                            <FiX size={16} />
-                                        </button>
+                        <div className="absolute -bottom-24 left-8 md:left-16 lg:left-24 flex flex-col md:flex-row items-end gap-10">
+                            <div className="relative group">
+                                {/* Avatar Container */}
+                                <div className="w-48 h-48 rounded-full border-[12px] border-white shadow-2xl overflow-hidden bg-gray-50 flex items-center justify-center transition-transform group-hover:scale-[1.02] duration-500">
+                                    {formData.profileImage ? (
+                                        <img src={formData.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                                    ) : (
+                                        <FiUser size={64} className="text-gray-200" />
                                     )}
-                                </>
-                            )}
+                                </div>
+
+                                {/* Actions Overlay */}
+                                {isEditing && (
+                                    <>
+                                        {/* Upload Button */}
+                                        <label className="absolute -bottom-2 -right-2 w-12 h-12 bg-black rounded-2xl flex items-center justify-center cursor-pointer hover:scale-110 transition-all shadow-xl border-4 border-white">
+                                            <FiEdit3 className="text-white w-5 h-5" />
+                                            <input type="file" className="hidden" accept="image/*" onChange={handleProfileImageUpload} />
+                                        </label>
+
+                                        {/* Remove Button */}
+                                        {formData.profileImage && (
+                                            <button
+                                                onClick={() => handleInputChange('profileImage', '')}
+                                                className="absolute -top-2 -right-2 w-10 h-10 bg-white rounded-xl flex items-center justify-center cursor-pointer hover:scale-110 transition-all shadow-xl border-4 border-white text-red-500 z-10"
+                                                title="Remove Image"
+                                            >
+                                                <FiX size={16} />
+                                            </button>
+                                        )}
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div className="px-6 md:px-16 lg:px-24 py-16 md:py-24">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                    <div className="px-6 md:px-16 lg:px-24 py-1 md:py-24 mb-5">
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
 
-                        <div className="lg:col-span-12">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                            <div className="lg:col-span-12">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
 
-                                {/* --- NEW INTEGRATED BRANDING HUB --- */}
-                                <div className="md:col-span-2 mb-12">
-                                    <div className="bg-gray-100 p-6 md:p-12 rounded-2xl shadow-md border border-gray-50 flex flex-col md:flex-row items-center gap-6 md:gap-12">
-                                        <div className="flex-shrink-0 relative group">
-                                            {/* Logo Preview Container */}
-                                            <div className="w-40 h-40 rounded-2xl bg-white shadow-md border border-gray-50 flex items-center justify-center overflow-hidden group relative">
-                                                {formData.logo ? (
-                                                    <img src={formData.logo} alt="Logo" className="w-full h-full object-contain p-6" />
-                                                ) : (
-                                                    <FiActivity size={32} className="text-gray-200" />
+                                    {/* --- NEW INTEGRATED BRANDING HUB --- */}
+                                    <div className="md:col-span-2 mb-5">
+                                        <div className="bg-gray-100 p-4 md:p-8 rounded-xl shadow-md border border-gray-50 flex flex-row items-center gap-6 md:gap-10">
+                                            <div className="flex-shrink-0 relative group">
+                                                {/* Logo Preview Container */}
+                                                <div className="w-28 h-28 md:w-36 md:h-36 rounded-2xl bg-white shadow-md border border-gray-50 flex items-center justify-center overflow-hidden group relative">
+                                                    {formData.logo ? (
+                                                        <img src={formData.logo} alt="Logo" className="w-full h-full object-contain p-4 md:p-6" />
+                                                    ) : (
+                                                        <FiActivity size={24} className="text-gray-200" />
+                                                    )}
+                                                </div>
+
+                                                {/* Remove Logo Button */}
+                                                {isEditing && formData.logo && (
+                                                    <button
+                                                        onClick={() => handleInputChange('logo', '')}
+                                                        className="absolute -top-2 -right-2 w-8 h-8 bg-white rounded-xl flex items-center justify-center cursor-pointer hover:scale-110 transition-all shadow-xl border-4 border-white text-red-500 z-10"
+                                                        title="Remove Logo"
+                                                    >
+                                                        <FiX size={14} />
+                                                    </button>
                                                 )}
                                             </div>
 
-                                            {/* Remove Logo Button */}
-                                            {isEditing && formData.logo && (
-                                                <button
-                                                    onClick={() => handleInputChange('logo', '')}
-                                                    className="absolute -top-2 -right-2 w-10 h-10 bg-white rounded-xl flex items-center justify-center cursor-pointer hover:scale-110 transition-all shadow-xl border-4 border-white text-red-500 z-10"
-                                                    title="Remove Logo"
-                                                >
-                                                    <FiX size={16} />
-                                                </button>
-                                            )}
-                                        </div>
-
-                                        <div className="flex-grow w-full space-y-6">
-                                            <div>
-                                                <h4 className="text-sm font-black uppercase tracking-[0.3em] text-gray-900 mb-2">Identity Branding</h4>
-                                                <p className="text-xs font-bold text-gray-400">Configure your primary brand mark or corporate logo.</p>
-                                            </div>
-
-                                            {isEditing ? (
-                                                <div className="flex flex-col sm:flex-row items-center gap-4">
-                                                    <select
-                                                        value={formData.logoType}
-                                                        onChange={(e) => handleInputChange('logoType', e.target.value)}
-                                                        className="w-full sm:w-auto text-[10px] font-black uppercase tracking-widest bg-gray-50 px-6 py-4 rounded-2xl border border-gray-100 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-blue-500/10"
-                                                    >
-                                                        <option value="file">File Upload</option>
-                                                        <option value="url">External URL</option>
-                                                    </select>
-
-                                                    {formData.logoType === 'url' ? (
-                                                        <input
-                                                            type="text"
-                                                            value={formData.logo}
-                                                            onChange={(e) => handleInputChange('logo', e.target.value)}
-                                                            className={`${inputClasses} !rounded-2xl`}
-                                                            placeholder="Paste Secure Image Link"
-                                                        />
-                                                    ) : (
-                                                        <label className="w-full flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-gray-50 border border-dashed border-gray-200 cursor-pointer hover:bg-gray-100 transition-all border-2">
-                                                            <FiUpload size={16} className="text-gray-400" />
-                                                            <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Select Asset</span>
-                                                            <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
-                                                        </label>
-                                                    )}
+                                            <div className="flex-grow w-full space-y-4">
+                                                <div>
+                                                    <h4 className="text-[12px] md:text-sm font-black uppercase tracking-[0.3em] text-gray-900 mb-1">Identity Branding</h4>
+                                                    <p className="text-[10px] font-bold text-gray-400">Configure your primary brand mark or corporate logo.</p>
                                                 </div>
-                                            ) : (
-                                                <div className="flex items-center gap-3">
-                                                    <span className={`text-[10px] font-black uppercase tracking-widest px-6 py-2 rounded-full border ${formData.logo ? 'text-emerald-500 bg-emerald-50 border-emerald-100' : 'text-gray-400 bg-gray-50 border-gray-100'}`}>
-                                                        {formData.logo ? "Branding Active" : "No Branding Set"}
-                                                    </span>
-                                                </div>
-                                            )}
 
-                                            {/* Transparent Logo Note */}
-                                            <p className="text-[10px] font-bold text-red-500/60 flex items-center gap-2">
-                                                <FiActivity size={10} />
-                                                <span>Note: Transparent background (PNG/SVG) recommended for optimal template results.</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                                                {isEditing ? (
+                                                    <div className="flex flex-col sm:flex-row items-center gap-3">
+                                                        <select
+                                                            value={formData.logoType}
+                                                            onChange={(e) => handleInputChange('logoType', e.target.value)}
+                                                            className="w-full sm:w-auto text-[9px] font-black uppercase tracking-widest bg-gray-50 px-4 py-3 rounded-xl border border-gray-100 outline-none transition-all focus:bg-white focus:ring-2 focus:ring-blue-500/10"
+                                                        >
+                                                            <option value="file">File Upload</option>
+                                                            <option value="url">External URL</option>
+                                                        </select>
 
-                                {/* --- NEW IDENTITY STUDIO SECTION --- */}
-                                <div className="md:col-span-2 mb-16">
-                                    <div className="bg-white p-4 md:p-12 rounded-[2rem] sm:rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden relative">
-                                        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-[100px] -mr-32 -mt-32 opacity-50" />
-
-                                        <div className="flex items-center gap-4 mb-12 relative z-10">
-                                            <div className="p-3 rounded-2xl bg-blue-600 text-white shadow-lg">
-                                                <FiLayout className="w-5 h-5" />
-                                            </div>
-                                            <div>
-                                                <h3 className="text-xl font-black text-gray-900 tracking-tight">Identity Studio</h3>
-                                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Template & Branding Engine</p>
-                                            </div>
-                                        </div>
-
-                                        <div className="grid lg:grid-cols-2 gap-16 items-start relative z-10">
-                                            {/* LIVE PREVIEW */}
-                                            <div className="flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-white rounded-[2rem] sm:rounded-[3rem] p-4 md:p-12 border border-dashed border-gray-200 overflow-hidden">
-                                                <CardPreview formData={formData} />
-                                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-300 mt-8">Real-time Identity Preview</p>
-                                            </div>
-
-                                            {/* DESIGN CONTROLS */}
-                                            <div className="space-y-12">
-                                                {/* THEME ENGINE */}
-                                                <div className="space-y-6">
-                                                    <h4 className="text-sm font-black uppercase tracking-[0.3em] text-blue-600">01. Theme Engine</h4>
-                                                    <div className="flex flex-col sm:flex-row items-center gap-10">
-                                                        <div className="react-colorful-container shadow-2xl rounded-[2rem] overflow-hidden border-8 border-white">
-                                                            <HexColorPicker color={formData.themeColor} onChange={(c) => handleInputChange('themeColor', c)} />
-                                                        </div>
-                                                        <div className="flex flex-col items-center gap-6">
-                                                            <div className={`w-24 h-24 rounded-3xl shadow-2xl border-8 border-white flex flex-col items-center justify-center overflow-hidden transition-all duration-500 scale-110 ${isLight(formData.themeColor) ? "text-gray-900" : "text-white"}`} style={{ background: formData.themeColor }}>
-                                                                {formData.profileImage ? (
-                                                                    <img src={formData.profileImage} className="w-full h-full object-cover" alt="Theme Preview" />
-                                                                ) : (
-                                                                    <FiUser size={32} />
-                                                                )}
-                                                            </div>
-                                                            <div className="flex gap-3">
-                                                                {["#0f172a", "#3b82f6", "#ef4444", "#22c55e", "#f59e0b", "#6366f1"].map(c => (
-                                                                    <div key={c} onClick={() => handleInputChange('themeColor', c)} className={`w-6 h-6 rounded-full cursor-pointer border-2 border-white shadow-lg hover:scale-125 transition-all ${formData.themeColor === c ? 'scale-125 ring-2 ring-offset-2 ring-blue-500' : ''}`} style={{ background: c }} />
-                                                                ))}
-                                                            </div>
+                                                        {formData.logoType === 'url' ? (
                                                             <input
                                                                 type="text"
-                                                                disabled={!isEditing}
-                                                                value={formData.themeColor}
-                                                                onChange={(e) => handleInputChange('themeColor', e.target.value)}
-                                                                className="w-28 px-4 py-3 rounded-xl bg-gray-50 border text-[10px] font-black text-center uppercase tracking-widest outline-none focus:ring-2 focus:ring-blue-500/10"
+                                                                value={formData.logo}
+                                                                onChange={(e) => handleInputChange('logo', e.target.value)}
+                                                                className={`${inputClasses} !rounded-xl !py-3 !text-[10px]`}
+                                                                placeholder="Paste Secure Image Link"
                                                             />
-                                                        </div>
+                                                        ) : (
+                                                            <label className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gray-50 border border-dashed border-gray-200 cursor-pointer hover:bg-gray-100 transition-all border-2">
+                                                                <FiUpload size={14} className="text-gray-400" />
+                                                                <span className="text-[9px] font-black uppercase tracking-widest text-gray-400">Select Asset</span>
+                                                                <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
+                                                            </label>
+                                                        )}
                                                     </div>
+                                                ) : (
+                                                    <div className="flex flex-wrap items-center gap-4">
+                                                        <span className={`text-[9px] font-black uppercase tracking-widest px-4 py-2 rounded-full border ${formData.logo ? 'text-emerald-500 bg-emerald-50 border-emerald-100' : 'text-gray-400 bg-gray-50 border-gray-100'}`}>
+                                                            {formData.logo ? "Branding Active" : "No Branding Set"}
+                                                        </span>
+
+                                                        {/* Transparent Logo Note Inline */}
+                                                        <p className="text-[9px] font-bold text-red-500/60 flex items-center gap-2">
+                                                            <FiActivity size={10} />
+                                                            <span>Note: PNG/SVG recommended.</span>
+                                                        </p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* --- NEW IDENTITY STUDIO SECTION --- */}
+                                    <div className="md:col-span-2 mb-16">
+                                        <div className="bg-white p-4 md:p-8 rounded-[2rem] sm:rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden relative">
+                                            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-[100px] -mr-32 -mt-32 opacity-50" />
+
+                                            <div className="flex items-center gap-4 mb-8 relative z-10">
+                                                <div className="p-3 rounded-2xl bg-blue-600 text-white shadow-lg">
+                                                    <FiLayout className="w-5 h-5" />
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-xl font-black text-gray-900 tracking-tight">Identity Studio</h3>
+                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Template & Branding Engine</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="grid lg:grid-cols-2 gap-8 items-start relative z-10">
+                                                {/* LIVE PREVIEW */}
+                                                <div className="flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-white rounded-xl sm:rounded-xl p-2 md:p-2 border border-dashed border-gray-200 overflow-hidden">
+                                                    <CardPreview formData={formData} />
+                                                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-300 mt-2">Real-time Identity Preview</p>
                                                 </div>
 
-                                                {/* LAYOUT ARCHITECTURE */}
-                                                <div className="space-y-6">
-                                                    <h4 className="text-sm font-black uppercase tracking-[0.3em] text-orange-500">02. Layout Architecture</h4>
-                                                    <div className="grid grid-cols-5 gap-4">
-                                                        {[
-                                                            { id: 'layout_1', name: 'Standard' },
-                                                            { id: 'layout_2', name: 'Hero' },
-                                                            { id: 'layout_3', name: 'Matrix' },
-                                                            { id: 'layout_4', name: 'Lead' },
-                                                            { id: 'layout_5', name: 'Ultra' },
-                                                        ].map((layout) => {
-                                                            const isSelected = formData.templateId === layout.id;
-                                                            return (
-                                                                <div
-                                                                    key={layout.id}
-                                                                    onClick={() => {
-                                                                        if (!isEditing) setIsEditing(true);
-                                                                        handleInputChange('templateId', layout.id);
-                                                                    }}
-                                                                    className="cursor-pointer group"
-                                                                >
-                                                                    <div className={`relative aspect-[3/4] rounded-xl overflow-hidden border-2 transition-all duration-300 ${isSelected ? 'border-blue-600 bg-white shadow-xl scale-105' : 'border-gray-100 bg-gray-50 opacity-60 group-hover:opacity-100'}`}>
-                                                                        <div className="w-full h-full p-2 flex flex-col gap-1 opacity-40">
-                                                                            {layout.id === 'layout_1' && (
-                                                                                <div className="flex flex-col items-center gap-1">
-                                                                                    <div className="w-4 h-4 rounded-full bg-gray-400" />
-                                                                                    <div className="w-full h-1 bg-gray-300 rounded" />
-                                                                                    <div className="w-full h-4 bg-gray-200 rounded" />
-                                                                                    <div className="w-full h-4 bg-gray-200 rounded" />
-                                                                                </div>
-                                                                            )}
-                                                                            {layout.id === 'layout_2' && (
-                                                                                <div className="flex flex-col gap-1">
-                                                                                    <div className="w-full h-6 bg-gray-300 rounded" />
-                                                                                    <div className="w-4 h-4 rounded-full bg-gray-400 mx-auto -mt-3" />
-                                                                                    <div className="w-full h-4 bg-gray-200 rounded mt-1" />
-                                                                                </div>
-                                                                            )}
-                                                                            {layout.id === 'layout_3' && (
-                                                                                <div className="grid grid-cols-2 gap-1">
-                                                                                    <div className="aspect-square bg-gray-300 rounded" />
-                                                                                    <div className="aspect-square bg-gray-300 rounded" />
-                                                                                    <div className="col-span-2 h-4 bg-gray-200 rounded" />
-                                                                                </div>
-                                                                            )}
-                                                                            {layout.id === 'layout_4' && (
-                                                                                <div className="flex flex-col items-center gap-1">
-                                                                                    <div className="w-6 h-6 rounded-full bg-gray-300" />
-                                                                                    <div className="w-full h-2 bg-gray-200 rounded" />
-                                                                                    <div className="w-full h-6 bg-gray-400 rounded mt-1" />
-                                                                                </div>
-                                                                            )}
-                                                                            {layout.id === 'layout_5' && (
-                                                                                <div className="flex flex-col gap-1">
-                                                                                    <div className="flex gap-1 items-center">
-                                                                                        <div className="w-4 h-4 bg-gray-400 rounded" />
-                                                                                        <div className="flex-1 h-2 bg-gray-200 rounded" />
+                                                {/* DESIGN CONTROLS */}
+                                                <div className="space-y-8">
+                                                    {/* THEME ENGINE */}
+                                                    <div className="space-y-4">
+                                                        <h4 className="text-sm font-black uppercase tracking-[0.3em] text-blue-600">01. Theme Engine</h4>
+                                                        <div className="flex flex-row items-center gap-6 sm:gap-10">
+                                                            <div className="react-colorful-container shadow-2xl rounded-[2rem] overflow-hidden border-8 border-white flex-shrink-0">
+                                                                <HexColorPicker color={formData.themeColor} onChange={(c) => handleInputChange('themeColor', c)} />
+                                                            </div>
+                                                            <div className="flex flex-col items-center gap-4 flex-1 min-w-0">
+                                                                <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-3xl shadow-2xl border-4 sm:border-8 border-white flex flex-col items-center justify-center overflow-hidden transition-all duration-500 ${isLight(formData.themeColor) ? "text-gray-900" : "text-white"}`} style={{ background: formData.themeColor }}>
+                                                                    {formData.profileImage ? (
+                                                                        <img src={formData.profileImage} className="w-full h-full object-cover" alt="Theme Preview" />
+                                                                    ) : (
+                                                                        <FiUser size={32} />
+                                                                    )}
+                                                                </div>
+                                                                <div className="flex flex-wrap justify-center gap-2">
+                                                                    {["#0f172a", "#3b82f6", "#ef4444", "#22c55e", "#f59e0b", "#6366f1"].map(c => (
+                                                                        <div key={c} onClick={() => handleInputChange('themeColor', c)} className={`w-5 h-5 rounded-full cursor-pointer border-2 border-white shadow-lg hover:scale-125 transition-all ${formData.themeColor === c ? 'scale-125 ring-2 ring-offset-2 ring-blue-500' : ''}`} style={{ background: c }} />
+                                                                    ))}
+                                                                </div>
+                                                                <input
+                                                                    type="text"
+                                                                    disabled={!isEditing}
+                                                                    value={formData.themeColor}
+                                                                    onChange={(e) => handleInputChange('themeColor', e.target.value)}
+                                                                    className="w-full max-w-[100px] px-3 py-2 rounded-xl bg-gray-50 border text-[9px] font-black text-center uppercase tracking-widest outline-none focus:ring-2 focus:ring-blue-500/10"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* LAYOUT ARCHITECTURE */}
+                                                    <div className="space-y-4">
+                                                        <h4 className="text-sm font-black uppercase tracking-[0.3em] text-orange-500">02. Layout Architecture</h4>
+                                                        <div className="grid grid-cols-5 gap-4">
+                                                            {[
+                                                                { id: 'layout_1', name: 'Standard' },
+                                                                { id: 'layout_2', name: 'Hero' },
+                                                                { id: 'layout_3', name: 'Matrix' },
+                                                                { id: 'layout_4', name: 'Lead' },
+                                                                { id: 'layout_5', name: 'Ultra' },
+                                                            ].map((layout) => {
+                                                                const isSelected = formData.templateId === layout.id;
+                                                                return (
+                                                                    <div
+                                                                        key={layout.id}
+                                                                        onClick={() => {
+                                                                            if (!isEditing) setIsEditing(true);
+                                                                            handleInputChange('templateId', layout.id);
+                                                                        }}
+                                                                        className="cursor-pointer group"
+                                                                    >
+                                                                        <div className={`relative aspect-[3/4] rounded-xl overflow-hidden border-2 transition-all duration-300 ${isSelected ? 'border-blue-600 bg-white shadow-xl scale-105' : 'border-gray-100 bg-gray-50 opacity-60 group-hover:opacity-100'}`}>
+                                                                            <div className="w-full h-full p-2 flex flex-col gap-1 opacity-40">
+                                                                                {layout.id === 'layout_1' && (
+                                                                                    <div className="flex flex-col items-center gap-1">
+                                                                                        <div className="w-4 h-4 rounded-full bg-gray-400" />
+                                                                                        <div className="w-full h-1 bg-gray-300 rounded" />
+                                                                                        <div className="w-full h-4 bg-gray-200 rounded" />
+                                                                                        <div className="w-full h-4 bg-gray-200 rounded" />
                                                                                     </div>
-                                                                                    <div className="w-full h-10 bg-gray-200 rounded-xl mt-1" />
+                                                                                )}
+                                                                                {layout.id === 'layout_2' && (
+                                                                                    <div className="flex flex-col gap-1">
+                                                                                        <div className="w-full h-6 bg-gray-300 rounded" />
+                                                                                        <div className="w-4 h-4 rounded-full bg-gray-400 mx-auto -mt-3" />
+                                                                                        <div className="w-full h-4 bg-gray-200 rounded mt-1" />
+                                                                                    </div>
+                                                                                )}
+                                                                                {layout.id === 'layout_3' && (
+                                                                                    <div className="grid grid-cols-2 gap-1">
+                                                                                        <div className="aspect-square bg-gray-300 rounded" />
+                                                                                        <div className="aspect-square bg-gray-300 rounded" />
+                                                                                        <div className="col-span-2 h-4 bg-gray-200 rounded" />
+                                                                                    </div>
+                                                                                )}
+                                                                                {layout.id === 'layout_4' && (
+                                                                                    <div className="flex flex-col items-center gap-1">
+                                                                                        <div className="w-6 h-6 rounded-full bg-gray-300" />
+                                                                                        <div className="w-full h-2 bg-gray-200 rounded" />
+                                                                                        <div className="w-full h-6 bg-gray-400 rounded mt-1" />
+                                                                                    </div>
+                                                                                )}
+                                                                                {layout.id === 'layout_5' && (
+                                                                                    <div className="flex flex-col gap-1">
+                                                                                        <div className="flex gap-1 items-center">
+                                                                                            <div className="w-4 h-4 bg-gray-400 rounded" />
+                                                                                            <div className="flex-1 h-2 bg-gray-200 rounded" />
+                                                                                        </div>
+                                                                                        <div className="w-full h-10 bg-gray-200 rounded-xl mt-1" />
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                            {isSelected && (
+                                                                                <div className="absolute inset-0 bg-blue-600/5 flex items-center justify-center">
+                                                                                    <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
                                                                                 </div>
                                                                             )}
                                                                         </div>
-                                                                        {isSelected && (
-                                                                            <div className="absolute inset-0 bg-blue-600/5 flex items-center justify-center">
-                                                                                <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                                                                            </div>
-                                                                        )}
+                                                                        <p className={`text-[7px] font-black uppercase text-center mt-2 tracking-widest ${isSelected ? 'text-blue-600' : 'text-gray-400'}`}>{layout.name}</p>
                                                                     </div>
-                                                                    <p className={`text-[7px] font-black uppercase text-center mt-2 tracking-widest ${isSelected ? 'text-blue-600' : 'text-gray-400'}`}>{layout.name}</p>
-                                                                </div>
-                                                            );
-                                                        })}
+                                                                );
+                                                            })}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* IDENTITY SECTION */}
-                                <div className="md:col-span-2 mb-4">
-                                    <h4 className="text-sm font-black uppercase tracking-[0.3em] text-blue-600 mb-2">Primary Identity</h4>
-                                    <div className="h-1 w-12 bg-blue-600 rounded-full"></div>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className={labelClasses}>Full Name <span className="text-red-500">*</span></label>
-                                    <input
-                                        type="text"
-                                        disabled={!isEditing}
-                                        value={formData.displayName}
-                                        onChange={(e) => handleInputChange('displayName', e.target.value)}
-                                        className={inputClasses}
-                                        placeholder="e.g. Dharmik Prajapati"
-                                    />
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className={labelClasses}>Business Category <span className="text-red-500">*</span></label>
-                                    <select
-                                        disabled={!isEditing}
-                                        value={formData.businessRole}
-                                        onChange={(e) => handleInputChange('businessRole', e.target.value)}
-                                        className={`${inputClasses} appearance-none`}
-                                    >
-                                        <option value="">Select Category</option>
-                                        {['Business', 'Luxury', 'Technology', 'Agency', 'Healthcare', 'Automotive', 'Real Estate', 'Legal', 'Hospitality', 'Fitness', 'Construction', 'Beauty', 'Creator', 'Service'].map(role => (
-                                            <option key={role} value={role}>{role}</option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className={labelClasses}>Job Title</label>
-                                    <input
-                                        type="text"
-                                        disabled={!isEditing}
-                                        value={formData.job}
-                                        onChange={(e) => handleInputChange('job', e.target.value)}
-                                        className={inputClasses}
-                                        placeholder="e.g. Lead Developer"
-                                    />
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className={labelClasses}>Company</label>
-                                    <input
-                                        type="text"
-                                        disabled={!isEditing}
-                                        value={formData.company}
-                                        onChange={(e) => handleInputChange('company', e.target.value)}
-                                        className={inputClasses}
-                                        placeholder="Company Name"
-                                    />
-                                </div>
-
-                                <div className="md:col-span-2 mt-8 mb-4">
-                                    <h4 className="text-sm font-black uppercase tracking-[0.3em] text-emerald-600 mb-2">Direct Channels</h4>
-                                    <div className="h-1 w-12 bg-emerald-600 rounded-full"></div>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className={labelClasses}>Identity Email <span className="text-red-500">*</span></label>
-                                    <input
-                                        type="email"
-                                        disabled={!isEditing}
-                                        value={formData.email}
-                                        onChange={(e) => handleInputChange('email', e.target.value)}
-                                        className={inputClasses}
-                                        placeholder="hello@identity.co"
-                                    />
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className={labelClasses}>Authorized Phone <span className="text-red-500">*</span></label>
-                                    <input
-                                        type="tel"
-                                        disabled={!isEditing}
-                                        value={formData.phone}
-                                        onChange={(e) => handleInputChange('phone', e.target.value)}
-                                        className={inputClasses}
-                                        placeholder="+1 (xxx) xxx-xxxx"
-                                    />
-                                </div>
-
-                                <div className="md:col-span-2 mt-8 mb-4">
-                                    <h4 className="text-sm font-black uppercase tracking-[0.3em] text-orange-500 mb-2">Regional Hub</h4>
-                                    <div className="h-1 w-12 bg-orange-500 rounded-full"></div>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className={labelClasses}>Country <span className="text-red-500">*</span></label>
-                                    <select
-                                        disabled={!isEditing}
-                                        value={formData.countryCode}
-                                        onChange={handleCountryChange}
-                                        className={`${inputClasses} appearance-none`}
-                                    >
-                                        <option value="">Select Country</option>
-                                        {locationData.countries.map(c => <option key={c.isoCode} value={c.isoCode}>{c.name}</option>)}
-                                    </select>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className={labelClasses}>State <span className="text-red-500">*</span></label>
-                                    <select
-                                        disabled={!isEditing || !formData.countryCode}
-                                        value={formData.stateCode}
-                                        onChange={handleStateChange}
-                                        className={`${inputClasses} appearance-none`}
-                                    >
-                                        <option value="">Select State</option>
-                                        {locationData.states.map(s => <option key={s.isoCode} value={s.isoCode}>{s.name}</option>)}
-                                    </select>
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className={labelClasses}>City <span className="text-red-500">*</span></label>
-                                    <select
-                                        disabled={!isEditing || !formData.stateCode}
-                                        value={formData.city}
-                                        onChange={(e) => handleInputChange('city', e.target.value)}
-                                        className={`${inputClasses} appearance-none`}
-                                    >
-                                        <option value="">Select City</option>
-                                        {locationData.cities.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
-                                    </select>
-                                </div>
-
-                                <div className="md:col-span-2 space-y-1">
-                                    <label className={labelClasses}>Precise Identity Address</label>
-                                    <textarea
-                                        disabled={!isEditing}
-                                        rows={2}
-                                        value={formData.address || ""}
-                                        onChange={(e) => handleInputChange('address', e.target.value)}
-                                        className={`${inputClasses} rounded-3xl resize-none min-h-[80px] leading-relaxed`}
-                                        placeholder="e.g. 123 Tech Avenue, Silicon Valley, CA"
-                                    />
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className={labelClasses}>Zip Code</label>
-                                    <input
-                                        type="text"
-                                        disabled={!isEditing}
-                                        value={formData.zipCode || ""}
-                                        onChange={(e) => handleInputChange('zipCode', e.target.value)}
-                                        className={inputClasses}
-                                        placeholder="e.g. 10001"
-                                    />
-                                </div>
-
-                                <div className="md:col-span-2 mt-8 space-y-1">
-                                    <label className={labelClasses}>Identity Manifesto (Bio)</label>
-                                    <textarea
-                                        disabled={!isEditing}
-                                        rows={4}
-                                        value={formData.bio}
-                                        onChange={(e) => handleInputChange('bio', e.target.value)}
-                                        className={`${inputClasses} rounded-3xl resize-none min-h-[120px] leading-relaxed`}
-                                        placeholder="Write your professional narrative..."
-                                    />
-                                </div>
-
-                                <div className="md:col-span-2 pt-16 border-t border-gray-100 mt-10">
-                                    <div className="mb-10">
-                                        <h3 className="text-2xl font-black text-gray-900 tracking-tight">Digital Ecosystem</h3>
-                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Global Network Distribution</p>
+                                    {/* IDENTITY SECTION */}
+                                    <div className="md:col-span-2 mb-4">
+                                        <h4 className="text-sm font-black uppercase tracking-[0.3em] text-blue-600 mb-2">Primary Identity</h4>
+                                        <div className="h-1 w-12 bg-blue-600 rounded-full"></div>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
-                                        {[
-                                            { id: 'website', label: 'Primary Network Hub (Website)', icon: FiGlobe },
-                                            { id: 'linkedin', label: 'LinkedIn', icon: FiLinkedin },
-                                            { id: 'instagram', label: 'Instagram', icon: FiInstagram },
-                                            { id: 'twitter', label: 'X / Twitter', icon: FiTwitter },
-                                            { id: 'whatsapp', label: 'WhatsApp', icon: FiPhone },
-                                            { id: 'telegram', label: 'Telegram', icon: FiSend },
-                                            { id: 'skype', label: 'Skype', icon: FiMessageCircle },
-                                        ].map((node) => (
-                                            <div key={node.id} className="space-y-1">
-                                                <label className={labelClasses}>{node.label}</label>
-                                                <div className="relative">
-                                                    <node.icon className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none" size={16} />
-                                                    <input
-                                                        type="text"
-                                                        disabled={!isEditing}
-                                                        value={formData[node.id] || ''}
-                                                        onChange={(e) => handleInputChange(node.id, e.target.value)}
-                                                        className={`${inputClasses} pl-14`}
-                                                        placeholder={`Enter ${node.id} link...`}
-                                                    />
+                                    <div className="space-y-1">
+                                        <label className={labelClasses}>Full Name <span className="text-red-500">*</span></label>
+                                        <input
+                                            type="text"
+                                            disabled={!isEditing}
+                                            value={formData.displayName}
+                                            onChange={(e) => handleInputChange('displayName', e.target.value)}
+                                            className={inputClasses}
+                                            placeholder="e.g. Dharmik Prajapati"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <label className={labelClasses}>Business Category <span className="text-red-500">*</span></label>
+                                        <select
+                                            disabled={!isEditing}
+                                            value={formData.businessRole}
+                                            onChange={(e) => handleInputChange('businessRole', e.target.value)}
+                                            className={`${inputClasses} appearance-none`}
+                                        >
+                                            <option value="">Select Category</option>
+                                            {['Business', 'Luxury', 'Technology', 'Agency', 'Healthcare', 'Automotive', 'Real Estate', 'Legal', 'Hospitality', 'Fitness', 'Construction', 'Beauty', 'Creator', 'Service'].map(role => (
+                                                <option key={role} value={role}>{role}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <label className={labelClasses}>Job Title</label>
+                                        <input
+                                            type="text"
+                                            disabled={!isEditing}
+                                            value={formData.job}
+                                            onChange={(e) => handleInputChange('job', e.target.value)}
+                                            className={inputClasses}
+                                            placeholder="e.g. Lead Developer"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <label className={labelClasses}>Company</label>
+                                        <input
+                                            type="text"
+                                            disabled={!isEditing}
+                                            value={formData.company}
+                                            onChange={(e) => handleInputChange('company', e.target.value)}
+                                            className={inputClasses}
+                                            placeholder="Company Name"
+                                        />
+                                    </div>
+
+                                    <div className="md:col-span-2 mt-8 mb-4">
+                                        <h4 className="text-sm font-black uppercase tracking-[0.3em] text-emerald-600 mb-2">Direct Channels</h4>
+                                        <div className="h-1 w-12 bg-emerald-600 rounded-full"></div>
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <label className={labelClasses}>Identity Email <span className="text-red-500">*</span></label>
+                                        <input
+                                            type="email"
+                                            disabled={!isEditing}
+                                            value={formData.email}
+                                            onChange={(e) => handleInputChange('email', e.target.value)}
+                                            className={inputClasses}
+                                            placeholder="hello@identity.co"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <label className={labelClasses}>Authorized Phone <span className="text-red-500">*</span></label>
+                                        <input
+                                            type="tel"
+                                            disabled={!isEditing}
+                                            value={formData.phone}
+                                            onChange={(e) => handleInputChange('phone', e.target.value)}
+                                            className={inputClasses}
+                                            placeholder="+1 (xxx) xxx-xxxx"
+                                        />
+                                    </div>
+
+                                    <div className="md:col-span-2 mt-8 mb-4">
+                                        <h4 className="text-sm font-black uppercase tracking-[0.3em] text-orange-500 mb-2">Regional Hub</h4>
+                                        <div className="h-1 w-12 bg-orange-500 rounded-full"></div>
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <label className={labelClasses}>Country <span className="text-red-500">*</span></label>
+                                        <select
+                                            disabled={!isEditing}
+                                            value={formData.countryCode}
+                                            onChange={handleCountryChange}
+                                            className={`${inputClasses} appearance-none`}
+                                        >
+                                            <option value="">Select Country</option>
+                                            {locationData.countries.map(c => <option key={c.isoCode} value={c.isoCode}>{c.name}</option>)}
+                                        </select>
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <label className={labelClasses}>State <span className="text-red-500">*</span></label>
+                                        <select
+                                            disabled={!isEditing || !formData.countryCode}
+                                            value={formData.stateCode}
+                                            onChange={handleStateChange}
+                                            className={`${inputClasses} appearance-none`}
+                                        >
+                                            <option value="">Select State</option>
+                                            {locationData.states.map(s => <option key={s.isoCode} value={s.isoCode}>{s.name}</option>)}
+                                        </select>
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <label className={labelClasses}>City <span className="text-red-500">*</span></label>
+                                        <select
+                                            disabled={!isEditing || !formData.stateCode}
+                                            value={formData.city}
+                                            onChange={(e) => handleInputChange('city', e.target.value)}
+                                            className={`${inputClasses} appearance-none`}
+                                        >
+                                            <option value="">Select City</option>
+                                            {locationData.cities.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
+                                        </select>
+                                    </div>
+
+                                    <div className="md:col-span-2 space-y-1">
+                                        <label className={labelClasses}>Precise Identity Address</label>
+                                        <textarea
+                                            disabled={!isEditing}
+                                            rows={2}
+                                            value={formData.address || ""}
+                                            onChange={(e) => handleInputChange('address', e.target.value)}
+                                            className={`${inputClasses} rounded-3xl resize-none min-h-[80px] leading-relaxed`}
+                                            placeholder="e.g. 123 Tech Avenue, Silicon Valley, CA"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-1">
+                                        <label className={labelClasses}>Zip Code</label>
+                                        <input
+                                            type="text"
+                                            disabled={!isEditing}
+                                            value={formData.zipCode || ""}
+                                            onChange={(e) => handleInputChange('zipCode', e.target.value)}
+                                            className={inputClasses}
+                                            placeholder="e.g. 10001"
+                                        />
+                                    </div>
+
+                                    <div className="md:col-span-2 mt-8 space-y-1">
+                                        <label className={labelClasses}>Identity Manifesto (Bio)</label>
+                                        <textarea
+                                            disabled={!isEditing}
+                                            rows={4}
+                                            value={formData.bio}
+                                            onChange={(e) => handleInputChange('bio', e.target.value)}
+                                            className={`${inputClasses} rounded-3xl resize-none min-h-[120px] leading-relaxed`}
+                                            placeholder="Write your professional narrative..."
+                                        />
+                                    </div>
+
+                                    <div className="md:col-span-2 pt-16 border-t border-gray-100 mt-10">
+                                        <div className="mb-10">
+                                            <h3 className="text-2xl font-black text-gray-900 tracking-tight">Digital Ecosystem</h3>
+                                            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Global Network Distribution</p>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                                            {[
+                                                { id: 'website', label: 'Primary Network Hub (Website)', icon: FiGlobe },
+                                                { id: 'linkedin', label: 'LinkedIn', icon: FiLinkedin },
+                                                { id: 'instagram', label: 'Instagram', icon: FiInstagram },
+                                                { id: 'twitter', label: 'X / Twitter', icon: FiTwitter },
+                                                { id: 'whatsapp', label: 'WhatsApp', icon: FiPhone },
+                                                { id: 'telegram', label: 'Telegram', icon: FiSend },
+                                                { id: 'skype', label: 'Skype', icon: FiMessageCircle },
+                                            ].map((node) => (
+                                                <div key={node.id} className="space-y-1">
+                                                    <label className={labelClasses}>{node.label}</label>
+                                                    <div className="relative">
+                                                        <node.icon className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none" size={16} />
+                                                        <input
+                                                            type="text"
+                                                            disabled={!isEditing}
+                                                            value={formData[node.id] || ''}
+                                                            onChange={(e) => handleInputChange(node.id, e.target.value)}
+                                                            className={`${inputClasses} pl-14`}
+                                                            placeholder={`Enter ${node.id} link...`}
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ))}
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                    <div className="mt-16 border-t border-gray-100 pt-10 flex flex-col items-center text-center pb-20">
+                    <div className="border-t border-gray-100 pt-5 flex flex-col items-center text-center p-5">
                         <div className="max-w-md bg-red-50/50 p-8 rounded-[2.5rem] border border-red-100/50">
                             <h4 className="text-lg font-black text-red-600 mb-1">Authority Terminal</h4>
                             <p className="text-[11px] font-bold text-red-400 leading-relaxed mb-6">Termination of this session will de-synchronize your current cloud access.</p>

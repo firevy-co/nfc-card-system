@@ -150,11 +150,13 @@ const Inquiry = ({ userData }) => {
 
     return (
         <div className="min-h-screen bg-[#F8EDEB] text-black flex flex-col overflow-x-hidden font-['Mulish']">
-            <TopNav title="Operational Inbox" />
             <AdminNav />
 
-            <main className="flex-1 p-4 sm:p-6 lg:p-12 mt-14 lg:mt-20 pb-28 lg:pb-8 max-w-[1600px] mx-auto w-full">
-                <header className="mb-8 sm:mb-14 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-10 animate-in fade-in slide-in-from-top-4 duration-1000">
+            <main className="flex-1 p-4 sm:p-8 lg:p-16 pb-28 lg:pb-8 max-w-[1600px] mx-auto w-full">
+                {/* NAVIGATION SPACER */}
+                <div className="h-28 sm:h-32 lg:h-40" />
+
+                <header className="mb-10 sm:mb-16 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-10 animate-in fade-in slide-in-from-top-4 duration-1000">
                     <div className="flex-1">
                         <h2 className="text-2xl sm:text-4xl font-black text-black tracking-tighter capitalize">Inquiry Hub</h2>
                     </div>

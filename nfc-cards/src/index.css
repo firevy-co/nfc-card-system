@@ -200,12 +200,21 @@
 
   /* React Colorful Customization */
   .react-colorful {
-    width: 240px !important;
-    height: 240px !important;
-    border-radius: 1.5rem !important;
+    width: 170px !important;
+    height: 170px !important;
+    border-radius: 1rem !important;
     overflow: hidden;
-    border: 8px solid white;
+    border: 4px solid white;
     box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+  }
+  
+  @media (min-width: 640px) {
+    .react-colorful {
+      width: 240px !important;
+      height: 240px !important;
+      border-radius: 1.5rem !important;
+      border: 8px solid white;
+    }
   }
 
   .react-colorful__hue {

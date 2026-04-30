@@ -24,9 +24,9 @@ const IconCard = ({ icon: _Icon, label, field, onClick, required }) => (
 );
 
 const Section = ({ title, children }) => (
-    <div className="bg-white border rounded-xl p-5 shadow-sm">
-        <h3 className="text-sm font-semibold mb-4 opacity-60 uppercase tracking-widest">{title}</h3>
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+    <div className="bg-white border rounded-xl p-4 sm:p-5 shadow-sm">
+        <h3 className="text-xs sm:text-sm font-semibold mb-4 opacity-60 uppercase tracking-widest">{title}</h3>
+        <div className="grid grid-cols-2 xs:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4">
             {children}
         </div>
     </div>
@@ -336,7 +336,7 @@ const CardPreview = ({ formData }) => {
     };
 
     return (
-        <div className={`rounded-3xl w-[320px] min-h-[520px] p-6 shadow-2xl transition-all duration-700 relative overflow-hidden flex flex-col ${light ? "text-gray-900" : "text-white"}`} style={{ background: themeColor }}>
+        <div className={`rounded-3xl w-full max-w-[320px] min-h-[520px] p-6 shadow-2xl transition-all duration-700 relative overflow-hidden flex flex-col ${light ? "text-gray-900" : "text-white"}`} style={{ background: themeColor }}>
             {renderLayout()}
             <div className="mt-auto pt-8 pb-2 text-center">
                 <a href="https://cardyn.shop" target="_blank" rel="noopener noreferrer" className={`text-[9px] font-black uppercase tracking-[0.2em] transition-all hover:opacity-100 ${light ? "text-black/30" : "text-white/30"}`}>
@@ -495,17 +495,17 @@ const CompleteProfile = ({ userData }) => {
 
     return (
         <Layout userData={userData} hideSidebar hideTopNav>
-            <div className="max-w-7xl mx-auto p-6 space-y-6">
-                <div className="flex items-center justify-start gap-4">
+            <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-6">
+                <div className="flex flex-wrap items-center justify-start gap-3 sm:gap-4">
                     <button
                         onClick={() => setActiveTab("personal")}
-                        className={`px-4 py-2 rounded-lg transition-all font-['Mulish'] shadow-md cursor-pointer ${activeTab === "personal" ? "bg-black text-white shadow-lg" : "bg-gray-100 text-gray-900"}`}
+                        className={`px-4 py-2 rounded-lg transition-all font-['Mulish'] shadow-md cursor-pointer text-sm sm:text-base ${activeTab === "personal" ? "bg-black text-white shadow-lg" : "bg-gray-100 text-gray-900"}`}
                     >
                         Personal
                     </button>
                     <button
                         onClick={() => setActiveTab("business")}
-                        className={`px-4 py-2 rounded-lg transition-all font-['Mulish'] shadow-md cursor-pointer ${activeTab === "business" ? "bg-black text-white shadow-lg" : "bg-gray-100 text-gray-900"}`}
+                        className={`px-4 py-2 rounded-lg transition-all font-['Mulish'] shadow-md cursor-pointer text-sm sm:text-base ${activeTab === "business" ? "bg-black text-white shadow-lg" : "bg-gray-100 text-gray-900"}`}
                     >
                         Business
                     </button>
@@ -513,10 +513,10 @@ const CompleteProfile = ({ userData }) => {
                 <hr />
 
                 {/* LABEL */}
-                <div className="bg-white p-5 rounded-xl border shadow-sm">
+                <div className="bg-white p-4 sm:p-5 rounded-xl border shadow-sm">
                     <h3 className="text-sm mb-3 font-semibold opacity-60">Label this card</h3>
                     <input
-                        className="w-full p-3 rounded-lg bg-gray-50 border border-transparent focus:border-black/5 outline-none font-bold"
+                        className="w-full p-3 rounded-lg bg-gray-50 border border-transparent focus:border-black/5 outline-none font-bold text-sm sm:text-base"
                         placeholder="Work"
                         value={formData.label}
                         onChange={(e) =>
@@ -526,7 +526,7 @@ const CompleteProfile = ({ userData }) => {
                 </div>
 
                 {/* --- SIMPLIFIED IDENTITY STUDIO --- */}
-                <div className="bg-white p-6 rounded-xl border shadow-sm grid md:grid-cols-2 gap-8">
+                <div className="bg-white p-4 sm:p-6 rounded-xl border shadow-sm grid lg:grid-cols-2 gap-8">
 
                     {/* LEFT: THE LIVE PREVIEW */}
                     <div className="flex flex-col items-center">
@@ -577,7 +577,7 @@ const CompleteProfile = ({ userData }) => {
                         {/* 2. THEME */}
                         <div className="space-y-2">
                             <h3 className="text-sm font-semibold opacity-60">Identity Theme</h3>
-                            <div className="flex flex-col sm:flex-row items-center gap-6">
+                            <div className="flex items-center gap-4 sm:gap-6 overflow-hidden">
                                 <div className="react-colorful-container">
                                     <HexColorPicker color={formData.themeColor} onChange={(c) => setFormData(prev => ({ ...prev, themeColor: c }))} />
                                 </div>
@@ -602,7 +602,7 @@ const CompleteProfile = ({ userData }) => {
                                 <h3 className="text-sm font-semibold opacity-60">Structural Architecture</h3>
                                 <span className="text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-gray-100 rounded text-gray-500">ID: {formData.templateId}</span>
                             </div>
-                            <div className="grid grid-cols-5 gap-3">
+                            <div className="grid grid-cols-5 gap-2 sm:gap-3">
                                 {[
                                     { id: 'layout_1', name: 'Standard' },
                                     { id: 'layout_2', name: 'Hero' },
@@ -701,20 +701,20 @@ const CompleteProfile = ({ userData }) => {
                 )}
 
                 {/* SAVE & BACK */}
-                <div className="flex justify-end gap-6 items-center">
+                <div className="flex flex-col-reverse sm:flex-row justify-end gap-4 sm:gap-6 items-center">
                     <button
                         onClick={async () => {
                             await signOut(auth);
                             navigate("/signup");
                         }}
-                        className="flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-gray-900 transition-colors"
+                        className="flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-gray-900 transition-colors w-full sm:w-auto justify-center"
                     >
                         <Fi.FiArrowLeft size={16} />
                         Back to Register
                     </button>
                     <button
                         onClick={handleSave}
-                        className="bg-black text-white px-10 py-4 rounded-xl font-black text-xs uppercase tracking-widest shadow-2xl hover:brightness-110 transition-all active:scale-95"
+                        className="bg-black text-white px-10 py-4 rounded-xl font-black text-xs uppercase tracking-widest shadow-2xl hover:brightness-110 transition-all active:scale-95 w-full sm:w-auto"
                     >
                         Save & Continue
                     </button>
@@ -722,8 +722,8 @@ const CompleteProfile = ({ userData }) => {
 
                 {/* MODAL */}
                 {activeField && (
-                    <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-                        <div className="bg-white p-6 rounded-xl w-full max-w-md">
+                    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[1000] p-4 backdrop-blur-sm">
+                        <div className="bg-white p-6 rounded-2xl w-full max-w-md shadow-2xl overflow-y-auto max-h-[90vh] animate-in fade-in zoom-in duration-300">
                             <h3 className="mb-3 capitalize">{activeField}</h3>
 
                             {activeField === 'address' ? (

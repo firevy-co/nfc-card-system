@@ -60,12 +60,13 @@ const Layout = ({
           />
         )}
 
-        <main className={`flex-1 overflow-y-auto animate-in fade-in slide-in-from-bottom-4 duration-700 bg-muted/10 ${hideTopNav ? 'p-0' : (actualHideTopNav ? 'p-0 pt-14 lg:pt-28 pb-24 lg:pb-8' : 'p-4 sm:p-6 lg:p-10')}`}>
+        <main className={`flex-1 overflow-y-auto animate-in fade-in slide-in-from-bottom-4 duration-700 bg-muted/10 ${hideTopNav ? 'p-0' : (actualHideTopNav ? 'p-0 pb-24 lg:pb-8' : 'p-4 sm:p-8 lg:p-16')}`}>
           <div className="max-w-[1600px] mx-auto">
+            {!hideTopNav && actualHideTopNav && <div className="h-28 sm:h-32 lg:h-40" />}
             {children}
           </div>
         </main>
-        
+
         {!hideTopNav && <MobileFooter userData={userData} />}
       </div>
     </div>

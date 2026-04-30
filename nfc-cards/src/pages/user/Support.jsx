@@ -121,17 +121,22 @@ const Support = ({ userData }) => {
 
     return (
         <Layout userData={userData} title="Support Terminal">
-            <div className="w-full mb-20 mt-4 sm:mt-10 space-y-8 sm:space-y-12 animate-in fade-in duration-1000 font-['Mulish']">
-
+            <div className="w-full px-4 sm:px-8 lg:px-16 pb-20 animate-in fade-in duration-1000 font-['Mulish']">
+                {/* NAVIGATION SPACER */}
+                <div className="h-28 sm:h-32 lg:h-40" />
+                
                 {/* Header Section */}
-                <header className="flex flex-col gap-3 border-b border-black/[0.05] pb-6 sm:pb-10">
-                    <div className="space-y-1">
-                        <h2 className="text-2xl sm:text-4xl font-black text-foreground">Support Terminal</h2>
-                        <p className="text-muted-foreground font-bold tracking-tight text-sm opacity-60">Direct neural link to technical architecture templates. Dispatch your operational briefs below.</p>
+                <header className="flex flex-col gap-4 border-b border-black/[0.05] pb-12 mb-10">
+                    <div className="space-y-3">
+                        <p className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-zinc-500 font-black mb-2 opacity-80">
+                            Protocol Support
+                        </p>
+                        <h2 className="text-3xl sm:text-5xl font-black text-black tracking-tighter">Support Terminal</h2>
+                        <p className="text-zinc-500 font-bold tracking-tight text-sm sm:text-base opacity-70 max-w-2xl leading-relaxed">Direct neural link to technical architecture templates. Dispatch your operational briefs below.</p>
                     </div>
                 </header>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-12 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 items-start">
 
                     {/* INQUIRY CONSOLE */}
                     <div className="bg-white rounded-xl shadow-[0_30px_100px_-20px_rgba(0,0,0,0.2)] border border-slate-50 p-6 sm:p-8 md:p-14 relative overflow-hidden group transition-all duration-700 hover:shadow-[0_40px_120px_-20px_rgba(123,185,212,0.15)]">

@@ -53,18 +53,19 @@ const UserSettings = ({ userData }) => {
     ];
 
     return (
-        <div className="min-h-screen bg-[#f5f7fa] text-black font-['Mulish'] flex flex-col overflow-x-hidden">
-            <TopNav title="Settings" />
+        <div className="min-h-screen bg-[#F8EDEB] text-black font-['Mulish'] flex flex-col overflow-x-hidden">
             <UserNav userData={userData} />
 
-            <main className="flex-1 max-w-[1600px] mx-auto w-full px-4 sm:px-6 lg:px-10 pt-20 pb-28">
+            <main className="flex-1 max-w-[1600px] mx-auto w-full px-4 sm:px-8 lg:px-16 pb-28">
+                {/* NAVIGATION SPACER */}
+                <div className="h-28 sm:h-32 lg:h-40" />
 
                 {/* PAGE HEADER */}
-                <div className="mb-8">
-                    <p className="text-xs uppercase tracking-[0.35em] text-zinc-400 font-bold mb-2">
+                <div className="mb-10">
+                    <p className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-zinc-500 font-black mb-2 opacity-80">
                         User Hub
                     </p>
-                    <h1 className="text-4xl sm:text-5xl font-black tracking-tight">
+                    <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-black">
                         Settings Panel
                     </h1>
                 </div>

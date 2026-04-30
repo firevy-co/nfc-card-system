@@ -94,13 +94,13 @@ const NotificationCenter = ({ isAdmin, theme }) => {
                         initial={{ opacity: 0, y: 15, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 15, scale: 0.95 }}
-                        className={`absolute right-0 mt-4 w-80 sm:w-96 rounded-[2rem] border shadow-2xl overflow-hidden z-[100] backdrop-blur-3xl ${
+                        className={`fixed sm:absolute inset-x-4 sm:inset-x-auto sm:right-0 top-[80px] sm:top-auto sm:mt-4 sm:w-96 rounded-[2.5rem] sm:rounded-[2rem] border shadow-2xl overflow-hidden z-[100] ${
                             theme === 'dark'
-                            ? 'bg-zinc-900/95 border-white/10 text-white'
-                            : 'bg-white/95 border-black/5 text-black'
+                            ? 'bg-zinc-900 border-white/10 text-white'
+                            : 'bg-white border-black/5 text-black'
                         }`}
                     >
-                        <div className="p-6 border-b border-current/5 flex items-center justify-between">
+                        <div className="p-4 sm:p-6 border-b border-current/5 flex items-center justify-between">
                             <h4 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40">Identity Signal Buffer</h4>
                             <span className="text-[8px] font-black px-2 py-1 bg-current/10 rounded-full">
                                 {unreadCount} Priority
@@ -113,7 +113,7 @@ const NotificationCenter = ({ isAdmin, theme }) => {
                                     <div 
                                         key={notif.id}
                                         onClick={() => handleNotificationClick(notif.id)}
-                                        className={`p-6 border-b border-current/5 hover:bg-current/[0.02] cursor-pointer transition-all animate-in slide-in-from-right-4`}
+                                        className={`p-4 sm:p-6 border-b border-current/5 hover:bg-current/[0.02] cursor-pointer transition-all animate-in slide-in-from-right-4`}
                                     >
                                         <div className="flex gap-4">
                                             <div className="w-10 h-10 rounded-xl bg-current/5 flex items-center justify-center shrink-0">
@@ -135,7 +135,7 @@ const NotificationCenter = ({ isAdmin, theme }) => {
                                     </div>
                                 ))
                             ) : (
-                                <div className="py-20 text-center space-y-4">
+                                <div className="py-12 sm:py-20 text-center space-y-4">
                                     <FiCheckCircle size={32} className="mx-auto opacity-10" />
                                     <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">All identity nodes synced</p>
                                 </div>

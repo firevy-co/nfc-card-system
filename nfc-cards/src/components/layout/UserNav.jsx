@@ -14,7 +14,7 @@ const UserNav = ({ userData }) => {
   return (
     <>
       {/* ── MOBILE TOP HEADER (visible on < lg) ── */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-[50] bg-white/80 backdrop-blur-2xl border-b border-black/5 shadow-sm">
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-[50] bg-white border-b border-black/5 shadow-sm">
         <div className="flex items-center justify-between px-4 py-3">
           <img src={logo} alt="Cardyn Logo" className="h-6 object-contain" />
           <div className="flex items-center gap-2">
@@ -39,7 +39,7 @@ const UserNav = ({ userData }) => {
 
       {/* ── DESKTOP FLOATING NAV (visible on ≥ lg) ── */}
       <div className="hidden lg:block fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[1400px] z-[50] animate-in slide-in-from-top-8 duration-700">
-        <div className="bg-white/70 border-white/40 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.05)] backdrop-blur-3xl border rounded-full px-5 py-3 flex items-center justify-between transition-all duration-500">
+        <div className="bg-white border-white/40 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.05)] border rounded-full px-5 py-3 flex items-center justify-between transition-all duration-500">
           <div className="flex items-center gap-3">
             <img src={logo} alt="Cardyn Logo" className="h-6 object-contain" />
           </div>

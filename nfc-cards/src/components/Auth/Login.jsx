@@ -88,7 +88,7 @@ const Login = () => {
     return (
         <div className="flex min-h-screen bg-white font-['Mulish']">
             {/* Left Side: Form */}
-            <div className="flex-1 flex flex-col p-8 sm:p-16 lg:p-24 justify-between max-w-2xl">
+            <div className="flex-1 flex flex-col p-6 sm:p-16 lg:p-24 justify-between max-w-2xl">
                 <div>
                     <Link to="/" className="mb-12 block">
                         <img src={logo} alt="Logo" className="h-10 object-contain" />
