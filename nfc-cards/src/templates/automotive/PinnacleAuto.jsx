@@ -9,7 +9,7 @@ const PinnacleAuto = ({ userData }) => {
   const finalAddress = address || city;
 
   return (
-    <div className="min-h-screen bg-neutral-900 font-mono text-neutral-300 pb-12 relative overflow-hidden">
+    <div className="min-h-screen bg-neutral-900 font-mono text-neutral-300 pb-12 relative overflow-x-hidden">
       <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
       
       <div className="p-6 relative z-10">

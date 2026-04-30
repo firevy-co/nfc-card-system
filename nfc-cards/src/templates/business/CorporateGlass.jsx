@@ -14,7 +14,7 @@ const CorporateGlass = ({ userData }) => {
   const finalAddress = address || city;
 
   return (
-    <div className="w-full min-h-screen bg-slate-900 font-['Outfit'] pb-12 relative overflow-hidden">
+    <div className="w-full min-h-screen bg-slate-900 font-['Outfit'] pb-12 relative overflow-x-hidden">
       {/* Deep Mesh Gradients */}
       <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600/40 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-cyan-500/30 rounded-full blur-[150px] pointer-events-none" />

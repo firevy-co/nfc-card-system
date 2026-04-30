@@ -14,7 +14,7 @@ const SteelFrame = ({ userData }) => {
   const finalAddress = address || city;
 
   return (
-    <div className="w-full min-h-screen bg-[#0a0a0a] font-['Outfit'] text-slate-300 pb-12 relative overflow-hidden">
+    <div className="w-full min-h-screen bg-[#0a0a0a] font-['Outfit'] text-slate-300 pb-12 relative overflow-x-hidden">
       {/* Background Textures */}
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20 pointer-events-none" />
       <div className="absolute top-0 right-0 w-96 h-96 bg-orange-600/10 rounded-full blur-[100px] pointer-events-none" />

@@ -58,7 +58,7 @@ const IdentityLinkView = () => {
     if (loading) return <AppSkeleton />;
 
     return (
-        <div className="fixed inset-0 bg-black overflow-hidden">
+        <div className="fixed inset-0 bg-black overflow-y-auto">
             <TemplateRenderer
                 templateId={blueprintId}
                 userData={targetUserData || { displayName: 'Undefined Identity', role: 'Anonymous Node' }}

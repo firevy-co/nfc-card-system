@@ -14,7 +14,7 @@ const VelvetSkin = ({ userData }) => {
   const finalAddress = address || city;
 
   return (
-    <div className="w-full min-h-screen bg-[#111] font-['Mulish'] pb-12 relative overflow-hidden">
+    <div className="w-full min-h-screen bg-[#111] font-['Mulish'] pb-12 relative overflow-x-hidden">
       {/* Background Orbs */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-rose-500/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] translate-y-1/4 -translate-x-1/4 pointer-events-none" />

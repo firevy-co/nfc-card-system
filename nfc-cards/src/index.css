@@ -164,13 +164,13 @@
     background: rgba(var(--foreground), 0.2);
   }
 
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  .scrollbar-hide {
+  .scrollbar-hide, .hide-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar, .hide-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 
   /* PREMIUM SKELETON LOADER SYSTEM */

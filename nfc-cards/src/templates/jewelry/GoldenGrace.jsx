@@ -18,7 +18,7 @@ const GoldenGrace = ({ userData }) => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-['Mulish'] flex justify-center md:bg-neutral-950 md:items-center py-0 md:py-12">
-      <div className="w-full max-w-sm min-h-screen bg-[#050505] overflow-hidden md:min-h-0 md:h-auto md:rounded-[2.5rem] md:border md:border-white/10 md:shadow-2xl pb-10">
+      <div className="w-full max-w-sm min-h-screen bg-[#050505] overflow-x-hidden md:min-h-0 md:h-auto md:rounded-[2.5rem] md:border md:border-white/10 md:shadow-2xl pb-10">
 
         {/* Top Navbar */}
         {/* <div className="h-20 px-6 flex items-center justify-between border-b border-white/5">

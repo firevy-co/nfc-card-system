@@ -23,7 +23,7 @@ const CloudNexus = ({ userData }) => {
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-[#020617] flex items-center justify-center p-4 font-['Inter'] relative overflow-hidden md:bg-neutral-950 md:items-center py-0 md:py-12">
+      <div className="min-h-screen bg-[#020617] flex items-center justify-center p-4 font-['Inter'] relative overflow-x-hidden md:bg-neutral-950 md:items-center py-0 md:py-12">
          {/* AMBIENT BACKGROUND NODES */}
          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse"></div>
          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-cyan-500/10 rounded-full blur-[120px] animate-pulse delay-700"></div>
