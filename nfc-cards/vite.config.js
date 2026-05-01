@@ -12,6 +12,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      'reselect': path.resolve(__dirname, 'node_modules/reselect/dist/reselect.legacy-esm.js')
     },
   },
 })

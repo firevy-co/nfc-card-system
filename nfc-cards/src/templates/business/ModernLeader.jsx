@@ -2,6 +2,7 @@ import React from 'react';
 import * as FiIcons from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
+import { FaQuoteLeft } from 'react-icons/fa';
 
 const ModernLeader = ({ userData }) => {
   const { 
@@ -42,7 +43,7 @@ const ModernLeader = ({ userData }) => {
          {/* Bio & Credibility */}
          {bio && (
             <div className="bg-white text-slate-800 p-8 rounded-3xl shadow-xl shadow-black/20 text-center">
-               <FiIcons.FiQuote className="mx-auto text-blue-300 mb-4" size={28} />
+               <FaQuoteLeft className="mx-auto text-blue-300 mb-4" size={28} />
                <p className="text-sm leading-relaxed font-medium">"{bio}"</p>
             </div>
          )}
