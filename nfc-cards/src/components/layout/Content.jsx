@@ -7,6 +7,7 @@ import {
   FiSearch,
   FiLink,
   FiChevronRight,
+  FiX,
 } from "react-icons/fi";
 import { TEMPLATES } from "../../templates/templateRegistry";
 import toast from 'react-hot-toast';
@@ -28,9 +29,72 @@ export default function Content({ userData }) {
   const [nodeToDelete, setNodeToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Custom categories state
+  const [customCategories, setCustomCategories] = useState([]);
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+
+  const fetchCategories = useCallback(async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/categories`);
+      if (response.ok) {
+        const data = await response.json();
+        setCustomCategories(data);
+      }
+    } catch (error) {
+      console.warn("Failed to fetch custom categories");
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
+
+  const handleAddCategory = async (e) => {
+    e.preventDefault();
+    if (!newCategoryName.trim()) return;
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/categories`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newCategoryName.trim() })
+      });
+      if (response.ok) {
+        toast.success("Category deployed.");
+        setNewCategoryName("");
+        setIsAddingCategory(false);
+        fetchCategories();
+      } else {
+        toast.error("Failed to deploy category.");
+      }
+    } catch {
+      toast.error("Handshake failed.");
+    }
+  };
+
+  const handleDeleteCategory = async (catId) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/categories/${catId}`, {
+        method: "DELETE"
+      });
+      if (response.ok) {
+        toast.success("Category purged.");
+        fetchCategories();
+      } else {
+        toast.error("Failed to purge category.");
+      }
+    } catch {
+      toast.error("Handshake failed.");
+    }
+  };
+
   const allCategories = [
     "All",
-    ...new Set(TEMPLATES.map((t) => t.category))
+    ...new Set([
+      ...TEMPLATES.map((t) => t.category),
+      ...localTemplates.map((t) => t.category).filter(Boolean),
+      ...customCategories.map((c) => c.name)
+    ])
   ].sort((a, b) => a === "All" ? -1 : a.localeCompare(b));
 
   // Determine if we should show restricted categories based on user's business role
@@ -192,7 +256,7 @@ export default function Content({ userData }) {
         toast.success("Identity node purged.");
         // OPTIMISTIC UI: Remove from local state immediately
         setLocalTemplates(prev => prev.filter(n => n.id !== nodeToDelete));
-        
+
         setIsDeleteModalOpen(false);
         setNodeToDelete(null);
       } else {
@@ -254,46 +318,111 @@ export default function Content({ userData }) {
           {/* LEFT SIDEBAR: CATEGORY FILTERS — horizontal scroll on mobile, vertical on desktop */}
           <aside className="w-full lg:w-72 flex-shrink-0">
             <div className="lg:sticky lg:top-10">
-              <div className="mb-4 lg:mb-8">
-                <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-2 lg:mb-4">
-                  Industry Nodes
-                </h2>
-                <div className="h-1 w-12 bg-accent rounded-full"></div>
+              <div className="mb-4 lg:mb-8 flex items-center justify-between">
+                <div>
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-2">
+                    Industry Nodes
+                  </h2>
+                  <div className="h-1 w-12 bg-accent rounded-full"></div>
+                </div>
+                {isAdmin && (
+                  <button
+                    onClick={() => setIsAddingCategory(!isAddingCategory)}
+                    className="p-2 bg-accent/5 hover:bg-accent/20 text-accent rounded-full transition-colors cursor-pointer"
+                    title="Toggle Add Category Form"
+                  >
+                    <FiPlus size={16} />
+                  </button>
+                )}
               </div>
+
+              {/* Inline Add Category form (Admin only) */}
+              {isAdmin && isAddingCategory && (
+                <form onSubmit={handleAddCategory} className="mb-6 bg-white p-4 border border-accent/20 rounded-lg shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-accent mb-2">New Category Name</p>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="e.g. Finance"
+                      value={newCategoryName}
+                      onChange={(e) => setNewCategoryName(e.target.value)}
+                      className="flex-1 bg-white border border-border px-3 py-2 rounded text-xs font-bold focus:border-accent outline-none"
+                    />
+                    <button
+                      type="submit"
+                      className="bg-gray-200 border border-gray-300 text-gray-700 px-4 py-2 rounded text-xs font-bold hover:bg-accent/90 cursor-pointer transition-colors"
+                    >
+                      Add
+                    </button>
+                  </div>
+                </form>
+              )}
 
               {/* Mobile: horizontal scrollable chips */}
               <div className="flex lg:hidden gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`flex-shrink-0 px-4 py-2 rounded-full font-bold text-xs tracking-wider transition-all border cursor-pointer ${selectedCategory === category
-                      ? "bg-primary text-primary-foreground border-primary shadow-lg"
-                      : "bg-white text-muted-foreground border-border hover:border-accent/40 hover:text-foreground"
-                    }`}
-                  >
-                    {category === "All" ? "All" : category}
-                  </button>
-                ))}
+                {categories.map((category) => {
+                  const customCat = customCategories.find(c => c.name === category);
+                  return (
+                    <div key={category} className="flex-shrink-0 flex items-center gap-1">
+                      <button
+                        onClick={() => setSelectedCategory(category)}
+                        className={`px-4 py-2 rounded-full font-bold text-xs tracking-wider transition-all border cursor-pointer flex-shrink-0 ${selectedCategory === category
+                          ? "bg-primary text-primary-foreground border-primary shadow-lg"
+                          : "bg-white text-muted-foreground border-border hover:border-accent/40 hover:text-foreground"
+                          }`}
+                      >
+                        {category === "All" ? "All" : category}
+                      </button>
+                      {isAdmin && customCat && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteCategory(customCat.id);
+                          }}
+                          className="p-2 text-rose-500 hover:bg-rose-50 rounded-full transition-all cursor-pointer flex-shrink-0"
+                          title="Purge Category"
+                        >
+                          <FiX size={14} />
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Desktop: vertical list */}
               <div className="hidden lg:flex flex-col gap-2 max-h-[calc(100vh-12rem)] overflow-y-auto custom-scrollbar pr-2 pb-4">
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`group flex items-center justify-between px-6 py-4 rounded-lg font-bold text-xs tracking-wider transition-all border cursor-pointer flex-shrink-0 ${selectedCategory === category
-                      ? "bg-primary text-primary-foreground border-primary shadow-lg"
-                      : "bg-white text-muted-foreground border-border hover:border-accent/40 hover:text-foreground"
-                    }`}
-                  >
-                    <span>{category === "All" ? "Discovery All" : category}</span>
-                    {selectedCategory === category && (
-                      <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></div>
-                    )}
-                  </button>
-                ))}
+                {categories.map((category) => {
+                  const customCat = customCategories.find(c => c.name === category);
+                  return (
+                    <div key={category} className="group relative flex items-center gap-1 flex-shrink-0">
+                      <button
+                        onClick={() => setSelectedCategory(category)}
+                        className={`group flex items-center justify-between px-6 py-4 rounded-lg font-bold text-xs tracking-wider transition-all border cursor-pointer flex-1 ${selectedCategory === category
+                          ? "bg-primary text-primary-foreground border-primary shadow-lg"
+                          : "bg-white text-muted-foreground border-border hover:border-accent/40 hover:text-foreground"
+                          }`}
+                      >
+                        <span>{category === "All" ? "Discovery All" : category}</span>
+                        {selectedCategory === category && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></div>
+                        )}
+                      </button>
+                      {isAdmin && customCat && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteCategory(customCat.id);
+                          }}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-2 text-rose-500 hover:bg-rose-50 rounded-full transition-all cursor-pointer z-20"
+                          title="Purge Category"
+                        >
+                          <FiX size={14} />
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
 
               {/* STATS OR INFO PANEL */}
@@ -418,6 +547,7 @@ export default function Content({ userData }) {
         onClose={() => { setIsModalOpen(false); setEditingTemplate(null); }}
         onSave={handleSaveTemplate}
         initialData={editingTemplate}
+        categories={allCategories.filter(cat => cat !== "All")}
       />
 
       <ConfirmationModal

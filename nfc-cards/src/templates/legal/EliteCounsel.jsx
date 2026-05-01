@@ -1,51 +1,229 @@
 import React from 'react';
-import { FiPhone, FiMail, FiMapPin, FiStar, FiGlobe, FiLinkedin, FiInstagram } from 'react-icons/fi';
+import {
+  FiPhone,
+  FiMail,
+  FiMapPin,
+  FiGlobe,
+  FiLinkedin,
+  FiInstagram,
+  FiDownload,
+  FiArrowUpRight,
+  FiShield,
+  FiBookOpen,
+  FiUsers,
+  FiClock,
+  FiCheckCircle
+} from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
 
 const EliteCounsel = ({ userData }) => {
-  const { displayName, email, role, phone, website, address } = userData || {};
-  return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-6 font-['Mulish'] md:bg-neutral-950 md:items-center py-0 md:py-12">
-      <div className="w-full max-w-sm bg-slate-900 rounded-[3rem] p-1 shadow-2xl overflow-hidden group">
-        <div className="bg-white p-10 rounded-[2.8rem] text-center relative overflow-hidden">
-           <div className="absolute top-4 right-10 text-slate-100"><FiStar size={40} /></div>
-           
-           <div className="w-20 h-20 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-white text-3xl font-black mb-8 mx-auto shadow-2xl transition-transform group-hover:scale-110 overflow-hidden">
-              {userData?.logo ? (
-                <img src={userData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
-              ) : (
-                displayName?.charAt(0) || 'C'
-              )}
-           </div>
-           
-           <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-none uppercase mb-2">{displayName || 'Elite Counsel'}</h1>
-           
-           
-           <div className="space-y-3 relative z-10 text-left">
-              {website && <a href={website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiGlobe size={18} /> <span className="text-sm">{website}</span></a>}
-              {email && <a href={`mailto:${email}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiMail size={18} /> <span className="text-sm">{email}</span></a>}
-              {phone && <a href={`tel:${phone}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiPhone size={18} /> <span className="text-sm">{phone}</span></a>}
-              {address && <div className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80"><FiMapPin size={18} /> <span className="text-sm">{address}</span></div>}
+  const {
+    displayName,
+    email,
+    role,
+    phone,
+    website,
+    address,
+    linkedin,
+    instagram,
+    logo,
+    bio
+  } = userData || {};
 
-              {/* Legal Social Matrix */}
-              {userData?.linkedin && <a href={userData?.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiLinkedin size={18} /> <span className="text-sm">{userData?.linkedin}</span></a>}
-              {userData?.instagram && <a href={userData?.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiInstagram size={18} /> <span className="text-sm">{userData?.instagram}</span></a>}
-           </div>
-           
-           <div className="mt-8 flex flex-col gap-3">
-              <button className="w-full py-5 bg-slate-900 text-white rounded-[2rem] font-black text-[10px] uppercase tracking-[0.4em] hover:brightness-125 transition-all shadow-xl shadow-slate-900/20 active:scale-95">
-                Schedule Chambers Call
-              </button>
-           </div>
-           
-           {address && (<a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="block w-full py-4 mt-4 border rounded-xl text-center text-xs font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity">View on Map</a>)}
-           
-           <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
+  const coverImage =
+    "https://images.unsplash.com/photo-1528740561666-dc2479dc08ab?auto=format&fit=crop&w=1200&q=80";
+
+  return (
+    <div className="min-h-screen bg-slate-950 font-['Mulish']">
+      <div className="w-full bg-white rounded-none overflow-hidden shadow-none">
+
+        {/* Header */}
+        <div className="relative h-56">
+          <img
+            src={coverImage}
+            alt="Law Office"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/50" />
+
+          <div className="absolute top-5 right-5 bg-white/10 backdrop-blur-md p-2 rounded-xl">
+            <FiShield className="text-amber-400" size={22} />
+          </div>
+
+          <div className="absolute bottom-5 left-5 right-5 flex items-center gap-4">
+            <div className="w-16 h-16 rounded-2xl bg-white shadow-xl flex items-center justify-center overflow-hidden shrink-0">
+              {logo ? (
+                <img
+                  src={logo}
+                  alt="Logo"
+                  className="w-full h-full object-contain p-2"
+                />
+              ) : (
+                <span className="text-2xl font-black text-slate-900">
+                  {displayName?.charAt(0) || "L"}
+                </span>
+              )}
+            </div>
+
+            <div className="min-w-0">
+              <h1 className="text-xl font-black text-white truncate">
+                {displayName || "Elite Counsel"}
+              </h1>
+              <p className="text-xs text-amber-300 font-bold uppercase tracking-widest truncate">
+                {role || "Legal Consultant"}
+              </p>
+            </div>
+          </div>
         </div>
-        <PoweredBy />
+
+        {/* Body */}
+        <div className="p-6">
+
+          {bio && (
+            <div className="bg-slate-50 rounded-2xl p-4">
+              <p className="text-sm text-slate-600 leading-relaxed">
+                {bio}
+              </p>
+            </div>
+          )}
+
+          {/* Services */}
+          <div className="pt-6">
+            <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-3">
+              Practice Areas
+            </h3>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-slate-100 rounded-2xl p-4 text-center">
+                <FiBookOpen className="mx-auto mb-2 text-slate-800" size={18} />
+                <p className="text-[10px] font-bold uppercase">Corporate Law</p>
+              </div>
+
+              <div className="bg-slate-100 rounded-2xl p-4 text-center">
+                <FiUsers className="mx-auto mb-2 text-slate-800" size={18} />
+                <p className="text-[10px] font-bold uppercase">Family Law</p>
+              </div>
+
+              <div className="bg-slate-100 rounded-2xl p-4 text-center">
+                <FiShield className="mx-auto mb-2 text-slate-800" size={18} />
+                <p className="text-[10px] font-bold uppercase">Criminal Law</p>
+              </div>
+
+              <div className="bg-slate-100 rounded-2xl p-4 text-center">
+                <FiCheckCircle className="mx-auto mb-2 text-slate-800" size={18} />
+                <p className="text-[10px] font-bold uppercase">Civil Cases</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact */}
+          <div className="pt-6 space-y-3">
+
+            {phone && (
+              <a
+                href={`tel:${phone}`}
+                className="flex items-center justify-between bg-slate-900 text-white rounded-2xl px-4 py-4"
+              >
+                <div className="flex items-center gap-3">
+                  <FiPhone size={18} />
+                  <span className="text-sm font-semibold">{phone}</span>
+                </div>
+                <FiArrowUpRight />
+              </a>
+            )}
+
+            {email && (
+              <a
+                href={`mailto:${email}`}
+                className="flex items-center gap-3 bg-slate-100 rounded-2xl px-4 py-4"
+              >
+                <FiMail size={18} className="text-slate-700" />
+                <span className="text-sm font-semibold truncate">{email}</span>
+              </a>
+            )}
+
+            {website && (
+              <a
+                href={website.startsWith("http") ? website : `https://${website}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 bg-slate-100 rounded-2xl px-4 py-4"
+              >
+                <FiGlobe size={18} className="text-slate-700" />
+                <span className="text-sm font-semibold truncate">{website}</span>
+              </a>
+            )}
+
+            {address && (
+              <div className="flex items-center gap-3 bg-slate-100 rounded-2xl px-4 py-4">
+                <FiMapPin size={18} className="text-slate-700" />
+                <span className="text-sm font-semibold truncate">{address}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Hours */}
+          <div className="pt-6">
+            <div className="bg-amber-50 rounded-2xl p-4">
+              <div className="flex items-center gap-3 mb-2">
+                <FiClock className="text-amber-600" />
+                <p className="text-sm font-bold text-amber-700">Office Hours</p>
+              </div>
+              <p className="text-xs text-slate-600">
+                Monday - Saturday : 10:00 AM to 7:00 PM
+              </p>
+            </div>
+          </div>
+
+          {/* Social */}
+          <div className="pt-6 flex justify-center gap-3">
+            {linkedin && (
+              <a
+                href={linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-11 h-11 rounded-full bg-slate-100 flex items-center justify-center"
+              >
+                <FiLinkedin />
+              </a>
+            )}
+
+            {instagram && (
+              <a
+                href={instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-11 h-11 rounded-full bg-slate-100 flex items-center justify-center"
+              >
+                <FiInstagram />
+              </a>
+            )}
+          </div>
+
+          {/* Buttons */}
+          <div className="pt-6 space-y-3">
+            <button className="w-full py-4 rounded-2xl bg-amber-500 text-slate-900 font-black uppercase tracking-widest text-xs">
+              Schedule Consultation
+            </button>
+
+            <button
+              onClick={() => downloadVCard(userData)}
+              className="w-full py-4 rounded-2xl bg-slate-100 font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2"
+            >
+              <FiDownload size={16} />
+              Save Contact
+            </button>
+          </div>
+
+          <div className="pt-6">
+            <PoweredBy />
+          </div>
+
+        </div>
       </div>
     </div>
   );
 };
+
 export default EliteCounsel;

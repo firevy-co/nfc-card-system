@@ -23,10 +23,12 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 const userRoutes = require('./routes/userRoutes');
 const templateRoutes = require('./routes/templateRoutes');
 const inquiryRoutes = require('./routes/inquiryRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 
 app.use('/api/users', userRoutes);
 app.use('/api/templates', templateRoutes);
 app.use('/api/inquiries', inquiryRoutes);
+app.use('/api/categories', categoryRoutes);
 
 /**
  * SYSTEM HANDSHAKE: GET /api/status

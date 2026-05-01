@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { TEMPLATES } from '../../templates/templateRegistry';
 import TemplateRenderer from '../../templates/TemplateRenderer';
 
-const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
+const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData, categories: passedCategories }) => {
     const [formData, setFormData] = useState({
         name: '',
         category: 'Business',
@@ -48,7 +48,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
         }, 0);
     }, [initialData, isOpen]);
 
-    const categories = Array.from(new Set(TEMPLATES.map(t => t.category || 'Other'))).sort();
+    const categories = passedCategories || Array.from(new Set(TEMPLATES.map(t => t.category || 'Other'))).sort();
     const selectedTemplate = TEMPLATES.find(t => t.id === formData.templateId) || TEMPLATES[0];
 
     const previewUserData = {
@@ -100,7 +100,8 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.97, y: 12 }}
                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                        className="relative w-full max-w-[1100px] max-h-[92vh] bg-white  border border-slate-100  rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col"
+                        style={{ fontFamily: "'Mulish', sans-serif" }}
+                        className="relative w-full max-w-[1100px] max-h-[92vh] bg-white  border border-slate-100  rounded-xl shadow-2xl overflow-hidden flex flex-col"
                     >
                         {/* Header */}
                         <div className="flex items-center justify-between px-7 py-6 border-b border-slate-100  bg-slate-50  shrink-0">
@@ -147,9 +148,9 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-6 p-6 bg-slate-50 border border-slate-200 rounded-[2rem]">
+                                    <div className="flex items-center gap-6 p-6 bg-slate-50 border border-slate-200 rounded-xl">
                                         <div className="relative group">
-                                            <div className="w-20 h-20 rounded-2xl bg-white border border-slate-200 flex items-center justify-center overflow-hidden shadow-inner">
+                                            <div className="w-20 h-20 rounded-xl bg-white border border-slate-200 flex items-center justify-center overflow-hidden shadow-inner">
                                                 {formData.logo ? (
                                                     <img src={formData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
                                                 ) : (
@@ -203,7 +204,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                             placeholder="e.g. Modern Agent"
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                            className="w-full bg-slate-50  border border-slate-200  rounded-2xl px-5 py-4 text-sm font-bold text-black  focus:border-[#7BB9D4]/50 focus:ring-4 focus:ring-[#7BB9D4]/5 transition-all placeholder:text-black/20 outline-none"
+                                            className="w-full bg-slate-50  border border-slate-200  rounded-xl px-5 py-4 text-sm font-bold text-black  focus:border-[#7BB9D4]/50 focus:ring-4 focus:ring-[#7BB9D4]/5 transition-all placeholder:text-black/20 outline-none"
                                         />
                                     </div>
                                     <div className="space-y-3">
@@ -214,7 +215,7 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                             <select
                                                 value={formData.category}
                                                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                                                className="w-full bg-slate-50  border border-slate-200  rounded-2xl px-5 py-4 text-sm font-black text-black  focus:border-[#7BB9D4]/50 appearance-none transition-all cursor-pointer outline-none capitalize tracking-widest"
+                                                className="w-full bg-slate-50  border border-slate-200  rounded-xl px-5 py-4 text-sm font-black text-black  focus:border-[#7BB9D4]/50 appearance-none transition-all cursor-pointer outline-none capitalize tracking-widest"
                                             >
                                                 {categories.map(cat => <option key={cat} value={cat} className="bg-background text-foreground">{cat}</option>)}
                                             </select>
@@ -241,9 +242,8 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
 
                                     <div
                                         onClick={() => setShowPicker(p => !p)}
-                                        className="w-full flex items-center gap-5 bg-slate-50  border-2 border-slate-200  rounded-2xl px-5 py-4 cursor-pointer hover:border-[#7BB9D4]/40 transition-all group active:scale-[0.99]"
+                                        className="w-full flex items-center gap-5 bg-slate-50  border-2 border-slate-200  rounded-xl px-5 py-4 cursor-pointer hover:border-[#7BB9D4]/40 transition-all group active:scale-[0.99]"
                                     >
-                                        <div className={`w-10 h-10 rounded-xl ${selectedTemplate.previewColor || 'bg-muted'} flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform`} />
                                         <div className="flex-1 min-w-0">
                                             <p className="text-base font-black text-foreground truncate">{selectedTemplate.name}</p>
                                             <p className="text-[9px] text-muted-foreground font-bold uppercase tracking-widest opacity-50">{selectedTemplate.id}</p>
@@ -302,12 +302,11 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                                                                 setFormData({ ...formData, templateId: t.id });
                                                                                 setShowPicker(false);
                                                                             }}
-                                                                            className={`flex items-center gap-4 p-4 rounded-2xl border-2 text-left transition-all ${formData.templateId === t.id
+                                                                            className={`flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all ${formData.templateId === t.id
                                                                                 ? 'border-black bg-slate-50 shadow-inner'
                                                                                 : 'border-slate-100 bg-transparent hover:border-[#7BB9D4]/40 hover:bg-slate-50'
                                                                                 }`}
                                                                         >
-                                                                            <div className={`w-8 h-8 rounded-lg ${t.previewColor} flex-shrink-0 shadow-md group-hover:scale-110 transition-transform`} />
                                                                             <div className="min-w-0 flex-1">
                                                                                 <p className={`text-[11px] font-black truncate capitalize ${formData.templateId === t.id ? 'text-black' : 'text-black/60'}`}>
                                                                                     {t.name}
@@ -343,52 +342,28 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                             placeholder="Modern, clean, minimal..."
                                             value={formData.tags}
                                             onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                                            className="w-full bg-black/5  border border-black/5  rounded-2xl px-5 pl-12 py-4 text-sm font-bold text-foreground focus:border-primary/50 transition-all placeholder:text-muted-foreground/30 outline-none"
+                                            className="w-full bg-black/5 border border-black/5 rounded-xl px-5 pl-12 py-4 text-sm font-bold text-foreground focus:border-primary/50 transition-all placeholder:text-muted-foreground/30 outline-none font-['Mulish']"
                                         />
                                     </div>
                                 </div>
 
                                 {/* Description */}
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-black capitalize tracking-[0.2em] text-muted-foreground ml-1 flex items-center gap-1.5 opacity-60">
+                                    <label className="text-[10px] font-black capitalize tracking-[0.2em] text-muted-foreground ml-1 flex items-center gap-1.5 opacity-60 font-['Mulish']">
                                         <FiFileText size={12} /> Architectural Vision
                                     </label>
                                     <textarea
                                         rows={3}
                                         placeholder="Outline the core objective of this design protocol..."
-                                        className="w-full bg-slate-50  border border-slate-200  rounded-2xl px-5 py-4 text-sm font-bold text-black  focus:border-[#7BB9D4]/50 transition-all placeholder:text-black/20 outline-none resize-none"
+                                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-4 text-sm font-bold text-black focus:border-[#7BB9D4]/50 transition-all placeholder:text-black/20 outline-none resize-none font-['Mulish']"
                                         value={formData.description}
                                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                     />
                                 </div>
-
-                                {/* Accent Colors */}
-                                <div className="space-y-4 pt-6 border-t border-black/5 ">
-                                    <label className="text-[10px] font-black capitalize tracking-[0.2em] text-muted-foreground ml-1 opacity-60">System Accent</label>
-                                    <div className="flex flex-wrap gap-4">
-                                        {['bg-primary', 'bg-blue-600', 'bg-emerald-500', 'bg-orange-500', 'bg-rose-500', 'bg-zinc-900'].map(color => (
-                                            <button
-                                                key={color}
-                                                type="button"
-                                                onClick={() => setFormData({ ...formData, previewColor: color })}
-                                                className={`w-10 h-10 rounded-2xl ${color} border-2 transition-all relative ${formData.previewColor === color
-                                                    ? 'border-foreground ring-4 ring-foreground/10 scale-110 shadow-xl'
-                                                    : 'border-transparent opacity-30 hover:opacity-100 hover:scale-105'
-                                                    }`}
-                                            >
-                                                {formData.previewColor === color && (
-                                                    <div className="absolute inset-0 flex items-center justify-center">
-                                                        <FiCheck className="text-white drop-shadow-md" size={16} />
-                                                    </div>
-                                                )}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
                             </div>
 
                             {/* RIGHT - Live Preview */}
-                            <div className="hidden lg:flex w-[400px] xl:w-[450px] flex-col bg-slate-50  border-l border-slate-100  shrink-0">
+                            <div className="hidden lg:flex w-[400px] xl:w-[450px] flex-col bg-slate-50 border-l border-slate-100 shrink-0 overflow-y-auto custom-scrollbar">
                                 {/* Preview header */}
                                 <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 ">
                                     <div>
@@ -399,8 +374,8 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                                 </div>
 
                                 {/* Scaled template render */}
-                                <div className="flex-1 overflow-hidden flex items-center justify-center p-10 bg-black/5 ">
-                                    <div className="w-full max-w-[280px] aspect-[9/18.5] bg-white  rounded-[2.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] border-[6px] border-black/10  overflow-hidden relative group">
+                                <div className="flex-1 flex items-center justify-center p-6 bg-black/5 ">
+                                    <div className="w-full max-w-[280px] aspect-[9/18.5] bg-white  rounded-xl shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] border-[6px] border-black/10  overflow-y-auto hide-scrollbar relative group">
                                         {/* Phone chrome notch */}
                                         <div className="absolute top-4 left-1/2 -translate-x-1/2 w-16 h-3 bg-black/5  rounded-full z-10" />
                                         {/* Scaled content */}
@@ -442,14 +417,14 @@ const CreateTemplateModal = ({ isOpen, onClose, onSave, initialData }) => {
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="flex-1 py-4 rounded-2xl bg-white  text-black  font-black text-[10px] capitalize tracking-[0.2em] border border-slate-200  hover:bg-slate-50 transition-all active:scale-[0.98]"
+                                className="flex-1 py-4 rounded-xl bg-white  text-black  font-black text-[10px] capitalize tracking-[0.2em] border border-slate-200  hover:bg-slate-50 transition-all active:scale-[0.98]"
                             >
                                 Cancel
                             </button>
                             <button
                                 type="button"
                                 onClick={handleSubmit}
-                                className="flex-[2] flex items-center justify-center gap-3 bg-[#7BB9D4] text-white py-4 px-10 rounded-2xl text-[10px] font-black capitalize tracking-[0.2em] hover:brightness-105 transition-all shadow-xl shadow-[#7BB9D4]/20 active:scale-[0.98]"
+                                className="flex-[2] flex items-center justify-center gap-3 bg-[#7BB9D4] text-white py-4 px-10 rounded-xl text-[10px] font-black capitalize tracking-[0.2em] hover:brightness-105 transition-all shadow-xl shadow-[#7BB9D4]/20 active:scale-[0.98]"
                             >
                                 {initialData ? 'Update Infrastructure' : 'Initialize Protocol'}
                                 <FiCheck size={18} />

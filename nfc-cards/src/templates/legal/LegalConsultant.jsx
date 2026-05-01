@@ -1,6 +1,5 @@
 import React from "react";
 import {
-   FiShare2,
    FiAward,
    FiLock,
    FiMapPin,
@@ -9,7 +8,13 @@ import {
    FiGlobe,
    FiUserPlus,
    FiChevronRight,
+   FiShield,
+   FiBriefcase,
+   FiClock,
+   FiCheckCircle,
+   FiDownload,
 } from "react-icons/fi";
+import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
 const LegalConsultant = ({ userData }) => {
@@ -19,80 +24,166 @@ const LegalConsultant = ({ userData }) => {
       email = "info@justicelegal.com",
       phone = "+1 800-LAW-PRO",
       address = "One Attorney Plaza, Chicago",
+      role = "Senior Legal Consultant",
+      experience = "15+ Years Experience",
    } = userData || {};
 
    return (
-      <div className="min-h-screen bg-[#0f172a] flex justify-center items-start py-10 px-4 text-white font-['Mulish'] md:bg-neutral-950 md:items-center py-0 md:py-12">
-         <div className="w-full max-w-sm bg-[#1e293b] rounded-[3rem] shadow-2xl overflow-hidden border border-slate-700 p-8 relative">
-            
-            {/* HERITAGE LOGO */}
-            <div className="flex flex-col items-center text-center">
-               <div className="w-20 h-20 bg-slate-800 border-2 border-amber-500 rounded-full flex items-center justify-center mb-6 shadow-inner ring-4 ring-amber-500/10 transition-transform hover:rotate-12 duration-500">
-                  <FiAward size={32} className="text-amber-500" />
+      <div className="min-h-screen bg-[#0b1120] text-white font-['Mulish'] overflow-hidden">
+
+         {/* HEADER IMAGE */}
+         <div className="relative h-72 w-full">
+            <img
+               src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&q=80"
+               alt="Legal Office"
+               className="w-full h-full object-cover"
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/60 to-[#0b1120]" />
+
+            <div className="absolute bottom-8 left-0 right-0 px-6 text-center">
+               <div className="w-20 h-20 rounded-full bg-[#111827] mx-auto mb-4 flex items-center justify-center shadow-2xl">
+                  <FiAward size={34} className="text-amber-400" />
                </div>
 
-               <h1 className="text-2xl font-black text-amber-500 tracking-tighter capitalize leading-tight mb-2">
+               <h1 className="text-3xl font-black text-white tracking-tight">
                   {displayName}
                </h1>
 
-               <div className="flex items-center gap-2 text-slate-400 bg-slate-900 px-4 py-1.5 rounded-full text-[10px] font-bold capitalize tracking-widest mb-10 border border-slate-800">
-                  <FiLock size={12} className="text-amber-500/60" />
-                  Privileged & Confidential
+               <p className="text-xs text-amber-400 font-bold uppercase tracking-[0.35em] mt-2">
+                  {role}
+               </p>
+            </div>
+         </div>
+
+         {/* CONTENT */}
+         <div className="px-5 py-6 max-w-md mx-auto">
+
+            {/* QUICK STATS */}
+            <div className="grid grid-cols-2 gap-3 mb-6">
+               <div className="bg-[#111827] rounded-2xl p-4 text-center">
+                  <FiClock className="mx-auto text-amber-400 mb-2" size={18} />
+                  <p className="text-xs font-bold text-white">{experience}</p>
+               </div>
+
+               <div className="bg-[#111827] rounded-2xl p-4 text-center">
+                  <FiShield className="mx-auto text-amber-400 mb-2" size={18} />
+                  <p className="text-xs font-bold text-white">Trusted Law Firm</p>
                </div>
             </div>
 
             {/* PRACTICE AREAS */}
-            <div className="space-y-4 mb-10">
-               <div className="p-5 bg-slate-900/50 rounded-2xl border border-slate-700/50 flex flex-col gap-3 group transition-all hover:bg-slate-900 hover:border-amber-500/30">
-                  <div className="flex items-center justify-between">
-                     <span className="text-[10px] font-black text-amber-500 capitalize tracking-[0.2em]">Practice Focus</span>
-                     <FiChevronRight className="text-slate-600 group-hover:text-amber-500 transition-colors" />
-                  </div>
-                  <ul className="text-xs space-y-2 text-slate-300">
-                     <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-amber-500/40"></div> Corporate Law</li>
-                     <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-amber-500/40"></div> Intellectual Property</li>
-                     <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-amber-500/40"></div> International Arbitration</li>
-                  </ul>
+            <div className="bg-[#111827] rounded-3xl p-5 mb-6">
+               <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-sm font-black text-amber-400 uppercase tracking-widest">
+                     Practice Areas
+                  </h3>
+                  <FiChevronRight className="text-slate-500" />
+               </div>
+
+               <div className="space-y-3 text-sm text-slate-300">
+                  {[
+                     "Corporate Law",
+                     "Property Disputes",
+                     "Civil Litigation",
+                     "Criminal Defense",
+                     "Family Matters",
+                  ].map((item, i) => (
+                     <div key={i} className="flex items-center gap-3">
+                        <FiCheckCircle className="text-amber-400 shrink-0" />
+                        <span>{item}</span>
+                     </div>
+                  ))}
                </div>
             </div>
 
-            {/* DIRECT ACTION STACK */}
-            <div className="grid grid-cols-2 gap-4 mb-4">
-               <button className="h-16 bg-slate-800 hover:bg-slate-700 rounded-2xl border border-slate-700 transition-all flex flex-col items-center justify-center gap-1 group">
-                  <FiPhone size={18} className="text-slate-400 group-hover:text-amber-500 transition-colors" />
-                  <span className="text-[9px] font-bold text-slate-500 capitalize tracking-widest">Counsel</span>
-               </button>
-               <button className="h-16 bg-slate-800 hover:bg-slate-700 rounded-2xl border border-slate-700 transition-all flex flex-col items-center justify-center gap-1 group">
-                  <FiMail size={18} className="text-slate-400 group-hover:text-amber-500 transition-colors" />
-                  <span className="text-[9px] font-bold text-slate-500 capitalize tracking-widest">Enquiry</span>
-               </button>
-            </div>
+            {/* CONTACT */}
+            <div className="space-y-3 mb-6">
 
-            <button className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-5 rounded-2xl transition-all shadow-xl shadow-amber-500/10 flex items-center justify-center gap-3 capitalize tracking-widest text-xs mb-8">
-               <FiUserPlus size={18} />
-               Secure Consultation
-            </button>
-
-            {/* FIRM DETAILS */}
-            <div className="p-6 bg-slate-900 rounded-3xl border border-slate-800 space-y-5">
-               <div className="flex items-start gap-4">
-                  <FiGlobe className="text-amber-500 mt-0.5" />
+               <a
+                  href={`tel:${phone}`}
+                  className="flex items-center gap-4 bg-[#111827] p-4 rounded-2xl hover:bg-[#1f2937] transition"
+               >
+                  <FiPhone className="text-amber-400" />
                   <div>
-                     <p className="text-[9px] text-slate-500 font-bold capitalize tracking-widest leading-none mb-1">Official Portal</p>
-                     <p className="text-xs font-semibold text-slate-200">{website}</p>
+                     <p className="text-[10px] text-slate-400 uppercase font-bold">
+                        Call Now
+                     </p>
+                     <p className="text-sm font-semibold">{phone}</p>
                   </div>
-               </div>
-               <div className="flex items-start gap-4">
-                  <FiMapPin className="text-amber-500 mt-0.5" />
+               </a>
+
+               <a
+                  href={`mailto:${email}`}
+                  className="flex items-center gap-4 bg-[#111827] p-4 rounded-2xl hover:bg-[#1f2937] transition"
+               >
+                  <FiMail className="text-amber-400" />
                   <div>
-                     <p className="text-[9px] text-slate-500 font-bold capitalize tracking-widest leading-none mb-1">Corporate Office</p>
-                     <p className="text-xs font-semibold text-slate-200">{address}</p>
+                     <p className="text-[10px] text-slate-400 uppercase font-bold">
+                        Email
+                     </p>
+                     <p className="text-sm font-semibold truncate">{email}</p>
+                  </div>
+               </a>
+
+               <a
+                  href={`https://${website}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 bg-[#111827] p-4 rounded-2xl hover:bg-[#1f2937] transition"
+               >
+                  <FiGlobe className="text-amber-400" />
+                  <div>
+                     <p className="text-[10px] text-slate-400 uppercase font-bold">
+                        Website
+                     </p>
+                     <p className="text-sm font-semibold truncate">{website}</p>
+                  </div>
+               </a>
+
+               <div className="flex items-center gap-4 bg-[#111827] p-4 rounded-2xl">
+                  <FiMapPin className="text-amber-400" />
+                  <div>
+                     <p className="text-[10px] text-slate-400 uppercase font-bold">
+                        Office Address
+                     </p>
+                     <p className="text-sm font-semibold">{address}</p>
                   </div>
                </div>
             </div>
 
+            {/* EXTRA INFO */}
+            <div className="grid grid-cols-2 gap-3 mb-6">
+               <div className="bg-[#111827] rounded-2xl p-4 text-center">
+                  <FiBriefcase className="mx-auto text-amber-400 mb-2" />
+                  <p className="text-xs font-bold">500+ Cases</p>
+               </div>
 
-          <PoweredBy />
+               <div className="bg-[#111827] rounded-2xl p-4 text-center">
+                  <FiLock className="mx-auto text-amber-400 mb-2" />
+                  <p className="text-xs font-bold">Confidential</p>
+               </div>
+            </div>
+
+            {/* BUTTONS */}
+            <div className="space-y-3 mb-6">
+
+               <button className="w-full bg-amber-400 text-black py-5 rounded-2xl font-black text-xs uppercase tracking-[0.25em] flex items-center justify-center gap-3 hover:bg-amber-300 transition">
+                  <FiUserPlus size={18} />
+                  Book Consultation
+               </button>
+
+               <button
+                  onClick={() => downloadVCard(userData)}
+                  className="w-full bg-[#111827] border border-amber-400 text-amber-400 py-5 rounded-2xl font-black text-xs uppercase tracking-[0.25em] flex items-center justify-center gap-3 hover:bg-amber-400 hover:text-black transition"
+               >
+                  <FiDownload size={18} />
+                  Save Contact
+               </button>
+
+            </div>
+
+            <PoweredBy />
          </div>
       </div>
    );
