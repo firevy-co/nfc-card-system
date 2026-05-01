@@ -8,7 +8,6 @@ import { Toaster } from 'react-hot-toast';
 // --- AUTH & SECURITY CONTROLLER ---
 import CheckAuth from './components/Auth/CheckAuth';
 import AppSkeleton from './components/layout/AppSkeleton';
-import CustomCursor from './components/layout/CustomCursor';
 
 // --- PERFORMANCE: DYNAMIC CODE SPLITTING (Lazy Loading) ---
 const Login = lazy(() => import('./components/Auth/Login'));
@@ -92,7 +91,6 @@ function App() {
   return (
     <ThemeProvider>
       <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
-      <CustomCursor />
       <Router>
         <Suspense fallback={<Spinner />}>
           <Routes>
