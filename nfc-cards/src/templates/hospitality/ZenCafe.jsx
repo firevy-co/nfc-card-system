@@ -1,55 +1,233 @@
-import React from 'react';
-import * as FiIcons from 'react-icons/fi';
-import { downloadVCard } from '../common/StandardComponents';
+import React from "react";
+import * as FiIcons from "react-icons/fi";
+import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
 const ZenCafe = ({ userData }) => {
-  const { displayName, email, role, phone, website, address, instagram } = userData || {};
+  const { displayName, email, phone, website, address } = userData || {};
+
+  const services = [
+    "Cardiology",
+    "Neurology",
+    "Orthopedic",
+    "Pediatrics",
+    "Radiology",
+    "General Surgery",
+  ];
+
+  const facilities = [
+    "24/7 Emergency",
+    "ICU",
+    "Ambulance",
+    "Pharmacy",
+    "Lab Testing",
+    "Insurance Support",
+  ];
+
+  const doctors = [
+    "Dr. Raj Mehta",
+    "Dr. Neha Shah",
+    "Dr. Amit Patel",
+  ];
+
+  const gallery = [
+    "https://images.pexels.com/photos/263402/pexels-photo-263402.jpeg",
+    "https://images.pexels.com/photos/7089020/pexels-photo-7089020.jpeg",
+    "https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg",
+    "https://images.pexels.com/photos/6129683/pexels-photo-6129683.jpeg",
+  ];
+
   return (
-    <div className="min-h-screen bg-[#fafaf7] flex items-center justify-center p-6 font-['Mulish'] md:bg-neutral-950 md:items-center py-0 md:py-12">
-      <div className="w-full max-w-sm bg-white border border-[#e5e5e0] rounded-[5rem] p-10 shadow-2xl overflow-hidden flex flex-col items-center">
-        <div className="w-20 h-20 rounded-full bg-[#f4f4f0] flex items-center justify-center text-[#86867e] mb-8 overflow-hidden">
-           {userData?.logo ? (
-             <img src={userData.logo} alt="Logo" className="w-full h-full object-contain p-2" />
-           ) : (
-             <FiIcons.FiWind size={32} />
-           )}
-        </div>
-        <h1 className="text-2xl font-black text-[#444440] tracking-tight text-center leading-none">{displayName || 'Zen Cafe'}</h1>
-        
-        
-        <div className="w-full space-y-3 relative z-10">
-           {website && <a href={website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiGlobe size={18} /> <span className="text-sm">{website}</span></a>}
-           {email && <a href={`mailto:${email}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiMail size={18} /> <span className="text-sm">{email}</span></a>}
-           {phone && <a href={`tel:${phone}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiPhone size={18} /> <span className="text-sm">{phone}</span></a>}
-           {address && <div className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80"><FiIcons.FiMapPin size={18} /> <span className="text-sm">{address}</span></div>}
+    <div className="w-full min-h-screen bg-white font-['Mulish']">
+      <div className="w-full bg-white overflow-hidden">
 
-           {/* Socials */}
-           {userData?.instagram && <a href={userData?.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiInstagram size={18} /> <span className="text-sm">{userData?.instagram}</span></a>}
-           {userData?.twitter && <a href={userData?.twitter} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiTwitter size={18} /> <span className="text-sm">{userData?.twitter}</span></a>}
-           {userData?.facebook && <a href={userData?.facebook} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiFacebook size={18} /> <span className="text-sm">{userData?.facebook}</span></a>}
-           {userData?.linkedin && <a href={userData?.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiLinkedin size={18} /> <span className="text-sm">{userData?.linkedin}</span></a>}
-           {userData?.youtube && <a href={userData?.youtube} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiIcons.FiYoutube size={18} /> <span className="text-sm">{userData?.youtube}</span></a>}
+        {/* HEADER */}
+        <div className="relative">
+          <img
+            src="https://images.pexels.com/photos/1170979/pexels-photo-1170979.jpeg"
+            alt="hospital"
+            className="h-56 w-full object-cover"
+          />
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+          <div className="absolute bottom-5 left-5 text-white">
+            <h1 className="text-2xl font-black">
+              {displayName || "CityCare Hospital"}
+            </h1>
+            <p className="text-xs tracking-[3px] uppercase text-blue-200">
+              Premium Healthcare
+            </p>
+          </div>
         </div>
 
-        <div className="w-full mt-6">
-           <a href={`tel:${phone}`} className="w-full flex items-center justify-center py-4 rounded-3xl bg-[#f4f4f0] text-[#444440] font-black text-xs hover:bg-[#ebebe7] transition-all uppercase tracking-widest shadow-sm">
-              Connect Directly
-           </a>
+        {/* ABOUT */}
+        <div className="p-5 border-b">
+          <h3 className="text-sm font-bold text-sky-600 mb-2">
+            About Hospital
+          </h3>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            Delivering world-class healthcare with expert doctors, modern
+            facilities, advanced diagnostics, and compassionate patient care.
+          </p>
         </div>
 
-        {address && (<a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="block w-full py-4 mt-4 border rounded-xl text-center text-xs font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity">View on Map</a>)}
+        {/* CONTACT */}
+        <div className="p-5 border-b space-y-3">
+          {phone && (
+            <div className="flex items-center gap-3 text-sm">
+              <FiIcons.FiPhone className="text-sky-600" />
+              {phone}
+            </div>
+          )}
 
-        <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
-        
-        <div className="mt-12 flex justify-center gap-2 opacity-20">
-           <div className="w-2 h-2 rounded-full bg-[#86867e]" />
-           <div className="w-2 h-2 rounded-full bg-[#83a493]" />
-           <div className="w-2 h-2 rounded-full bg-[#d9c49d]" />
+          {email && (
+            <div className="flex items-center gap-3 text-sm">
+              <FiIcons.FiMail className="text-sky-600" />
+              {email}
+            </div>
+          )}
+
+          {website && (
+            <div className="flex items-center gap-3 text-sm">
+              <FiIcons.FiGlobe className="text-sky-600" />
+              {website}
+            </div>
+          )}
+
+          {address && (
+            <div className="flex items-center gap-3 text-sm">
+              <FiIcons.FiMapPin className="text-sky-600" />
+              {address}
+            </div>
+          )}
         </div>
-        <PoweredBy />
+
+        {/* DEPARTMENTS */}
+        <div className="p-5 border-b">
+          <h3 className="text-sm font-bold text-sky-600 mb-3">
+            Departments
+          </h3>
+
+          <div className="grid grid-cols-2 gap-2">
+            {services.map((item, i) => (
+              <div
+                key={i}
+                className="bg-sky-50 text-sky-700 text-xs font-semibold text-center py-2 rounded-xl"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* FACILITIES */}
+        <div className="p-5 border-b">
+          <h3 className="text-sm font-bold text-sky-600 mb-3">
+            Facilities
+          </h3>
+
+          <div className="grid grid-cols-2 gap-2">
+            {facilities.map((item, i) => (
+              <div
+                key={i}
+                className="bg-gray-100 text-gray-700 text-xs text-center py-2 rounded-xl"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* DOCTORS */}
+        <div className="p-5 border-b">
+          <h3 className="text-sm font-bold text-sky-600 mb-3">
+            Specialists
+          </h3>
+
+          <div className="space-y-2">
+            {doctors.map((doc, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 bg-slate-50 rounded-xl px-3 py-2"
+              >
+                <div className="w-9 h-9 rounded-full bg-sky-100 flex items-center justify-center">
+                  <FiIcons.FiUser className="text-sky-600" />
+                </div>
+
+                <span className="text-sm font-medium">{doc}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* TIMING */}
+        <div className="p-5 border-b">
+          <h3 className="text-sm font-bold text-sky-600 mb-2">
+            OPD Timing
+          </h3>
+          <p className="text-sm font-medium">
+            Mon - Sat : 9:00 AM - 8:00 PM
+          </p>
+          <p className="text-xs text-gray-500">Sunday Closed</p>
+        </div>
+
+        {/* GALLERY */}
+        <div className="p-5 border-b">
+          <h3 className="text-sm font-bold text-sky-600 mb-3">
+            Gallery
+          </h3>
+
+          <div className="grid grid-cols-2 gap-3">
+            {gallery.map((img, i) => (
+              <img
+                key={i}
+                src={img}
+                alt="hospital"
+                className="rounded-2xl h-24 w-full object-cover"
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* ACTIONS */}
+        <div className="p-5 space-y-3">
+          {phone && (
+            <a
+              href={`tel:${phone}`}
+              className="block w-full bg-sky-600 text-white text-center py-3 rounded-2xl font-bold text-sm"
+            >
+              Call Hospital
+            </a>
+          )}
+
+          {address && (
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                address
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full border border-sky-600 text-sky-600 text-center py-3 rounded-2xl font-bold text-sm"
+            >
+              View Location
+            </a>
+          )}
+
+          <button
+            onClick={() => downloadVCard(userData)}
+            className="w-full bg-slate-900 text-white py-3 rounded-2xl font-bold text-sm"
+          >
+            Save Contact
+          </button>
+        </div>
+
+        <div className="px-5 pb-5">
+          <PoweredBy />
+        </div>
       </div>
     </div>
   );
 };
+
 export default ZenCafe;

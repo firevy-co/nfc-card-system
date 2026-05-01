@@ -1,7 +1,8 @@
 import { Suspense, lazy, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/firebase.config';
+import { auth, db } from '@/firebase.config';
+import { doc, setDoc, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import { ThemeProvider } from './context/ThemeContext';
 import { Toaster } from 'react-hot-toast';
 
@@ -47,35 +48,33 @@ function App() {
     let unsubSnapshot = null;
     const startListener = async () => {
       try {
-        const { doc, getDoc, setDoc, onSnapshot, serverTimestamp } = await import('firebase/firestore');
-        const { db } = await import('@/firebase.config');
         const userRef = doc(db, "users", user.uid);
 
-        // 1. Ensure document existence
-        const snap = await getDoc(userRef);
-        if (!snap.exists()) {
-          const newUser = {
-            uid: user.uid,
-            displayName: user.displayName || 'Architect',
-            email: user.email,
-            role: 'User',
-            createdAt: serverTimestamp(),
-            status: 'Active',
-            onboarded: false
-          };
-          await setDoc(userRef, newUser);
-          setUserData(newUser);
-        }
-
-        // 2. Real-time broadcast connection
-        unsubSnapshot = onSnapshot(userRef, (docSnap) => {
+        // Single real-time handshake listener
+        unsubSnapshot = onSnapshot(userRef, async (docSnap) => {
           if (docSnap.exists()) {
             setUserData({ ...docSnap.data(), uid: user.uid });
+            setLoading(false);
+          } else {
+            const newUser = {
+              uid: user.uid,
+              displayName: user.displayName || 'Architect',
+              email: user.email,
+              role: 'User',
+              createdAt: serverTimestamp(),
+              status: 'Active',
+              onboarded: false
+            };
+            await setDoc(userRef, newUser);
+            setUserData(newUser);
+            setLoading(false);
           }
+        }, (error) => {
+          console.error("Critical Identity Sync Failure:", error);
           setLoading(false);
         });
       } catch (error) {
-        console.error("Critical Identity Sync Failure:", error);
+        console.error("Critical Identity Listener Setup Failure:", error);
         setLoading(false);
       }
     };

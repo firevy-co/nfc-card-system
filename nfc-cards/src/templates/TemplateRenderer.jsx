@@ -108,30 +108,30 @@ const PrimeService = lazy(() => import('./service/PrimeService'));
 import defaultLogo from '../assets/logo (2).png';
 
 const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
-  
+
   // NORMALIZE USER DATA - Bridging discrepancies between Form fields and Template expectations
   const userData = rawUserData ? {
     ...rawUserData,
     // Contact Mapping
     phone: rawUserData.phone || rawUserData.mobileNumber || "",
     email: rawUserData.email || rawUserData.omailAddress || "",
-    
+
     // Identity & Role Mapping
     displayName: rawUserData.displayName || rawUserData.name || "Your Identity",
     role: rawUserData.role || rawUserData.designation || rawUserData.businessRole || rawUserData.jobTitle || "Professional",
     companyName: rawUserData.companyName || rawUserData.businessName || rawUserData.organization || "",
-    
+
     // Location Synthesis (Building 'address' from City, State, Country nodes)
     address: rawUserData.address || [
       rawUserData.city,
       rawUserData.state,
       rawUserData.country
     ].filter(Boolean).join(', ') || "",
-    
+
     // Website & Bio
     website: rawUserData.website || "",
     bio: rawUserData.bio || rawUserData.description || rawUserData.about || "",
-    
+
     // Social Integrity
     linkedin: rawUserData.linkedin || "",
     instagram: rawUserData.instagram || "",
@@ -139,7 +139,7 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
     twitter: rawUserData.twitter || rawUserData.x || "",
     youtube: rawUserData.youtube || "",
     github: rawUserData.github || "",
-    
+
     // Theme & Branding
     themeColor: rawUserData.themeColor || "#0f172a",
     logo: rawUserData.logo || rawUserData.profileImage || defaultLogo,
@@ -149,8 +149,8 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
 
   const renderTemplate = () => {
     // RESOLUTION LAYER: Handle dynamic template IDs by checking for underlying blueprint references
-    let activeId = (templateId?.startsWith('template_') || !templateId) 
-      ? (userData.templateId || 'cardyn_classic') 
+    let activeId = (templateId?.startsWith('template_') || !templateId)
+      ? (userData.templateId || 'cardyn_classic')
       : templateId;
 
     // FAIL-SAFE: If activeId is still a dynamic template ID (resolution failed), default to a reliable blueprint
