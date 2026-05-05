@@ -1,95 +1,303 @@
-import React from 'react';
-import { FiActivity, FiPhone, FiMail, FiMapPin, FiCalendar, FiGlobe, FiInstagram, FiTwitter, FiLinkedin, FiYoutube, FiUserPlus } from 'react-icons/fi';
-import { downloadVCard } from '../common/StandardComponents';
+import React from "react";
+import {
+   FiActivity,
+   FiPhone,
+   FiMail,
+   FiMapPin,
+   FiCalendar,
+   FiGlobe,
+   FiInstagram,
+   FiTwitter,
+   FiLinkedin,
+   FiYoutube,
+   FiUserPlus,
+   FiArrowRight,
+   FiAward,
+   FiClock,
+   FiTarget
+} from "react-icons/fi";
+import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
+/* ===========================
+   INFO LINK
+=========================== */
 const PulseLink = ({ icon: Icon, label, value, href }) => {
-  if (!value || value === "" || value.includes('resolving')) return null;
-  const Comp = href ? 'a' : 'div';
-  return (
-    <Comp href={href} target={href && href.startsWith('http') ? "_blank" : undefined} rel={href && href.startsWith('http') ? "noopener noreferrer" : undefined} className="flex items-center justify-between border-b border-white/5 pb-4 pt-2 group/link">
-       <div className="flex items-center gap-3 text-white/40 group-hover/link:text-[#ccff00] transition-colors">
-          <Icon size={16} />
-          <span className="text-[10px] font-black tracking-widest uppercase">{label}</span>
-       </div>
-       <span className="text-white font-bold text-sm truncate max-w-[150px] text-right">{value}</span>
-    </Comp>
-  );
+   if (!value || value === "" || value.includes("resolving")) return null;
+
+   const Comp = href ? "a" : "div";
+
+   return (
+      <Comp
+         href={href}
+         target={href ? "_blank" : undefined}
+         rel={href ? "noopener noreferrer" : undefined}
+         className="flex items-center justify-between bg-white/5 rounded-2xl px-4 py-4 hover:bg-white/10 transition-all"
+      >
+         <div className="flex items-center gap-3 text-lime-400">
+            <Icon size={18} />
+            <span className="text-xs uppercase tracking-widest font-bold">
+               {label}
+            </span>
+         </div>
+
+         <span className="text-white text-sm font-semibold truncate max-w-[150px] text-right">
+            {value}
+         </span>
+      </Comp>
+   );
 };
 
+/* ===========================
+   SOCIAL BUTTON
+=========================== */
 const PulseSocial = ({ icon: Icon, href }) => {
-  if (!href) return null;
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="flex-1 min-w-[3rem] h-12 flex items-center justify-center bg-white/5 rounded-xl text-white/40 hover:bg-[#ccff00] hover:text-black transition-all">
-       <Icon size={18} />
-    </a>
-  );
+   if (!href) return null;
+
+   return (
+      <a
+         href={href}
+         target="_blank"
+         rel="noopener noreferrer"
+         className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-lime-400 hover:text-black transition-all"
+      >
+         <Icon size={17} />
+      </a>
+   );
 };
 
+/* ===========================
+   MAIN COMPONENT
+=========================== */
 const PulseWorkout = ({ userData }) => {
-  const { displayName, email, phone, website, address, youtube, linkedin, twitter, instagram, logo } = userData || {};
-  
-  return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6 font-['Mulish',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
-      <div className="w-full max-w-sm bg-zinc-900 border border-white/5 rounded-[2.5rem] p-1 shadow-2xl overflow-hidden group">
-        <div className="bg-[#ccff00] p-10 rounded-[2.3rem] text-center relative overflow-hidden">
-           <div className="absolute top-0 left-0 w-full h-full opacity-5 group-hover:opacity-10 transition-opacity">
-              <FiActivity size={200} className="absolute -top-10 -left-10" />
-           </div>
-           
-           <div className="w-24 h-24 rounded-full bg-black flex items-center justify-center text-[#ccff00] mx-auto mb-6 relative z-10 shadow-2xl overflow-hidden border-4 border-black group-hover:scale-105 transition-transform">
-              {logo ? (
-                  <img src={logo} alt="Logo" className="w-full h-full object-cover" />
-              ) : (
-                  <FiActivity size={36} />
-              )}
-           </div>
-           
-           <h1 className="text-3xl font-black text-black tracking-tighter uppercase leading-none relative z-10 mb-2">{displayName || 'Pulse Pro'}</h1>
-           <p className="text-[10px] text-black/60 font-black uppercase tracking-[0.4em] relative z-10">High Energy Protocol</p>
-        </div>
-        
-        <div className="p-8 space-y-4">
-           {/* Primary Actions Grid */}
-           <div className="grid grid-cols-2 gap-3 pb-2">
-              <a href={`tel:${phone}`} className={`bg-white/5 p-4 rounded-2xl flex flex-col items-center gap-2 border border-white/5 hover:border-[#ccff00] transition-all group/icon ${!phone ? 'hidden' : ''}`}>
-                 <FiPhone size={20} className="text-[#ccff00]" />
-                 <span className="text-[8px] font-black uppercase tracking-widest text-white/40 group-hover/icon:text-[#ccff00]">Call Now</span>
-              </a>
-              <a href={`mailto:${email}`} className={`bg-white/5 p-4 rounded-2xl flex flex-col items-center gap-2 border border-white/5 hover:border-[#ccff00] transition-all group/icon ${!email ? 'hidden' : ''}`}>
-                 <FiMail size={20} className="text-[#ccff00]" />
-                 <span className="text-[8px] font-black uppercase tracking-widest text-white/40 group-hover/icon:text-[#ccff00]">Email</span>
-              </a>
-           </div>
-           
-           {/* Secondary Info Links */}
-           <div className="space-y-2 mb-4">
-              <PulseLink icon={FiGlobe} label="Portal" value={website} href={website} />
-              <PulseLink icon={FiMapPin} label="Location" value={address} />
-           </div>
-           
-           {/* Socials Grid */}
-           <div className="flex flex-wrap gap-2 pt-2 pb-4">
-              <PulseSocial icon={FiInstagram} href={instagram} />
-              <PulseSocial icon={FiYoutube} href={youtube} />
-              <PulseSocial icon={FiTwitter} href={twitter} />
-              <PulseSocial icon={FiLinkedin} href={linkedin} />
-           </div>
-           
-           <button onClick={() => downloadVCard(userData)} className="w-full py-5 bg-white text-black rounded-2xl font-black text-[11px] uppercase tracking-[0.4em] flex items-center justify-center gap-3 hover:bg-[#ccff00] active:scale-95 transition-all shadow-xl shadow-white/5">
-              <FiUserPlus size={18} /> Connect Profile
-           </button>
-           
-           {website && (
-              <a href={website} target="_blank" rel="noopener noreferrer" className="w-full py-4 mt-3 border border-white/10 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] flex items-center justify-center gap-2 hover:bg-white/5 transition-all">
-                 <FiCalendar size={14} className="text-[#ccff00]" /> Book Session
-              </a>
-           )}
-           
-           <PoweredBy />
-        </div>
+   const {
+      displayName,
+      email,
+      phone,
+      website,
+      address,
+      youtube,
+      linkedin,
+      twitter,
+      instagram,
+      logo
+   } = userData || {};
+
+   /* Gym Images */
+   const banner =
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=80";
+
+   const gymOne =
+      "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?auto=format&fit=crop&w=700&q=80";
+
+   const gymTwo =
+      "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=700&q=80";
+
+   return (
+      <div className="min-h-screen bg-black text-white font-['Mulish',sans-serif]">
+
+         <div className="w-full max-w-sm mx-auto bg-[#0f0f0f] min-h-screen overflow-hidden">
+
+            {/* HERO */}
+            <div className="relative h-[380px]">
+
+               <img
+                  src={banner}
+                  alt="Gym"
+                  className="w-full h-full object-cover"
+               />
+
+               <div className="absolute inset-0 bg-black/60"></div>
+               <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-transparent"></div>
+
+               {/* Dynamic Logo */}
+               <div className="absolute top-6 left-5">
+                  <div className="w-16 h-16 rounded-2xl overflow-hidden border border-white/20 bg-black">
+                     {logo ? (
+                        <img
+                           src={logo}
+                           alt="logo"
+                           className="w-full h-full object-cover"
+                        />
+                     ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                           <FiActivity className="text-lime-400" size={24} />
+                        </div>
+                     )}
+                  </div>
+               </div>
+
+               {/* Bottom Content */}
+               <div className="absolute bottom-6 left-5 right-5">
+
+                  <p className="text-lime-400 uppercase text-xs tracking-[0.3em] mb-2 font-bold">
+                     Fitness Coach
+                  </p>
+
+                  <h1 className="text-3xl font-black uppercase leading-none">
+                     {displayName || "Pulse Workout"}
+                  </h1>
+
+                  <p className="text-sm text-gray-300 mt-3 leading-6">
+                     Build strength, burn fat and transform your body with professional
+                     gym training programs.
+                  </p>
+
+                  <div className="flex gap-2 mt-4">
+                     <PulseSocial icon={FiInstagram} href={instagram} />
+                     <PulseSocial icon={FiYoutube} href={youtube} />
+                     <PulseSocial icon={FiTwitter} href={twitter} />
+                     <PulseSocial icon={FiLinkedin} href={linkedin} />
+                  </div>
+               </div>
+            </div>
+
+            {/* CONTENT */}
+            <div className="px-5 py-6 space-y-5">
+
+               {/* Stats */}
+               <div className="grid grid-cols-3 gap-3">
+
+                  <div className="bg-white/5 rounded-2xl p-4 text-center">
+                     <FiAward className="mx-auto text-lime-400 mb-2" />
+                     <h3 className="font-black text-lg">10+</h3>
+                     <p className="text-[10px] text-gray-400 uppercase">Years</p>
+                  </div>
+
+                  <div className="bg-white/5 rounded-2xl p-4 text-center">
+                     <FiTarget className="mx-auto text-lime-400 mb-2" />
+                     <h3 className="font-black text-lg">500+</h3>
+                     <p className="text-[10px] text-gray-400 uppercase">Clients</p>
+                  </div>
+
+                  <div className="bg-white/5 rounded-2xl p-4 text-center">
+                     <FiClock className="mx-auto text-lime-400 mb-2" />
+                     <h3 className="font-black text-lg">24/7</h3>
+                     <p className="text-[10px] text-gray-400 uppercase">Support</p>
+                  </div>
+
+               </div>
+
+               {/* Contact Buttons */}
+               <div className="grid grid-cols-2 gap-3">
+
+                  {phone && (
+                     <a
+                        href={`tel:${phone}`}
+                        className="bg-lime-400 text-black rounded-2xl py-4 flex flex-col items-center gap-2 font-bold"
+                     >
+                        <FiPhone size={18} />
+                        <span className="text-xs uppercase">Call Now</span>
+                     </a>
+                  )}
+
+                  {email && (
+                     <a
+                        href={`mailto:${email}`}
+                        className="bg-white text-black rounded-2xl py-4 flex flex-col items-center gap-2 font-bold"
+                     >
+                        <FiMail size={18} />
+                        <span className="text-xs uppercase">Email</span>
+                     </a>
+                  )}
+
+               </div>
+
+               {/* Links */}
+               <PulseLink
+                  icon={FiGlobe}
+                  label="Website"
+                  value={website || "www.pulsefitness.com"}
+                  href={website}
+               />
+
+               <PulseLink
+                  icon={FiMapPin}
+                  label="Location"
+                  value={address || "Berlin, Germany"}
+               />
+
+               {/* Services */}
+               <div className="grid grid-cols-2 gap-3">
+
+                  <div className="rounded-2xl overflow-hidden bg-white/5">
+                     <img
+                        src={gymOne}
+                        alt="Workout"
+                        className="h-28 w-full object-cover"
+                     />
+                     <div className="p-4">
+                        <h3 className="font-bold">Body Building</h3>
+                        <p className="text-xs text-gray-400 mt-2">
+                           Muscle gain & advanced strength programs.
+                        </p>
+                     </div>
+                  </div>
+
+                  <div className="rounded-2xl overflow-hidden bg-white/5">
+                     <img
+                        src={gymTwo}
+                        alt="Fat Loss"
+                        className="h-28 w-full object-cover"
+                     />
+                     <div className="p-4">
+                        <h3 className="font-bold">Fat Loss</h3>
+                        <p className="text-xs text-gray-400 mt-2">
+                           Cardio + nutrition based transformation.
+                        </p>
+                     </div>
+                  </div>
+
+               </div>
+
+               {/* CTA */}
+               <button
+                  onClick={() => downloadVCard(userData)}
+                  className="w-full bg-lime-400 text-black rounded-2xl py-5 font-black uppercase tracking-widest flex items-center justify-center gap-3"
+               >
+                  <FiUserPlus size={18} />
+                  Add To Contact
+               </button>
+
+               {/* Booking */}
+               {website && (
+                  <a
+                     href={website}
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     className="w-full bg-white/5 rounded-2xl py-5 flex items-center justify-center gap-2 uppercase text-sm font-bold hover:bg-white/10 transition-all"
+                  >
+                     Book Session <FiArrowRight />
+                  </a>
+               )}
+
+               {/* Hours */}
+               <div className="bg-white/5 rounded-2xl p-5">
+                  <h3 className="font-bold mb-4">Opening Hours</h3>
+
+                  <div className="space-y-2 text-sm text-gray-300">
+                     <div className="flex justify-between">
+                        <span>Monday - Friday</span>
+                        <span>06:00 - 22:00</span>
+                     </div>
+
+                     <div className="flex justify-between">
+                        <span>Saturday</span>
+                        <span>07:00 - 20:00</span>
+                     </div>
+
+                     <div className="flex justify-between">
+                        <span>Sunday</span>
+                        <span>Closed</span>
+                     </div>
+                  </div>
+               </div>
+
+               <PoweredBy />
+            </div>
+         </div>
       </div>
-    </div>
-  );
+   );
 };
+
 export default PulseWorkout;
