@@ -28,7 +28,7 @@ const WellnessLink = ({ icon: Icon, label, value, href }) => {
 
   return (
     <Tag
-      href={href}
+      href={href || null}
       target={href && href.startsWith("http") ? "_blank" : undefined}
       rel={href && href.startsWith("http") ? "noopener noreferrer" : undefined}
       className="w-full bg-white/90 backdrop-blur border border-orange-100 rounded-2xl px-4 py-3 flex items-center justify-between shadow-sm hover:shadow-md transition-all"
@@ -55,7 +55,7 @@ const WellnessSocial = ({ icon: Icon, href }) => {
 
   return (
     <a
-      href={href}
+      href={href || null}
       target="_blank"
       rel="noopener noreferrer"
       className="w-11 h-11 rounded-xl bg-white border border-orange-100 flex items-center justify-center text-orange-500 hover:bg-orange-500 hover:text-white transition-all shadow-sm"
@@ -196,7 +196,7 @@ const WellnessWay = ({ userData }) => {
           <div className="space-y-3 mt-4">
             <WellnessLink icon={FiPhone} label="Call" value={phone} href={`tel:${phone}`} />
             <WellnessLink icon={FiMail} label="Email" value={email} href={`mailto:${email}`} />
-            <WellnessLink icon={FiGlobe} label="Website" value={website} href={website} />
+            <WellnessLink icon={FiGlobe} label="Website" value={website} href={website || null} />
             <WellnessLink icon={FiMapPin} label="Visit" value={address} />
           </div>
 
@@ -294,10 +294,10 @@ const WellnessWay = ({ userData }) => {
 
           {/* SOCIAL */}
           <div className="flex justify-center gap-3 mt-5">
-            <WellnessSocial icon={FiInstagram} href={instagram} />
-            <WellnessSocial icon={FiYoutube} href={youtube} />
-            <WellnessSocial icon={FiTwitter} href={twitter} />
-            <WellnessSocial icon={FiLinkedin} href={linkedin} />
+            <WellnessSocial icon={FiInstagram} href={instagram || null} />
+            <WellnessSocial icon={FiYoutube} href={youtube || null} />
+            <WellnessSocial icon={FiTwitter} href={twitter || null} />
+            <WellnessSocial icon={FiLinkedin} href={linkedin || null} />
           </div>
 
           {/* BUTTON */}

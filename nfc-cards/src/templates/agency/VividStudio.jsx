@@ -270,7 +270,7 @@ const MonochromeTimeline = ({ userData }) => {
                 { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` }
               ].map((social, i) => social.val && (
                 <a
-                  key={i} href={social.link} target="_blank" rel="noopener noreferrer"
+                  key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"
                   className="w-12 h-12 flex items-center justify-center border border-white/20 hover:bg-white hover:text-black transition-colors"
                 >
                   <social.icon size={20} />

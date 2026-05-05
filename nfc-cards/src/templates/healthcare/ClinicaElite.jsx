@@ -30,7 +30,7 @@ const Info = ({ icon: Icon, text, link }) => {
    const Comp = link ? "a" : "div";
    return (
       <Comp
-         href={link}
+         href={link || null}
          target={link?.startsWith("http") ? "_blank" : undefined}
          rel={link?.startsWith("http") ? "noopener noreferrer" : undefined}
          className="flex items-center gap-3 text-sm text-gray-600 hover:text-gray-900 transition-colors"

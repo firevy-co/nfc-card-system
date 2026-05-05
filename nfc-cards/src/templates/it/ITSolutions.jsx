@@ -165,7 +165,7 @@ const ITSolutions = ({ userData = {} }) => {
                   return (
                      <a
                         key={i}
-                        href={item.url}
+                        href={item.url || null}
                         target="_blank"
                         rel="noreferrer"
                         className="group rounded-2xl border border-white/10 bg-white/[0.03] p-4 flex items-center gap-4 hover:bg-white/[0.07] transition-all"

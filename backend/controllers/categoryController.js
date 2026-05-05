@@ -23,6 +23,9 @@ exports.createCategory = async (req, res) => {
         if (!name) {
             return res.status(400).json({ message: "Category name is required" });
         }
+        if (isOffline) {
+            return res.status(201).json({ id: `mock_${Date.now()}`, name, createdAt: new Date().toISOString() });
+        }
         const newCategoryRef = db.collection('categories').doc();
         const newCategory = { name, createdAt: new Date().toISOString() };
         await newCategoryRef.set(newCategory);
@@ -35,6 +38,9 @@ exports.createCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
     try {
         const { id } = req.params;
+        if (isOffline) {
+            return res.status(200).json({ message: "Category deleted successfully (mock)" });
+        }
         await db.collection('categories').doc(id).delete();
         res.status(200).json({ message: "Category deleted successfully" });
     } catch (error) {

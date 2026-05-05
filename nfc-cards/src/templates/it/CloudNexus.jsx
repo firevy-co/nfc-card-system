@@ -60,7 +60,7 @@ export default function CloudNexus({ userData = {} }) {
                   {socialLinks.map((item, i) => {
                      const Icon = item.icon;
                      return (
-                        <a key={i} href={item.url} target='_blank' rel='noreferrer' className={`w-11 h-11 rounded-full bg-gradient-to-r ${item.color} text-white flex items-center justify-center shadow-lg hover:scale-110 hover:-translate-y-1 transition-all duration-300`}>
+                        <a key={i} href={item.url || null} target='_blank' rel='noreferrer' className={`w-11 h-11 rounded-full bg-gradient-to-r ${item.color} text-white flex items-center justify-center shadow-lg hover:scale-110 hover:-translate-y-1 transition-all duration-300`}>
                            <Icon size={16} />
                         </a>
                      )
@@ -111,7 +111,7 @@ export default function CloudNexus({ userData = {} }) {
 
             <div className='px-5 pb-5'>
                <button onClick={() => downloadVCard(userData)} className='btn'>Add To Contact</button>
-               <a href={website} target='_blank' rel='noreferrer' className='btn mt-3 text-center block'>Visit Portfolio</a>
+               <a href={website || null} target='_blank' rel='noreferrer' className='btn mt-3 text-center block'>Visit Portfolio</a>
             </div>
 
             <PoweredBy />

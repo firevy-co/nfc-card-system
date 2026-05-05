@@ -294,7 +294,7 @@ const VintageAudioEngineer = ({ userData }) => {
                         { val: fictionalData.soundcloud, icon: FaSoundcloud, link: `https://soundcloud.com/${fictionalData.soundcloud}`, bg: 'bg-white' }
                      ].map((social, i) => social.val && (
                         <a
-                           key={i} href={social.link} target="_blank" rel="noopener noreferrer"
+                           key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"
                            className={`aspect-square flex items-center justify-center border-2 border-[#2d2a26] ${social.bg} shadow-[4px_4px_0_0_#2d2a26] hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#2d2a26] transition-all ${social.bg === 'bg-[#3f6153]' ? 'text-[#f4f1ea]' : 'text-[#2d2a26]'}`}
                         >
                            <social.icon size={24} />

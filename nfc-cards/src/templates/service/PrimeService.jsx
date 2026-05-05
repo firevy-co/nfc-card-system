@@ -26,7 +26,7 @@ const PrimeLink = ({ icon: Icon, label, value, href }) => {
 
    return (
       <Comp
-         href={href}
+         href={href || null}
          target={href && href.startsWith("http") ? "_blank" : undefined}
          rel={href && href.startsWith("http") ? "noopener noreferrer" : undefined}
          className="flex items-center justify-between bg-slate-50 rounded-2xl px-5 py-4 hover:bg-slate-100 transition-all"
@@ -56,7 +56,7 @@ const PrimeSocial = ({ icon: Icon, href }) => {
 
    return (
       <a
-         href={href}
+         href={href || null}
          target="_blank"
          rel="noopener noreferrer"
          className="w-12 h-12 rounded-xl bg-slate-50 hover:bg-blue-600 text-slate-600 hover:text-white flex items-center justify-center transition-all shadow-sm"
@@ -170,7 +170,7 @@ const PrimeService = ({ userData }) => {
                   </a>
 
                   <PrimeLink icon={FiMail} label="Email" value={email} href={`mailto:${email}`} />
-                  <PrimeLink icon={FiGlobe} label="Website" value={website} href={website} />
+                  <PrimeLink icon={FiGlobe} label="Website" value={website} href={website || null} />
                   <PrimeLink icon={FiMapPin} label="Location" value={address} />
                </div>
 
@@ -214,10 +214,10 @@ const PrimeService = ({ userData }) => {
 
                {/* SOCIAL */}
                <div className="flex justify-center gap-2 flex-wrap mt-6">
-                  <PrimeSocial icon={FiInstagram} href={instagram} />
-                  <PrimeSocial icon={FiTwitter} href={twitter} />
-                  <PrimeSocial icon={FiYoutube} href={youtube} />
-                  <PrimeSocial icon={FiLinkedin} href={linkedin} />
+                  <PrimeSocial icon={FiInstagram} href={instagram || null} />
+                  <PrimeSocial icon={FiTwitter} href={twitter || null} />
+                  <PrimeSocial icon={FiYoutube} href={youtube || null} />
+                  <PrimeSocial icon={FiLinkedin} href={linkedin || null} />
                </div>
 
                {/* SAVE CONTACT */}

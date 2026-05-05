@@ -29,7 +29,7 @@ const PulseLink = ({ icon: Icon, label, value, href }) => {
 
    return (
       <Comp
-         href={href}
+         href={href || null}
          target={href ? "_blank" : undefined}
          rel={href ? "noopener noreferrer" : undefined}
          className="flex items-center justify-between bg-white/5 rounded-2xl px-4 py-4 hover:bg-white/10 transition-all"
@@ -56,7 +56,7 @@ const PulseSocial = ({ icon: Icon, href }) => {
 
    return (
       <a
-         href={href}
+         href={href || null}
          target="_blank"
          rel="noopener noreferrer"
          className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-lime-400 hover:text-black transition-all"
@@ -144,10 +144,10 @@ const PulseWorkout = ({ userData }) => {
                   </p>
 
                   <div className="flex gap-2 mt-4">
-                     <PulseSocial icon={FiInstagram} href={instagram} />
-                     <PulseSocial icon={FiYoutube} href={youtube} />
-                     <PulseSocial icon={FiTwitter} href={twitter} />
-                     <PulseSocial icon={FiLinkedin} href={linkedin} />
+                     <PulseSocial icon={FiInstagram} href={instagram || null} />
+                     <PulseSocial icon={FiYoutube} href={youtube || null} />
+                     <PulseSocial icon={FiTwitter} href={twitter || null} />
+                     <PulseSocial icon={FiLinkedin} href={linkedin || null} />
                   </div>
                </div>
             </div>
@@ -208,7 +208,7 @@ const PulseWorkout = ({ userData }) => {
                   icon={FiGlobe}
                   label="Website"
                   value={website || "www.pulsefitness.com"}
-                  href={website}
+                  href={website || null}
                />
 
                <PulseLink
@@ -262,7 +262,7 @@ const PulseWorkout = ({ userData }) => {
                {/* Booking */}
                {website && (
                   <a
-                     href={website}
+                     href={website || null}
                      target="_blank"
                      rel="noopener noreferrer"
                      className="w-full bg-white/5 rounded-2xl py-5 flex items-center justify-center gap-2 uppercase text-sm font-bold hover:bg-white/10 transition-all"

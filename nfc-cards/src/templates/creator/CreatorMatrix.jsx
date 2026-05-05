@@ -7,7 +7,7 @@ const MatrixLink = ({ icon: Icon, label, value, href }) => {
   if (!value || value === "" || value.includes('resolving')) return null;
   const Comp = href ? 'a' : 'div';
   return (
-    <Comp href={href} target={href && href.startsWith('http') ? "_blank" : undefined} rel={href && href.startsWith('http') ? "noopener noreferrer" : undefined} className="group flex items-center justify-between border-b border-white/10 pb-4 hover:border-white transition-all">
+    <Comp href={href || null} target={href && href.startsWith('http') ? "_blank" : undefined} rel={href && href.startsWith('http') ? "noopener noreferrer" : undefined} className="group flex items-center justify-between border-b border-white/10 pb-4 hover:border-white transition-all">
         <div className="flex items-center gap-3">
             <Icon size={14} className="text-white/30 group-hover:text-white transition-colors" />
             <span className="text-[10px] font-black uppercase tracking-widest text-white/30 group-hover:text-white transition-colors">{label}</span>
@@ -49,14 +49,14 @@ const CreatorMatrix = ({ userData }) => {
         <div className="space-y-4 relative z-10 mb-8">
            <MatrixLink icon={FiPhone} label="Neural Link" value={phone} href={`tel:${phone}`} />
            <MatrixLink icon={FiMail} label="Signal Hive" value={email} href={`mailto:${email}`} />
-           <MatrixLink icon={FiGlobe} label="Cyber Net" value={website} href={website} />
+           <MatrixLink icon={FiGlobe} label="Cyber Net" value={website} href={website || null} />
            <MatrixLink icon={FiMapPin} label="Coordinates" value={address} />
            
-           <MatrixLink icon={FiYoutube} label="Vid Stream" value={youtube ? "YouTube" : null} href={youtube} />
-           <MatrixLink icon={FiTwitch} label="Live Feed" value={twitch ? "Twitch" : null} href={twitch} />
-           <MatrixLink icon={FiTwitter} label="Broadcast" value={twitter ? "Twitter" : null} href={twitter} />
-           <MatrixLink icon={FiInstagram} label="Holo Net" value={instagram ? "Instagram" : null} href={instagram} />
-           <MatrixLink icon={FiLinkedin} label="Corpo Net" value={linkedin ? "LinkedIn" : null} href={linkedin} />
+           <MatrixLink icon={FiYoutube} label="Vid Stream" value={youtube ? "YouTube" : null} href={youtube || null} />
+           <MatrixLink icon={FiTwitch} label="Live Feed" value={twitch ? "Twitch" : null} href={twitch || null} />
+           <MatrixLink icon={FiTwitter} label="Broadcast" value={twitter ? "Twitter" : null} href={twitter || null} />
+           <MatrixLink icon={FiInstagram} label="Holo Net" value={instagram ? "Instagram" : null} href={instagram || null} />
+           <MatrixLink icon={FiLinkedin} label="Corpo Net" value={linkedin ? "LinkedIn" : null} href={linkedin || null} />
         </div>
 
         <div className="relative z-10">

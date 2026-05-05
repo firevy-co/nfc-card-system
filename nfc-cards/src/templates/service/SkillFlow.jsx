@@ -132,7 +132,7 @@ const SkillFlow = ({ userData }) => {
               <span className="text-sm text-slate-700 truncate">{email}</span>
             </a>
 
-            <a href={website} target="_blank" rel="noreferrer" className="flex items-center gap-3 bg-[#fafafc] rounded-2xl px-4 py-4 hover:bg-indigo-50 transition-all">
+            <a href={website || null} target="_blank" rel="noreferrer" className="flex items-center gap-3 bg-[#fafafc] rounded-2xl px-4 py-4 hover:bg-indigo-50 transition-all">
               <FiGlobe className="text-indigo-500" />
               <span className="text-sm text-slate-700 truncate">{website}</span>
             </a>
@@ -189,7 +189,7 @@ const SkillFlow = ({ userData }) => {
           {/* BUTTONS */}
           <div className="space-y-3 mt-8">
 
-            <a href={website} target="_blank" rel="noreferrer" className="w-full bg-slate-900 text-white py-4 rounded-2xl flex items-center justify-center gap-2 font-black text-[11px] uppercase tracking-[0.25em]">
+            <a href={website || null} target="_blank" rel="noreferrer" className="w-full bg-slate-900 text-white py-4 rounded-2xl flex items-center justify-center gap-2 font-black text-[11px] uppercase tracking-[0.25em]">
               Visit Website
               <FiArrowRight />
             </a>

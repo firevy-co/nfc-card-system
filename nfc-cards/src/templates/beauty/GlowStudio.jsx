@@ -301,7 +301,7 @@ const GlowStudio = ({ userData }) => {
                         { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` }
                      ].map((social, i) => social.val && (
                         <a
-                           key={i} href={social.link} target="_blank" rel="noopener noreferrer"
+                           key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"
                            className="w-14 h-14 bg-[#121212] border border-[#2A2A2A] rounded-full flex items-center justify-center text-gray-400 hover:bg-[#FF007F] hover:border-[#FF007F] hover:text-white transition-all shadow-lg hover:-translate-y-1"
                         >
                            <social.icon size={22} />

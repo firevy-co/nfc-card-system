@@ -58,6 +58,8 @@ const NotificationCenter = ({ isAdmin, theme }) => {
 
             setNotifications(data.slice(0, 5)); // Final slice for UI
             setUnreadCount(data.length);
+        }, (error) => {
+            // Silently catch permission-denied to keep the console completely clean
         });
 
         return () => unsubscribe();

@@ -55,7 +55,7 @@ export const StandardContactLink = ({
 
   return (
     <Comp
-      href={finalHref}
+      href={finalHref || null}
       target={Comp === "a" ? "_blank" : undefined}
       rel={Comp === "a" ? "noopener noreferrer" : undefined}
       className="w-full rounded-[26px] border border-[#d4af37]/20 bg-[#17120f] hover:bg-[#211913] transition-all duration-300 p-4 shadow-xl group"

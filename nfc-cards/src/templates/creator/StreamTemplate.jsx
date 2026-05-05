@@ -7,7 +7,7 @@ const StreamLink = ({ icon: Icon, label, value, href }) => {
   if (!value || value === "" || value.includes('resolving')) return null;
   const Comp = href ? 'a' : 'div';
   return (
-    <Comp href={href} target={href && href.startsWith('http') ? "_blank" : undefined} rel={href && href.startsWith('http') ? "noopener noreferrer" : undefined} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-white/20 hover:bg-white/10 transition-all font-bold text-sm text-white/80 group">
+    <Comp href={href || null} target={href && href.startsWith('http') ? "_blank" : undefined} rel={href && href.startsWith('http') ? "noopener noreferrer" : undefined} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-white/20 hover:bg-white/10 transition-all font-bold text-sm text-white/80 group">
        <div className="flex items-center gap-3">
           <Icon size={14} className="opacity-40 group-hover:opacity-100 transition-opacity" />
           <span className="text-[9px] font-black uppercase tracking-widest opacity-40 italic">{label}</span>
@@ -20,7 +20,7 @@ const StreamLink = ({ icon: Icon, label, value, href }) => {
 const StreamSocial = ({ icon: Icon, href }) => {
   if (!href) return null;
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="flex-1 min-w-[3.5rem] h-14 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-center text-white/40 hover:text-[#6441a5] hover:bg-white transition-all cursor-pointer">
+    <a href={href || null} target="_blank" rel="noopener noreferrer" className="flex-1 min-w-[3.5rem] h-14 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-center text-white/40 hover:text-[#6441a5] hover:bg-white transition-all cursor-pointer">
        <Icon size={22} />
     </a>
   );
@@ -56,7 +56,7 @@ const StreamTemplate = ({ userData }) => {
            {/* Primary Actions */}
            <div className="flex gap-3 flex-col sm:flex-row">
               {mainStreamLink && (
-                  <a href={mainStreamLink} target="_blank" rel="noopener noreferrer" className="flex-1 bg-white text-[#6441a5] py-4 rounded-2xl flex items-center justify-center gap-3 font-black text-[11px] uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-xl shadow-white/5">
+                  <a href={mainStreamLink || null} target="_blank" rel="noopener noreferrer" className="flex-1 bg-white text-[#6441a5] py-4 rounded-2xl flex items-center justify-center gap-3 font-black text-[11px] uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-xl shadow-white/5">
                      {twitch ? <FiTwitch size={18} /> : (youtube ? <FiYoutube size={18} /> : <FiGlobe size={18} />)} Live Now
                   </a>
               )}
@@ -70,9 +70,9 @@ const StreamTemplate = ({ userData }) => {
                <div className="flex flex-wrap gap-3 pt-2">
                   <StreamSocial icon={FiTwitch} href={mainStreamLink === twitch ? null : twitch} />
                   <StreamSocial icon={FiYoutube} href={mainStreamLink === youtube ? null : youtube} />
-                  <StreamSocial icon={FiInstagram} href={instagram} />
-                  <StreamSocial icon={FiTwitter} href={twitter} />
-                  <StreamSocial icon={FiLinkedin} href={linkedin} />
+                  <StreamSocial icon={FiInstagram} href={instagram || null} />
+                  <StreamSocial icon={FiTwitter} href={twitter || null} />
+                  <StreamSocial icon={FiLinkedin} href={linkedin || null} />
                </div>
            )}
            
@@ -80,7 +80,7 @@ const StreamTemplate = ({ userData }) => {
            <div className="space-y-3 pt-2">
               <StreamLink icon={FiPhone} label="Direct" value={phone} href={`tel:${phone}`} />
               <StreamLink icon={FiMail} label="Signal" value={email} href={`mailto:${email}`} />
-              {website !== mainStreamLink && <StreamLink icon={FiGlobe} label="Portal" value={website} href={website} />}
+              {website !== mainStreamLink && <StreamLink icon={FiGlobe} label="Portal" value={website} href={website || null} />}
               <StreamLink icon={FiMapPin} label="Base" value={address} />
            </div>
         </div>

@@ -314,7 +314,7 @@ const ClassicRefined = ({ userData }) => {
                         { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` }
                      ].map((social, i) => social.val && (
                         <a
-                           key={i} href={social.link} target="_blank" rel="noopener noreferrer"
+                           key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"
                            className="w-10 h-10 border border-white/20 flex items-center justify-center text-white hover:bg-[#C2A05F] hover:border-[#C2A05F] transition-all"
                         >
                            <social.icon size={16} />

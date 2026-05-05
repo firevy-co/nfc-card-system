@@ -231,7 +231,7 @@ const ModernVCard = ({ userData }) => {
                         { icon: FaYoutube, link: `https://youtube.com/${fictionalData.youtube}`, color: 'bg-red-50 text-red-600 hover:bg-red-600' },
                         { icon: FaPinterest, link: `https://pinterest.com/${fictionalData.pinterest}`, color: 'bg-rose-50 text-rose-600 hover:bg-rose-600' }
                      ].map((social, idx) => (
-                        <a key={idx} href={social.link} target="_blank" rel="noopener noreferrer" className={`w-14 h-14 rounded-full mx-auto flex items-center justify-center transition-colors group ${social.color.split(' ')[0]} ${social.color.split(' ')[1]} ${social.color.split(' ')[2]} hover:text-white`}>
+                        <a key={idx} href={social.link || null} target="_blank" rel="noopener noreferrer" className={`w-14 h-14 rounded-full mx-auto flex items-center justify-center transition-colors group ${social.color.split(' ')[0]} ${social.color.split(' ')[1]} ${social.color.split(' ')[2]} hover:text-white`}>
                            <social.icon size={22} />
                         </a>
                      ))}

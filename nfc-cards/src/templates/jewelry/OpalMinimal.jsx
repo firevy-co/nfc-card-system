@@ -42,7 +42,7 @@ const OpalMinimal = ({ userData }) => {
 
   const CardLink = ({ icon: Icon, title, subtitle, url }) => (
     <a
-      href={url}
+      href={url || null}
       target="_blank"
       rel="noopener noreferrer"
       className="mx-4 mb-3 bg-[#111111] border border-[#252525] rounded-sm p-4 flex items-center justify-between hover:border-[#d6ad4a] transition-all duration-300"

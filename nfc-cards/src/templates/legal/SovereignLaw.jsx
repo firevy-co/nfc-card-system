@@ -246,7 +246,7 @@ const SovereignLaw = ({ userData }) => {
             ].map((social, i) => social.val && (
               <a
                 key={i}
-                href={social.url}
+                href={social.url || null}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`w-11 h-11 rounded-full flex items-center justify-center transition-all hover:scale-110 ${social.color} ${darkMode ? "bg-white/5" : "bg-slate-100"}`}

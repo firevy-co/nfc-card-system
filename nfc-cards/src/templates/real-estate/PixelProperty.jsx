@@ -147,7 +147,7 @@ const PixelProperty = ({ userData }) => {
 
                {website && (
                   <a
-                     href={website}
+                     href={website || null}
                      target="_blank"
                      rel="noopener noreferrer"
                      className="flex items-center justify-between bg-emerald-500/10 border border-emerald-500 rounded-xl p-4 hover:bg-emerald-500/20 transition-all"
@@ -217,22 +217,22 @@ const PixelProperty = ({ userData }) => {
             {/* SOCIAL */}
             <div className="flex flex-wrap justify-center gap-3 mb-8">
                {linkedin && (
-                  <a href={linkedin} className="px-3 py-2 border border-emerald-500/30 text-[10px] rounded-lg">
+                  <a href={linkedin || null} className="px-3 py-2 border border-emerald-500/30 text-[10px] rounded-lg">
                      LINKEDIN
                   </a>
                )}
                {instagram && (
-                  <a href={instagram} className="px-3 py-2 border border-emerald-500/30 text-[10px] rounded-lg">
+                  <a href={instagram || null} className="px-3 py-2 border border-emerald-500/30 text-[10px] rounded-lg">
                      INSTA
                   </a>
                )}
                {facebook && (
-                  <a href={facebook} className="px-3 py-2 border border-emerald-500/30 text-[10px] rounded-lg">
+                  <a href={facebook || null} className="px-3 py-2 border border-emerald-500/30 text-[10px] rounded-lg">
                      FACEBOOK
                   </a>
                )}
                {twitter && (
-                  <a href={twitter} className="px-3 py-2 border border-emerald-500/30 text-[10px] rounded-lg">
+                  <a href={twitter || null} className="px-3 py-2 border border-emerald-500/30 text-[10px] rounded-lg">
                      TWITTER
                   </a>
                )}

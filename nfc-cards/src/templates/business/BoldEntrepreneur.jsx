@@ -356,7 +356,7 @@ const BoldEntrepreneur = ({ userData }) => {
                            { val: fictionalData.twitter, icon: FaTwitter, link: `https://twitter.com/${fictionalData.twitter}` }
                         ].map((social, i) => social.val && (
                            <a
-                              key={i} href={social.link} target="_blank" rel="noopener noreferrer"
+                              key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"
                               className="w-14 h-14 bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-emerald-500/20 hover:border-emerald-500/50 hover:text-emerald-400 transition-all rounded-2xl shadow-lg"
                            >
                               <social.icon size={20} />

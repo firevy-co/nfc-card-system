@@ -24,7 +24,7 @@ const SectionTitle = ({ title }) => (
 );
 
 const ContactBox = ({ icon: Icon, label, value, link }) => (
-   <a href={link} target="_blank" rel="noopener noreferrer" className="bg-[#151515] rounded-xl p-3 flex items-center gap-3">
+   <a href={link || null} target="_blank" rel="noopener noreferrer" className="bg-[#151515] rounded-xl p-3 flex items-center gap-3">
       <div className="w-8 h-8 rounded-md bg-[#222] flex items-center justify-center shrink-0">
          <Icon className="text-white" size={14} />
       </div>
@@ -131,7 +131,7 @@ const PureAura = ({ userData }) => {
                      { val: fictionalData.instagram, icon: FiInstagram, link: `https://instagram.com/${fictionalData.instagram}` },
                      { val: fictionalData.twitter, icon: FiTwitter, link: `https://twitter.com/${fictionalData.twitter}` }
                   ].map((social, i) => social.val && (
-                     <a key={i} href={social.link} target="_blank" rel="noopener noreferrer" className="text-[#FF7F00] hover:text-white transition-colors">
+                     <a key={i} href={social.link || null} target="_blank" rel="noopener noreferrer" className="text-[#FF7F00] hover:text-white transition-colors">
                         <social.icon size={18} />
                      </a>
                   ))}

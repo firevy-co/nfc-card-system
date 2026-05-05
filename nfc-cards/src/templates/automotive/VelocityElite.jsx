@@ -285,7 +285,7 @@ const VelocityElite = ({ userData }) => {
                         { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` }
                      ].map((social, i) => social.val && (
                         <a
-                           key={i} href={social.link} target="_blank" rel="noopener noreferrer"
+                           key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"
                            className="aspect-square bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center text-[#0A1128] hover:bg-[#D4AF37] hover:text-white hover:border-[#D4AF37] transition-all shadow-sm"
                         >
                            <social.icon size={22} />

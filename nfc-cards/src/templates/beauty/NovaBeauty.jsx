@@ -167,7 +167,7 @@ const NovaBeauty = ({ userData }) => {
                   { val: fictionalData.twitter, icon: FiTwitter, link: `https://twitter.com/${fictionalData.twitter}` }
                ].map((social, i) => social.val && (
                   <a
-                     key={i} href={social.link} target="_blank" rel="noopener noreferrer"
+                     key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"
                      className="w-10 h-10 rounded-full flex items-center justify-center text-[#7C3B2E] hover:bg-[#7C3B2E] hover:text-white transition-all"
                   >
                      <social.icon size={18} />

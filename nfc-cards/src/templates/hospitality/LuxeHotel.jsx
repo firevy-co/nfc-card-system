@@ -143,7 +143,7 @@ const LuxeHotel = ({ userData }) => {
         {/* CONTACT */}
         <div className="px-6 py-4 space-y-1">
           {website && (
-            <a href={website} target="_blank" rel="noopener noreferrer" className="flex gap-3 py-3 border-b border-white/10">
+            <a href={website || null} target="_blank" rel="noopener noreferrer" className="flex gap-3 py-3 border-b border-white/10">
               <FiIcons.FiGlobe size={18} />
               <span className="text-sm">{website}</span>
             </a>
@@ -188,10 +188,10 @@ const LuxeHotel = ({ userData }) => {
 
         {/* SOCIAL */}
         <div className="flex justify-center gap-5 py-4 border-t border-b border-white/10">
-          {linkedin && <a href={linkedin}><FiIcons.FiLinkedin /></a>}
-          {instagram && <a href={instagram}><FiIcons.FiInstagram /></a>}
-          {facebook && <a href={facebook}><FiIcons.FiFacebook /></a>}
-          {twitter && <a href={twitter}><FiIcons.FiTwitter /></a>}
+          {linkedin && <a href={linkedin || null}><FiIcons.FiLinkedin /></a>}
+          {instagram && <a href={instagram || null}><FiIcons.FiInstagram /></a>}
+          {facebook && <a href={facebook || null}><FiIcons.FiFacebook /></a>}
+          {twitter && <a href={twitter || null}><FiIcons.FiTwitter /></a>}
         </div>
 
         {/* ACTION BUTTONS */}
@@ -199,7 +199,7 @@ const LuxeHotel = ({ userData }) => {
 
           {website && (
             <a
-              href={website}
+              href={website || null}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full flex justify-center py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:scale-105 transition"

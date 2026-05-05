@@ -10,7 +10,7 @@ const InfoRow = ({ icon: Icon, label, value, href }) => {
 
    return (
       <Tag
-         href={href}
+         href={href || null}
          target={href ? "_blank" : undefined}
          rel={href ? "noopener noreferrer" : undefined}
          className="flex items-start gap-3 bg-white/90 backdrop-blur-sm border border-teal-100 rounded-2xl p-4 hover:shadow-md transition-all"
@@ -153,7 +153,7 @@ const HospitalCard = ({ userData }) => {
                      icon={FiIcons.FiGlobe}
                      label="Website"
                      value={website}
-                     href={website}
+                     href={website || null}
                   />
 
                   <InfoRow
@@ -210,7 +210,7 @@ const HospitalCard = ({ userData }) => {
                <div className="mt-5 flex justify-center gap-3">
                   {linkedin && (
                      <a
-                        href={linkedin}
+                        href={linkedin || null}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-11 h-11 rounded-2xl bg-white border border-gray-200 flex items-center justify-center"
@@ -221,7 +221,7 @@ const HospitalCard = ({ userData }) => {
 
                   {instagram && (
                      <a
-                        href={instagram}
+                        href={instagram || null}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-11 h-11 rounded-2xl bg-white border border-gray-200 flex items-center justify-center"
@@ -235,7 +235,7 @@ const HospitalCard = ({ userData }) => {
                <div className="mt-5 space-y-3">
                   {website && (
                      <a
-                        href={website}
+                        href={website || null}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block w-full bg-teal-600 text-white text-center py-3 rounded-2xl font-bold"

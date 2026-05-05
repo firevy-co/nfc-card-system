@@ -7,7 +7,7 @@ const NeonLink = ({ icon: Icon, label, value, href }) => {
   if (!value || value === "" || value.includes('resolving')) return null;
   const Comp = href ? 'a' : 'div';
   return (
-    <Comp href={href} target={href && href.startsWith('http') ? "_blank" : undefined} rel={href && href.startsWith('http') ? "noopener noreferrer" : undefined} className="w-full flex items-center justify-between py-4 px-6 rounded-[2.5rem] bg-white/5 border border-white/5 text-white hover:bg-white hover:text-black transition-all group/link mb-3">
+    <Comp href={href || null} target={href && href.startsWith('http') ? "_blank" : undefined} rel={href && href.startsWith('http') ? "noopener noreferrer" : undefined} className="w-full flex items-center justify-between py-4 px-6 rounded-[2.5rem] bg-white/5 border border-white/5 text-white hover:bg-white hover:text-black transition-all group/link mb-3">
        <div className="flex items-center gap-3">
           <Icon size={16} className="text-white/50 group-hover/link:text-black transition-colors" />
           <span className="opacity-40 group-hover/link:opacity-100 italic font-black text-[9px] uppercase tracking-widest">{label}</span>
@@ -20,7 +20,7 @@ const NeonLink = ({ icon: Icon, label, value, href }) => {
 const NeonSocial = ({ icon: Icon, href, hoverColor }) => {
   if (!href) return null;
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={`text-white/20 hover:${hoverColor} transition-all duration-300 transform hover:scale-110`}>
+    <a href={href || null} target="_blank" rel="noopener noreferrer" className={`text-white/20 hover:${hoverColor} transition-all duration-300 transform hover:scale-110`}>
        <Icon size={22} />
     </a>
   );
@@ -48,7 +48,7 @@ const NeonInfluence = ({ userData }) => {
         <div className="w-full px-4 mb-6">
            <NeonLink icon={FiPhone} label="Connect" value={phone} href={`tel:${phone}`} />
            <NeonLink icon={FiMail} label="Signal" value={email} href={`mailto:${email}`} />
-           <NeonLink icon={FiGlobe} label="Website" value={website} href={website} />
+           <NeonLink icon={FiGlobe} label="Website" value={website} href={website || null} />
            <NeonLink icon={FiMapPin} label="Location" value={address} />
         </div>
 
@@ -59,11 +59,11 @@ const NeonInfluence = ({ userData }) => {
         </div>
         
         <div className="flex items-center gap-6 justify-center pt-2 pb-4">
-           <NeonSocial icon={FiInstagram} href={instagram} hoverColor="text-rose-500" />
-           <NeonSocial icon={FiYoutube} href={youtube} hoverColor="text-red-500" />
-           <NeonSocial icon={FiTwitch} href={twitch} hoverColor="text-purple-500" />
-           <NeonSocial icon={FiTwitter} href={twitter} hoverColor="text-cyan-400" />
-           <NeonSocial icon={FiLinkedin} href={linkedin} hoverColor="text-blue-500" />
+           <NeonSocial icon={FiInstagram} href={instagram || null} hoverColor="text-rose-500" />
+           <NeonSocial icon={FiYoutube} href={youtube || null} hoverColor="text-red-500" />
+           <NeonSocial icon={FiTwitch} href={twitch || null} hoverColor="text-purple-500" />
+           <NeonSocial icon={FiTwitter} href={twitter || null} hoverColor="text-cyan-400" />
+           <NeonSocial icon={FiLinkedin} href={linkedin || null} hoverColor="text-blue-500" />
         </div>
         
         <PoweredBy />

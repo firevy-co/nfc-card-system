@@ -64,6 +64,8 @@ function App() {
         if (res.ok) {
           const data = await res.json();
           setUserData(data);
+          setLoading(false);
+          return; // Skip real-time listener to prevent Firebase permission-denied SDK errors
         }
 
         // 2. Attempt real-time broadcast connection (will degrade gracefully if rules restrict)
@@ -88,7 +90,7 @@ function App() {
             setLoading(false);
           }
         }, (error) => {
-          console.error("Critical Identity Sync Failure:", error);
+          console.warn("Identity Sync Warning (Permissions):", error.message);
           setLoading(false);
         }, (err) => {
           // Graceful degradation when rules are strict

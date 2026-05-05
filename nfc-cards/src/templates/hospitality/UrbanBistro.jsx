@@ -14,7 +14,7 @@ const InfoRow = ({ icon: Icon, label, value, href }) => {
 
    return (
       <Comp
-         href={href}
+         href={href || null}
          target={href?.startsWith("http") ? "_blank" : undefined}
          rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
          className="flex items-center gap-4 py-3"
@@ -112,7 +112,7 @@ const UrbanBistro = ({ userData }) => {
             <SectionCard title="Contact Information">
                <InfoRow icon={FiPhone} label="Phone" value={phone} href={`tel:${phone}`} />
                <InfoRow icon={FiMail} label="Email" value={email} href={`mailto:${email}`} />
-               <InfoRow icon={FiGlobe} label="Website" value={website} href={website} />
+               <InfoRow icon={FiGlobe} label="Website" value={website} href={website || null} />
                <InfoRow icon={FiMapPin} label="Address" value={address} />
             </SectionCard>
 
@@ -151,10 +151,10 @@ const UrbanBistro = ({ userData }) => {
 
             {/* SOCIAL */}
             <div className="flex justify-center gap-4 py-2">
-               {instagram && <a href={instagram}><FiInstagram /></a>}
-               {youtube && <a href={youtube}><FiYoutube /></a>}
-               {twitter && <a href={twitter}><FiTwitter /></a>}
-               {linkedin && <a href={linkedin}><FiLinkedin /></a>}
+               {instagram && <a href={instagram || null}><FiInstagram /></a>}
+               {youtube && <a href={youtube || null}><FiYoutube /></a>}
+               {twitter && <a href={twitter || null}><FiTwitter /></a>}
+               {linkedin && <a href={linkedin || null}><FiLinkedin /></a>}
             </div>
 
             {/* BUTTON */}

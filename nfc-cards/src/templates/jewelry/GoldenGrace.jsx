@@ -148,7 +148,7 @@ const GoldenGrace = ({ userData }) => {
           {/* CTA Buttons */}
           {website && (
             <a
-              href={website}
+              href={website || null}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-8 h-16 bg-[#d4af37] text-black uppercase tracking-[0.3em] text-sm font-semibold flex items-center justify-center gap-3"

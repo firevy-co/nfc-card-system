@@ -146,7 +146,7 @@ const SiliconStream = ({ userData = {} }) => {
             <FiArrowUpRight className="ml-auto text-slate-400" />
           </a>
 
-          <a href={website} target="_blank" rel="noreferrer" className="cardItem">
+          <a href={website || null} target="_blank" rel="noreferrer" className="cardItem">
             <FiGlobe className="text-blue-600" />
             <span>Visit Website</span>
             <FiArrowUpRight className="ml-auto text-slate-400" />
@@ -247,7 +247,7 @@ const SiliconStream = ({ userData = {} }) => {
           </button>
 
           <a
-            href={website}
+            href={website || null}
             target="_blank"
             rel="noreferrer"
             className="h-12 rounded-2xl border border-blue-600 text-blue-600 font-bold flex items-center justify-center hover:bg-blue-600 hover:text-white transition"

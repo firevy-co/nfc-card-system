@@ -132,7 +132,7 @@ const UrbanDwell = ({ userData }) => {
 
                {website && (
                   <a
-                     href={website}
+                     href={website || null}
                      target="_blank"
                      rel="noopener noreferrer"
                      className="flex items-center gap-4 bg-slate-900 border border-slate-800 rounded-2xl px-5 py-4"
@@ -205,25 +205,25 @@ const UrbanDwell = ({ userData }) => {
             {/* SOCIAL */}
             <div className="flex flex-wrap gap-3 justify-center mt-8">
                {linkedin && (
-                  <a href={linkedin} className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800">
+                  <a href={linkedin || null} className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800">
                      <FiIcons.FiLinkedin />
                   </a>
                )}
 
                {instagram && (
-                  <a href={instagram} className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800">
+                  <a href={instagram || null} className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800">
                      <FiIcons.FiInstagram />
                   </a>
                )}
 
                {facebook && (
-                  <a href={facebook} className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800">
+                  <a href={facebook || null} className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800">
                      <FiIcons.FiFacebook />
                   </a>
                )}
 
                {twitter && (
-                  <a href={twitter} className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800">
+                  <a href={twitter || null} className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800">
                      <FiIcons.FiTwitter />
                   </a>
                )}

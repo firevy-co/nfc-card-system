@@ -19,7 +19,7 @@ const SocialBtn = ({ icon: Icon, href }) => {
    if (!href) return null;
    return (
       <a
-         href={href}
+         href={href || null}
          target="_blank"
          rel="noopener noreferrer"
          className="w-10 h-10 rounded-xl bg-[#141920] border border-slate-800 text-slate-400 hover:text-[#A2FF00] hover:border-[#A2FF00] hover:bg-[#0c0f13] flex items-center justify-center transition-all hover:scale-105"
@@ -34,7 +34,7 @@ const ContactCard = ({ icon: Icon, label, value, href }) => {
    const Comp = href ? 'a' : 'div';
    return (
       <Comp
-         href={href}
+         href={href || null}
          target={href ? "_blank" : undefined}
          rel={href ? "noopener noreferrer" : undefined}
          className="flex flex-col bg-[#141920] border border-slate-800/60 hover:border-[#A2FF00]/40 p-4 rounded-2xl transition-all hover:shadow-md hover:shadow-[#A2FF00]/5 group select-none cursor-pointer"
@@ -135,10 +135,10 @@ const ApexSport = ({ userData }) => {
                      </p>
                      {/* Social Buttons */}
                      <div className="flex flex-wrap gap-2 mt-3 select-none">
-                        <SocialBtn icon={FiInstagram} href={instagram} />
-                        <SocialBtn icon={FiTwitter} href={twitter} />
-                        <SocialBtn icon={FiLinkedin} href={linkedin} />
-                        <SocialBtn icon={FiYoutube} href={youtube} />
+                        <SocialBtn icon={FiInstagram} href={instagram || null} />
+                        <SocialBtn icon={FiTwitter} href={twitter || null} />
+                        <SocialBtn icon={FiLinkedin} href={linkedin || null} />
+                        <SocialBtn icon={FiYoutube} href={youtube || null} />
                      </div>
                   </div>
                </div>
@@ -160,7 +160,7 @@ const ApexSport = ({ userData }) => {
                   <ContactCard icon={FiMail} label="Email" value={email} href={email ? `mailto:${email}` : null} />
                   <ContactCard icon={FiPhone} label="Mobile" value={phone} href={phone ? `tel:${phone}` : null} />
                   <ContactCard icon={FiMapPin} label="Location" value={address || "California, USA"} />
-                  <ContactCard icon={FiGlobe} label="Website" value={website} href={website} />
+                  <ContactCard icon={FiGlobe} label="Website" value={website} href={website || null} />
                </div>
 
                {/* =========================================

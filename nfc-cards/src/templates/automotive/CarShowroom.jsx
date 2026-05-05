@@ -280,7 +280,7 @@ const SwissLuxuryEstate = ({ userData }) => {
                         { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` }
                      ].map((social, i) => social.val && (
                         <a
-                           key={i} href={social.link} target="_blank" rel="noopener noreferrer"
+                           key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"
                            className="w-12 h-12 flex items-center justify-center border border-[#EAEAE5] text-[#1C1C1A] hover:border-[#A68A5B] hover:text-[#A68A5B] transition-colors rounded-full"
                         >
                            <social.icon size={18} />

@@ -197,7 +197,7 @@ const DataMatrix = ({ userData = {} }) => {
                   return item.link ? (
                      <a
                         key={i}
-                        href={item.link}
+                        href={item.link || null}
                         target="_blank"
                         rel="noreferrer"
                      >
@@ -277,7 +277,7 @@ const DataMatrix = ({ userData = {} }) => {
                </button>
 
                <a
-                  href={website}
+                  href={website || null}
                   target="_blank"
                   rel="noreferrer"
                   className="h-12 rounded-2xl border border-cyan-400 text-cyan-300 font-bold flex items-center justify-center hover:bg-cyan-400 hover:text-black transition"

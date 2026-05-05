@@ -145,7 +145,7 @@ const ExpertTemplate = ({ userData }) => {
                      <span className="text-sm truncate">{email}</span>
                   </a>
 
-                  <a href={website} target="_blank" rel="noreferrer" className="flex items-center gap-3 bg-white/5 rounded-2xl px-4 py-4 text-white hover:bg-white/10 duration-300">
+                  <a href={website || null} target="_blank" rel="noreferrer" className="flex items-center gap-3 bg-white/5 rounded-2xl px-4 py-4 text-white hover:bg-white/10 duration-300">
                      <FiIcons.FiGlobe className="text-amber-400" />
                      <span className="text-sm truncate">{website}</span>
                   </a>
@@ -207,7 +207,7 @@ const ExpertTemplate = ({ userData }) => {
                {/* BUTTONS */}
                <div className="space-y-3 mt-8">
                   <a
-                     href={website}
+                     href={website || null}
                      target="_blank"
                      rel="noreferrer"
                      className="w-full bg-amber-500 text-black py-4 rounded-2xl flex items-center justify-center gap-2 font-black uppercase text-[11px]"
@@ -227,11 +227,11 @@ const ExpertTemplate = ({ userData }) => {
 
                {/* SOCIAL */}
                <div className="flex justify-center gap-2 flex-wrap mt-7">
-                  {instagram && <a href={instagram} className="p-3 bg-white/5 rounded-xl text-white hover:bg-white/10"><FiIcons.FiInstagram /></a>}
-                  {linkedin && <a href={linkedin} className="p-3 bg-white/5 rounded-xl text-white hover:bg-white/10"><FiIcons.FiLinkedin /></a>}
-                  {facebook && <a href={facebook} className="p-3 bg-white/5 rounded-xl text-white hover:bg-white/10"><FiIcons.FiFacebook /></a>}
-                  {twitter && <a href={twitter} className="p-3 bg-white/5 rounded-xl text-white hover:bg-white/10"><FiIcons.FiTwitter /></a>}
-                  {youtube && <a href={youtube} className="p-3 bg-white/5 rounded-xl text-white hover:bg-white/10"><FiIcons.FiYoutube /></a>}
+                  {instagram && <a href={instagram || null} className="p-3 bg-white/5 rounded-xl text-white hover:bg-white/10"><FiIcons.FiInstagram /></a>}
+                  {linkedin && <a href={linkedin || null} className="p-3 bg-white/5 rounded-xl text-white hover:bg-white/10"><FiIcons.FiLinkedin /></a>}
+                  {facebook && <a href={facebook || null} className="p-3 bg-white/5 rounded-xl text-white hover:bg-white/10"><FiIcons.FiFacebook /></a>}
+                  {twitter && <a href={twitter || null} className="p-3 bg-white/5 rounded-xl text-white hover:bg-white/10"><FiIcons.FiTwitter /></a>}
+                  {youtube && <a href={youtube || null} className="p-3 bg-white/5 rounded-xl text-white hover:bg-white/10"><FiIcons.FiYoutube /></a>}
                </div>
 
                <div className="mt-8">

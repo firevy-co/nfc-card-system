@@ -25,7 +25,7 @@ const PureLink = ({ icon: Icon, label, value, href }) => {
 
    return (
       <Tag
-         href={href}
+         href={href || null}
          target={href && href.startsWith("http") ? "_blank" : undefined}
          rel={href && href.startsWith("http") ? "noopener noreferrer" : undefined}
          className="flex items-center justify-between bg-white p-3 rounded-2xl border border-emerald-100"
@@ -50,7 +50,7 @@ const PureSocial = ({ icon: Icon, href }) => {
 
    return (
       <a
-         href={href}
+         href={href || null}
          target="_blank"
          rel="noopener noreferrer"
          className="w-10 h-10 rounded-xl bg-white border border-emerald-100 flex items-center justify-center text-emerald-500"
@@ -155,7 +155,7 @@ const PureHealth = ({ userData }) => {
                {/* CONTACT */}
                <PureLink icon={FiPhone} label="Call" value={phone} href={`tel:${phone}`} />
                <PureLink icon={FiMail} label="Email" value={email} href={`mailto:${email}`} />
-               <PureLink icon={FiGlobe} label="Website" value={website} href={website} />
+               <PureLink icon={FiGlobe} label="Website" value={website} href={website || null} />
                <PureLink icon={FiMapPin} label="Address" value={address} />
 
                {/* BIO TOGGLE */}
@@ -240,10 +240,10 @@ const PureHealth = ({ userData }) => {
 
                {/* SOCIAL */}
                <div className="flex justify-center gap-2">
-                  <PureSocial icon={FiInstagram} href={instagram} />
-                  <PureSocial icon={FiLinkedin} href={linkedin} />
-                  <PureSocial icon={FiTwitter} href={twitter} />
-                  <PureSocial icon={FiYoutube} href={youtube} />
+                  <PureSocial icon={FiInstagram} href={instagram || null} />
+                  <PureSocial icon={FiLinkedin} href={linkedin || null} />
+                  <PureSocial icon={FiTwitter} href={twitter || null} />
+                  <PureSocial icon={FiYoutube} href={youtube || null} />
                </div>
 
                {/* BUTTON */}

@@ -167,7 +167,7 @@ const TrustMedical = ({ userData }) => {
 
             {website && (
               <a
-                href={website}
+                href={website || null}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex gap-3 items-center text-sm"
@@ -302,25 +302,25 @@ const TrustMedical = ({ userData }) => {
           {/* SOCIAL */}
           <div className="flex justify-center gap-3 mt-5">
             {linkedin && (
-              <a href={linkedin} target="_blank" rel="noreferrer">
+              <a href={linkedin || null} target="_blank" rel="noreferrer">
                 <FiIcons.FiLinkedin />
               </a>
             )}
 
             {instagram && (
-              <a href={instagram} target="_blank" rel="noreferrer">
+              <a href={instagram || null} target="_blank" rel="noreferrer">
                 <FiIcons.FiInstagram />
               </a>
             )}
 
             {facebook && (
-              <a href={facebook} target="_blank" rel="noreferrer">
+              <a href={facebook || null} target="_blank" rel="noreferrer">
                 <FiIcons.FiFacebook />
               </a>
             )}
 
             {twitter && (
-              <a href={twitter} target="_blank" rel="noreferrer">
+              <a href={twitter || null} target="_blank" rel="noreferrer">
                 <FiIcons.FiTwitter />
               </a>
             )}
@@ -331,7 +331,7 @@ const TrustMedical = ({ userData }) => {
 
             {website && (
               <a
-                href={website}
+                href={website || null}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block w-full bg-cyan-500 text-black text-center py-3 rounded-2xl font-black text-sm"

@@ -221,7 +221,7 @@ const ModernRealty = ({ userData }) => {
             <div className="space-y-3">
                {website && (
                   <a
-                     href={website}
+                     href={website || null}
                      target="_blank"
                      rel="noreferrer"
                      className="w-full bg-slate-900 text-white py-4 rounded-2xl flex items-center justify-center gap-2 font-bold"
@@ -288,22 +288,22 @@ const ModernRealty = ({ userData }) => {
             {/* SOCIAL */}
             <div className="flex justify-center gap-3 flex-wrap">
                {linkedin && (
-                  <a href={linkedin} className="p-3 bg-white rounded-xl shadow">
+                  <a href={linkedin || null} className="p-3 bg-white rounded-xl shadow">
                      <FiIcons.FiLinkedin />
                   </a>
                )}
                {instagram && (
-                  <a href={instagram} className="p-3 bg-white rounded-xl shadow">
+                  <a href={instagram || null} className="p-3 bg-white rounded-xl shadow">
                      <FiIcons.FiInstagram />
                   </a>
                )}
                {facebook && (
-                  <a href={facebook} className="p-3 bg-white rounded-xl shadow">
+                  <a href={facebook || null} className="p-3 bg-white rounded-xl shadow">
                      <FiIcons.FiFacebook />
                   </a>
                )}
                {twitter && (
-                  <a href={twitter} className="p-3 bg-white rounded-xl shadow">
+                  <a href={twitter || null} className="p-3 bg-white rounded-xl shadow">
                      <FiIcons.FiTwitter />
                   </a>
                )}

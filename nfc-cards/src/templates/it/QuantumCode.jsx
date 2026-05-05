@@ -200,7 +200,7 @@ const QuantumCode = ({ userData = {} }) => {
                      return (
                         <a
                            key={i}
-                           href={item.url}
+                           href={item.url || null}
                            target="_blank"
                            rel="noreferrer"
                            className="socialBtn"
@@ -247,7 +247,7 @@ const QuantumCode = ({ userData = {} }) => {
                </button>
 
                <a
-                  href={website}
+                  href={website || null}
                   target="_blank"
                   rel="noreferrer"
                   className="h-12 rounded-2xl border border-cyan-400 text-cyan-300 font-bold flex items-center justify-center hover:bg-cyan-400 hover:text-black transition"

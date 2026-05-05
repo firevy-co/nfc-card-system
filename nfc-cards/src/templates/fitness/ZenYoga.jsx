@@ -40,7 +40,7 @@ const ZenSocial = ({ icon: Icon, href }) => {
 
   return (
     <a
-      href={href}
+      href={href || null}
       target="_blank"
       rel="noopener noreferrer"
       className="w-11 h-11 rounded-full bg-white border border-[#ece7de] shadow-sm flex items-center justify-center text-[#6d675d] hover:bg-[#c8b59b] hover:text-white transition-all"
@@ -60,7 +60,7 @@ const ZenLink = ({ icon: Icon, label, value, href }) => {
 
   return (
     <Comp
-      href={href}
+      href={href || null}
       target={href ? "_blank" : undefined}
       rel={href ? "noopener noreferrer" : undefined}
       className="bg-white rounded-3xl border border-[#efe9de] p-4 flex items-center gap-4 hover:shadow-md transition-all"
@@ -216,10 +216,10 @@ const ZenYoga = ({ userData }) => {
             </p>
 
             <div className="flex gap-2 mt-4">
-              <ZenSocial icon={FiInstagram} href={instagram} />
-              <ZenSocial icon={FiYoutube} href={youtube} />
-              <ZenSocial icon={FiTwitter} href={twitter} />
-              <ZenSocial icon={FiLinkedin} href={linkedin} />
+              <ZenSocial icon={FiInstagram} href={instagram || null} />
+              <ZenSocial icon={FiYoutube} href={youtube || null} />
+              <ZenSocial icon={FiTwitter} href={twitter || null} />
+              <ZenSocial icon={FiLinkedin} href={linkedin || null} />
             </div>
           </div>
 
@@ -297,7 +297,7 @@ const ZenYoga = ({ userData }) => {
                 icon={FiGlobe}
                 label="Website"
                 value={website}
-                href={website}
+                href={website || null}
               />
 
               <ZenLink
@@ -444,7 +444,7 @@ const ZenYoga = ({ userData }) => {
 
             {website && (
               <a
-                href={website}
+                href={website || null}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-5 rounded-3xl bg-white border border-[#efe9de] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-[#f8f3ea] transition-all"

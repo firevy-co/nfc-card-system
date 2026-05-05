@@ -188,7 +188,7 @@ const VelvetSkin = ({ userData }) => {
                      { icon: FiMapPin, label: "Map", link: `https://maps.google.com/?q=${fictionalData.address}` },
                      { icon: FiGlobe, label: "Web", link: `https://${fictionalData.website}` }
                   ].map((action, i) => (
-                     <a key={i} href={action.link} target="_blank" rel="noopener noreferrer" className="bg-white border border-[#E8E8E0] rounded-2xl p-4 flex flex-col items-center justify-center gap-2 hover:border-[#8DA399] hover:shadow-md transition-all group">
+                     <a key={i} href={action.link || null} target="_blank" rel="noopener noreferrer" className="bg-white border border-[#E8E8E0] rounded-2xl p-4 flex flex-col items-center justify-center gap-2 hover:border-[#8DA399] hover:shadow-md transition-all group">
                         <action.icon size={20} className="text-[#8DA399] group-hover:text-[#2C3D33] transition-colors" />
                         <span className="text-[10px] font-bold text-[#2C3D33]">{action.label}</span>
                      </a>
@@ -360,7 +360,7 @@ const VelvetSkin = ({ userData }) => {
                         { val: fictionalData.twitter, icon: FiTwitter, link: `https://twitter.com/${fictionalData.twitter}` }
                      ].map((social, i) => social.val && (
                         <a
-                           key={i} href={social.link} target="_blank" rel="noopener noreferrer"
+                           key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"
                            className="w-12 h-12 bg-white border border-[#E8E8E0] rounded-full flex items-center justify-center text-[#8DA399] hover:bg-[#8DA399] hover:text-white hover:border-[#8DA399] transition-all shadow-sm"
                         >
                            <social.icon size={18} />

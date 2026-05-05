@@ -189,7 +189,7 @@ const GrandEstate = ({ userData }) => {
                </a>
 
                <a
-                  href={website}
+                  href={website || null}
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center gap-4 bg-indigo-900/30 border border-indigo-800 rounded-2xl p-4"
@@ -207,22 +207,22 @@ const GrandEstate = ({ userData }) => {
             {/* SOCIAL */}
             <div className="flex justify-center gap-3 flex-wrap">
                {linkedin && (
-                  <a href={linkedin} className="p-3 rounded-xl bg-indigo-900/40 text-indigo-200">
+                  <a href={linkedin || null} className="p-3 rounded-xl bg-indigo-900/40 text-indigo-200">
                      <FiIcons.FiLinkedin />
                   </a>
                )}
                {instagram && (
-                  <a href={instagram} className="p-3 rounded-xl bg-indigo-900/40 text-indigo-200">
+                  <a href={instagram || null} className="p-3 rounded-xl bg-indigo-900/40 text-indigo-200">
                      <FiIcons.FiInstagram />
                   </a>
                )}
                {facebook && (
-                  <a href={facebook} className="p-3 rounded-xl bg-indigo-900/40 text-indigo-200">
+                  <a href={facebook || null} className="p-3 rounded-xl bg-indigo-900/40 text-indigo-200">
                      <FiIcons.FiFacebook />
                   </a>
                )}
                {twitter && (
-                  <a href={twitter} className="p-3 rounded-xl bg-indigo-900/40 text-indigo-200">
+                  <a href={twitter || null} className="p-3 rounded-xl bg-indigo-900/40 text-indigo-200">
                      <FiIcons.FiTwitter />
                   </a>
                )}

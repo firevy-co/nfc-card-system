@@ -322,7 +322,7 @@ const BoutiqueStylist = ({ userData }) => {
                         { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` }
                      ].map((social, i) => social.val && (
                         <a
-                           key={i} href={social.link} target="_blank" rel="noopener noreferrer"
+                           key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"
                            className="w-14 h-14 flex items-center justify-center bg-white/70 backdrop-blur-xl border border-white/50 rounded-full text-[#C49B8D] hover:bg-white hover:text-[#4A3B35] transition-all shadow-[0_4px_15px_rgba(230,190,175,0.1)] hover:-translate-y-1"
                         >
                            <social.icon size={22} />

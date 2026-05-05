@@ -51,7 +51,7 @@ const SocialBtn = ({ icon: Icon, href }) => {
    if (!href) return null;
    return (
       <a
-         href={href}
+         href={href || null}
          target="_blank"
          rel="noopener noreferrer"
          className="w-11 h-11 rounded-2xl bg-white shadow-sm border border-slate-200 flex items-center justify-center text-slate-700 hover:bg-cyan-500 hover:text-white hover:border-cyan-500 transition-all"
@@ -70,7 +70,7 @@ const InfoCard = ({ icon: Icon, label, value, href }) => {
 
    return (
       <Comp
-         href={href}
+         href={href || null}
          target={href ? "_blank" : undefined}
          rel={href ? "noopener noreferrer" : undefined}
          className="bg-white rounded-3xl border border-slate-200 p-4 flex items-center gap-4 hover:shadow-md transition-all"
@@ -240,10 +240,10 @@ const IronForge = ({ userData }) => {
                   </p>
 
                   <div className="flex gap-2 mt-4">
-                     <SocialBtn icon={FiInstagram} href={instagram} />
-                     <SocialBtn icon={FiYoutube} href={youtube} />
-                     <SocialBtn icon={FiTwitter} href={twitter} />
-                     <SocialBtn icon={FiLinkedin} href={linkedin} />
+                     <SocialBtn icon={FiInstagram} href={instagram || null} />
+                     <SocialBtn icon={FiYoutube} href={youtube || null} />
+                     <SocialBtn icon={FiTwitter} href={twitter || null} />
+                     <SocialBtn icon={FiLinkedin} href={linkedin || null} />
                   </div>
                </div>
 
@@ -303,7 +303,7 @@ const IronForge = ({ userData }) => {
                         icon={FiGlobe}
                         label="Website"
                         value={website}
-                        href={website}
+                        href={website || null}
                      />
 
                      <InfoCard
@@ -443,7 +443,7 @@ const IronForge = ({ userData }) => {
 
                   {website && (
                      <a
-                        href={website}
+                        href={website || null}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full py-5 bg-white border border-slate-200 rounded-3xl font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-slate-100 transition-all"

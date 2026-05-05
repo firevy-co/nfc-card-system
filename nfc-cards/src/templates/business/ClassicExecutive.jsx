@@ -325,7 +325,7 @@ const ClassicExecutive = ({ userData }) => {
                            { val: fictionalData.twitter, icon: FaTwitter, link: `https://twitter.com/${fictionalData.twitter}` }
                         ].map((social, i) => social.val && (
                            <a
-                              key={i} href={social.link} target="_blank" rel="noopener noreferrer"
+                              key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"
                               className="w-12 h-12 bg-white border border-slate-300 rounded-xl flex items-center justify-center text-slate-600 hover:bg-[#0F172A] hover:text-white hover:border-[#0F172A] transition-all shadow-[2px_2px_0_0_#cbd5e1] hover:shadow-[4px_4px_0_0_#06B6D4] hover:-translate-y-1"
                            >
                               <social.icon size={18} />

@@ -46,7 +46,7 @@ const DiamondElite = ({ userData }) => {
 
   const ActionCard = ({ icon: Icon, title, subtitle, url }) => (
     <a
-      href={url}
+      href={url || null}
       target="_blank"
       rel="noopener noreferrer"
       className="w-full bg-white/80 backdrop-blur-xl border border-[#eadfca] rounded-2xl p-4 flex items-center gap-4 hover:shadow-xl transition-all"
@@ -236,7 +236,7 @@ const DiamondElite = ({ userData }) => {
               ].map((item, i) => (
                 <a
                   key={i}
-                  href={item.link}
+                  href={item.link || null}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-11 h-11 rounded-full bg-[#faf6ef] flex items-center justify-center text-[#b68d40] hover:bg-[#b68d40] hover:text-white transition"

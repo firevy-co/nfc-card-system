@@ -325,7 +325,7 @@ const CorporateGlass = ({ userData }) => {
                         { val: fictionalData.github, icon: FaGithub, link: `https://github.com/${fictionalData.github}` }
                      ].map((social, i) => social.val && (
                         <a
-                           key={i} href={social.link} target="_blank" rel="noopener noreferrer"
+                           key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"
                            className="w-14 h-14 bg-white border-2 border-black flex items-center justify-center text-black hover:bg-blue-700 hover:text-white hover:border-blue-700 transition-all shadow-[4px_4px_0_0_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
                         >
                            <social.icon size={20} />

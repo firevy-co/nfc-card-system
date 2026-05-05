@@ -132,7 +132,7 @@ const TaskGrid = ({ userData }) => {
                   </a>
 
                   <a
-                     href={website}
+                     href={website || null}
                      target="_blank"
                      rel="noreferrer"
                      className="flex items-center gap-3 bg-slate-50 rounded-2xl px-4 py-4"
@@ -169,7 +169,7 @@ const TaskGrid = ({ userData }) => {
                {/* BUTTONS */}
                <div className="space-y-2 mt-6 px-2">
                   <a
-                     href={website}
+                     href={website || null}
                      target="_blank"
                      rel="noreferrer"
                      className="w-full bg-slate-900 text-white py-4 rounded-2xl flex items-center justify-center gap-2 font-black text-[11px] uppercase"
@@ -201,27 +201,27 @@ const TaskGrid = ({ userData }) => {
                {/* SOCIAL */}
                <div className="flex justify-center gap-2 flex-wrap mt-6 px-2">
                   {instagram && (
-                     <a href={instagram} className="p-3 bg-slate-100 rounded-xl">
+                     <a href={instagram || null} className="p-3 bg-slate-100 rounded-xl">
                         <FiInstagram />
                      </a>
                   )}
                   {linkedin && (
-                     <a href={linkedin} className="p-3 bg-slate-100 rounded-xl">
+                     <a href={linkedin || null} className="p-3 bg-slate-100 rounded-xl">
                         <FiLinkedin />
                      </a>
                   )}
                   {facebook && (
-                     <a href={facebook} className="p-3 bg-slate-100 rounded-xl">
+                     <a href={facebook || null} className="p-3 bg-slate-100 rounded-xl">
                         <FiFacebook />
                      </a>
                   )}
                   {twitter && (
-                     <a href={twitter} className="p-3 bg-slate-100 rounded-xl">
+                     <a href={twitter || null} className="p-3 bg-slate-100 rounded-xl">
                         <FiTwitter />
                      </a>
                   )}
                   {youtube && (
-                     <a href={youtube} className="p-3 bg-slate-100 rounded-xl">
+                     <a href={youtube || null} className="p-3 bg-slate-100 rounded-xl">
                         <FiYoutube />
                      </a>
                   )}

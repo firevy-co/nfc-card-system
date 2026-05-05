@@ -27,7 +27,7 @@ const InfoCard = ({ icon: Icon, label, value, href }) => {
 
    return (
       <Tag
-         href={href}
+         href={href || null}
          target={href && href.startsWith("http") ? "_blank" : undefined}
          rel={href && href.startsWith("http") ? "noopener noreferrer" : undefined}
          className="flex items-center gap-4 bg-gray-100 hover:bg-gray-200 rounded-2xl p-4 transition-all duration-300"
@@ -51,7 +51,7 @@ const SocialIcon = ({ icon: Icon, href }) => {
 
    return (
       <a
-         href={href}
+         href={href || null}
          target="_blank"
          rel="noopener noreferrer"
          className="w-12 h-12 rounded-2xl bg-gray-100 hover:bg-gray-900 hover:text-white transition-all duration-300 flex items-center justify-center text-gray-700"
@@ -147,7 +147,7 @@ const NightConnect = ({ userData }) => {
                )}
 
                <InfoCard icon={FiMail} label="Email" value={email} href={`mailto:${email}`} />
-               <InfoCard icon={FiGlobe} label="Website" value={website} href={website} />
+               <InfoCard icon={FiGlobe} label="Website" value={website} href={website || null} />
                <InfoCard icon={FiMapPin} label="Location" value={address} />
             </div>
 
@@ -182,10 +182,10 @@ const NightConnect = ({ userData }) => {
                </h3>
 
                <div className="flex justify-center gap-3 flex-wrap">
-                  <SocialIcon icon={FiInstagram} href={instagram} />
-                  <SocialIcon icon={FiTwitter} href={twitter} />
-                  <SocialIcon icon={FiYoutube} href={youtube} />
-                  <SocialIcon icon={FiLinkedin} href={linkedin} />
+                  <SocialIcon icon={FiInstagram} href={instagram || null} />
+                  <SocialIcon icon={FiTwitter} href={twitter || null} />
+                  <SocialIcon icon={FiYoutube} href={youtube || null} />
+                  <SocialIcon icon={FiLinkedin} href={linkedin || null} />
                </div>
             </div>
 

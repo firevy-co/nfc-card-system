@@ -115,22 +115,22 @@ const GourmetRestaurant = ({ userData }) => {
 
             <div className="flex justify-center gap-5 mt-5">
                {facebook && (
-                  <a href={facebook} style={{ color: primary }}>
+                  <a href={facebook || null} style={{ color: primary }}>
                      <FiFacebook size={18} />
                   </a>
                )}
                {twitter && (
-                  <a href={twitter} style={{ color: primary }}>
+                  <a href={twitter || null} style={{ color: primary }}>
                      <FiTwitter size={18} />
                   </a>
                )}
                {linkedin && (
-                  <a href={linkedin} style={{ color: primary }}>
+                  <a href={linkedin || null} style={{ color: primary }}>
                      <FiLinkedin size={18} />
                   </a>
                )}
                {instagram && (
-                  <a href={instagram} style={{ color: primary }}>
+                  <a href={instagram || null} style={{ color: primary }}>
                      <FiInstagram size={18} />
                   </a>
                )}

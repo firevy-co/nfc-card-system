@@ -7,7 +7,7 @@ const VoxelLink = ({ icon: Icon, value, href }) => {
   if (!value || value === "" || value.includes('resolving')) return null;
   const Comp = href ? 'a' : 'div';
   return (
-    <Comp href={href} target={href && href.startsWith('http') ? "_blank" : undefined} rel={href && href.startsWith('http') ? "noopener noreferrer" : undefined} className="flex items-center gap-4 bg-white p-4 rounded-xl border-2 border-slate-900 hover:bg-slate-900 hover:text-white transition-all group/link shadow-[4px_4px_0px_#0f172a] hover:shadow-[0px_0px_0px_#0f172a] hover:translate-x-[4px] hover:translate-y-[4px]">
+    <Comp href={href || null} target={href && href.startsWith('http') ? "_blank" : undefined} rel={href && href.startsWith('http') ? "noopener noreferrer" : undefined} className="flex items-center gap-4 bg-white p-4 rounded-xl border-2 border-slate-900 hover:bg-slate-900 hover:text-white transition-all group/link shadow-[4px_4px_0px_#0f172a] hover:shadow-[0px_0px_0px_#0f172a] hover:translate-x-[4px] hover:translate-y-[4px]">
        <Icon size={18} className="text-slate-500 group-hover/link:text-white transition-colors" />
        <span className="text-sm font-bold truncate">{value}</span>
     </Comp>
@@ -17,7 +17,7 @@ const VoxelLink = ({ icon: Icon, value, href }) => {
 const VoxelSocial = ({ icon: Icon, href }) => {
   if (!href) return null;
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-12 h-12 bg-white border-2 border-slate-900 rounded-xl hover:bg-[#ff3d00] hover:text-white transition-all shadow-[4px_4px_0px_#0f172a] hover:shadow-[0px_0px_0px_#0f172a] hover:translate-x-[4px] hover:translate-y-[4px] text-slate-900">
+    <a href={href || null} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-12 h-12 bg-white border-2 border-slate-900 rounded-xl hover:bg-[#ff3d00] hover:text-white transition-all shadow-[4px_4px_0px_#0f172a] hover:shadow-[0px_0px_0px_#0f172a] hover:translate-x-[4px] hover:translate-y-[4px] text-slate-900">
        <Icon size={20} />
     </a>
   );
@@ -51,16 +51,16 @@ const VoxelArtist = ({ userData }) => {
         </div>
         
         <div className="flex flex-wrap gap-4 justify-center mb-8 relative z-10">
-           <VoxelSocial icon={FiInstagram} href={instagram} />
-           <VoxelSocial icon={FiYoutube} href={youtube} />
-           <VoxelSocial icon={FiTwitch} href={twitch} />
-           <VoxelSocial icon={FiTwitter} href={twitter} />
-           <VoxelSocial icon={FiLinkedin} href={linkedin} />
+           <VoxelSocial icon={FiInstagram} href={instagram || null} />
+           <VoxelSocial icon={FiYoutube} href={youtube || null} />
+           <VoxelSocial icon={FiTwitch} href={twitch || null} />
+           <VoxelSocial icon={FiTwitter} href={twitter || null} />
+           <VoxelSocial icon={FiLinkedin} href={linkedin || null} />
         </div>
         
         <div className="space-y-4 relative z-10">
            {website && (
-              <a href={website} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 w-full py-4 text-center bg-slate-900 text-white rounded-xl border-2 border-slate-900 font-black text-[11px] uppercase tracking-[0.2em] shadow-[5px_5px_0px_#0f172a] hover:shadow-[0px_0px_0px_#0f172a] hover:translate-x-[5px] hover:translate-y-[5px] transition-all">
+              <a href={website || null} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 w-full py-4 text-center bg-slate-900 text-white rounded-xl border-2 border-slate-900 font-black text-[11px] uppercase tracking-[0.2em] shadow-[5px_5px_0px_#0f172a] hover:shadow-[0px_0px_0px_#0f172a] hover:translate-x-[5px] hover:translate-y-[5px] transition-all">
                  <FiGlobe size={16} /> Launch Gallery
               </a>
            )}

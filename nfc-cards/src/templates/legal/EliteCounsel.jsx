@@ -180,7 +180,7 @@ const EliteCounsel = ({ userData }) => {
           <div className="pt-6 flex justify-center gap-3">
             {linkedin && (
               <a
-                href={linkedin}
+                href={linkedin || null}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-11 h-11 rounded-full bg-slate-100 flex items-center justify-center"
@@ -191,7 +191,7 @@ const EliteCounsel = ({ userData }) => {
 
             {instagram && (
               <a
-                href={instagram}
+                href={instagram || null}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-11 h-11 rounded-full bg-slate-100 flex items-center justify-center"
