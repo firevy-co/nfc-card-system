@@ -192,7 +192,7 @@ const DigitalCreator = ({ userData }) => {
          {/* ===========================
          MARQUEE STYLE
       =========================== */}
-         <style jsx>{`
+         <style dangerouslySetInnerHTML={{ __html: `
         .animate-marquee {
           display: inline-block;
           padding-left: 100%;
@@ -203,7 +203,7 @@ const DigitalCreator = ({ userData }) => {
           0% { transform: translateX(0); }
           100% { transform: translateX(-100%); }
         }
-      `}</style>
+      `}} />
 
       </div>
    );
