@@ -1,78 +1,251 @@
-import React from 'react';
-import { FiTriangle, FiPhone, FiMail, FiGlobe, FiZap, FiMapPin, FiInstagram, FiTwitter, FiYoutube, FiLinkedin, FiUserPlus } from 'react-icons/fi';
-import { downloadVCard } from '../common/StandardComponents';
+import React, { useState } from "react";
+import {
+   FiPhone,
+   FiMail,
+   FiGlobe,
+   FiMapPin,
+   FiInstagram,
+   FiTwitter,
+   FiYoutube,
+   FiLinkedin,
+   FiUserPlus,
+   FiActivity,
+   FiStar,
+   FiShield,
+   FiClock,
+   FiCheckCircle,
+   FiChevronLeft,
+   FiChevronRight,
+} from "react-icons/fi";
+import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
-const NightLink = ({ icon: Icon, label, value, href }) => {
-  if (!value || value === "" || value.includes('resolving')) return null;
-  const Comp = href ? 'a' : 'div';
-  return (
-    <Comp href={href} target={href && href.startsWith('http') ? "_blank" : undefined} rel={href && href.startsWith('http') ? "noopener noreferrer" : undefined} className="flex items-center justify-between border border-white/10 py-4 px-6 rounded-2xl font-black text-xs uppercase tracking-widest text-white hover:bg-white/10 transition-all group">
-       <div className="flex items-center gap-3 opacity-50 group-hover:opacity-100 transition-opacity">
-          <Icon size={16} />
-          <span>{label}</span>
-       </div>
-       <span className="truncate max-w-[150px] text-right">{value}</span>
-    </Comp>
-  );
+const InfoCard = ({ icon: Icon, label, value, href }) => {
+   if (!value) return null;
+
+   const Tag = href ? "a" : "div";
+
+   return (
+      <Tag
+         href={href}
+         target={href && href.startsWith("http") ? "_blank" : undefined}
+         rel={href && href.startsWith("http") ? "noopener noreferrer" : undefined}
+         className="flex items-center gap-4 bg-gray-100 hover:bg-gray-200 rounded-2xl p-4 transition-all duration-300"
+      >
+         <div className="w-11 h-11 rounded-xl bg-white shadow flex items-center justify-center">
+            <Icon className="text-gray-700" size={18} />
+         </div>
+
+         <div className="flex-1 min-w-0">
+            <p className="text-[10px] uppercase tracking-[3px] text-gray-400 font-bold">
+               {label}
+            </p>
+            <p className="text-sm font-semibold text-gray-800 truncate">{value}</p>
+         </div>
+      </Tag>
+   );
 };
 
-const NightSocial = ({ icon: Icon, href }) => {
-  if (!href) return null;
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center bg-indigo-600/10 text-indigo-400 hover:bg-indigo-600 hover:text-white rounded-xl transition-all shadow-lg">
-       <Icon size={20} />
-    </a>
-  );
+const SocialIcon = ({ icon: Icon, href }) => {
+   if (!href) return null;
+
+   return (
+      <a
+         href={href}
+         target="_blank"
+         rel="noopener noreferrer"
+         className="w-12 h-12 rounded-2xl bg-gray-100 hover:bg-gray-900 hover:text-white transition-all duration-300 flex items-center justify-center text-gray-700"
+      >
+         <Icon size={18} />
+      </a>
+   );
 };
 
 const NightConnect = ({ userData }) => {
-  const { displayName, email, phone, website, address, youtube, linkedin, twitter, instagram, logo } = userData || {};
-  
-  return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 font-['Inter',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
-      <div className="w-full max-w-sm bg-gradient-to-b from-indigo-900/20 to-transparent border border-white/5 rounded-[3rem] p-10 shadow-2xl relative overflow-hidden flex flex-col items-center">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl opacity-50 pointer-events-none" />
-        
-        <div className="w-24 h-24 rounded-[2rem] bg-indigo-600 flex items-center justify-center text-white mb-8 shadow-xl shadow-indigo-600/20 relative z-10 overflow-hidden border-2 border-indigo-500 group">
-           {logo ? (
-               <img src={logo} alt="Logo" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-           ) : (
-               <FiZap size={36} className="animate-pulse" />
-           )}
-        </div>
-        
-        <h1 className="text-3xl font-black text-white tracking-widest uppercase italic text-center leading-none mb-2">{displayName || 'Club Nexus'}</h1>
-        <p className="text-[10px] text-indigo-400 font-bold uppercase tracking-[0.4em] mb-8 text-center">Nightlife Portal</p>
-        
-        <div className="w-full space-y-3 mb-6 relative z-10">
-           {phone && (
-              <a href={`tel:${phone}`} className="flex items-center justify-between bg-white text-black py-4 px-6 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all shadow-lg">
-                 <div className="flex items-center gap-3 opacity-60">
-                    <FiPhone size={16} /> <span>Call</span>
-                 </div>
-                 <span>{phone}</span>
-              </a>
-           )}
-           <NightLink icon={FiMail} label="Direct" value={email} href={`mailto:${email}`} />
-           <NightLink icon={FiGlobe} label="Portal" value={website} href={website} />
-           <NightLink icon={FiMapPin} label="Venue" value={address} />
-        </div>
-        
-        <div className="flex flex-wrap gap-3 justify-center mb-8 relative z-10">
-           <NightSocial icon={FiInstagram} href={instagram} />
-           <NightSocial icon={FiTwitter} href={twitter} />
-           <NightSocial icon={FiYoutube} href={youtube} />
-           <NightSocial icon={FiLinkedin} href={linkedin} />
-        </div>
-        
-        <button onClick={() => downloadVCard(userData)} className="w-full flex items-center justify-center gap-3 py-5 rounded-[2rem] bg-indigo-600 text-white font-black text-xs uppercase tracking-[0.3em] hover:brightness-125 active:scale-95 transition-all shadow-xl shadow-indigo-600/30 relative z-10">
-           <FiUserPlus size={18} /> Save Contact
-        </button>
-        
-        <PoweredBy />
+   const {
+      displayName,
+      email,
+      phone,
+      website,
+      address,
+      youtube,
+      linkedin,
+      twitter,
+      instagram,
+      logo,
+   } = userData || {};
+
+   const reviews = [
+      {
+         name: "Rohan Shah",
+         text: "Excellent service and friendly staff. Very clean environment.",
+         rating: 5,
+      },
+      {
+         name: "Priya Patel",
+         text: "Doctors are highly professional and helpful.",
+         rating: 5,
+      },
+      {
+         name: "Amit Joshi",
+         text: "Quick response and premium facilities available.",
+         rating: 4,
+      },
+   ];
+
+   const [reviewIndex, setReviewIndex] = useState(0);
+
+   const nextReview = () =>
+      setReviewIndex((prev) => (prev + 1) % reviews.length);
+
+   const prevReview = () =>
+      setReviewIndex((prev) => (prev - 1 + reviews.length) % reviews.length);
+
+   return (
+      <div className="min-h-screen bg-gray-200 flex justify-center font-['Inter',sans-serif]">
+         <div className="w-full max-w-sm bg-white shadow-2xl overflow-hidden">
+
+            {/* HEADER */}
+            <div className="bg-gradient-to-br from-gray-900 to-gray-700 px-6 pt-10 pb-8 text-center relative">
+               <div className="absolute w-40 h-40 bg-white/10 rounded-full blur-3xl top-0 left-1/2 -translate-x-1/2 animate-pulse"></div>
+
+               <div className="relative z-10 w-24 h-24 mx-auto rounded-[2rem] bg-white shadow-xl overflow-hidden flex items-center justify-center mb-5">
+                  {logo ? (
+                     <img src={logo} alt="logo" className="w-full h-full object-cover" />
+                  ) : (
+                     <FiActivity className="text-gray-700" size={34} />
+                  )}
+               </div>
+
+               <h1 className="text-2xl font-black text-white uppercase tracking-[3px] relative z-10">
+                  {displayName || "Care Hospital"}
+               </h1>
+
+               <p className="text-xs text-gray-300 mt-2 tracking-[4px] uppercase relative z-10">
+                  Premium Healthcare
+               </p>
+            </div>
+
+            {/* CONTACT */}
+            <div className="p-5 space-y-3">
+               {phone && (
+                  <a
+                     href={`tel:${phone}`}
+                     className="flex items-center gap-4 bg-gray-900 text-white rounded-2xl px-4 py-4 hover:scale-[1.02] transition-all"
+                  >
+                     <div className="w-11 h-11 rounded-xl bg-white text-gray-900 flex items-center justify-center">
+                        <FiPhone size={18} />
+                     </div>
+
+                     <div>
+                        <p className="text-[10px] uppercase tracking-[3px] text-gray-300">
+                           Call
+                        </p>
+                        <p className="text-sm font-semibold">{phone}</p>
+                     </div>
+                  </a>
+               )}
+
+               <InfoCard icon={FiMail} label="Email" value={email} href={`mailto:${email}`} />
+               <InfoCard icon={FiGlobe} label="Website" value={website} href={website} />
+               <InfoCard icon={FiMapPin} label="Location" value={address} />
+            </div>
+
+            {/* FEATURES */}
+            <div className="px-5 pb-5">
+               <h3 className="text-xs font-bold text-gray-400 uppercase tracking-[3px] mb-4">
+                  Features
+               </h3>
+
+               <div className="grid grid-cols-2 gap-3">
+                  {[
+                     ["24/7 Service", FiClock],
+                     ["Trusted Staff", FiShield],
+                     ["Modern Equip.", FiCheckCircle],
+                     ["Top Rated", FiStar],
+                  ].map(([title, Icon], i) => (
+                     <div
+                        key={i}
+                        className="bg-gray-100 rounded-2xl p-4 text-center hover:shadow-lg transition-all"
+                     >
+                        <Icon className="mx-auto mb-2 text-gray-700" size={18} />
+                        <p className="text-xs font-semibold text-gray-700">{title}</p>
+                     </div>
+                  ))}
+               </div>
+            </div>
+
+            {/* SOCIAL */}
+            <div className="px-5 pb-5">
+               <h3 className="text-xs font-bold text-gray-400 uppercase tracking-[3px] mb-4">
+                  Social Media
+               </h3>
+
+               <div className="flex justify-center gap-3 flex-wrap">
+                  <SocialIcon icon={FiInstagram} href={instagram} />
+                  <SocialIcon icon={FiTwitter} href={twitter} />
+                  <SocialIcon icon={FiYoutube} href={youtube} />
+                  <SocialIcon icon={FiLinkedin} href={linkedin} />
+               </div>
+            </div>
+
+            {/* PATIENT REVIEW */}
+            <div className="px-5 pb-5">
+               <h3 className="text-xs font-bold text-gray-400 uppercase tracking-[3px] mb-4">
+                  Patient Reviews
+               </h3>
+
+               <div className="bg-gray-100 rounded-2xl p-5 relative">
+                  <div className="flex gap-1 mb-2">
+                     {[...Array(reviews[reviewIndex].rating)].map((_, i) => (
+                        <FiStar key={i} size={14} className="text-yellow-500 fill-yellow-500" />
+                     ))}
+                  </div>
+
+                  <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                     "{reviews[reviewIndex].text}"
+                  </p>
+
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-[2px]">
+                     {reviews[reviewIndex].name}
+                  </p>
+
+                  <div className="flex justify-between mt-4">
+                     <button
+                        onClick={prevReview}
+                        className="w-9 h-9 rounded-xl bg-white shadow flex items-center justify-center"
+                     >
+                        <FiChevronLeft />
+                     </button>
+
+                     <button
+                        onClick={nextReview}
+                        className="w-9 h-9 rounded-xl bg-white shadow flex items-center justify-center"
+                     >
+                        <FiChevronRight />
+                     </button>
+                  </div>
+               </div>
+            </div>
+
+            {/* BUTTON */}
+            <div className="px-5 pb-5">
+               <button
+                  onClick={() => downloadVCard(userData)}
+                  className="w-full bg-gray-900 hover:bg-black text-white rounded-2xl py-4 flex items-center justify-center gap-3 font-bold uppercase tracking-[3px] text-xs transition-all"
+               >
+                  <FiUserPlus size={18} />
+                  Save Contact
+               </button>
+            </div>
+
+            {/* FOOTER */}
+            <div className="px-5 pb-6">
+               <PoweredBy />
+            </div>
+         </div>
       </div>
-    </div>
-  );
+   );
 };
+
 export default NightConnect;

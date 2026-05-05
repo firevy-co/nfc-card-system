@@ -1,19 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-   FiCoffee,
-   FiMenu,
-   FiMapPin,
-   FiPhone,
    FiMail,
+   FiPhone,
+   FiMapPin,
    FiGlobe,
-   FiClock,
    FiCalendar,
+   FiClock,
+   FiFacebook,
+   FiTwitter,
    FiLinkedin,
    FiInstagram,
-   FiTwitter,
-   FiFacebook
+   FiCopy,
+   FiCheck,
+   FiHeart,
+   FiShield,
+   FiUsers,
+   FiPlusCircle,
 } from "react-icons/fi";
-import { downloadVCard } from '../common/StandardComponents';
+import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
 const GourmetRestaurant = ({ userData }) => {
@@ -27,88 +31,303 @@ const GourmetRestaurant = ({ userData }) => {
       linkedin,
       facebook,
       twitter,
-      logo
+      logo,
+      coverImage,
+      gallery,
+      designation,
+      bio,
    } = userData || {};
 
+   const [copied, setCopied] = useState(false);
+
+   const primary = "#0B2E4F";
+   const lightBg = "#F5F9FC";
+
+   const heroImage =
+      coverImage ||
+      "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=1200&q=80";
+
+   const profileImage =
+      logo ||
+      "https://images.unsplash.com/photo-1612277795421-9bc7706a4a41?auto=format&fit=crop&w=500&q=80";
+
+   const images = gallery || [
+      "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=800&q=80",
+      "https://images.pexels.com/photos/236380/pexels-photo-236380.jpeg?auto=compress&cs=tinysrgb&w=800",
+   ];
+
+   const copyLink = () => {
+      navigator.clipboard.writeText(
+         website || "https://vcard.com/city-care-hospital"
+      );
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+   };
+
    return (
-      <div className="min-h-screen bg-[#FDFCF8] flex justify-center items-start py-10 px-4 text-[#2C2C2C] font-['Mulish',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
-         <div className="w-full max-w-sm bg-white rounded-[3.5rem] shadow-2xl overflow-hidden border border-[#EDECE4] p-8 relative">
-            
-            {/* HERITAGE LOGO SECTION */}
-            <div className="flex flex-col items-center text-center mt-6">
-               <div className="w-24 h-24 border-[1.5px] border-[#D1B16B] rounded-3xl flex items-center justify-center mb-8 shadow-sm overflow-hidden p-1">
-                  {logo ? (
-                    <img src={logo} alt="Logo" className="w-full h-full object-cover rounded-[20px]" />
-                  ) : (
-                    <FiCoffee size={32} className="text-[#D1B16B]" />
-                  )}
-               </div>
+      <div
+         className="w-full min-h-screen font-['Mulish',sans-serif]"
+         style={{ backgroundColor: lightBg }}
+      >
+         {/* HERO SECTION */}
+         <div className="relative h-[320px] overflow-hidden">
+            <img
+               src={heroImage}
+               alt="Hospital"
+               className="w-full h-full object-cover"
+            />
 
-               <h1 className="text-3xl font-black text-[#1A1A1A] tracking-tighter capitalize leading-none mb-2">
-                  {displayName || "Bistro Luxe & Terrace"}
-               </h1>
+            <div className="absolute inset-0 bg-[#000]/45"></div>
 
-               <div className="flex items-center gap-2 text-[#D1B16B] rounded-full text-[10px] font-black capitalize tracking-[0.3em] mb-12">
-                  Fine Dining & Parisian Bistro
-               </div>
-            </div>
-
-            {/* QUICK ACTIONS GRID */}
-            <div className="grid grid-cols-2 gap-3 mb-10">
-               <a href={website ? website : '#'} target={website ? "_blank" : undefined} rel="noopener noreferrer" className="h-28 bg-[#FDFCF8] hover:bg-[#D1B16B] hover:text-white rounded-[2.5rem] border border-[#EDECE4] transition-all flex flex-col items-center justify-center gap-3 group active:scale-95">
-                  <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-[#D1B16B] transition-colors group-hover:bg-[#1A1A1A] group-hover:text-white">
-                     <FiMenu size={20} />
+            <div className="absolute bottom-0 left-0 w-full px-6 pb-6">
+               <div className="flex items-end gap-4">
+                  <div
+                     className="w-24 h-24 rounded-full bg-white p-1 shadow-xl"
+                     style={{ border: `3px solid ${primary}` }}
+                  >
+                     <img
+                        src={profileImage}
+                        alt="Hospital Logo"
+                        className="w-full h-full rounded-full object-cover"
+                     />
                   </div>
-                  <span className="text-[9px] font-black capitalize tracking-widest">Le Menu</span>
-               </a>
-               <a href={`mailto:${email}`} className="h-28 bg-[#FDFCF8] hover:bg-[#D1B16B] hover:text-white rounded-[2.5rem] border border-[#EDECE4] transition-all flex flex-col items-center justify-center gap-3 group active:scale-95">
-                  <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-[#D1B16B] transition-colors group-hover:bg-[#1A1A1A] group-hover:text-white">
-                     <FiCalendar size={20} />
-                  </div>
-                  <span className="text-[9px] font-black capitalize tracking-widest">Bookings</span>
-               </a>
-            </div>
 
-            {/* OPENING HOURS */}
-            <div className="bg-[#1A1A1A] rounded-[2.5rem] p-8 mb-10 text-white relative overflow-hidden group">
-               <div className="absolute top-[-20%] right-[-10%] w-32 h-32 bg-[#D1B16B]/10 rounded-full blur-3xl transition-all group-hover:bg-[#D1B16B]/20"></div>
-               <div className="flex items-center gap-3 mb-6">
-                  <FiClock className="text-[#D1B16B]" />
-                  <span className="text-[10px] font-black capitalize tracking-widest text-[#D1B16B]">Service Hours</span>
-               </div>
-               <div className="space-y-4 relative z-10">
-                  <div className="flex justify-between items-center text-xs">
-                     <span className="text-zinc-400 font-medium">Lundi - Vendredi</span>
-                     <span className="font-bold">12:00 — 23:00</span>
-                  </div>
-                  <div className="flex justify-between items-center text-xs">
-                     <span className="text-zinc-400 font-medium">Weekends</span>
-                     <span className="font-bold underline decoration-[#D1B16B] underline-offset-4 decoration-2">11:00 — 00:00</span>
+                  <div className="text-white pb-2">
+                     <h1 className="text-2xl font-bold">
+                        {displayName || "City Care Hospital"}
+                     </h1>
+                     <p className="text-sm opacity-90">
+                        {designation || "24/7 Multi-Speciality Healthcare"}
+                     </p>
                   </div>
                </div>
             </div>
+         </div>
 
-            {/* CONTACT STACK - MINIMALIST */}
-            <div className="space-y-3 relative z-10 mb-8">
-               {website && <a href={website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiGlobe size={18} /> <span className="text-sm">{website}</span></a>}
-               {email && <a href={`mailto:${email}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiMail size={18} /> <span className="text-sm">{email}</span></a>}
-               {phone && <a href={`tel:${phone}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiPhone size={18} /> <span className="text-sm">{phone}</span></a>}
-               {address && <div className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80"><FiMapPin size={18} /> <span className="text-sm">{address}</span></div>}
+         {/* ABOUT */}
+         <div className="bg-white px-6 py-6">
+            <p className="text-sm text-gray-500 text-center leading-relaxed">
+               {bio ||
+                  "Providing advanced healthcare services with expert doctors, emergency support, and compassionate patient care."}
+            </p>
 
-               {/* Hospitality Socials */}
-               {instagram && <a href={instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiInstagram size={18} /> <span className="text-sm">{instagram}</span></a>}
-               {facebook && <a href={facebook} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiFacebook size={18} /> <span className="text-sm">{facebook}</span></a>}
-               {twitter && <a href={twitter} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiTwitter size={18} /> <span className="text-sm">{twitter}</span></a>}
-               {linkedin && <a href={linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiLinkedin size={18} /> <span className="text-sm">{linkedin}</span></a>}
+            <div className="flex justify-center gap-5 mt-5">
+               {facebook && (
+                  <a href={facebook} style={{ color: primary }}>
+                     <FiFacebook size={18} />
+                  </a>
+               )}
+               {twitter && (
+                  <a href={twitter} style={{ color: primary }}>
+                     <FiTwitter size={18} />
+                  </a>
+               )}
+               {linkedin && (
+                  <a href={linkedin} style={{ color: primary }}>
+                     <FiLinkedin size={18} />
+                  </a>
+               )}
+               {instagram && (
+                  <a href={instagram} style={{ color: primary }}>
+                     <FiInstagram size={18} />
+                  </a>
+               )}
+            </div>
+         </div>
+
+         {/* CONTACT INFO */}
+         <div className="grid grid-cols-2 gap-3 p-4">
+            {[
+               {
+                  icon: <FiMail />,
+                  title: "Email",
+                  value: email || "support@citycare.com",
+               },
+               {
+                  icon: <FiPhone />,
+                  title: "Emergency",
+                  value: phone || "+91 98765 43210",
+               },
+               {
+                  icon: <FiGlobe />,
+                  title: "Website",
+                  value: website || "www.citycare.com",
+               },
+               {
+                  icon: <FiMapPin />,
+                  title: "Address",
+                  value: address || "Ahmedabad, Gujarat",
+               },
+            ].map((item, i) => (
+               <div
+                  key={i}
+                  className="rounded-2xl p-4 text-white shadow-lg"
+                  style={{ backgroundColor: primary }}
+               >
+                  <div className="mb-2">{item.icon}</div>
+                  <p className="text-[10px] opacity-70">{item.title}</p>
+                  <p className="text-xs font-bold truncate">{item.value}</p>
+               </div>
+            ))}
+         </div>
+
+         {/* SERVICES */}
+         <div className="bg-white p-5 mt-4">
+            <h2
+               className="text-center text-lg font-bold mb-5"
+               style={{ color: primary }}
+            >
+               Our Services
+            </h2>
+
+            <div className="grid grid-cols-2 gap-3">
+               {[
+                  { icon: <FiHeart />, name: "Cardiology" },
+                  { icon: <FiShield />, name: "Emergency" },
+                  { icon: <FiUsers />, name: "Pediatrics" },
+                  { icon: <FiPlusCircle />, name: "General Surgery" },
+               ].map((item, i) => (
+                  <div
+                     key={i}
+                     className="border rounded-2xl p-4 text-center"
+                  >
+                     <div
+                        className="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-3"
+                        style={{ backgroundColor: "#EAF4FF", color: primary }}
+                     >
+                        {item.icon}
+                     </div>
+                     <p className="text-sm font-semibold">{item.name}</p>
+                  </div>
+               ))}
+            </div>
+         </div>
+
+         {/* GALLERY */}
+         <div className="bg-white p-5 mt-4">
+            <h2
+               className="text-center text-lg font-bold mb-5"
+               style={{ color: primary }}
+            >
+               Hospital Gallery
+            </h2>
+
+            <div className="grid grid-cols-2 gap-3">
+               {images.map((img, i) => (
+                  <div key={i} className="h-36 rounded-2xl overflow-hidden">
+                     <img
+                        src={img}
+                        alt="Gallery"
+                        className="w-full h-full object-cover hover:scale-110 duration-300"
+                     />
+                  </div>
+               ))}
+            </div>
+         </div>
+
+         {/* APPOINTMENT */}
+         <div className="bg-white p-6 mt-4">
+            <h2
+               className="text-center text-lg font-bold mb-5"
+               style={{ color: primary }}
+            >
+               Book Appointment
+            </h2>
+
+            <div className="space-y-3">
+               <input
+                  placeholder="Patient Name"
+                  className="w-full border p-4 rounded-xl text-sm"
+               />
+
+               <input
+                  placeholder="Phone Number"
+                  className="w-full border p-4 rounded-xl text-sm"
+               />
+
+               <div className="grid grid-cols-2 gap-3">
+                  <div className="border p-4 rounded-xl flex justify-between items-center text-sm">
+                     <span>08 May 2026</span>
+                     <FiCalendar />
+                  </div>
+
+                  <div className="border p-4 rounded-xl flex justify-between items-center text-sm">
+                     <span>10:30 AM</span>
+                     <FiClock />
+                  </div>
+               </div>
+
+               <button
+                  className="w-full py-4 rounded-xl text-white font-bold"
+                  style={{ backgroundColor: primary }}
+               >
+                  Confirm Booking
+               </button>
+            </div>
+         </div>
+
+         {/* HOURS */}
+         <div className="p-6 mt-4">
+            <div
+               className="rounded-3xl p-6 text-white"
+               style={{ backgroundColor: primary }}
+            >
+               <h2 className="text-center text-lg font-bold mb-5">
+                  Working Hours
+               </h2>
+
+               {[
+                  "Monday - Friday",
+                  "Saturday",
+                  "Sunday",
+               ].map((day, i) => (
+                  <div
+                     key={i}
+                     className="flex justify-between border-b border-white/10 py-3 text-sm"
+                  >
+                     <span>{day}</span>
+                     <span>
+                        {day === "Sunday"
+                           ? "Emergency Only"
+                           : "08:00 AM - 10:00 PM"}
+                     </span>
+                  </div>
+               ))}
+            </div>
+         </div>
+
+         {/* FOOTER */}
+         <div className="bg-white p-6">
+            <h2
+               className="text-center font-bold mb-4"
+               style={{ color: primary }}
+            >
+               Share Digital Card
+            </h2>
+
+            <div className="flex items-center bg-gray-100 rounded-xl p-4 text-sm">
+               <span className="truncate flex-1">
+                  {website || "https://vcard.com/city-care-hospital"}
+               </span>
+
+               <button onClick={copyLink}>
+                  {copied ? <FiCheck /> : <FiCopy />}
+               </button>
             </div>
 
-            {address && (<a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="block w-full py-4 mt-4 border rounded-xl text-center text-xs font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity">View on Map</a>)}
+            <button
+               onClick={() => downloadVCard(userData)}
+               className="w-full mt-4 py-4 rounded-xl text-white font-bold"
+               style={{ backgroundColor: primary }}
+            >
+               Save Contact
+            </button>
 
-            <div className="mt-8">
-               <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
+            <div className="mt-5">
+               <PoweredBy />
             </div>
-
-            <PoweredBy />
          </div>
       </div>
    );

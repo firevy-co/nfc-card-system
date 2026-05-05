@@ -1,102 +1,198 @@
-import React from 'react';
-import { FiPhone, FiMail, FiGlobe, FiMapPin, FiLinkedin, FiInstagram, FiTwitter, FiGithub } from 'react-icons/fi';
-import { FaWhatsapp, FaFacebook, FaYoutube, FaTiktok, FaDiscord, FaTelegram, FaSkype, FaPaypal } from 'react-icons/fa';
-import { downloadVCard } from '../common/StandardComponents';
+import React, { useState } from "react";
+import {
+   FiPhone,
+   FiMail,
+   FiGlobe,
+   FiMapPin,
+   FiChevronDown,
+   FiChevronUp,
+   FiStar,
+   FiUserPlus,
+   FiHeart,
+   FiShield,
+   FiClock,
+   FiActivity,
+   FiInstagram,
+   FiLinkedin,
+   FiTwitter,
+} from "react-icons/fi";
+import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
-const ClinicaElite = ({ userData }) => {
-  const { 
-    displayName, email, role, phone, website, address, bio,
-    whatsapp, facebook, youtube, tiktok, discord, telegram, skype, paypal,
-    linkedin, instagram, twitter, github, company, businessName, logo, profileImage
-  } = userData || {};
+const SectionTitle = ({ title }) => (
+   <h2 className="text-sm font-black text-gray-400 uppercase tracking-widest mt-6 border-b border-gray-100 pb-2">
+      {title}
+   </h2>
+);
 
-  return (
-    <div className="w-full bg-[#111] font-Inter text-white">
-      <div className="w-full bg-black border-b border-white/5 shadow-2xl relative overflow-hidden group">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600" />
-        
-        <div className="p-12">
-          <header className="mb-12 flex items-center justify-between">
-             <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-600 p-1 flex items-center justify-center overflow-hidden">
-                <div className="w-full h-full bg-black rounded-[1.4rem] flex items-center justify-center text-4xl font-black italic">
-                    <img src={logo || profileImage} alt={displayName} className="w-full h-full object-cover" />
-                </div>
-             </div>
-             <div className="text-right">
-                <p className="text-blue-500 text-[10px] font-black uppercase tracking-[0.4em] italic mb-2">Security ID: {userData?.uid ? userData.uid.substring(0, 8).toUpperCase() : (displayName ? displayName.substring(0, 3).toUpperCase() + '992' : 'ALPHA-701')}</p>
-                <div className="w-12 h-1 bg-blue-600 ml-auto" />
-             </div>
-          </header>
+const Info = ({ icon: Icon, text, link }) => {
+   if (!text) return null;
+   const Comp = link ? "a" : "div";
+   return (
+      <Comp
+         href={link}
+         target={link?.startsWith("http") ? "_blank" : undefined}
+         rel={link?.startsWith("http") ? "noopener noreferrer" : undefined}
+         className="flex items-center gap-3 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+      >
+         <Icon className="text-amber-600 shrink-0" size={18} />
+         <span className="truncate">{text}</span>
+      </Comp>
+   );
+};
 
-          <div className="mb-12">
-             <h1 className="text-4xl font-black tracking-tighter mb-2">{displayName || 'Clinica Elite'}</h1>
-             
-             {(company || businessName) && (
-                <p className="text-white/20 text-[10px] font-bold mt-4 uppercase tracking-[0.3em]">
-                   {company || businessName}
-                </p>
-             )}
-             {bio && (
-                <p className="mt-8 text-white/40 text-sm leading-relaxed max-w-sm font-medium italic">
-                   "{bio}"
-                </p>
-             )}
-          </div>
-          
-          <div className="space-y-4">
-             <p className="text-[10px] text-white/20 font-black tracking-[0.5em] uppercase mb-8">
-                Secure Uplink
-             </p>
-             {email && <a href={`mailto:${email}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiMail size={18} /> <span className="text-sm">{email}</span></a>}
-             {phone && <a href={`tel:${phone}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiPhone size={18} /> <span className="text-sm">{phone}</span></a>}
-             {website && <a href={website.startsWith('http') ? website : `https://${website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiGlobe size={18} /> <span className="text-sm">{website.replace(/(^\w+:|^)\/\//, '')}</span></a>}
-             {address && <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 py-3 border-b border-white/10 opacity-80 hover:opacity-100 transition-opacity"><FiMapPin size={18} /> <span className="text-sm">{address}</span></a>}
-          </div>
+const Service = ({ icon: Icon, text }) => (
+   <div className="flex items-center gap-2 bg-amber-50 border border-amber-100/50 rounded-2xl p-3">
+      <Icon className="text-amber-600 shrink-0" size={18} />
+      <span className="text-xs font-semibold text-gray-700">{text}</span>
+   </div>
+);
 
-          {/* SOCIAL MATRIX */}
-          <div className="grid grid-cols-4 gap-4 py-12 border-y border-white/5 my-12">
-             {[
-                { id: 'linkedin', val: linkedin, icon: FiLinkedin, color: 'hover:bg-[#0077b5]' },
-                { id: 'instagram', val: instagram, icon: FiInstagram, color: 'hover:bg-[#e1306c]' },
-                { id: 'facebook', val: facebook, icon: FaFacebook, color: 'hover:bg-[#1877f2]' },
-                { id: 'twitter', val: twitter, icon: FiTwitter, color: 'hover:bg-black' },
-                { id: 'whatsapp', val: whatsapp, icon: FaWhatsapp, color: 'hover:bg-[#25d366]' },
-                { id: 'youtube', val: youtube, icon: FaYoutube, color: 'hover:bg-[#ff0000]' },
-                { id: 'telegram', val: telegram, icon: FaTelegram, color: 'hover:bg-[#0088cc]' },
-                { id: 'github', val: github, icon: FiGithub, color: 'hover:bg-zinc-800' }
-             ].map(social => social.val && (
-                <a 
-                  key={social.id} 
-                  href={social.id === 'whatsapp' ? `https://wa.me/${social.val.replace(/\D/g, '')}` : (social.val.startsWith('http') ? social.val : `https://${social.id}.com/${social.val}`)} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className={`aspect-square rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center text-white/40 hover:text-white transition-all shadow-lg ${social.color}`}
-                >
-                   <social.icon size={22} />
-                </a>
-             ))}
-          </div>
-          
-          <div className="space-y-4">
-             {website && (
-                <a 
-                  href={website.startsWith('http') ? website : `https://${website}`} 
-                  className="w-full flex items-center justify-center gap-4 bg-white text-black py-6 rounded-2xl font-black text-xs uppercase tracking-[0.4em] hover:bg-blue-600 hover:text-white transition-all shadow-2xl active:scale-95"
-                >
-                   Initialize Portal
-                </a>
-             )}
-             <button onClick={() => downloadVCard(userData)} className="w-full py-3 mt-4 border rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs opacity-80 hover:opacity-100 transition-opacity">Save Contact</button>
-          </div>
+const Stars = () => (
+   <div className="flex gap-0.5">
+      {[...Array(5)].map((_, i) => (
+         <FiStar key={i} size={14} className="text-yellow-500 fill-yellow-500" />
+      ))}
+   </div>
+);
 
-          {address && <div className="mt-12">{address && (<a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="block w-full py-4 mt-4 border rounded-xl text-center text-xs font-bold uppercase tracking-widest opacity-80 hover:opacity-100 transition-opacity">View on Map</a>)}</div>}
-          
-          <PoweredBy />
-        </div>
+const Social = ({ icon: Icon, link }) => {
+   if (!link) return null;
+   return (
+      <a
+         href={link.startsWith("http") ? link : `https://${link}`}
+         target="_blank"
+         rel="noopener noreferrer"
+         className="w-10 h-10 rounded-full bg-gray-100 hover:bg-amber-600 hover:text-white transition-all flex items-center justify-center text-gray-600"
+      >
+         <Icon size={18} />
+      </a>
+   );
+};
+
+export const ClinicaElite = ({ userData }) => {
+   const {
+      displayName,
+      phone,
+      email,
+      website,
+      address,
+      logo,
+      instagram,
+      linkedin,
+      twitter,
+   } = userData || {};
+
+   const [open, setOpen] = useState(null);
+
+   const faq = [
+      {
+         q: "Do you offer private dining?",
+         a: "Yes, private and corporate event bookings are available.",
+      },
+      {
+         q: "Can I view the menu online?",
+         a: "Yes, our complete seasonal menu is available through our website.",
+      },
+      {
+         q: "Do you have vegetarian options?",
+         a: "Yes, we offer curated vegan and organic dishes.",
+      },
+   ];
+
+   return (
+      <div className="min-h-screen bg-gray-100 flex justify-center font-sans">
+         <div className="w-full max-w-sm bg-white rounded-3xl overflow-hidden shadow-2xl">
+            <img
+               src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80"
+               className="h-64 w-full object-cover"
+               alt=""
+            />
+
+            <div className="p-6">
+               <div className="w-20 h-20 rounded-3xl bg-white shadow-xl mt-4 mb-4 overflow-hidden border-4 border-white">
+                  <img
+                     src={logo || "https://images.pexels.com/photos/8460372/pexels-photo-8460372.jpeg"}
+                     className="w-full h-full object-cover"
+                     alt=""
+                  />
+               </div>
+
+               <h1 className="text-2xl font-black text-gray-800">
+                  {displayName || "Gourmet Terrace"}
+               </h1>
+               <p className="text-sm text-gray-500 mt-1">Premium Culinary Experience</p>
+
+               <div className="space-y-3 mt-6">
+                  {phone && <Info icon={FiPhone} text={phone} link={`tel:${phone}`} />}
+                  {email && <Info icon={FiMail} text={email} link={`mailto:${email}`} />}
+                  {website && <Info icon={FiGlobe} text={website} link={website} />}
+                  {address && <Info icon={FiMapPin} text={address} />}
+               </div>
+
+               <SectionTitle title="Offerings" />
+
+               <div className="grid grid-cols-2 gap-3 mt-3">
+                  <Service icon={FiHeart} text="Chef Specials" />
+                  <Service icon={FiShield} text="Wine Tasting" />
+                  <Service icon={FiClock} text="Late Night Dining" />
+                  <Service icon={FiActivity} text="Fresh Ingredients" />
+               </div>
+
+               <SectionTitle title="Guest Reviews" />
+
+               <div className="bg-gray-100 rounded-2xl p-4 mt-3">
+                  <Stars />
+                  <p className="text-sm mt-2 text-gray-600">
+                     Absolutely stunning presentation and flavors. An unforgettable dining journey.
+                  </p>
+                  <p className="text-xs mt-2 font-bold text-gray-500">
+                     - Sophia Reynolds
+                  </p>
+               </div>
+
+               <SectionTitle title="FAQ" />
+
+               <div className="mt-3 space-y-2">
+                  {faq.map((item, i) => (
+                     <div key={i} className="border rounded-2xl overflow-hidden bg-white">
+                        <button
+                           onClick={() => setOpen(open === i ? null : i)}
+                           className="w-full px-4 py-3 flex justify-between items-center font-semibold text-sm text-gray-700 text-left"
+                        >
+                           {item.q}
+                           {open === i ? <FiChevronUp /> : <FiChevronDown />}
+                        </button>
+
+                        {open === i && (
+                           <div className="px-4 pb-4 text-xs text-gray-600">
+                              {item.a}
+                           </div>
+                        )}
+                     </div>
+                  ))}
+               </div>
+
+               <button
+                  onClick={() => downloadVCard(userData)}
+                  className="w-full mt-6 bg-amber-600 hover:bg-amber-700 text-white py-4 rounded-2xl font-bold flex justify-center items-center gap-2 text-sm shadow-xl transition active:scale-95 duration-150"
+               >
+                  <FiUserPlus /> Save Contact
+               </button>
+
+               <div className="flex justify-center gap-3 mt-5">
+                  <Social icon={FiInstagram} link={instagram} />
+                  <Social icon={FiLinkedin} link={linkedin} />
+                  <Social icon={FiTwitter} link={twitter} />
+               </div>
+
+               <div className="mt-5">
+                  <PoweredBy />
+               </div>
+            </div>
+         </div>
       </div>
-    </div>
-  );
+   );
 };
 
 export default ClinicaElite;

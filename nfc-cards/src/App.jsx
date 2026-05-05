@@ -1,7 +1,8 @@
 import { Suspense, lazy, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/firebase.config';
+import { auth, db } from '@/firebase.config';
+import { doc, setDoc, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import { ThemeProvider } from './context/ThemeContext';
 import { Toaster } from 'react-hot-toast';
 
@@ -66,14 +67,28 @@ function App() {
         }
 
         // 2. Attempt real-time broadcast connection (will degrade gracefully if rules restrict)
-        const { doc, onSnapshot } = await import('firebase/firestore');
-        const { db } = await import('@/firebase.config');
         const userRef = doc(db, "users", user.uid);
         
-        unsubSnapshot = onSnapshot(userRef, (docSnap) => {
+        unsubSnapshot = onSnapshot(userRef, async (docSnap) => {
           if (docSnap.exists()) {
             setUserData({ ...docSnap.data(), uid: user.uid });
+            setLoading(false);
+          } else {
+            const newUser = {
+              uid: user.uid,
+              displayName: user.displayName || 'Architect',
+              email: user.email,
+              role: 'User',
+              createdAt: serverTimestamp(),
+              status: 'Active',
+              onboarded: false
+            };
+            await setDoc(userRef, newUser);
+            setUserData(newUser);
+            setLoading(false);
           }
+        }, (error) => {
+          console.error("Critical Identity Sync Failure:", error);
           setLoading(false);
         }, (err) => {
           // Graceful degradation when rules are strict
@@ -82,7 +97,7 @@ function App() {
         });
 
       } catch (error) {
-        console.error("Critical Identity Sync Failure:", error);
+        console.error("Critical Identity Listener Setup Failure:", error);
         setLoading(false);
       }
     };
