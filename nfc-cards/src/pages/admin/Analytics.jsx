@@ -226,7 +226,7 @@ const Analytics = ({ user, userData }) => {
                   <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">Productivity Trend</h3>
 
                   <div className="h-[200px] w-full mt-4">
-                     <ResponsiveContainer width="100%" height="100%">
+                     <ResponsiveContainer width="100%" height={200}>
                         <LineChart data={stats.trendData}>
                            <Line
                               type="monotone"
