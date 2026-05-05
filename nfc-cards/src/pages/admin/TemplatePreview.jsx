@@ -155,10 +155,10 @@ const TemplatePreview = ({ userData }) => {
                         width: device === 'mobile' ? (isLandscape ? '667px' : '375px') : device === 'tablet' ? (isLandscape ? '1024px' : '768px') : '100%',
                         height: device === 'mobile' ? (isLandscape ? '375px' : '667px') : device === 'tablet' ? (isLandscape ? '768px' : '1024px') : 'auto'
                     }}
-                    className={`rounded-[2.5rem] overflow-hidden bg-card transition-all duration-700 relative shadow-[0_0_100px_rgba(0,0,0,0.5)] border-[12px] border-secondary`}
+                    className={`rounded-[2.5rem] overflow-hidden bg-card transition-all duration-700 relative shadow-[0_0_100px_rgba(0,0,0,0.5)] border-[12px] border-secondary flex flex-col`}
                 >
                     {/* Device Status Bar Simulation */}
-                    <div className="h-6 bg-secondary flex items-center justify-between px-6 opacity-40">
+                    <div className="h-6 shrink-0 bg-secondary flex items-center justify-between px-6 opacity-40">
                         <span className="text-[8px] font-bold">9:41</span>
                         <div className="flex gap-1.5">
                             <div className="w-2.5 h-2.5 rounded-full border border-current"></div>
@@ -166,8 +166,10 @@ const TemplatePreview = ({ userData }) => {
                         </div>
                     </div>
 
-                    <div className="w-full h-full overflow-y-auto hide-scrollbar bg-black">
-                        <TemplateRenderer templateId={blueprintId} userData={userData} />
+                    <div className="w-full flex-1 relative overflow-y-auto hide-scrollbar bg-black block">
+                        <div className="w-full min-h-full flex flex-col">
+                            <TemplateRenderer templateId={blueprintId} userData={userData} />
+                        </div>
                     </div>
                 </div>
             </div>

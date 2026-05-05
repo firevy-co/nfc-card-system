@@ -30,16 +30,14 @@ const NotificationCenter = ({ isAdmin, theme }) => {
             // Admins see all Unread inquiries
             q = query(
                 collection(db, "inquiries"),
-                where("status", "==", "Unread"),
-                limit(20) // Fetch a larger buffer to sort in JS
+                where("status", "==", "Unread")
             );
         } else {
             // Users see Processing inquiries (replied by admin)
             q = query(
                 collection(db, "inquiries"),
                 where("uid", "==", auth.currentUser.uid),
-                where("status", "==", "Processing"),
-                limit(20)
+                where("status", "==", "Processing")
             );
         }
 

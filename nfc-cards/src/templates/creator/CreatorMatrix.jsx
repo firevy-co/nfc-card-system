@@ -1,78 +1,214 @@
-import React from 'react';
-import { FiLayout, FiPhone, FiMail, FiGlobe, FiYoutube, FiLinkedin, FiTwitter, FiInstagram, FiTwitch, FiMapPin, FiUserPlus, FiCpu } from 'react-icons/fi';
-import { downloadVCard } from '../common/StandardComponents';
+import React from "react";
+import {
+   FiPhone,
+   FiMail,
+   FiGlobe,
+   FiYoutube,
+   FiLinkedin,
+   FiTwitter,
+   FiInstagram,
+   FiMapPin,
+   FiUserPlus,
+   FiPlay,
+   FiUsers,
+   FiEye,
+   FiHeart,
+   FiShare2
+} from "react-icons/fi";
+
+import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
-const MatrixLink = ({ icon: Icon, label, value, href }) => {
-  if (!value || value === "" || value.includes('resolving')) return null;
-  const Comp = href ? 'a' : 'div';
-  return (
-    <Comp href={href || null} target={href && href.startsWith('http') ? "_blank" : undefined} rel={href && href.startsWith('http') ? "noopener noreferrer" : undefined} className="group flex items-center justify-between border-b border-white/10 pb-4 hover:border-white transition-all">
-        <div className="flex items-center gap-3">
-            <Icon size={14} className="text-white/30 group-hover:text-white transition-colors" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-white/30 group-hover:text-white transition-colors">{label}</span>
-        </div>
-        <span className="text-white font-mono text-sm tracking-tighter truncate max-w-[140px] uppercase text-right">{value}</span>
-    </Comp>
-  );
+/* ===========================
+   FALLBACK IMAGES
+=========================== */
+
+const defaultBanner =
+   "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80";
+
+const defaultProfile =
+   "https://images.unsplash.com/photo-1548142813-c348350df52b?auto=format&fit=crop&w=500&q=80";
+
+const contentImages = [
+   "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=700&q=80",
+   "https://images.unsplash.com/photo-1587614382346-4ec70e388b28?auto=format&fit=crop&w=700&q=80",
+   "https://images.unsplash.com/photo-1611606063065-ee7946f0787a?auto=format&fit=crop&w=700&q=80"
+];
+
+/* ===========================
+   COMPONENTS
+=========================== */
+
+const StatCard = ({ icon: Icon, label, value }) => (
+   <div className="bg-white p-4 text-center">
+      <Icon className="mx-auto text-indigo-500 mb-2" size={18} />
+      <p className="font-bold text-gray-800">{value}</p>
+      <p className="text-[10px] text-gray-400 uppercase tracking-widest">
+         {label}
+      </p>
+   </div>
+);
+
+const SocialCard = ({ icon: Icon, href }) => {
+   if (!href) return null;
+
+   return (
+      <a
+         href={href}
+         target="_blank"
+         rel="noopener noreferrer"
+         className="w-11 h-11 flex items-center justify-center bg-white hover:bg-indigo-500 hover:text-white transition-all"
+      >
+         <Icon size={18} />
+      </a>
+   );
 };
+
+const InfoRow = ({ icon: Icon, value, href }) => {
+   if (!value) return null;
+
+   const Wrapper = href ? "a" : "div";
+
+   return (
+      <Wrapper
+         href={href || undefined}
+         target={href ? "_blank" : undefined}
+         className="flex items-center gap-3 bg-white p-3 text-sm text-gray-700"
+      >
+         <Icon size={16} className="text-indigo-500" />
+         <span className="truncate">{value}</span>
+      </Wrapper>
+   );
+};
+
+const ContentCard = ({ title, views, likes, img }) => (
+   <div className="bg-white overflow-hidden">
+      <img src={img} alt="content" className="w-full h-32 object-cover" />
+
+      <div className="p-3">
+         <h3 className="font-bold text-sm text-gray-800 truncate mb-2">
+            {title}
+         </h3>
+
+         <div className="flex justify-between text-xs text-gray-500">
+            <span className="flex items-center gap-1">
+               <FiEye /> {views}
+            </span>
+            <span className="flex items-center gap-1">
+               <FiHeart /> {likes}
+            </span>
+         </div>
+      </div>
+   </div>
+);
+
+/* ===========================
+   MAIN COMPONENT
+=========================== */
 
 const CreatorMatrix = ({ userData }) => {
-  const { displayName, email, phone, website, address, youtube, linkedin, twitter, twitch, instagram, logo } = userData || {};
-  
-  return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-6 font-['Space_Grotesk',sans-serif] md:bg-neutral-950 md:items-center py-0 md:py-12">
-      <div className="w-full max-w-sm border-2 border-white/5 bg-zinc-950 rounded-[3rem] p-10 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-full h-full opacity-5 pointer-events-none">
-           <div className="grid grid-cols-10 gap-2 h-full">
-              {Array.from({length: 100}).map((_, i) => (
-                 <div key={i} className="w-1 h-1 bg-white rounded-full opacity-20" />
-              ))}
-           </div>
-        </div>
-        
-        <div className="mb-10 relative z-10">
-           <div className="w-12 h-1 bg-white mb-8" />
-           
-           <div className="w-20 h-20 bg-white/5 border border-white/20 mb-6 flex items-center justify-center rounded-2xl overflow-hidden shadow-2xl group-hover:border-white/50 transition-all">
-              {logo ? (
-                  <img src={logo} alt="Logo" className="w-full h-full object-cover" />
-              ) : (
-                  <FiCpu size={32} className="text-white/50" />
-              )}
-           </div>
+   const {
+      displayName,
+      email,
+      phone,
+      website,
+      address,
+      youtube,
+      linkedin,
+      twitter,
+      instagram,
+      logo
+   } = userData || {};
 
-           <h1 className="text-4xl font-black text-white tracking-widest uppercase italic leading-none mb-2">{displayName || 'Matrix Node'}</h1>
-           <p className="text-[10px] text-white/50 font-mono uppercase tracking-[0.3em]">SYSTEM // ACTIVE</p>
-        </div>
-        
-        <div className="space-y-4 relative z-10 mb-8">
-           <MatrixLink icon={FiPhone} label="Neural Link" value={phone} href={`tel:${phone}`} />
-           <MatrixLink icon={FiMail} label="Signal Hive" value={email} href={`mailto:${email}`} />
-           <MatrixLink icon={FiGlobe} label="Cyber Net" value={website} href={website || null} />
-           <MatrixLink icon={FiMapPin} label="Coordinates" value={address} />
-           
-           <MatrixLink icon={FiYoutube} label="Vid Stream" value={youtube ? "YouTube" : null} href={youtube || null} />
-           <MatrixLink icon={FiTwitch} label="Live Feed" value={twitch ? "Twitch" : null} href={twitch || null} />
-           <MatrixLink icon={FiTwitter} label="Broadcast" value={twitter ? "Twitter" : null} href={twitter || null} />
-           <MatrixLink icon={FiInstagram} label="Holo Net" value={instagram ? "Instagram" : null} href={instagram || null} />
-           <MatrixLink icon={FiLinkedin} label="Corpo Net" value={linkedin ? "LinkedIn" : null} href={linkedin || null} />
-        </div>
+   const banner = defaultBanner;
+   const profile = logo || defaultProfile;
 
-        <div className="relative z-10">
-           <button onClick={() => downloadVCard(userData)} className="w-full py-5 bg-white text-black rounded-3xl font-black text-[11px] uppercase tracking-[0.6em] hover:brightness-90 active:scale-[0.98] transition-all flex items-center justify-center gap-3">
-              <FiUserPlus size={16} /> Enter Hive
-           </button>
-        </div>
-        
-        <div className="mt-16 flex justify-between items-center opacity-10 relative z-10">
-           <p className="text-[7px] font-black tracking-[0.8em] text-white italic transition-all group-hover:tracking-[1.2em]">Matrix Protocol v9.0</p>
-           <FiLayout size={16} />
-        </div>
+   return (
+      <div className="min-h-screen bg-white">
 
-        <PoweredBy />
+         <div className="w-full max-w-md mx-auto">
+
+            {/* HERO */}
+            <div className="relative h-44">
+               <img
+                  src={banner}
+                  alt="banner"
+                  className="w-full h-full object-cover"
+               />
+               <div className="absolute inset-0 bg-black/10" />
+            </div>
+
+            {/* PROFILE */}
+            <div className="-mt-14 flex flex-col items-center px-4 text-center">
+               <div className="w-24 h-24 rounded-xl bg-white z-10 shadow-md overflow-hidden flex items-center justify-center p-2">
+                  <img
+                     src={profile}
+                     alt="profile"
+                     className="w-full h-full object-contain"
+                  />
+               </div>
+
+               <h1 className="text-lg font-black text-gray-800 mt-3 uppercase">
+                  {displayName || "Creator Name"}
+               </h1>
+
+               <p className="text-gray-400 text-xs">
+                  Digital Creator • Influencer
+               </p>
+            </div>
+
+            {/* BODY */}
+            <div className="p-4 space-y-5">
+
+               {/* STATS */}
+               <div className="grid grid-cols-3 gap-2">
+                  <StatCard icon={FiUsers} label="Followers" value="120K" />
+                  <StatCard icon={FiEye} label="Views" value="2.4M" />
+                  <StatCard icon={FiShare2} label="Shares" value="18K" />
+               </div>
+
+               {/* CONTACT */}
+               <div className="space-y-2">
+                  <InfoRow icon={FiPhone} value={phone} href={`tel:${phone}`} />
+                  <InfoRow icon={FiMail} value={email} href={`mailto:${email}`} />
+                  <InfoRow icon={FiGlobe} value={website} href={website} />
+                  <InfoRow icon={FiMapPin} value={address} />
+               </div>
+
+               {/* SOCIAL */}
+               <div className="flex justify-around">
+                  <SocialCard icon={FiYoutube} href={youtube} />
+                  <SocialCard icon={FiInstagram} href={instagram} />
+                  <SocialCard icon={FiTwitter} href={twitter} />
+                  <SocialCard icon={FiLinkedin} href={linkedin} />
+               </div>
+
+               {/* CONTENT */}
+               <div>
+                  <h2 className="text-sm font-bold text-gray-700 mb-2 uppercase">
+                     Latest Content
+                  </h2>
+
+                  <div className="grid gap-2">
+                     <ContentCard title="YouTube Growth Tips" views="120K" likes="8K" img={contentImages[0]} />
+                     <ContentCard title="Instagram Strategy" views="90K" likes="6K" img={contentImages[1]} />
+                     <ContentCard title="Content Planning" views="75K" likes="5K" img={contentImages[2]} />
+                  </div>
+               </div>
+
+               {/* CTA */}
+               <button
+                  onClick={() => downloadVCard(userData)}
+                  className="w-full py-3 bg-indigo-600 text-white font-bold text-sm uppercase flex items-center justify-center gap-2"
+               >
+                  <FiUserPlus /> Save Contact
+               </button>
+
+               <PoweredBy />
+            </div>
+         </div>
       </div>
-    </div>
-  );
+   );
 };
+
 export default CreatorMatrix;

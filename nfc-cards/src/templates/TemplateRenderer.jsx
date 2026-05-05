@@ -267,7 +267,7 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
 
       default:
         return (
-          <div className="min-h-[400px] flex items-center justify-center bg-gray-50 p-10 text-center">
+          <div className="flex-1 w-full h-full min-h-[400px] flex flex-col items-center justify-center bg-gray-50 p-10 text-center">
             <div className="max-w-xs space-y-4">
               <div className="w-14 h-14 bg-gray-100 border border-gray-200 rounded-2xl mx-auto flex items-center justify-center">
                 <span className="text-sm font-black text-slate-300">No Design</span>
@@ -287,7 +287,7 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
 
   return (
     <Suspense fallback={
-      <div className="min-h-[400px] flex items-center justify-center">
+      <div className="flex-1 w-full h-full min-h-[400px] flex items-center justify-center">
         <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
       </div>
     }>
