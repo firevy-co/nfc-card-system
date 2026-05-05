@@ -1,7 +1,14 @@
-const { db } = require('../config/firebase');
+const { db, isOffline } = require('../config/firebase');
 
 exports.getAllCategories = async (req, res) => {
     try {
+        if (isOffline) {
+            return res.status(200).json([
+                { id: '1', name: 'Business' },
+                { id: '2', name: 'Creative' },
+                { id: '3', name: 'Minimal' }
+            ]);
+        }
         const snapshot = await db.collection('categories').get();
         const categories = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         res.status(200).json(categories);

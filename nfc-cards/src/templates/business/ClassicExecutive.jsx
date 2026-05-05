@@ -1,128 +1,372 @@
-import React from 'react';
-import * as FiIcons from 'react-icons/fi';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+   FiPhone, FiMail, FiGlobe, FiMapPin, FiArrowUpRight,
+   FiChevronDown, FiBriefcase, FiBarChart2, FiTarget,
+   FiPlayCircle, FiMessageSquare, FiClock, FiDownloadCloud, FiLink
+} from 'react-icons/fi';
+import { FaLinkedinIn, FaTwitter, FaPodcast, FaQuoteLeft } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
 
-const ClassicExecutive = ({ userData }) => {
-  const { 
-    displayName, email, role, mobileNumber, phone, 
-    companyName, designation, website, address, city,
-    linkedin, instagram, facebook, twitter, bio, avatar, logo 
-  } = userData || {};
+// --- Executive Blueprint Sub-components ---
 
-  const displayPhone = mobileNumber || phone;
-  const displayRole = designation || role;
-  const finalAddress = address || city;
+const TimelineSection = ({ title, icon: Icon, children, isLast = false }) => (
+   <div className="relative pl-10 pb-10">
+      {/* Vertical Spine Line */}
+      {!isLast && <div className="absolute left-[19px] top-8 bottom-0 w-[2px] bg-slate-200" />}
 
-  return (
-    <div className="min-h-screen bg-[#f8f9fa] text-slate-800 font-['Inter'] pb-16">
-      {/* Formal Header */}
-      <div className="bg-[#0f172a] text-white pt-16 pb-24 px-8 text-center relative shadow-xl">
-         <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/diagonal-striped-brick.png')]" />
-         <div className="relative z-10 flex flex-col items-center">
-            {logo ? (
-               <div className="bg-white p-4 rounded-lg shadow-lg mb-6 max-w-[120px]">
-                  <img src={logo} alt="Company Logo" className="w-full h-auto object-contain" />
-               </div>
-            ) : null}
-            <h1 className="text-3xl font-bold tracking-tight mb-2 font-serif">{displayName}</h1>
-            {displayRole && <p className="text-sm text-blue-300 font-medium tracking-wide uppercase">{displayRole}</p>}
-            {companyName && <p className="text-xs text-slate-400 mt-2 uppercase tracking-widest">{companyName}</p>}
+      {/* Timeline Node */}
+      <div className="absolute left-[11px] top-1 w-[18px] h-[18px] rounded-full bg-cyan-500 border-4 border-white shadow-sm z-10" />
+
+      {title && (
+         <div className="flex items-center gap-2 mb-5">
+            {Icon && <Icon size={18} className="text-slate-400" />}
+            <h2 className="text-lg font-bold text-slate-900 tracking-tight uppercase">{title}</h2>
          </div>
+      )}
+
+      <div className="w-full">
+         {children}
       </div>
+   </div>
+);
 
-      <div className="px-6 -mt-16 relative z-20 space-y-6 max-w-lg mx-auto">
-         {/* Profile / Avatar Overlap */}
-         <div className="bg-white rounded-xl shadow-lg border border-slate-100 p-6 flex flex-col items-center">
-            <div className="w-24 h-24 rounded-full border-4 border-white shadow-md -mt-16 mb-4 bg-slate-100 overflow-hidden shrink-0 flex items-center justify-center">
-               {avatar ? <img src={avatar} alt="Profile" className="w-full h-full object-cover" /> : <FiIcons.FiUser size={40} className="text-slate-400" />}
-            </div>
-            {bio ? (
-               <div className="text-center">
-                  <p className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-2">Executive Summary</p>
-                  <p className="text-sm text-slate-600 leading-relaxed">"{bio}"</p>
-               </div>
-            ) : (
-               <p className="text-sm text-slate-400 italic">No summary provided.</p>
-            )}
-         </div>
-
-         {/* Areas of Expertise - Dynamic from tags */}
-         {userData?.tags && userData.tags.length > 0 && (
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-               <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 border-b border-slate-100 pb-2">Core Competencies</h3>
-               <div className="grid grid-cols-2 gap-4">
-                  {userData.tags.map((tag, i) => (
-                     <div key={i} className="flex items-center gap-3">
-                        <div className="text-blue-600 bg-blue-50 p-2 rounded-lg"><FiIcons.FiCheckCircle size={16} /></div>
-                        <span className="text-xs font-semibold text-slate-700">{tag}</span>
-                     </div>
-                  ))}
-               </div>
-            </div>
-         )}
-
-         {/* Corporate Contact Suite */}
-         <div className="space-y-3">
-            {displayPhone && (
-               <a href={`tel:${displayPhone}`} className="flex items-center gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all group">
-                  <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-500 group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0"><FiIcons.FiPhoneCall /></div>
-                  <div className="overflow-hidden">
-                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Direct Line</p>
-                     <p className="text-sm font-semibold text-slate-800">{displayPhone}</p>
-                  </div>
-               </a>
-            )}
-            {email && (
-               <a href={`mailto:${email}`} className="flex items-center gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all group">
-                  <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-500 group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0"><FiIcons.FiMail /></div>
-                  <div className="overflow-hidden">
-                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Corporate Email</p>
-                     <p className="text-sm font-semibold text-slate-800 truncate">{email}</p>
-                  </div>
-               </a>
-            )}
-            {website && (
-               <a href={website?.startsWith('http') ? website : `https://${website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-blue-500 hover:shadow-md transition-all group">
-                  <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-500 group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0"><FiIcons.FiGlobe /></div>
-                  <div className="overflow-hidden">
-                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Enterprise Portal</p>
-                     <p className="text-sm font-semibold text-slate-800 truncate">{website}</p>
-                  </div>
-               </a>
-            )}
-            {finalAddress && (
-               <div className="flex items-center gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                  <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-500 shrink-0"><FiIcons.FiBriefcase /></div>
-                  <div className="overflow-hidden">
-                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Headquarters</p>
-                     <p className="text-sm font-semibold text-slate-800 leading-snug truncate">{finalAddress}</p>
-                  </div>
-               </div>
-            )}
-         </div>
-
-         {/* Professional Network */}
-         <div className="flex justify-center gap-4 py-2 border-t border-slate-200 pt-6">
-            {[
-               { icon: FiIcons.FiLinkedin, val: linkedin },
-               { icon: FiIcons.FiTwitter, val: twitter },
-               { icon: FiIcons.FiInstagram, val: instagram },
-               { icon: FiIcons.FiFacebook, val: facebook }
-            ].map((social, idx) => social.val && (
-               <a key={idx} href={social.val.startsWith('http') ? social.val : `https://${social.val}`} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-blue-600 transition-colors p-2 bg-white rounded-full shadow-sm border border-slate-100">
-                  <social.icon size={20} />
-               </a>
-            ))}
-         </div>
-
-         <button onClick={() => downloadVCard(userData)} className="w-full py-4 bg-[#0f172a] text-white rounded-xl font-bold text-[11px] uppercase tracking-widest shadow-lg hover:bg-blue-600 transition-all flex items-center justify-center gap-2 mt-4 active:scale-[0.98]">
-            <FiIcons.FiUserPlus size={16} /> Save to Contacts
+const BlueprintAccordion = ({ question, answer }) => {
+   const [isOpen, setIsOpen] = useState(false);
+   return (
+      <div className="border border-slate-200 mb-3 rounded-xl bg-white overflow-hidden shadow-sm">
+         <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-full p-4 flex justify-between items-center text-left focus:outline-none hover:bg-slate-50 transition-colors"
+         >
+            <span className="font-bold text-sm text-slate-800 pr-4">{question}</span>
+            <motion.div animate={{ rotate: isOpen ? 180 : 0 }}>
+               <FiChevronDown size={18} className="text-cyan-600" />
+            </motion.div>
          </button>
-         
-         <PoweredBy />
+         <AnimatePresence>
+            {isOpen && (
+               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
+                  <div className="px-4 pb-4">
+                     <p className="text-slate-600 text-sm leading-relaxed pt-2 border-t border-slate-100">
+                        {answer}
+                     </p>
+                  </div>
+               </motion.div>
+            )}
+         </AnimatePresence>
       </div>
-    </div>
-  );
+   );
 };
+
+// --- Main Component ---
+
+const ClassicExecutive = ({ userData }) => {
+   // Completely Fictional Persona: CEO of a Growth Agency
+   const fictionalData = {
+      displayName: "Victoria Sterling",
+      role: "Founder & Chief Growth Officer",
+      phone: "+1 (312) 555-9088",
+      email: "v.sterling@velocitypartners.io",
+      website: "www.velocitypartners.io",
+      address: "150 N Riverside Plaza, Chicago, IL",
+      businessName: "Velocity Growth Partners",
+      twitter: "victoriagrowth",
+      linkedin: "victoriasterling",
+      bio: "We architect hyper-growth strategies for B2B SaaS companies. Scaling revenue operations from $10M to $100M ARR through aggressive market positioning and elite sales frameworks.",
+      profileImage: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop",
+      bannerImage: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&h=600&fit=crop",
+      stats: [
+         { label: "Revenue Generated", val: "$850M+" },
+         { label: "Unicorn Exits", val: "4" },
+         { label: "Active Partners", val: "28" }
+      ],
+      services: [
+         { title: "Go-To-Market (GTM) Strategy", desc: "End-to-end launch playbooks for new enterprise software products.", icon: FiTarget },
+         { title: "Revenue Operations (RevOps)", desc: "Aligning sales, marketing, and customer success tech stacks.", icon: FiBarChart2 },
+         { title: "Executive Brand Positioning", desc: "Building thought leadership pipelines for technical founders.", icon: FiBriefcase }
+      ],
+      caseStudies: [
+         { title: "FinTech Scale-up", metric: "3x ARR in 12 Months", desc: "Redesigned outbound sales motion.", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" },
+         { title: "Enterprise Cloud", metric: "Series C ($40M)", desc: "Positioning overhaul pre-raise.", img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop" }
+      ],
+      podcast: {
+         title: "The Scale Blueprint Podcast",
+         episode: "Ep. 42: Why Your Sales Motion is Breaking at $10M ARR",
+         duration: "45 Min Listen",
+         img: "https://images.unsplash.com/photo-1589903308904-1010c2294adc?w=400&h=400&fit=crop"
+      },
+      testimonials: [
+         { name: "David Chen", role: "CEO, NexusAI", text: "Victoria's team came in and completely rewired our revenue engine. We hit our 2-year growth target in 9 months." },
+         { name: "Sarah Jenkins", role: "VP Marketing, CloudCore", text: "The most ruthless, effective GTM strategists in the B2B space. Velocity Partners is the real deal." }
+      ],
+      hours: [
+         { day: "Mon - Thu", hours: "08:00 AM - 06:00 PM CST" },
+         { day: "Friday", hours: "08:00 AM - 02:00 PM CST" },
+         { day: "Weekend", hours: "Closed" }
+      ],
+      faqs: [
+         { question: "What stage companies do you work with?", answer: "We exclusively partner with post-Series A B2B tech companies that have proven product-market fit and are ready to scale revenue aggressively." },
+         { question: "What is your typical engagement model?", answer: "Our standard engagement is a 6-month operational sprint, followed by a quarterly advisory retainer to ensure execution alignment." },
+         { question: "Do you execute campaigns or just advise?", answer: "We are an operational partner. We don't just hand you a deck; our team actively builds out your CRM, sequences, and marketing funnels alongside you." }
+      ]
+   };
+
+   const vCardData = { ...userData, ...fictionalData };
+
+   const fadeUp = {
+      hidden: { opacity: 0, x: -10 },
+      visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } }
+   };
+
+   return (
+      <div className="w-full min-h-screen bg-[#F8FAFC] text-slate-800 font-['Space_Grotesk',sans-serif] selection:bg-cyan-500 selection:text-white flex justify-center pb-12">
+
+         {/* App Container */}
+         <div className="w-full max-w-[480px] bg-white relative shadow-2xl min-h-screen border-x border-slate-200 flex flex-col">
+
+            {/* ================= HERO HEADER ================= */}
+            <div className="w-full relative bg-[#0F172A] pb-10">
+               <div className="h-[200px] w-full overflow-hidden opacity-40 mix-blend-luminosity">
+                  <img src={fictionalData.bannerImage} alt="Office" className="w-full h-full object-cover" />
+               </div>
+               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0F172A]" />
+
+               <div className="relative z-10 px-8 -mt-16 flex flex-col items-start">
+                  <div className="w-28 h-28 bg-white p-1 shadow-xl mb-5 rounded-2xl rotate-3 hover:rotate-0 transition-transform duration-300">
+                     <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover rounded-xl" />
+                  </div>
+
+                  {fictionalData.businessName && (
+                     <div className="bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest mb-3">
+                        {fictionalData.businessName}
+                     </div>
+                  )}
+
+                  <h1 className="text-3xl font-bold text-white tracking-tight mb-1">{fictionalData.displayName}</h1>
+                  <p className="text-cyan-400 font-semibold text-sm uppercase tracking-wide mb-4">{fictionalData.role}</p>
+                  <p className="text-slate-300 text-sm leading-relaxed">"{fictionalData.bio}"</p>
+               </div>
+            </div>
+
+            {/* ================= TIMELINE CONTENT START ================= */}
+            <div className="pt-10 px-4 flex-1">
+
+               {/* Section 1: Core Metrics */}
+               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp}>
+                  <TimelineSection title="Impact Metrics" icon={FiBarChart2}>
+                     <div className="grid grid-cols-1 gap-3">
+                        {fictionalData.stats.map((stat, i) => (
+                           <div key={i} className="bg-slate-50 border border-slate-200 p-4 rounded-xl flex justify-between items-center shadow-sm">
+                              <span className="text-xs uppercase tracking-widest text-slate-500 font-bold">{stat.label}</span>
+                              <span className="text-lg font-bold text-slate-900">{stat.val}</span>
+                           </div>
+                        ))}
+                     </div>
+                  </TimelineSection>
+               </motion.div>
+
+               {/* Section 2: Direct Comms */}
+               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp}>
+                  <TimelineSection title="Comms Directory" icon={FiLink}>
+                     <div className="grid grid-cols-2 gap-3">
+                        {fictionalData.phone && (
+                           <a href={`tel:${fictionalData.phone}`} className="bg-[#0F172A] text-white p-4 rounded-xl flex flex-col items-center justify-center gap-2 shadow-[4px_4px_0_0_#06B6D4] hover:translate-x-1 hover:-translate-y-1 transition-transform">
+                              <FiPhone size={20} className="text-cyan-400" />
+                              <span className="text-[10px] font-bold uppercase tracking-widest">Office Line</span>
+                           </a>
+                        )}
+                        {fictionalData.email && (
+                           <a href={`mailto:${fictionalData.email}`} className="bg-white border border-slate-300 p-4 rounded-xl flex flex-col items-center justify-center gap-2 shadow-[4px_4px_0_0_#0F172A] hover:translate-x-1 hover:-translate-y-1 transition-transform">
+                              <FiMail size={20} className="text-slate-900" />
+                              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-700">Email Desk</span>
+                           </a>
+                        )}
+                        {fictionalData.website && (
+                           <a href={`https://${fictionalData.website}`} target="_blank" rel="noopener noreferrer" className="col-span-2 bg-white border border-slate-300 p-4 rounded-xl flex justify-between items-center group shadow-sm hover:border-cyan-500 transition-colors">
+                              <div className="flex items-center gap-3">
+                                 <FiGlobe className="text-cyan-500" size={20} />
+                                 <span className="text-xs font-bold uppercase tracking-widest text-slate-800">Corporate Portal</span>
+                              </div>
+                              <FiArrowUpRight className="text-slate-400 group-hover:text-slate-900" size={18} />
+                           </a>
+                        )}
+                     </div>
+                  </TimelineSection>
+               </motion.div>
+
+               {/* Section 3: Advisory Focus */}
+               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp}>
+                  <TimelineSection title="Advisory Focus" icon={FiTarget}>
+                     <div className="space-y-4">
+                        {fictionalData.services.map((svc, i) => (
+                           <div key={i} className="flex gap-4 p-5 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-cyan-400 transition-colors group">
+                              <div className="w-10 h-10 rounded-lg bg-cyan-50 flex items-center justify-center text-cyan-600 shrink-0 group-hover:bg-cyan-500 group-hover:text-white transition-colors">
+                                 <svc.icon size={18} />
+                              </div>
+                              <div>
+                                 <h4 className="text-sm font-bold text-slate-900 mb-1">{svc.title}</h4>
+                                 <p className="text-xs text-slate-600 leading-relaxed">{svc.desc}</p>
+                              </div>
+                           </div>
+                        ))}
+                     </div>
+                  </TimelineSection>
+               </motion.div>
+
+               {/* Section 4: Media / Podcast (Unique Module) */}
+               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp}>
+                  <TimelineSection title="Featured Media" icon={FaPodcast}>
+                     <div className="bg-[#0F172A] p-5 rounded-2xl text-white shadow-lg relative overflow-hidden">
+                        <div className="absolute -right-4 -bottom-4 opacity-10">
+                           <FaPodcast size={120} />
+                        </div>
+                        <div className="flex gap-4 relative z-10 items-center">
+                           <img src={fictionalData.podcast.img} alt="Podcast" className="w-20 h-20 rounded-lg object-cover shadow-md border border-slate-700" />
+                           <div className="flex-1">
+                              <p className="text-[10px] text-cyan-400 font-bold uppercase tracking-widest mb-1">{fictionalData.podcast.title}</p>
+                              <h4 className="text-sm font-bold leading-snug mb-2 line-clamp-2">{fictionalData.podcast.episode}</h4>
+                              <div className="flex items-center gap-2">
+                                 <FiPlayCircle className="text-white hover:text-cyan-400 cursor-pointer" size={24} />
+                                 <span className="text-[10px] text-slate-400">{fictionalData.podcast.duration}</span>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </TimelineSection>
+               </motion.div>
+
+               {/* Section 5: Case Studies (Horizontal Scroll) */}
+               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp}>
+                  <TimelineSection title="Track Record" icon={FiBriefcase}>
+                     <div className="flex overflow-x-auto gap-4 pb-4 snap-x hide-scrollbar">
+                        {fictionalData.caseStudies.map((item, idx) => (
+                           <div key={idx} className="min-w-[240px] bg-white border border-slate-200 rounded-xl overflow-hidden snap-center shadow-sm">
+                              <div className="h-32 w-full overflow-hidden">
+                                 <img src={item.img} alt={item.title} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                              </div>
+                              <div className="p-4">
+                                 <h4 className="text-sm font-bold text-slate-900 mb-1">{item.title}</h4>
+                                 <p className="text-xs text-slate-500 mb-3">{item.desc}</p>
+                                 <div className="inline-block bg-cyan-50 text-cyan-700 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider border border-cyan-100">
+                                    {item.metric}
+                                 </div>
+                              </div>
+                           </div>
+                        ))}
+                     </div>
+                  </TimelineSection>
+               </motion.div>
+
+               {/* Section 6: Client Endorsements */}
+               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp}>
+                  <TimelineSection title="Endorsements" icon={FiMessageSquare}>
+                     <div className="space-y-4">
+                        {fictionalData.testimonials.map((test, i) => (
+                           <div key={i} className="bg-slate-50 p-5 rounded-xl border border-slate-200 relative">
+                              <FaQuoteLeft className="absolute top-4 right-4 text-slate-200" size={24} />
+                              <p className="text-sm text-slate-700 italic leading-relaxed mb-4 relative z-10 pr-6">"{test.text}"</p>
+                              <div className="flex items-center gap-3">
+                                 <div className="w-2 h-8 bg-cyan-500 rounded-full" />
+                                 <div>
+                                    <span className="block font-bold text-slate-900 text-xs uppercase tracking-wider">{test.name}</span>
+                                    <span className="block text-[10px] text-slate-500 font-semibold">{test.role}</span>
+                                 </div>
+                              </div>
+                           </div>
+                        ))}
+                     </div>
+                  </TimelineSection>
+               </motion.div>
+
+               {/* Section 7: Operations & Protocols */}
+               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp}>
+                  <TimelineSection title="Operations" icon={FiClock}>
+                     <div className="mb-6 bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                        <div className="flex items-center gap-2 mb-3 border-b border-slate-100 pb-2">
+                           <FiMapPin className="text-cyan-600" size={16} />
+                           <span className="text-xs font-bold text-slate-800">{fictionalData.address}</span>
+                        </div>
+                        {fictionalData.hours.map((bh, i) => (
+                           <div key={i} className="flex justify-between items-center py-1.5 text-xs">
+                              <span className="text-slate-500 font-medium">{bh.day}</span>
+                              <span className="font-bold text-slate-900">{bh.hours}</span>
+                           </div>
+                        ))}
+                     </div>
+
+                     <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Engagement FAQ</h3>
+                     <div>
+                        {fictionalData.faqs.map((faq, index) => <BlueprintAccordion key={index} question={faq.question} answer={faq.answer} />)}
+                     </div>
+                  </TimelineSection>
+               </motion.div>
+
+               {/* Section 8: Network & CTA */}
+               <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp}>
+                  <TimelineSection title="Professional Network" isLast={true}>
+
+                     {/* QR Code integration */}
+                     <div className="flex items-center gap-6 mb-8 bg-white border border-slate-200 p-4 rounded-xl shadow-sm">
+                        <div className="w-24 h-24 p-2 border-2 border-slate-100 rounded-lg shrink-0">
+                           <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://vcard.link" alt="QR" className="w-full h-full" />
+                        </div>
+                        <div>
+                           <h4 className="text-sm font-bold text-slate-900 mb-1">Digital Business Card</h4>
+                           <p className="text-[10px] text-slate-500 leading-relaxed mb-2">Scan to instantly save all contact details and operational links to your device.</p>
+                        </div>
+                     </div>
+
+                     {/* Socials */}
+                     <div className="flex gap-3 mb-8">
+                        {[
+                           { val: fictionalData.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${fictionalData.linkedin}` },
+                           { val: fictionalData.twitter, icon: FaTwitter, link: `https://twitter.com/${fictionalData.twitter}` }
+                        ].map((social, i) => social.val && (
+                           <a
+                              key={i} href={social.link} target="_blank" rel="noopener noreferrer"
+                              className="w-12 h-12 bg-white border border-slate-300 rounded-xl flex items-center justify-center text-slate-600 hover:bg-[#0F172A] hover:text-white hover:border-[#0F172A] transition-all shadow-[2px_2px_0_0_#cbd5e1] hover:shadow-[4px_4px_0_0_#06B6D4] hover:-translate-y-1"
+                           >
+                              <social.icon size={18} />
+                           </a>
+                        ))}
+                     </div>
+
+                  </TimelineSection>
+               </motion.div>
+
+            </div>
+
+            {/* ================= BOTTOM SAVE CONTACT CTA ================= */}
+            <div className="px-6 pb-10">
+               <motion.button
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => downloadVCard(vCardData)}
+                  className="w-full bg-[#0F172A] text-white py-5 rounded-xl font-bold text-sm uppercase tracking-widest shadow-[4px_4px_0_0_#06B6D4] hover:bg-slate-800 transition-colors flex items-center justify-center gap-3 active:translate-y-1 active:translate-x-1 active:shadow-[0px_0px_0_0_#06B6D4]"
+               >
+                  <FiDownloadCloud size={20} className="text-cyan-400" />
+                  Save Contact Details
+               </motion.button>
+            </div>
+
+            {/* ================= FOOTER ================= */}
+            <div className="w-full py-6 text-center border-t border-slate-200 bg-slate-50">
+               <PoweredBy />
+            </div>
+
+         </div>
+
+         {/* Styles */}
+         <style dangerouslySetInnerHTML={{
+            __html: `
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}} />
+      </div>
+   );
+};
+
 export default ClassicExecutive;

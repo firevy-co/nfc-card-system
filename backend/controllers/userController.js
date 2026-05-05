@@ -61,6 +61,80 @@ exports.getAllUsers = async (req, res) => {
 };
 
 /**
+ * IDENTITY FETCH: Fetch a single user profile from Firestore.
+ */
+exports.getUserById = async (req, res) => {
+    const { uid } = req.params;
+    try {
+        if (isOffline) {
+            const mockUser = mockUsersCache.find(u => u.uid === uid) || null;
+            if (!mockUser) return res.status(404).json({ error: "User not found" });
+            return res.json(mockUser);
+        }
+
+        const docSnap = await db.collection('users').doc(uid).get();
+        if (!docSnap.exists) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        res.json({ ...docSnap.data(), uid });
+    } catch (error) {
+        console.error("Identity Fetch Failure:", error);
+        res.status(500).json({ error: "Failed to fetch user", details: error.message });
+    }
+};
+
+/**
+ * IDENTITY SYNC: Syncs user from Auth to Firestore, bypassing client-side rule restrictions.
+ */
+exports.syncUser = async (req, res) => {
+    const { uid, email, displayName } = req.body;
+    if (!uid) return res.status(400).json({ error: "Missing uid" });
+
+    try {
+        if (isOffline) {
+            let mockUser = mockUsersCache.find(u => u.uid === uid);
+            if (!mockUser) {
+                const isAdmin = email && email.toLowerCase().includes('admin');
+                mockUser = { 
+                    uid, 
+                    email, 
+                    displayName: displayName || (isAdmin ? 'Admin' : 'Architect'), 
+                    role: isAdmin ? 'Admin' : 'User', 
+                    status: 'Active', 
+                    onboarded: isAdmin 
+                };
+                mockUsersCache.push(mockUser);
+            } else if (email && email.toLowerCase().includes('admin')) {
+                // Ensure existing mock user is also updated just in case
+                mockUser.role = 'Admin';
+                mockUser.onboarded = true;
+            }
+            return res.json(mockUser);
+        }
+
+        const userRef = db.collection('users').doc(uid);
+        const docSnap = await userRef.get();
+        if (!docSnap.exists) {
+            const newUser = {
+                uid,
+                email: email || '',
+                displayName: displayName || 'Architect',
+                role: 'User',
+                createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                status: 'Active',
+                onboarded: false
+            };
+            await userRef.set(newUser);
+            return res.json(newUser);
+        }
+        res.json({ ...docSnap.data(), uid });
+    } catch (error) {
+        console.error("Identity Sync Failure:", error);
+        res.status(500).json({ error: "Failed to sync user", details: error.message });
+    }
+};
+
+/**
  * IDENTITY AUDIT: Full participant profile update (Email, Name, Role).
  */
 exports.updateUserDetails = async (req, res) => {

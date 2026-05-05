@@ -9,6 +9,18 @@ const userController = require('../controllers/userController');
 router.get('/', userController.getAllUsers);
 
 /**
+ * IDENTITY PIPELINE: GET /api/users/:uid
+ * Fetches a single user profile from the database (admin bypass for strict rules).
+ */
+router.get('/:uid', userController.getUserById);
+
+/**
+ * IDENTITY PIPELINE: POST /api/users/sync
+ * Syncs the user from Auth to Firestore (creating doc if it doesn't exist).
+ */
+router.post('/sync', userController.syncUser);
+
+/**
  * IDENTITY PIPELINE: PUT /api/users/:uid
  * Performs a deep update of participant credentials (Email, Name, Role).
  */

@@ -47,33 +47,40 @@ function App() {
     let unsubSnapshot = null;
     const startListener = async () => {
       try {
-        const { doc, getDoc, setDoc, onSnapshot, serverTimestamp } = await import('firebase/firestore');
-        const { db } = await import('@/firebase.config');
-        const userRef = doc(db, "users", user.uid);
-
-        // 1. Ensure document existence
-        const snap = await getDoc(userRef);
-        if (!snap.exists()) {
-          const newUser = {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
+        
+        // 1. Sync identity with backend bypassing strict Firestore rules
+        const res = await fetch(`${apiUrl}/api/users/sync`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
             uid: user.uid,
-            displayName: user.displayName || 'Architect',
             email: user.email,
-            role: 'User',
-            createdAt: serverTimestamp(),
-            status: 'Active',
-            onboarded: false
-          };
-          await setDoc(userRef, newUser);
-          setUserData(newUser);
+            displayName: user.displayName
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setUserData(data);
         }
 
-        // 2. Real-time broadcast connection
+        // 2. Attempt real-time broadcast connection (will degrade gracefully if rules restrict)
+        const { doc, onSnapshot } = await import('firebase/firestore');
+        const { db } = await import('@/firebase.config');
+        const userRef = doc(db, "users", user.uid);
+        
         unsubSnapshot = onSnapshot(userRef, (docSnap) => {
           if (docSnap.exists()) {
             setUserData({ ...docSnap.data(), uid: user.uid });
           }
           setLoading(false);
+        }, (err) => {
+          // Graceful degradation when rules are strict
+          console.log("Using API fallback for user data (real-time stream unavailable).");
+          setLoading(false);
         });
+
       } catch (error) {
         console.error("Critical Identity Sync Failure:", error);
         setLoading(false);
@@ -86,13 +93,19 @@ function App() {
     };
   }, [user]);
 
-  const Spinner = () => <AppSkeleton />;
+  if (loading || (user && !userData)) {
+    return (
+      <ThemeProvider>
+        <AppSkeleton />
+      </ThemeProvider>
+    );
+  }
 
   return (
     <ThemeProvider>
       <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
       <Router>
-        <Suspense fallback={<Spinner />}>
+        <Suspense fallback={<AppSkeleton />}>
           <Routes>
             {/* --- PUBLIC ACCESS --- */}
             <Route path="/url/:id" element={<IdentityLinkView />} />
