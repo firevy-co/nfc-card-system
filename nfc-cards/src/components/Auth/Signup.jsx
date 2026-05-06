@@ -41,6 +41,7 @@ const Signup = () => {
                 status: 'Active'
             });
 
+            localStorage.removeItem("onboarding_backup");
             navigate('/user/complete-profile');
         } catch (err) {
             setError(err.message.includes('email-already-in-use') ? 'Email already registered.' : err.message);
@@ -69,9 +70,22 @@ const Signup = () => {
                     createdAt: serverTimestamp(),
                     status: 'Active'
                 });
+                localStorage.removeItem("onboarding_backup");
                 navigate('/user/complete-profile');
             } else {
-                navigate('/');
+                const userData = userDoc.data();
+                localStorage.removeItem("onboarding_backup");
+                const hasData = userData.onboarded || userData.phone || userData.company || userData.job;
+                
+                if (hasData) {
+                    if (userData.role === 'Admin') {
+                        navigate('/admin/analytics');
+                    } else {
+                        navigate('/user/home');
+                    }
+                } else {
+                    navigate('/user/complete-profile');
+                }
             }
         } catch (err) {
             setError(err.message);

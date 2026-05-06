@@ -32,7 +32,19 @@ const Login = () => {
                 throw new Error("User identity is not defined in the network registry.");
             }
 
-            navigate('/');
+            const userData = userDoc.data();
+            localStorage.removeItem("onboarding_backup");
+            const hasData = userData.onboarded || userData.phone || userData.company || userData.job;
+            
+            if (hasData) {
+                if (userData.role === 'Admin') {
+                    navigate('/admin/analytics');
+                } else {
+                    navigate('/user/home');
+                }
+            } else {
+                navigate('/user/complete-profile');
+            }
         } catch (err) {
             let message = "Authentication failed.";
             if (err.message.includes('auth/invalid-credential')) {
@@ -66,9 +78,22 @@ const Login = () => {
                     createdAt: serverTimestamp(),
                     status: 'Active'
                 });
+                localStorage.removeItem("onboarding_backup");
                 navigate('/user/complete-profile');
             } else {
-                navigate('/');
+                const userData = userDoc.data();
+                localStorage.removeItem("onboarding_backup");
+                const hasData = userData.onboarded || userData.phone || userData.company || userData.job;
+                
+                if (hasData) {
+                    if (userData.role === 'Admin') {
+                        navigate('/admin/analytics');
+                    } else {
+                        navigate('/user/home');
+                    }
+                } else {
+                    navigate('/user/complete-profile');
+                }
             }
         } catch (err) {
             let message = "Google sign-in failed.";

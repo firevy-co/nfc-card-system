@@ -278,22 +278,7 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
       case 'service_prime': return <PrimeService userData={userData} />;
 
       default:
-        return (
-          <div className="flex-1 w-full h-full min-h-[400px] flex flex-col items-center justify-center bg-gray-50 p-10 text-center">
-            <div className="max-w-xs space-y-4">
-              <div className="w-14 h-14 bg-gray-100 border border-gray-200 rounded-2xl mx-auto flex items-center justify-center">
-                <span className="text-sm font-black text-slate-300">No Design</span>
-              </div>
-              <h2 className="text-base font-bold text-gray-800">No Preview Available</h2>
-              <p className="text-xs text-gray-400 font-medium leading-relaxed">
-                The design blueprint <span className="font-mono bg-gray-100 px-1.5 py-0.5 rounded text-gray-600">"{templateId}"</span> is not yet linked to a visual template.
-              </p>
-              <p className="text-[10px] text-gray-300 capitalize tracking-widest font-bold">
-                Select a valid Architecture Blueprint in the template settings.
-              </p>
-            </div>
-          </div>
-        );
+        return <ClassicRefined userData={userData} />;
     }
   };
 

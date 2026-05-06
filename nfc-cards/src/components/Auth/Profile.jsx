@@ -572,9 +572,7 @@ const inputClasses = `w-full bg-white border border-gray-200 rounded-full px-6 p
                                 <div className="w-48 h-48 rounded-full border-[12px] border-white shadow-2xl overflow-hidden bg-gray-50 flex items-center justify-center transition-transform group-hover:scale-[1.02] duration-500">
                                     {formData.profileImage ? (
                                         <img src={formData.profileImage} alt="Profile" className="w-full h-full object-cover" />
-                                    ) : (
-                                        <FiUser size={64} className="text-gray-200" />
-                                    )}
+                                    ) : null}
                                 </div>
 
                                 {/* Actions Overlay */}

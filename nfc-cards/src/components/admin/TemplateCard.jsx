@@ -89,16 +89,16 @@ export default function TemplateCard({
                         <div className="grid grid-cols-2 gap-3">
                             <button
                                 onClick={() => navigate(`${baseRoute}/templates${path}`)}
-                                className="flex items-center justify-center gap-2 bg-foreground text-background py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:brightness-110 hover:scale-[1.02] transition-all shadow-lg active:scale-95"
+                                className="flex items-center justify-center gap-2 bg-foreground text-background py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest cursor-pointer hover:brightness-110 hover:scale-[1.02] transition-all shadow-lg active:scale-95"
                             >
                                 <FiEye size={16} />
                                 Preview
                             </button>
                             <button
                                 onClick={onEdit}
-                                className="flex items-center justify-center gap-2 bg-white/5  text-foreground py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-black/10 :bg-white/20 transition-all border border-black/5  active:scale-95"
+                                className="flex items-center justify-center gap-2 bg-white/5 text-foreground py-3.5 rounded-2xl cursor-pointer text-[10px] font-black uppercase tracking-widest hover:bg-black/10 :bg-white/20 transition-all border border-black/5  active:scale-95"
                             >
-                                <FiEdit size={14} />
+                                {/* <FiEdit size={14} /> */}
                                 Edit Template
                             </button>
                             <button

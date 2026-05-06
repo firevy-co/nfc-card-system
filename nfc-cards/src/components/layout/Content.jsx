@@ -321,7 +321,7 @@ export default function Content({ userData }) {
               <div className="mb-4 lg:mb-8 flex items-center justify-between">
                 <div>
                   <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-accent mb-2">
-                    Industry Nodes
+                    Industry Templates
                   </h2>
                   <div className="h-1 w-12 bg-accent rounded-full"></div>
                 </div>
@@ -367,7 +367,7 @@ export default function Content({ userData }) {
                       <button
                         onClick={() => setSelectedCategory(category)}
                         className={`px-4 py-2 rounded-full font-bold text-xs tracking-wider transition-all border cursor-pointer flex-shrink-0 ${selectedCategory === category
-                          ? "bg-primary text-primary-foreground border-primary shadow-lg"
+                          ? "bg-gray-700 text-white border-black shadow-[0_0_15px_rgba(0,0,0,0.2)]"
                           : "bg-white text-muted-foreground border-border hover:border-accent/40 hover:text-foreground"
                           }`}
                       >
@@ -399,7 +399,7 @@ export default function Content({ userData }) {
                       <button
                         onClick={() => setSelectedCategory(category)}
                         className={`group flex items-center justify-between px-6 py-4 rounded-lg font-bold text-xs tracking-wider transition-all border cursor-pointer flex-1 ${selectedCategory === category
-                          ? "bg-primary text-primary-foreground border-primary shadow-lg"
+                          ? "bg-black text-white border-black shadow-[0_0_15px_rgba(0,0,0,0.2)]"
                           : "bg-white text-muted-foreground border-border hover:border-accent/40 hover:text-foreground"
                           }`}
                       >
@@ -463,7 +463,7 @@ export default function Content({ userData }) {
                     className="flex items-center justify-center gap-3 bg-primary text-primary-foreground cursor-pointer px-8 py-4 rounded-lg font-black text-[10px] uppercase tracking-[0.2em] hover:brightness-110 transition-all shadow-lg active:scale-95 group"
                   >
                     <FiPlus className="group-hover:rotate-90 transition-transform duration-300" />
-                    Add Node
+                    Add Template
                   </button>
                 )}
 

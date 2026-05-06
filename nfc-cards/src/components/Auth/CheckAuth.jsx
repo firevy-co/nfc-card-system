@@ -20,15 +20,17 @@ const ProtectedRoute = ({ children, user, userData, loading, adminOnly = false }
     }
 
     // 4. ONBOARDING ENFORCEMENT
-    // If not onboarded and not on the onboarding page, redirect to onboarding
     const isOnboardingPage = window.location.pathname === '/user/complete-profile' || window.location.pathname === '/admin/complete-profile';
+    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job;
     
-    if (userData && userData.role !== 'Admin' && !userData.onboarded && !isOnboardingPage) {
+    // If no data and not on the onboarding page, redirect to onboarding
+    if (userData && !hasData && !isOnboardingPage) {
         return <Navigate to="/user/complete-profile" />;
     }
 
-    // If already onboarded and trying to access onboarding page, redirect to home
-    if (userData?.onboarded && isOnboardingPage) {
+    // If has data and trying to access onboarding page, redirect to correct panel
+    if (userData && hasData && isOnboardingPage) {
+        if (userData.role === 'Admin') return <Navigate to="/admin/analytics" />;
         return <Navigate to="/user/home" />;
     }
 

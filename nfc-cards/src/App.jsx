@@ -86,20 +86,9 @@ function App() {
               setUserData({ ...docSnap.data(), uid: user.uid });
               setLoading(false);
             } else {
-              const newUser = {
-                uid: user.uid,
-                displayName: user.displayName || 'Architect',
-                email: user.email,
-                role: 'User',
-                createdAt: serverTimestamp(),
-                status: 'Active',
-                onboarded: false
-              };
-              await setDoc(userRef, newUser);
-              if (mounted) {
-                setUserData(newUser);
-                setLoading(false);
-              }
+              // Document doesn't exist yet, it's probably being created by Signup/Login.
+              // We just wait for the next snapshot.
+              console.log("Waiting for identity to be established...");
             }
           }, (error) => {
             if (mounted) {
@@ -200,13 +189,14 @@ function App() {
               path="/"
               element={
                 user ? (
-                  userData?.role === 'Admin' ? (
-                    <Navigate to="/admin/analytics" />
-                  ) : userData?.onboarded ? (
-                    <Navigate to="/user/home" />
-                  ) : (
-                    <Navigate to="/user/complete-profile" />
-                  )
+                  (() => {
+                    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job;
+                    if (hasData) {
+                      return userData?.role === 'Admin' ? <Navigate to="/admin/analytics" /> : <Navigate to="/user/home" />;
+                    } else {
+                      return <Navigate to="/user/complete-profile" />;
+                    }
+                  })()
                 ) : (
                   <Navigate to="/login" />
                 )

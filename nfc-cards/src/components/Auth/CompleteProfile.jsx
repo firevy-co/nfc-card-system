@@ -86,9 +86,30 @@ const CardPreview = ({ formData }) => {
                                 </a>
                             )}
                         </div>
-                        <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+                        {formData.address && (
+                            <a
+                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(formData.address)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`mt-3 p-3 rounded-2xl flex items-center gap-3 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/5'}`}
+                            >
+                                <Fa.FaMapMarkerAlt className="text-[#b8955d]" size={14} />
+                                <span className="text-[9px] font-black uppercase">{formData.address}</span>
+                            </a>
+                        )}
+                        {formData.website && (
+                            <a
+                                href={formData.website.startsWith('http') ? formData.website : `https://${formData.website}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`mt-3 w-full py-3 rounded-2xl flex items-center justify-center gap-2 border transition-all hover:scale-[1.02] active:scale-95 font-black text-[9px] uppercase tracking-widest ${light ? 'bg-black/5 border-black/10 text-black' : 'bg-white/5 border-white/10 text-white'}`}
+                            >
+                                <Fa.FaGlobe size={12} className="text-[#b8955d]" />
+                                Visit Website
+                            </a>
+                        )}
+                        <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
                             {[
-                                { id: 'website', icon: Fa.FaGlobe, prefix: '' },
                                 { id: 'linkedin', icon: Fa.FaLinkedin, prefix: 'https://linkedin.com/in/' },
                                 { id: 'instagram', icon: Fa.FaInstagram, prefix: 'https://instagram.com/' },
                                 { id: 'twitter', icon: Fa.FaTwitter, prefix: 'https://twitter.com/' },
@@ -96,7 +117,7 @@ const CardPreview = ({ formData }) => {
                             ].map(social => formData[social.id] && (
                                 <a
                                     key={social.id}
-                                    href={social.id === 'website' ? (formData.website.startsWith('http') ? formData.website : `https://${formData.website}`) : `${social.prefix}${formData[social.id]}`}
+                                    href={`${social.prefix}${formData[social.id]}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all hover:scale-110 ${light ? "bg-black/5 border-black/5" : "bg-white/10 border-white/5"}`}
@@ -140,6 +161,28 @@ const CardPreview = ({ formData }) => {
                             <h3 className="text-lg font-black leading-tight">{formData.name || "Your Name"}</h3>
                             <p className="text-[10px] opacity-60 font-bold uppercase tracking-widest">{formData.businessRole}</p>
                         </div>
+                        {formData.address && (
+                            <a
+                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(formData.address)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`w-full p-3 rounded-2xl flex items-center gap-3 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/5'}`}
+                            >
+                                <Fa.FaMapMarkerAlt className="text-[#b8955d] shrink-0" size={14} />
+                                <span className="text-[8px] font-black uppercase tracking-widest truncate">{formData.address}</span>
+                            </a>
+                        )}
+                        {formData.website && (
+                            <a
+                                href={formData.website.startsWith('http') ? formData.website : `https://${formData.website}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`w-full py-3 rounded-[2rem] flex items-center justify-center gap-2 border transition-all hover:scale-[1.02] active:scale-95 font-black text-[8px] uppercase tracking-widest ${light ? 'bg-black/5 border-black/10 text-black' : 'bg-white/5 border-white/10 text-white'}`}
+                            >
+                                <Fa.FaGlobe size={11} className="text-[#b8955d]" />
+                                Visit Website
+                            </a>
+                        )}
                         <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
                             {[
                                 { id: 'linkedin', icon: Fa.FaLinkedin, prefix: 'https://linkedin.com/in/' },
@@ -193,6 +236,17 @@ const CardPreview = ({ formData }) => {
                                         <span className="text-[9px] font-black uppercase tracking-widest">{formData.address || "Global Presence"}</span>
                                     </a>
                                 )}
+                                {formData.website && (
+                                    <a
+                                        href={formData.website.startsWith('http') ? formData.website : `https://${formData.website}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-3 opacity-70 transition-all hover:opacity-100"
+                                    >
+                                        <Fa.FaGlobe size={12} className="text-[#b8955d]" />
+                                        <span className="text-[9px] font-black uppercase tracking-widest truncate">{formData.website}</span>
+                                    </a>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -235,6 +289,28 @@ const CardPreview = ({ formData }) => {
                                 <p className="text-[8px] font-black opacity-40 mb-1 uppercase tracking-widest">Primary Objective</p>
                                 <p className="text-[10px] font-black leading-relaxed italic">{formData.job || "Strategic Leadership & Identity Deployment"}</p>
                             </div>
+                            {formData.address && (
+                                <a
+                                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(formData.address)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`mt-2 w-full p-3 rounded-[1.5rem] flex items-center gap-3 border transition-all active:scale-95 ${light ? 'bg-black/5 border-black/5' : 'bg-white/10 border-white/10'}`}
+                                >
+                                    <Fa.FaMapMarkerAlt className="text-[#b8955d] shrink-0" size={13} />
+                                    <span className="text-[8px] font-black uppercase tracking-widest truncate">{formData.address}</span>
+                                </a>
+                            )}
+                            {formData.website && (
+                                <a
+                                    href={formData.website.startsWith('http') ? formData.website : `https://${formData.website}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`mt-2 w-full py-3 rounded-[1.5rem] flex items-center justify-center gap-2 border transition-all hover:scale-[1.02] active:scale-95 font-black text-[8px] uppercase tracking-widest ${light ? 'bg-black/5 border-black/10 text-black' : 'bg-white/5 border-white/10 text-white'}`}
+                                >
+                                    <Fa.FaGlobe size={11} className="text-[#b8955d]" />
+                                    Visit Website
+                                </a>
+                            )}
                             <button className={`mt-6 w-full py-4 rounded-[2.5rem] font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl ${light ? 'bg-black text-white' : 'bg-white text-black'}`}>
                                 Save Contact
                             </button>
@@ -391,7 +467,11 @@ const CompleteProfile = ({ userData }) => {
 
         if (backup) {
             try {
-                return { ...baseData, ...JSON.parse(backup) };
+                const parsed = JSON.parse(backup);
+                // SECURITY: Always use current user's email, never restore from backup.
+                // This prevents a previous user's email from appearing for a new user.
+                delete parsed.email;
+                return { ...baseData, ...parsed };
             } catch (e) {
                 console.error("Backup parse failed", e);
             }
@@ -404,11 +484,19 @@ const CompleteProfile = ({ userData }) => {
         let changed = false;
         const merged = { ...formData };
         Object.keys(userData).forEach(key => {
-            if (userData[key] && userData[key] !== "" && formData[key] !== userData[key]) {
+            // Only merge cloud data if the local form data field is empty
+            // This prevents overwriting user's active unsaved changes after a refresh
+            if (userData[key] && userData[key] !== "" && (!formData[key] || formData[key] === "")) {
                 merged[key] = userData[key];
                 changed = true;
             }
         });
+        // ALWAYS force email from the currently logged-in user's profile.
+        // This overrides any stale value that may have come from a previous session's backup.
+        if (userData.email && merged.email !== userData.email) {
+            merged.email = userData.email;
+            changed = true;
+        }
         if (changed) {
             setFormData(merged);
         }
@@ -418,7 +506,19 @@ const CompleteProfile = ({ userData }) => {
     // Save to localStorage on change - GUARDED
     useEffect(() => {
         if (prevUserData) {
-            localStorage.setItem("onboarding_backup", JSON.stringify(formData));
+            try {
+                // Exclude large base64 strings to prevent QuotaExceededError
+                const backupData = { ...formData };
+                if (backupData.logo && backupData.logo.startsWith('data:image')) delete backupData.logo;
+                if (backupData.profileImage && backupData.profileImage.startsWith('data:image')) delete backupData.profileImage;
+                // SECURITY: Never persist email to localStorage backup.
+                // Email is always sourced from the live authenticated session.
+                delete backupData.email;
+                
+                localStorage.setItem("onboarding_backup", JSON.stringify(backupData));
+            } catch (err) {
+                console.warn("Failed to save backup to localStorage", err);
+            }
         }
     }, [formData, prevUserData]);
 
@@ -475,10 +575,36 @@ const CompleteProfile = ({ userData }) => {
             });
             if (!response.ok) throw new Error("Onboarding failed");
             
+            // FIX: Race condition prevention.
+            // The backend sets onboarded:true via Admin SDK, but the client-side
+            // onSnapshot listener in App.jsx may not have received the update yet
+            // when navigate() fires. We do a direct client-side Firestore update
+            // here so the local snapshot fires IMMEDIATELY — ensuring CheckAuth
+            // has fresh userData before the navigation resolves.
+            try {
+                const { doc, updateDoc } = await import('firebase/firestore');
+                const { db } = await import('@/firebase.config');
+                await updateDoc(doc(db, "users", userData.uid), {
+                    onboarded: true,
+                    phone: formData.phone || '',
+                    company: formData.company || '',
+                    job: formData.job || '',
+                });
+            } catch (fsErr) {
+                // Non-critical: backend already saved, just log and continue
+                console.warn("[ONBOARD]: Client-side snapshot sync skipped:", fsErr.message);
+            }
+            
             // Clear backup on success
             localStorage.removeItem("onboarding_backup");
             
-            navigate("/user/home");
+            // Determine role from userData (authoritative source) or fallback to formData
+            const role = userData?.role || formData.role || 'User';
+            if (role === 'Admin') {
+                navigate("/admin/analytics");
+            } else {
+                navigate("/user/home");
+            }
         })();
 
         toast.promise(savePromise, {
@@ -488,8 +614,11 @@ const CompleteProfile = ({ userData }) => {
         });
     };
 
-    if (isAdmin) return <Navigate to="/admin/analytics" />;
-    if (userData?.onboarded) return <Navigate to="/user/home" />;
+    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job;
+    if (hasData) {
+        if (isAdmin) return <Navigate to="/admin/analytics" />;
+        return <Navigate to="/user/home" />;
+    }
 
 
 
@@ -819,18 +948,42 @@ const CompleteProfile = ({ userData }) => {
                                         <option key={role} value={role}>{role}</option>
                                     ))}
                                 </select>
-                            ) : (
-                                <input
-                                    className="w-full p-3 border rounded-lg"
-                                    value={formData[activeField] || ""}
-                                    onChange={(e) =>
-                                        setFormData({
-                                            ...formData,
-                                            [activeField]: e.target.value,
-                                        })
-                                    }
-                                />
-                            )}
+                            ) : (() => {
+                                const isNumericField = ['phone', 'whatsapp', 'skype'].includes(activeField);
+                                return (
+                                    <div className="space-y-2">
+                                        <input
+                                            className="w-full p-3 border rounded-lg focus:border-black outline-none transition-all"
+                                            type={isNumericField ? 'tel' : 'text'}
+                                            inputMode={isNumericField ? 'numeric' : 'text'}
+                                            value={formData[activeField] || ""}
+                                            placeholder={isNumericField ? 'e.g. +91 9876543210' : ''}
+                                            onChange={(e) => {
+                                                let val = e.target.value;
+                                                if (isNumericField) {
+                                                    // Allow only digits, +, spaces, and dashes
+                                                    val = val.replace(/[^0-9+\s-]/g, '');
+                                                }
+                                                setFormData({ ...formData, [activeField]: val });
+                                            }}
+                                            onKeyDown={(e) => {
+                                                if (isNumericField) {
+                                                    // Block letters and symbols except allowed keys
+                                                    const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', 'Home', 'End', '+', '-', ' '];
+                                                    if (!/^\d$/.test(e.key) && !allowed.includes(e.key)) {
+                                                        e.preventDefault();
+                                                    }
+                                                }
+                                            }}
+                                        />
+                                        {isNumericField && (
+                                            <p className="text-[10px] text-gray-400 font-medium">
+                                                Only numbers are accepted. You may include <span className="font-bold text-gray-600">+</span> for country code.
+                                            </p>
+                                        )}
+                                    </div>
+                                );
+                            })()}
 
                             <div className="flex justify-end gap-3 mt-4">
                                 <button onClick={() => setActiveField(null)}>
