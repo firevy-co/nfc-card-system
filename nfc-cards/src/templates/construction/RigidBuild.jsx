@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiArrowUpRight,
@@ -105,20 +105,31 @@ const RingBuild = ({ userData }) => {
       ]
    };
 
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
    const data = {
+      ...fictionalData,
       displayName: userData?.displayName || fictionalData.displayName,
-      role: userData?.designation || userData?.role || fictionalData.role,
-      phone: userData?.mobileNumber || userData?.phone || fictionalData.phone,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
       email: userData?.email || fictionalData.email,
       website: userData?.website || fictionalData.website,
-      address: userData?.address || userData?.city || fictionalData.address,
-      companyName: userData?.companyName || fictionalData.businessName,
-      bio: userData?.bio || fictionalData.bio,
-      avatar: userData?.avatar,
-      logo: userData?.logo,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
       linkedin: userData?.linkedin || fictionalData.linkedin,
       twitter: userData?.twitter || fictionalData.twitter,
       instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
    };
 
    const vCardData = { ...userData, ...fictionalData };
@@ -163,7 +174,7 @@ const RingBuild = ({ userData }) => {
                   initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.8, delay: 0.2, type: "spring" }}
                   className="w-full h-[320px] rounded-t-[10rem] border-[6px] border-white shadow-[0_20px_40px_rgba(0,0,0,0.1)] overflow-hidden relative z-10 bg-[#E5E5E5]"
                >
-                  <img src={data.avatar || fictionalData.bannerImage} alt="Cover" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-90 hover:grayscale-0 hover:mix-blend-normal transition-all duration-1000" />
+                  <img src={data.avatar || data.bannerImage} alt="Cover" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-90 hover:grayscale-0 hover:mix-blend-normal transition-all duration-1000" />
 
                   {/* Small Floating Logo/Badge */}
                   {(data.logo || data.avatar) && (

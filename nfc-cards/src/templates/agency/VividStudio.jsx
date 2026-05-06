@@ -100,9 +100,32 @@ const MonochromeTimeline = ({ userData }) => {
     visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } }
   };
 
-  // We are merging the passed userData simply for the downloadVCard functionality, 
-  // but strictly displaying the fictional layout data.
-  const vCardData = { ...userData, ...fictionalData };
+  // ✅ MERGE: userData takes priority over fictional placeholders
+  const data = {
+    ...fictionalData,
+    displayName: userData?.displayName || fictionalData.displayName,
+    role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role,
+    phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+    email: userData?.email || fictionalData.email,
+    website: userData?.website || fictionalData.website,
+    address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+    businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName,
+    whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+    linkedin: userData?.linkedin || fictionalData.linkedin,
+    twitter: userData?.twitter || fictionalData.twitter,
+    instagram: userData?.instagram || fictionalData.instagram,
+    facebook: userData?.facebook || fictionalData.facebook,
+    github: userData?.github || fictionalData.github,
+    youtube: userData?.youtube || fictionalData.youtube,
+    tiktok: userData?.tiktok || fictionalData.tiktok,
+    telegram: userData?.telegram || fictionalData.telegram,
+    bio: userData?.bio || fictionalData.bio,
+    profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage,
+    coverImage: userData?.coverPhoto || userData?.bannerImage || fictionalData.coverImage,
+  };
+
+  // vCard still uses live userData for downloading
+  const vCardData = { ...userData, ...data };
 
   return (
     <div className="w-full min-h-screen bg-[#0a0a0a] text-white font-['Helvetica_Neue',Helvetica,Arial,sans-serif] selection:bg-white selection:text-black">
@@ -114,7 +137,7 @@ const MonochromeTimeline = ({ userData }) => {
 
         {/* ================= HERO COVER ================= */}
         <div className="w-full h-80 relative overflow-hidden grayscale contrast-125">
-          <img src={fictionalData.coverImage} alt="Cover" className="w-full h-full object-cover" />
+          <img src={data.coverImage} alt="Cover" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
         </div>
 
@@ -128,19 +151,19 @@ const MonochromeTimeline = ({ userData }) => {
             <TimelineNode icon={FiStar} />
 
             <div className="mb-6">
-              <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-24 h-24 object-cover grayscale rounded-none border border-white/20" />
+              <img src={data.profileImage} alt={data.displayName} className="w-24 h-24 object-cover grayscale rounded-none border border-white/20" />
             </div>
 
             <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tighter leading-[0.85] mb-4">
-              {fictionalData.displayName.split(' ').map((name, i) => <span key={i} className="block">{name}</span>)}
+              {data.displayName.split(' ').map((name, i) => <span key={i} className="block">{name}</span>)}
             </h1>
 
             <p className="text-white/60 uppercase tracking-[0.3em] text-[10px] font-bold mb-6 flex items-center gap-2">
-              <span className="w-4 h-[1px] bg-white/60" /> {fictionalData.role}
+              <span className="w-4 h-[1px] bg-white/60" /> {data.role}
             </p>
 
             <p className="text-sm font-serif italic text-white/80 leading-relaxed mb-8">
-              "{fictionalData.bio}"
+              "{data.bio}"
             </p>
 
             {/* Quick Stats Grid */}
@@ -160,23 +183,23 @@ const MonochromeTimeline = ({ userData }) => {
             <h2 className="text-[10px] uppercase tracking-[0.4em] text-white/40 mb-8 font-bold">Communications</h2>
 
             <div className="flex flex-col gap-1">
-              <a href={`tel:${fictionalData.phone}`} className="flex items-center justify-between py-4 border-b border-white/10 hover:border-white transition-colors group">
+              <a href={`tel:${data.phone}`} className="flex items-center justify-between py-4 border-b border-white/10 hover:border-white transition-colors group">
                 <span className="text-sm font-bold uppercase tracking-widest text-white/60 group-hover:text-white transition-colors">Telephone</span>
-                <span className="text-sm font-serif italic">{fictionalData.phone}</span>
+                <span className="text-sm font-serif italic">{data.phone}</span>
               </a>
-              <a href={`mailto:${fictionalData.email}`} className="flex items-center justify-between py-4 border-b border-white/10 hover:border-white transition-colors group">
+              <a href={`mailto:${data.email}`} className="flex items-center justify-between py-4 border-b border-white/10 hover:border-white transition-colors group">
                 <span className="text-sm font-bold uppercase tracking-widest text-white/60 group-hover:text-white transition-colors">Email</span>
-                <span className="text-sm font-serif italic truncate max-w-[150px]">{fictionalData.email}</span>
+                <span className="text-sm font-serif italic truncate max-w-[150px]">{data.email}</span>
               </a>
-              <a href={`https://${fictionalData.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between py-4 border-b border-white/10 hover:border-white transition-colors group">
+              <a href={`https://${data.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between py-4 border-b border-white/10 hover:border-white transition-colors group">
                 <span className="text-sm font-bold uppercase tracking-widest text-white/60 group-hover:text-white transition-colors">Website</span>
                 <span className="text-sm font-serif italic flex items-center gap-2">
-                  {fictionalData.website} <FiArrowRight className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                  {data.website} <FiArrowRight className="opacity-0 group-hover:opacity-100 transition-opacity" />
                 </span>
               </a>
-              <a href={`https://maps.google.com/?q=${encodeURIComponent(fictionalData.address)}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between py-4 border-b border-white/10 hover:border-white transition-colors group">
+              <a href={`https://maps.google.com/?q=${encodeURIComponent(data.address)}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between py-4 border-b border-white/10 hover:border-white transition-colors group">
                 <span className="text-sm font-bold uppercase tracking-widest text-white/60 group-hover:text-white transition-colors">Location</span>
-                <span className="text-sm font-serif italic truncate max-w-[150px]">{fictionalData.address}</span>
+                <span className="text-sm font-serif italic truncate max-w-[150px]">{data.address}</span>
               </a>
             </div>
           </motion.div>
@@ -264,10 +287,10 @@ const MonochromeTimeline = ({ userData }) => {
 
             <div className="flex flex-wrap gap-4 mb-12">
               {[
-                { val: fictionalData.instagram, icon: FiInstagram, link: `https://instagram.com/${fictionalData.instagram}` },
-                { val: fictionalData.linkedin, icon: FiLinkedin, link: `https://linkedin.com/in/${fictionalData.linkedin}` },
-                { val: fictionalData.twitter, icon: FiTwitter, link: `https://twitter.com/${fictionalData.twitter}` },
-                { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` }
+                { val: data.instagram, icon: FiInstagram, link: `https://instagram.com/${data.instagram}` },
+                { val: data.linkedin, icon: FiLinkedin, link: `https://linkedin.com/in/${data.linkedin}` },
+                { val: data.twitter, icon: FiTwitter, link: `https://twitter.com/${data.twitter}` },
+                { val: data.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${data.whatsapp}` }
               ].map((social, i) => social.val && (
                 <a
                   key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"

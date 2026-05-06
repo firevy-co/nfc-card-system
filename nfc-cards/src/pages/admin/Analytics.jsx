@@ -52,105 +52,119 @@ const Analytics = ({ user, userData }) => {
    });
 
    useEffect(() => {
+      let mounted = true;
+      let unsubUsers = null;
+      let unsubTemplates = null;
+      let unsubInquiries = null;
+
       // 1. Listen for Users
-      const unsubUsers = onSnapshot(collection(db, "users"), (snap) => {
-         const users = snap.docs.map(doc => doc.data());
-         const onboarded = users.filter(u => u.onboarded).length;
-         const devProgress = users.length > 0 ? Math.round((onboarded / users.length) * 100) : 0;
-         
-         setStats(prev => ({ 
-            ...prev, 
-            usersCount: snap.size,
-            onboardedCount: onboarded,
-            progress: {
-               ...prev.progress,
-               development: devProgress,
-               total: Math.round((devProgress + prev.progress.design + prev.progress.testing) / 3)
-            }
-         }));
-      });
+      try {
+         unsubUsers = onSnapshot(collection(db, "users"), (snap) => {
+            if (!mounted) return;
+            const users = snap.docs.map(doc => doc.data());
+            const onboarded = users.filter(u => u.onboarded).length;
+            const devProgress = users.length > 0 ? Math.round((onboarded / users.length) * 100) : 0;
+            
+            setStats(prev => ({ 
+               ...prev, 
+               usersCount: snap.size,
+               onboardedCount: onboarded,
+               progress: {
+                  ...prev.progress,
+                  development: devProgress,
+                  total: Math.round((devProgress + prev.progress.design + prev.progress.testing) / 3)
+               }
+            }));
+         }, (_err) => { /* silently ignore permission / assertion errors */ });
+      } catch (_) { /* Firestore client in bad state — skip */ }
 
       // 2. Listen for Templates
-      const unsubTemplates = onSnapshot(collection(db, "templates"), (snap) => {
-         const totalPossibleTemplates = 50; // Reference point for progress
-         const designProgress = Math.min(100, Math.round((snap.size / totalPossibleTemplates) * 100));
-         
-         setStats(prev => ({ 
-            ...prev, 
-            templatesCount: snap.size,
-            progress: {
-               ...prev.progress,
-               design: designProgress,
-               total: Math.round((prev.progress.development + designProgress + prev.progress.testing) / 3)
-            }
-         }));
-      });
+      try {
+         unsubTemplates = onSnapshot(collection(db, "templates"), (snap) => {
+            if (!mounted) return;
+            const totalPossibleTemplates = 50;
+            const designProgress = Math.min(100, Math.round((snap.size / totalPossibleTemplates) * 100));
+            
+            setStats(prev => ({ 
+               ...prev, 
+               templatesCount: snap.size,
+               progress: {
+                  ...prev.progress,
+                  design: designProgress,
+                  total: Math.round((prev.progress.development + designProgress + prev.progress.testing) / 3)
+               }
+            }));
+         }, (_err) => { /* silently ignore permission / assertion errors */ });
+      } catch (_) { /* Firestore client in bad state — skip */ }
 
       // 3. Listen for Inquiries
-      const unsubInquiries = onSnapshot(collection(db, "inquiries"), (snap) => {
-         const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-         
-         // Calculate Project Status (Pie Chart)
-         const resolved = data.filter(iq => iq.status === "Resolved").length;
-         const processing = data.filter(iq => iq.status === "Processing").length;
-         const unread = data.filter(iq => iq.status === "Unread").length;
-
-         const testingProgress = data.length > 0 ? Math.round((resolved / data.length) * 100) : 0;
-
-         // Calculate Trend Data (Last 5 days)
-         const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-         const last5Days = [];
-         for(let i = 4; i >= 0; i--) {
-            const d = new Date();
-            d.setDate(d.getDate() - i);
-            const dayName = days[d.getDay()];
-            const dayStart = new Date(d.setHours(0,0,0,0));
-            const dayEnd = new Date(d.setHours(23,59,59,999));
+      try {
+         unsubInquiries = onSnapshot(collection(db, "inquiries"), (snap) => {
+            if (!mounted) return;
+            const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             
-            const activeInDay = data.filter(iq => {
-               const created = iq.createdAt?.toDate?.() || new Date(iq.createdAt);
-               return created >= dayStart && created <= dayEnd;
-            }).length;
+            const resolved = data.filter(iq => iq.status === "Resolved").length;
+            const processing = data.filter(iq => iq.status === "Processing").length;
+            const unread = data.filter(iq => iq.status === "Unread").length;
 
-            last5Days.push({ day: dayName, active: activeInDay, pause: Math.max(0, activeInDay - 1) });
-         }
+            const testingProgress = data.length > 0 ? Math.round((resolved / data.length) * 100) : 0;
 
-         // Calculate Productivity Time (Mocking hours based on inquiry count for realism)
-         const totalHours = data.length * 2.5;
-         const pulseHours = Math.floor(totalHours);
-         const pulseMinutes = Math.round((totalHours - pulseHours) * 60);
-         
-         setStats(prev => ({ 
-            ...prev, 
-            inquiriesCount: snap.size,
-            recentActivities: data.slice(0, 4).map(iq => ({
-               label: `Inquiry from ${iq.name || 'Anonymous'}`,
-               time: iq.createdAt?.toDate ? iq.createdAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now'
-            })),
-            projectData: [
-               { name: "Completed", value: resolved, color: "#22c55e" },
-               { name: "In Progress", value: processing, color: "#ec4899" },
-               { name: "Upcoming", value: unread, color: "#3b82f6" },
-            ],
-            trendData: last5Days,
-            progress: {
-               ...prev.progress,
-               testing: testingProgress,
-               total: Math.round((prev.progress.development + prev.progress.design + testingProgress) / 3)
-            },
-            productivity: {
-               pulse: `${pulseHours}h ${pulseMinutes}m`,
-               delay: `${Math.floor(unread * 0.5)}h ${Math.round((unread * 0.5 % 1) * 60)}m`,
-               pulseChange: Math.round((resolved / (data.length || 1)) * 100),
-               delayChange: Math.round((unread / (data.length || 1)) * 100)
+            const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const last5Days = [];
+            for(let i = 4; i >= 0; i--) {
+               const d = new Date();
+               d.setDate(d.getDate() - i);
+               const dayName = days[d.getDay()];
+               const dayStart = new Date(d.setHours(0,0,0,0));
+               const dayEnd = new Date(d.setHours(23,59,59,999));
+               
+               const activeInDay = data.filter(iq => {
+                  const created = iq.createdAt?.toDate?.() || new Date(iq.createdAt);
+                  return created >= dayStart && created <= dayEnd;
+               }).length;
+
+               last5Days.push({ day: dayName, active: activeInDay, pause: Math.max(0, activeInDay - 1) });
             }
-         }));
-      });
+
+            const totalHours = data.length * 2.5;
+            const pulseHours = Math.floor(totalHours);
+            const pulseMinutes = Math.round((totalHours - pulseHours) * 60);
+            
+            setStats(prev => ({ 
+               ...prev, 
+               inquiriesCount: snap.size,
+               recentActivities: data.slice(0, 4).map(iq => ({
+                  label: `Inquiry from ${iq.name || 'Anonymous'}`,
+                  time: iq.createdAt?.toDate ? iq.createdAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now'
+               })),
+               projectData: [
+                  { name: "Completed", value: resolved, color: "#22c55e" },
+                  { name: "In Progress", value: processing, color: "#ec4899" },
+                  { name: "Upcoming", value: unread, color: "#3b82f6" },
+               ],
+               trendData: last5Days,
+               progress: {
+                  ...prev.progress,
+                  testing: testingProgress,
+                  total: Math.round((prev.progress.development + prev.progress.design + testingProgress) / 3)
+               },
+               productivity: {
+                  pulse: `${pulseHours}h ${pulseMinutes}m`,
+                  delay: `${Math.floor(unread * 0.5)}h ${Math.round((unread * 0.5 % 1) * 60)}m`,
+                  pulseChange: Math.round((resolved / (data.length || 1)) * 100),
+                  delayChange: Math.round((unread / (data.length || 1)) * 100)
+               }
+            }));
+         }, (_err) => { /* silently ignore permission / assertion errors */ });
+      } catch (_) { /* Firestore client in bad state — skip */ }
 
       return () => {
-         unsubUsers();
-         unsubTemplates();
-         unsubInquiries();
+         mounted = false;
+         [unsubUsers, unsubTemplates, unsubInquiries].forEach(unsub => {
+            if (unsub) {
+               try { unsub(); } catch (_) { /* ignore cleanup errors */ }
+            }
+         });
       };
    }, []);
 

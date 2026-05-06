@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiLinkedin,
@@ -109,6 +109,34 @@ const ModernVCard = ({ userData }) => {
 
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    return (
       <div className="w-full min-h-screen bg-[#F3F4F6] text-gray-800 font-['Inter',sans-serif] pb-24 flex justify-center">
 
@@ -119,7 +147,7 @@ const ModernVCard = ({ userData }) => {
             <div className="bg-white rounded-b-[2rem] shadow-sm pb-8 mb-4 relative z-10">
                {/* Banner */}
                <div className="h-56 w-full relative">
-                  <img src={fictionalData.bannerImage} alt="Banner" className="w-full h-full object-cover rounded-b-[2rem]" />
+                  <img src={data.bannerImage} alt="Banner" className="w-full h-full object-cover rounded-b-[2rem]" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-b-[2rem]" />
                   {/* Top Share Icon Mock */}
                   <div className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white cursor-pointer hover:bg-white/40">
@@ -130,7 +158,7 @@ const ModernVCard = ({ userData }) => {
                {/* Profile Picture (Overlapping) */}
                <div className="relative flex justify-center -mt-16">
                   <div className="w-32 h-32 rounded-full p-1.5 bg-white shadow-lg">
-                     <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover rounded-full" />
+                     <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover rounded-full" />
                   </div>
                   {/* Verified/Status Tick */}
                   <div className="absolute bottom-2 right-[35%] w-6 h-6 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center shadow-sm">
@@ -140,11 +168,11 @@ const ModernVCard = ({ userData }) => {
 
                {/* Identity */}
                <div className="text-center mt-4 px-6">
-                  <h1 className="text-2xl font-bold text-gray-900 mb-1">{fictionalData.displayName}</h1>
-                  <p className="text-blue-600 font-medium text-sm mb-3">{fictionalData.role}</p>
+                  <h1 className="text-2xl font-bold text-gray-900 mb-1">{data.displayName}</h1>
+                  <p className="text-blue-600 font-medium text-sm mb-3">{data.role}</p>
 
                   <div className="inline-block bg-gray-100 text-gray-600 px-4 py-1.5 rounded-full text-xs font-semibold mb-6">
-                     {fictionalData.company}
+                     {data.company}
                   </div>
 
                   {/* Action Buttons */}
@@ -158,7 +186,7 @@ const ModernVCard = ({ userData }) => {
                      </motion.button>
                      <motion.a
                         whileTap={{ scale: 0.95 }}
-                        href={`https://wa.me/${fictionalData.whatsapp}`}
+                        href={`https://wa.me/${data.whatsapp}`}
                         target="_blank" rel="noopener noreferrer"
                         className="w-12 h-12 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg shadow-[#25D366]/20 shrink-0"
                      >
@@ -173,50 +201,50 @@ const ModernVCard = ({ userData }) => {
                {/* ================= 2. ABOUT US ================= */}
                <SectionCard delay={0.1}>
                   <p className="text-gray-600 text-sm leading-relaxed text-center">
-                     {fictionalData.bio}
+                     {data.bio}
                   </p>
                </SectionCard>
 
                {/* ================= 3. CONTACT INFO ================= */}
                <SectionCard title="Contact Details" icon={FiPhone} delay={0.2}>
                   <div className="space-y-4">
-                     <a href={`tel:${fictionalData.phone}`} className="flex items-center gap-4 group">
+                     <a href={`tel:${data.phone}`} className="flex items-center gap-4 group">
                         <div className="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0">
                            <FiPhone size={20} />
                         </div>
                         <div className="border-b border-gray-100 pb-4 w-full group-hover:border-blue-200 transition-colors">
                            <p className="text-xs text-gray-500 font-medium mb-0.5">Mobile</p>
-                           <p className="text-sm font-semibold text-gray-800">{fictionalData.phone}</p>
+                           <p className="text-sm font-semibold text-gray-800">{data.phone}</p>
                         </div>
                      </a>
 
-                     <a href={`mailto:${fictionalData.email}`} className="flex items-center gap-4 group">
+                     <a href={`mailto:${data.email}`} className="flex items-center gap-4 group">
                         <div className="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0">
                            <FiMail size={20} />
                         </div>
                         <div className="border-b border-gray-100 pb-4 w-full group-hover:border-blue-200 transition-colors">
                            <p className="text-xs text-gray-500 font-medium mb-0.5">Email</p>
-                           <p className="text-sm font-semibold text-gray-800">{fictionalData.email}</p>
+                           <p className="text-sm font-semibold text-gray-800">{data.email}</p>
                         </div>
                      </a>
 
-                     <a href={`https://${fictionalData.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group">
+                     <a href={`https://${data.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group">
                         <div className="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0">
                            <FiGlobe size={20} />
                         </div>
                         <div className="border-b border-gray-100 pb-4 w-full group-hover:border-blue-200 transition-colors">
                            <p className="text-xs text-gray-500 font-medium mb-0.5">Website</p>
-                           <p className="text-sm font-semibold text-gray-800">{fictionalData.website}</p>
+                           <p className="text-sm font-semibold text-gray-800">{data.website}</p>
                         </div>
                      </a>
 
-                     <a href={`https://maps.google.com/?q=${encodeURIComponent(fictionalData.address)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group">
+                     <a href={`https://maps.google.com/?q=${encodeURIComponent(data.address)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group">
                         <div className="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors shrink-0">
                            <FiMapPin size={20} />
                         </div>
                         <div className="w-full">
                            <p className="text-xs text-gray-500 font-medium mb-0.5">Location</p>
-                           <p className="text-sm font-semibold text-gray-800 leading-snug">{fictionalData.address}</p>
+                           <p className="text-sm font-semibold text-gray-800 leading-snug">{data.address}</p>
                         </div>
                      </a>
                   </div>
@@ -226,9 +254,9 @@ const ModernVCard = ({ userData }) => {
                <SectionCard title="Social Links" icon={FiGlobe} delay={0.3}>
                   <div className="grid grid-cols-4 gap-4">
                      {[
-                        { icon: FiInstagram, link: `https://instagram.com/${fictionalData.instagram}`, color: 'bg-pink-50 text-pink-600 hover:bg-pink-600' },
-                        { icon: FiLinkedin, link: `https://linkedin.com/in/${fictionalData.linkedin}`, color: 'bg-blue-50 text-blue-600 hover:bg-blue-600' },
-                        { icon: FaYoutube, link: `https://youtube.com/${fictionalData.youtube}`, color: 'bg-red-50 text-red-600 hover:bg-red-600' },
+                        { icon: FiInstagram, link: `https://instagram.com/${data.instagram}`, color: 'bg-pink-50 text-pink-600 hover:bg-pink-600' },
+                        { icon: FiLinkedin, link: `https://linkedin.com/in/${data.linkedin}`, color: 'bg-blue-50 text-blue-600 hover:bg-blue-600' },
+                        { icon: FaYoutube, link: `https://youtube.com/${data.youtube}`, color: 'bg-red-50 text-red-600 hover:bg-red-600' },
                         { icon: FaPinterest, link: `https://pinterest.com/${fictionalData.pinterest}`, color: 'bg-rose-50 text-rose-600 hover:bg-rose-600' }
                      ].map((social, idx) => (
                         <a key={idx} href={social.link || null} target="_blank" rel="noopener noreferrer" className={`w-14 h-14 rounded-full mx-auto flex items-center justify-center transition-colors group ${social.color.split(' ')[0]} ${social.color.split(' ')[1]} ${social.color.split(' ')[2]} hover:text-white`}>

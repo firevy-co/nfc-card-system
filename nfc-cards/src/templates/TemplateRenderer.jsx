@@ -114,12 +114,17 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
     ...rawUserData,
     // Contact Mapping
     phone: rawUserData.phone || rawUserData.mobileNumber || "",
-    email: rawUserData.email || rawUserData.omailAddress || "",
+    email: rawUserData.email || rawUserData.emailAddress || "",
+    whatsapp: rawUserData.whatsapp || "",
 
     // Identity & Role Mapping
+    // Profile.jsx saves: displayName, job, businessRole, company
     displayName: rawUserData.displayName || rawUserData.name || "Your Identity",
     role: rawUserData.role || rawUserData.designation || rawUserData.businessRole || rawUserData.jobTitle || "Professional",
-    companyName: rawUserData.companyName || rawUserData.businessName || rawUserData.organization || "",
+    designation: rawUserData.designation || rawUserData.job || rawUserData.jobTitle || rawUserData.businessRole || "",
+
+    // Company name: Profile saves as 'company', templates expect 'companyName'
+    companyName: rawUserData.companyName || rawUserData.company || rawUserData.businessName || rawUserData.organization || "",
 
     // Location Synthesis (Building 'address' from City, State, Country nodes)
     address: rawUserData.address || [
@@ -127,6 +132,9 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
       rawUserData.state,
       rawUserData.country
     ].filter(Boolean).join(', ') || "",
+    city: rawUserData.city || "",
+    state: rawUserData.state || "",
+    country: rawUserData.country || "",
 
     // Website & Bio
     website: rawUserData.website || "",
@@ -139,10 +147,14 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
     twitter: rawUserData.twitter || rawUserData.x || "",
     youtube: rawUserData.youtube || "",
     github: rawUserData.github || "",
+    tiktok: rawUserData.tiktok || "",
+    telegram: rawUserData.telegram || "",
 
     // Theme & Branding
     themeColor: rawUserData.themeColor || "#0f172a",
+    // Avatar/logo: Profile saves as 'logo' and 'profileImage'
     logo: rawUserData.logo || rawUserData.profileImage || defaultLogo,
+    avatar: rawUserData.profileImage || rawUserData.avatar || rawUserData.logo || defaultLogo,
     profileImage: rawUserData.profileImage || rawUserData.logo || defaultLogo,
     coverPhoto: rawUserData.coverPhoto || rawUserData.bannerImage || ""
   } : {};

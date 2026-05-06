@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiLinkedin,
@@ -99,6 +99,34 @@ const SwissLuxuryEstate = ({ userData }) => {
    // Merge for the button function, but display only fictional data
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    const fadeUp = {
       hidden: { opacity: 0, y: 20 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -111,7 +139,7 @@ const SwissLuxuryEstate = ({ userData }) => {
 
             {/* ================= HERO COVER ================= */}
             <div className="w-full h-[350px] relative">
-               <img src={fictionalData.bannerImage} alt="Estate" className="w-full h-full object-cover" />
+               <img src={data.bannerImage} alt="Estate" className="w-full h-full object-cover" />
                <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
             </div>
 
@@ -122,17 +150,17 @@ const SwissLuxuryEstate = ({ userData }) => {
                   className="bg-white p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-[#EAEAE5]"
                >
                   <div className="w-24 h-24 mb-6 rounded-full overflow-hidden border border-[#EAEAE5]">
-                     <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover grayscale-[20%]" />
+                     <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover grayscale-[20%]" />
                   </div>
 
                   <h1 className="text-3xl font-serif text-[#1C1C1A] tracking-tight mb-2">
-                     {fictionalData.displayName}
+                     {data.displayName}
                   </h1>
                   <p className="text-[#A68A5B] text-[11px] font-bold uppercase tracking-[0.2em] mb-4">
-                     {fictionalData.role}
+                     {data.role}
                   </p>
                   <p className="text-[#5A5A55] text-sm leading-relaxed">
-                     {fictionalData.bio}
+                     {data.bio}
                   </p>
 
                   <div className="mt-6 pt-6 border-t border-[#D9D9D6] grid grid-cols-3 gap-2">
@@ -151,17 +179,17 @@ const SwissLuxuryEstate = ({ userData }) => {
                {/* ================= DIRECT CONTACT ================= */}
                <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                   <div className="grid grid-cols-2 gap-3 mb-4">
-                     <a href={`tel:${fictionalData.phone}`} className="py-4 border border-[#EAEAE5] flex flex-col items-center justify-center gap-2 hover:border-[#A68A5B] hover:bg-[#F5F5F0] transition-colors group">
+                     <a href={`tel:${data.phone}`} className="py-4 border border-[#EAEAE5] flex flex-col items-center justify-center gap-2 hover:border-[#A68A5B] hover:bg-[#F5F5F0] transition-colors group">
                         <FiPhone size={20} className="text-[#8C8C85] group-hover:text-[#A68A5B]" />
                         <span className="text-[10px] uppercase font-bold tracking-widest text-[#1C1C1A]">Call Office</span>
                      </a>
-                     <a href={`mailto:${fictionalData.email}`} className="py-4 border border-[#EAEAE5] flex flex-col items-center justify-center gap-2 hover:border-[#A68A5B] hover:bg-[#F5F5F0] transition-colors group">
+                     <a href={`mailto:${data.email}`} className="py-4 border border-[#EAEAE5] flex flex-col items-center justify-center gap-2 hover:border-[#A68A5B] hover:bg-[#F5F5F0] transition-colors group">
                         <FiMail size={20} className="text-[#8C8C85] group-hover:text-[#A68A5B]" />
                         <span className="text-[10px] uppercase font-bold tracking-widest text-[#1C1C1A]">Email Desk</span>
                      </a>
                   </div>
-                  {fictionalData.website && (
-                     <a href={`https://${fictionalData.website}`} target="_blank" rel="noopener noreferrer" className="w-full py-4 border border-[#EAEAE5] flex items-center justify-between px-6 hover:border-[#A68A5B] hover:bg-[#F5F5F0] transition-colors group">
+                  {data.website && (
+                     <a href={`https://${data.website}`} target="_blank" rel="noopener noreferrer" className="w-full py-4 border border-[#EAEAE5] flex items-center justify-between px-6 hover:border-[#A68A5B] hover:bg-[#F5F5F0] transition-colors group">
                         <span className="text-xs uppercase font-bold tracking-widest text-[#1C1C1A]">Official Website</span>
                         <FiArrowUpRight size={16} className="text-[#8C8C85] group-hover:text-[#A68A5B]" />
                      </a>
@@ -235,12 +263,12 @@ const SwissLuxuryEstate = ({ userData }) => {
                <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                   <SectionTitle title="Headquarters" subtitle="Office & Hours" />
 
-                  {fictionalData.address && (
+                  {data.address && (
                      <div className="mb-6 p-5 border border-[#EAEAE5] flex items-start gap-4">
                         <FiMapPin size={20} className="text-[#A68A5B] shrink-0 mt-0.5" />
                         <div>
-                           <p className="text-sm font-semibold text-[#1C1C1A] leading-snug">{fictionalData.address}</p>
-                           <a href={`https://maps.google.com/?q=${encodeURIComponent(fictionalData.address)}`} target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold uppercase tracking-widest text-[#8C8C85] hover:text-[#A68A5B] transition-colors mt-2 inline-block">Get Directions →</a>
+                           <p className="text-sm font-semibold text-[#1C1C1A] leading-snug">{data.address}</p>
+                           <a href={`https://maps.google.com/?q=${encodeURIComponent(data.address)}`} target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold uppercase tracking-widest text-[#8C8C85] hover:text-[#A68A5B] transition-colors mt-2 inline-block">Get Directions →</a>
                         </div>
                      </div>
                   )}
@@ -274,10 +302,10 @@ const SwissLuxuryEstate = ({ userData }) => {
                   <SectionTitle title="Network" subtitle="Follow Our Curation" />
                   <div className="flex flex-wrap gap-3">
                      {[
-                        { val: fictionalData.instagram, icon: FiInstagram, link: `https://instagram.com/${fictionalData.instagram}` },
-                        { val: fictionalData.linkedin, icon: FiLinkedin, link: `https://linkedin.com/in/${fictionalData.linkedin}` },
-                        { val: fictionalData.twitter, icon: FiTwitter, link: `https://twitter.com/${fictionalData.twitter}` },
-                        { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` }
+                        { val: data.instagram, icon: FiInstagram, link: `https://instagram.com/${data.instagram}` },
+                        { val: data.linkedin, icon: FiLinkedin, link: `https://linkedin.com/in/${data.linkedin}` },
+                        { val: data.twitter, icon: FiTwitter, link: `https://twitter.com/${data.twitter}` },
+                        { val: data.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${data.whatsapp}` }
                      ].map((social, i) => social.val && (
                         <a
                            key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"

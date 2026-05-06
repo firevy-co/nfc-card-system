@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiTerminal, FiCpu,
@@ -110,6 +110,34 @@ const ExecutiveMinimal = ({ userData }) => {
 
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    const fadeUp = {
       hidden: { opacity: 0, y: 20 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -131,7 +159,7 @@ const ExecutiveMinimal = ({ userData }) => {
             <div className="w-full relative">
                <div className="h-[240px] w-full overflow-hidden relative">
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#030712] z-10" />
-                  <img src={fictionalData.bannerImage} alt="Neural Network" className="w-full h-full object-cover opacity-60 mix-blend-screen" />
+                  <img src={data.bannerImage} alt="Neural Network" className="w-full h-full object-cover opacity-60 mix-blend-screen" />
                </div>
 
                <div className="px-6 relative z-20 -mt-20 flex flex-col items-center text-center">
@@ -143,21 +171,21 @@ const ExecutiveMinimal = ({ userData }) => {
                      {/* Spinning Neon Border */}
                      <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-violet-600 via-cyan-400 to-violet-600 animate-[spin_4s_linear_infinite] opacity-50 blur-sm" />
                      <div className="w-28 h-28 bg-[#0A0F1C] p-1 rounded-2xl relative z-10 border border-white/10">
-                        <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover rounded-xl grayscale hover:grayscale-0 transition-all duration-500" />
+                        <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover rounded-xl grayscale hover:grayscale-0 transition-all duration-500" />
                      </div>
                   </motion.div>
 
                   <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
                      <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full mb-4">
                         <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-300">{fictionalData.businessName}</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-300">{data.businessName}</span>
                      </div>
-                     <h1 className="text-3xl font-black text-white tracking-tight mb-1">{fictionalData.displayName}</h1>
+                     <h1 className="text-3xl font-black text-white tracking-tight mb-1">{data.displayName}</h1>
                      <p className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400 font-bold text-xs uppercase tracking-[0.2em] mb-4">
-                        {fictionalData.role}
+                        {data.role}
                      </p>
                      <p className="text-sm text-slate-400 leading-relaxed max-w-sm mx-auto">
-                        {fictionalData.bio}
+                        {data.bio}
                      </p>
                   </motion.div>
                </div>
@@ -202,32 +230,32 @@ const ExecutiveMinimal = ({ userData }) => {
                         <span className="text-[10px] text-slate-500 ml-2">sys_comms.exe</span>
                      </div>
                      <div className="space-y-3 text-xs">
-                        {fictionalData.phone && (
+                        {data.phone && (
                            <div className="flex items-start">
                               <span className="text-violet-400 mr-2">{'>'}</span>
                               <span className="text-slate-500 mr-2 w-12">tel:</span>
-                              <a href={`tel:${fictionalData.phone}`} className="text-cyan-400 hover:underline">{fictionalData.phone}</a>
+                              <a href={`tel:${data.phone}`} className="text-cyan-400 hover:underline">{data.phone}</a>
                            </div>
                         )}
-                        {fictionalData.email && (
+                        {data.email && (
                            <div className="flex items-start">
                               <span className="text-violet-400 mr-2">{'>'}</span>
                               <span className="text-slate-500 mr-2 w-12">mail:</span>
-                              <a href={`mailto:${fictionalData.email}`} className="text-cyan-400 hover:underline truncate">{fictionalData.email}</a>
+                              <a href={`mailto:${data.email}`} className="text-cyan-400 hover:underline truncate">{data.email}</a>
                            </div>
                         )}
-                        {fictionalData.website && (
+                        {data.website && (
                            <div className="flex items-start">
                               <span className="text-violet-400 mr-2">{'>'}</span>
                               <span className="text-slate-500 mr-2 w-12">web:</span>
-                              <a href={`https://${fictionalData.website}`} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">{fictionalData.website}</a>
+                              <a href={`https://${data.website}`} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">{data.website}</a>
                            </div>
                         )}
-                        {fictionalData.address && (
+                        {data.address && (
                            <div className="flex items-start">
                               <span className="text-violet-400 mr-2">{'>'}</span>
                               <span className="text-slate-500 mr-2 w-12">loc:</span>
-                              <span className="text-slate-300">{fictionalData.address}</span>
+                              <span className="text-slate-300">{data.address}</span>
                            </div>
                         )}
                         <div className="flex items-center mt-2 opacity-70">
@@ -345,9 +373,9 @@ const ExecutiveMinimal = ({ userData }) => {
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="py-4">
                   <div className="flex justify-center gap-4">
                      {[
-                        { val: fictionalData.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${fictionalData.linkedin}` },
-                        { val: fictionalData.twitter, icon: FaTwitter, link: `https://twitter.com/${fictionalData.twitter}` },
-                        { val: fictionalData.github, icon: FaGithub, link: `https://github.com/${fictionalData.github}` },
+                        { val: data.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${data.linkedin}` },
+                        { val: data.twitter, icon: FaTwitter, link: `https://twitter.com/${data.twitter}` },
+                        { val: data.github, icon: FaGithub, link: `https://github.com/${data.github}` },
                         { val: fictionalData.discord, icon: FaDiscord, link: `#` }
                      ].map((social, i) => social.val && (
                         <a

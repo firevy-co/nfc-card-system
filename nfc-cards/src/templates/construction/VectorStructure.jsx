@@ -81,16 +81,51 @@ const DataAccordion = ({ label, output }) => {
 // --- Main Component ---
 
 const VectorStructure = ({ userData }) => {
-   const {
-      displayName, email, role, mobileNumber, phone,
-      companyName, designation, website, address, city,
-      linkedin, instagram, facebook, twitter, bio, avatar, logo
-   } = userData || {};
+   const fictionalData = {
+      displayName: "Vector Admin",
+      email: "admin@vector.structure",
+      role: "System Lead",
+      phone: "+1 (555) 999-0000",
+      mobileNumber: "+1 (555) 999-0000",
+      companyName: "Vector Structure Corp",
+      designation: "System Lead",
+      website: "www.vector.structure",
+      address: "Silicon Valley, CA",
+      bio: "Mastering the geometric interface between architecture and code.",
+      avatar: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=400&h=400&fit=crop",
+      logo: ""
+   };
 
-   const displayPhone = mobileNumber || phone;
-   const displayRole = designation || role || "System Administrator";
-   const finalAddress = address || city;
-   const displayTitle = displayName || "Admin";
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.companyName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
+
+   const displayPhone = data.phone || data.mobileNumber;
+   const displayRole = data.role;
+   const finalAddress = data.address;
+   const displayTitle = data.displayName;
 
    // Safe initial letter extraction
    const initialLetter = String(displayTitle).charAt(0).toUpperCase();
@@ -131,17 +166,17 @@ const VectorStructure = ({ userData }) => {
    // Dynamically filter active communication links from user data
    const actionLinks = [
       { icon: FiPhone, link: displayPhone ? `tel:${String(displayPhone).replace(/\s+/g, '')}` : null, label: "Audio Channel", val: displayPhone },
-      { icon: FiMail, link: email ? `mailto:${email}` : null, label: "Packet Transfer", val: email },
-      { icon: FiTerminal, link: formatUrl(website), label: "Web Portal", val: website },
+      { icon: FiMail, link: data.email ? `mailto:${data.email}` : null, label: "Packet Transfer", val: data.email },
+      { icon: FiTerminal, link: formatUrl(data.website), label: "Web Portal", val: data.website },
       { icon: FiMapPin, link: finalAddress ? `https://maps.google.com/?q=${encodeURIComponent(finalAddress)}` : null, label: "Physical Node", val: finalAddress }
    ].filter(item => item.link && item.val);
 
    // Dynamically filter active social links from user data
    const socialLinks = [
-      { val: linkedin, icon: FaLinkedinIn, prefix: 'https://linkedin.com/in/' },
-      { val: twitter, icon: FaTwitter, prefix: 'https://twitter.com/' },
-      { val: instagram, icon: FaInstagram, prefix: 'https://instagram.com/' },
-      { val: facebook, icon: FaFacebook, prefix: 'https://facebook.com/' }
+      { val: data.linkedin, icon: FaLinkedinIn, prefix: 'https://data.linkedin.com/in/' },
+      { val: data.twitter, icon: FaTwitter, prefix: 'https://data.twitter.com/' },
+      { val: data.instagram, icon: FaInstagram, prefix: 'https://data.instagram.com/' },
+      { val: data.facebook, icon: FaFacebook, prefix: 'https://data.facebook.com/' }
    ].filter(social => social.val && String(social.val).trim() !== "");
 
    const fadeUp = {
@@ -191,10 +226,10 @@ const VectorStructure = ({ userData }) => {
                      <div className="w-28 h-28 bg-[#00F0FF]/10 p-1 relative border border-[#00F0FF]/50 shadow-[0_0_30px_rgba(0,240,255,0.15)] overflow-hidden flex items-center justify-center">
                         <FiCrosshair className="absolute text-[#00F0FF]/30 w-full h-full scale-150 animate-[spin_60s_linear_infinite] pointer-events-none" />
                         <div className="w-full h-full bg-[#02050A] relative z-10 overflow-hidden flex items-center justify-center border border-[#00F0FF]/30">
-                           {logo ? (
-                              <img src={logo} alt="Logo" className="w-full h-full object-contain p-3 mix-blend-screen" />
-                           ) : avatar ? (
-                              <img src={avatar} alt="Profile" className="w-full h-full object-cover mix-blend-screen opacity-90 grayscale contrast-125" />
+                           {data.logo ? (
+                              <img src={data.logo} alt="Logo" className="w-full h-full object-contain p-3 mix-blend-screen" />
+                           ) : data.avatar ? (
+                              <img src={data.avatar} alt="Profile" className="w-full h-full object-cover mix-blend-screen opacity-90 grayscale contrast-125" />
                            ) : (
                               <span className="text-4xl font-black text-[#00F0FF] uppercase">{initialLetter}</span>
                            )}
@@ -203,10 +238,10 @@ const VectorStructure = ({ userData }) => {
                   </motion.div>
 
                   <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="overflow-hidden">
-                     {companyName && (
+                     {data.businessName && (
                         <div className="inline-flex items-center gap-2 bg-[#00F0FF]/10 border border-[#00F0FF]/40 px-3 py-1 mb-3 max-w-full">
                            <FiHexagon size={10} className="text-[#00F0FF] shrink-0" />
-                           <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#00F0FF] truncate">{companyName}</span>
+                           <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#00F0FF] truncate">{data.businessName}</span>
                         </div>
                      )}
                      <h1 className="text-2xl font-black text-white uppercase tracking-tighter leading-none mb-2 truncate">
@@ -218,10 +253,10 @@ const VectorStructure = ({ userData }) => {
                   </motion.div>
                </div>
 
-               {bio && (
+               {data.bio && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="bg-[#00F0FF]/5 border-l-2 border-[#00F0FF] p-3">
                      <p className="text-[11px] text-[#8A9BB3] leading-relaxed uppercase tracking-wide">
-                        {">"} {bio}
+                        {">"} {data.bio}
                      </p>
                   </motion.div>
                )}

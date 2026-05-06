@@ -20,6 +20,8 @@ router.get('/:uid', userController.getUserById);
  */
 router.post('/sync', userController.syncUser);
 
+router.put('/:uid/profile', userController.updateUserProfile);
+
 /**
  * IDENTITY PIPELINE: PUT /api/users/:uid
  * Performs a deep update of participant credentials (Email, Name, Role).

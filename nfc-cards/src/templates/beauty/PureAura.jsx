@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiTwitter,
@@ -87,6 +87,34 @@ const PureAura = ({ userData }) => {
 
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    return (
       <div className="w-full min-h-screen bg-[#050505] text-gray-300 font-['Poppins',sans-serif] flex justify-center pb-12 selection:bg-[#FF7F00] selection:text-white">
 
@@ -101,35 +129,35 @@ const PureAura = ({ userData }) => {
 
                {/* ================= HERO BANNER ================= */}
                <div className="w-full h-[220px] relative">
-                  <img src={fictionalData.bannerImage} alt="Event" className="w-full h-full object-cover" />
+                  <img src={data.bannerImage} alt="Event" className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent" />
                </div>
 
                {/* ================= PROFILE HEADER ================= */}
                <div className="px-6 flex items-center gap-4 -mt-10 mb-8 relative">
                   <div className="w-20 h-20 rounded-full border-2 border-white shadow-lg overflow-hidden shrink-0 bg-white">
-                     <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover" />
+                     <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover" />
                   </div>
                   <div className="pt-8">
-                     <h1 className="text-xl font-bold text-white tracking-wide">{fictionalData.displayName}</h1>
-                     <p className="text-[11px] font-semibold text-[#FF7F00]">{fictionalData.role}</p>
+                     <h1 className="text-xl font-bold text-white tracking-wide">{data.displayName}</h1>
+                     <p className="text-[11px] font-semibold text-[#FF7F00]">{data.role}</p>
                   </div>
                </div>
 
                <div className="px-6 mb-8 text-center">
                   <p className="text-[11px] text-gray-300 leading-relaxed font-medium">
-                     {fictionalData.bio}
+                     {data.bio}
                   </p>
                </div>
 
                {/* ================= SOCIAL ICONS (Exact Image Style) ================= */}
                <div className="flex justify-center gap-5 px-6 mb-10">
                   {[
-                     { val: fictionalData.facebook, icon: FaFacebookF, link: `https://facebook.com/${fictionalData.facebook}` },
-                     { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` },
-                     { val: fictionalData.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${fictionalData.linkedin}` },
-                     { val: fictionalData.instagram, icon: FiInstagram, link: `https://instagram.com/${fictionalData.instagram}` },
-                     { val: fictionalData.twitter, icon: FiTwitter, link: `https://twitter.com/${fictionalData.twitter}` }
+                     { val: data.facebook, icon: FaFacebookF, link: `https://facebook.com/${data.facebook}` },
+                     { val: data.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${data.whatsapp}` },
+                     { val: data.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${data.linkedin}` },
+                     { val: data.instagram, icon: FiInstagram, link: `https://instagram.com/${data.instagram}` },
+                     { val: data.twitter, icon: FiTwitter, link: `https://twitter.com/${data.twitter}` }
                   ].map((social, i) => social.val && (
                      <a key={i} href={social.link || null} target="_blank" rel="noopener noreferrer" className="text-[#FF7F00] hover:text-white transition-colors">
                         <social.icon size={18} />
@@ -142,10 +170,10 @@ const PureAura = ({ userData }) => {
                   {/* ================= CONTACT ================= */}
                   <SectionTitle title="Contact" />
                   <div className="grid grid-cols-2 gap-3 mb-10">
-                     {fictionalData.email && <ContactBox icon={FiMail} label="Email Address" value={fictionalData.email} link={`mailto:${fictionalData.email}`} />}
-                     {fictionalData.phone && <ContactBox icon={FiPhone} label="Mobile Number" value={fictionalData.phone} link={`tel:${fictionalData.phone}`} />}
-                     {fictionalData.website && <ContactBox icon={FiGlobe} label="Website" value={fictionalData.website} link={`https://${fictionalData.website}`} />}
-                     {fictionalData.address && <ContactBox icon={FiMapPin} label="Location" value={fictionalData.address} link={`https://maps.google.com/?q=${fictionalData.address}`} />}
+                     {data.email && <ContactBox icon={FiMail} label="Email Address" value={data.email} link={`mailto:${data.email}`} />}
+                     {data.phone && <ContactBox icon={FiPhone} label="Mobile Number" value={data.phone} link={`tel:${data.phone}`} />}
+                     {data.website && <ContactBox icon={FiGlobe} label="Website" value={data.website} link={`https://${data.website}`} />}
+                     {data.address && <ContactBox icon={FiMapPin} label="Location" value={data.address} link={`https://maps.google.com/?q=${data.address}`} />}
                   </div>
 
                   {/* ================= OUR SERVICES ================= */}
@@ -275,7 +303,7 @@ const PureAura = ({ userData }) => {
                         <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://vcard.link" alt="QR Code" className="w-full h-full" />
                         {/* Center Profile Image in QR */}
                         <div className="absolute w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-white">
-                           <img src={fictionalData.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                           <img src={data.profileImage} alt="Profile" className="w-full h-full object-cover" />
                         </div>
                      </div>
                      <button className="mt-4 px-6 py-2.5 bg-[#FF7F00] text-white rounded text-xs font-bold hover:bg-[#E67200] transition-colors">

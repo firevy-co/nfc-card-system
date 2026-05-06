@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiLinkedin, FiTwitter,
@@ -102,6 +102,34 @@ const ClassicRefined = ({ userData }) => {
 
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    const fadeUp = {
       hidden: { opacity: 0, y: 20 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -115,7 +143,7 @@ const ClassicRefined = ({ userData }) => {
 
             {/* ================= HERO ARCHITECTURE ================= */}
             <div className="w-full h-[320px] relative bg-[#0F172A]">
-               <img src={fictionalData.bannerImage} alt="Estate" className="w-full h-full object-cover opacity-60 mix-blend-luminosity" />
+               <img src={data.bannerImage} alt="Estate" className="w-full h-full object-cover opacity-60 mix-blend-luminosity" />
                <div className="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-transparent" />
             </div>
 
@@ -130,20 +158,20 @@ const ClassicRefined = ({ userData }) => {
                      </div>
 
                      <div className="w-24 h-24 bg-slate-100 border border-slate-200 shadow-inner mb-4 overflow-hidden">
-                        <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover" />
+                        <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover" />
                      </div>
 
-                     <h1 className="text-2xl font-serif font-bold text-[#0F172A] tracking-tight mb-1">{fictionalData.displayName}</h1>
-                     <p className="text-[#C2A05F] font-bold text-xs uppercase tracking-widest mb-4">{fictionalData.role}</p>
+                     <h1 className="text-2xl font-serif font-bold text-[#0F172A] tracking-tight mb-1">{data.displayName}</h1>
+                     <p className="text-[#C2A05F] font-bold text-xs uppercase tracking-widest mb-4">{data.role}</p>
 
-                     {fictionalData.businessName && (
+                     {data.businessName && (
                         <div className="w-full py-2 bg-[#0F172A] text-white text-[10px] font-bold uppercase tracking-[0.2em] mb-4">
-                           {fictionalData.businessName}
+                           {data.businessName}
                         </div>
                      )}
 
                      <p className="text-sm text-slate-600 leading-relaxed">
-                        {fictionalData.bio}
+                        {data.bio}
                      </p>
                   </div>
                </div>
@@ -163,20 +191,20 @@ const ClassicRefined = ({ userData }) => {
 
                {/* ================= ACTION BAR ================= */}
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="grid grid-cols-2 gap-3">
-                  {fictionalData.phone && (
-                     <a href={`tel:${fictionalData.phone}`} className="bg-[#F8FAFC] border border-slate-200 py-4 flex flex-col items-center justify-center gap-2 hover:border-[#0F172A] transition-colors group">
+                  {data.phone && (
+                     <a href={`tel:${data.phone}`} className="bg-[#F8FAFC] border border-slate-200 py-4 flex flex-col items-center justify-center gap-2 hover:border-[#0F172A] transition-colors group">
                         <FiPhone size={18} className="text-[#0F172A] group-hover:scale-110 transition-transform" />
                         <span className="text-[10px] font-bold uppercase tracking-widest text-slate-600">Direct Line</span>
                      </a>
                   )}
-                  {fictionalData.email && (
-                     <a href={`mailto:${fictionalData.email}`} className="bg-[#F8FAFC] border border-slate-200 py-4 flex flex-col items-center justify-center gap-2 hover:border-[#0F172A] transition-colors group">
+                  {data.email && (
+                     <a href={`mailto:${data.email}`} className="bg-[#F8FAFC] border border-slate-200 py-4 flex flex-col items-center justify-center gap-2 hover:border-[#0F172A] transition-colors group">
                         <FiMail size={18} className="text-[#0F172A] group-hover:scale-110 transition-transform" />
                         <span className="text-[10px] font-bold uppercase tracking-widest text-slate-600">Email</span>
                      </a>
                   )}
-                  {fictionalData.website && (
-                     <a href={`https://${fictionalData.website}`} target="_blank" rel="noopener noreferrer" className="col-span-2 bg-[#0F172A] text-white py-4 flex justify-between items-center px-6 hover:bg-slate-800 transition-colors group">
+                  {data.website && (
+                     <a href={`https://${data.website}`} target="_blank" rel="noopener noreferrer" className="col-span-2 bg-[#0F172A] text-white py-4 flex justify-between items-center px-6 hover:bg-slate-800 transition-colors group">
                         <span className="text-xs font-bold uppercase tracking-widest text-[#C2A05F]">Visit Corporate Site</span>
                         <FiGlobe size={18} className="group-hover:animate-pulse" />
                      </a>
@@ -270,12 +298,12 @@ const ClassicRefined = ({ userData }) => {
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                   <SectionTitle title="Information" subtitle="Logistics & Advisory" />
 
-                  {fictionalData.address && (
+                  {data.address && (
                      <div className="flex items-start gap-4 pb-5 border-b border-slate-200 mb-5">
                         <FiMapPin size={24} className="text-[#0F172A] shrink-0" />
                         <div>
                            <p className="text-[10px] uppercase tracking-widest font-bold text-[#C2A05F] mb-1">Headquarters</p>
-                           <p className="text-sm font-semibold text-[#0F172A] leading-snug mb-1">{fictionalData.address}</p>
+                           <p className="text-sm font-semibold text-[#0F172A] leading-snug mb-1">{data.address}</p>
                         </div>
                      </div>
                   )}
@@ -308,10 +336,10 @@ const ClassicRefined = ({ userData }) => {
 
                   <div className="flex justify-center gap-4 mb-2">
                      {[
-                        { val: fictionalData.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${fictionalData.linkedin}` },
-                        { val: fictionalData.twitter, icon: FaTwitter, link: `https://twitter.com/${fictionalData.twitter}` },
-                        { val: fictionalData.instagram, icon: FaInstagram, link: `https://instagram.com/${fictionalData.instagram}` },
-                        { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` }
+                        { val: data.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${data.linkedin}` },
+                        { val: data.twitter, icon: FaTwitter, link: `https://twitter.com/${data.twitter}` },
+                        { val: data.instagram, icon: FaInstagram, link: `https://instagram.com/${data.instagram}` },
+                        { val: data.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${data.whatsapp}` }
                      ].map((social, i) => social.val && (
                         <a
                            key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"

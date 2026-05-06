@@ -37,32 +37,56 @@ const FaqItem = ({ question, answer }) => {
 };
 
 const AbstractMedia = ({ userData }) => {
-  const {
-    displayName,
-    email,
-    role,
-    phone,
-    mobileNumber,
-    website,
-    businessName,
-    instagram,
-    linkedin,
-    twitter,
-    address,
-    bio,
-    whatsapp,
-    github,
-    facebook,
-    youtube,
-    telegram,
-    faqs,
-  } = userData || {};
+  // Extensive fallback data
+  const fictionalData = {
+    displayName: "Abstract Media",
+    email: "hello@abstract.media",
+    role: "Creative Director",
+    phone: "+1 (555) 000-9999",
+    mobileNumber: "+1 (555) 000-9999",
+    website: "www.abstract.media",
+    businessName: "Abstract Design Studio",
+    instagram: "", linkedin: "", twitter: "",
+    address: "Brooklyn, NY, USA",
+    bio: "Breaking the boundaries of digital expression through abstract visuals and experimental media.",
+    whatsapp: "", github: "", facebook: "", youtube: "", telegram: "",
+    faqs: [
+      { question: "What is your design process?", answer: "We start with deep conceptualization followed by iterative abstract exploration." },
+      { question: "Do you handle motion graphics?", answer: "Yes, motion is at the core of everything we build." }
+    ]
+  };
 
-  const finalPhone = phone || mobileNumber;
+  // ✅ MERGE: userData takes priority over fictional placeholders
+  const data = {
+    ...fictionalData,
+    displayName: userData?.displayName || fictionalData.displayName,
+    role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+    phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+    email: userData?.email || fictionalData.email,
+    website: userData?.website || fictionalData.website,
+    address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+    businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+    whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+    linkedin: userData?.linkedin || fictionalData.linkedin,
+    twitter: userData?.twitter || fictionalData.twitter,
+    instagram: userData?.instagram || fictionalData.instagram,
+    facebook: userData?.facebook || fictionalData.facebook,
+    github: userData?.github || fictionalData.github,
+    youtube: userData?.youtube || fictionalData.youtube,
+    tiktok: userData?.tiktok || fictionalData.tiktok,
+    telegram: userData?.telegram || fictionalData.telegram,
+    bio: userData?.bio || fictionalData.bio,
+    profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+    avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+    logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+    bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+  };
 
-  // Added Static Images as per your request
-  const bannerImage = "https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=1200&h=400&fit=crop";
-  const profileImage = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop";
+  const finalPhone = data.phone || data.mobileNumber;
+
+  // Dynamic images from userData (fallback to fictional placeholders already set in fictionalData)
+  const bannerImage = data.bannerImage || "https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=1200&h=400&fit=crop";
+  const profileImage = data.profileImage || data.avatar || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop";
   const galleryImages = [
     "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&h=600&fit=crop",
     "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=600&h=600&fit=crop",
@@ -125,26 +149,26 @@ const AbstractMedia = ({ userData }) => {
             <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#050505] bg-[#111] shadow-2xl relative z-20">
               <img
                 src={profileImage}
-                alt={displayName || "Profile"}
+                alt={data.displayName || "Profile"}
                 className="w-full h-full object-cover"
               />
             </div>
           </motion.div>
           <motion.div variants={itemVariants} className="text-center mb-6">
             <h1 className="text-3xl font-black text-white tracking-tight capitalize mb-1">
-              {displayName || 'Abstract Media'}
+              {data.displayName || 'Abstract Media'}
             </h1>
-            {role && <p className="text-blue-400 font-bold text-sm mb-2">{role}</p>}
+            {data.role && <p className="text-blue-400 font-bold text-sm mb-2">{data.role}</p>}
 
-            {businessName && (
+            {data.businessName && (
               <span className="inline-block bg-white/5 text-white/70 text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border border-white/10 mb-4">
-                {businessName}
+                {data.businessName}
               </span>
             )}
 
-            {bio && (
+            {data.bio && (
               <p className="text-white/60 text-sm leading-relaxed px-4">
-                {bio}
+                {data.bio}
               </p>
             )}
           </motion.div>
@@ -179,40 +203,40 @@ const AbstractMedia = ({ userData }) => {
               </a>
             )}
 
-            {email && (
-              <a href={`mailto:${email}`} className="flex items-center p-3 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] transition-all group">
+            {data.email && (
+              <a href={`mailto:${data.email}`} className="flex items-center p-3 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] transition-all group">
                 <div className="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-all mr-4">
                   <FiMail size={20} />
                 </div>
                 <div className="overflow-hidden">
                   <p className="text-[10px] uppercase tracking-wider text-white/40">Email</p>
-                  <p className="text-sm font-semibold text-white/90 truncate">{email}</p>
+                  <p className="text-sm font-semibold text-white/90 truncate">{data.email}</p>
                 </div>
               </a>
             )}
 
-            {website && (
-              <a href={website.startsWith('http') ? website : `https://${website}`} target="_blank" rel="noopener noreferrer"
+            {data.website && (
+              <a href={data.website.startsWith('http') ? data.website : `https://${data.website}`} target="_blank" rel="noopener noreferrer"
                 className="flex items-center p-3 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] transition-all group">
                 <div className="w-12 h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-all mr-4">
                   <FiGlobe size={20} />
                 </div>
                 <div className="overflow-hidden">
                   <p className="text-[10px] uppercase tracking-wider text-white/40">Website</p>
-                  <p className="text-sm font-semibold text-white/90 truncate">{website.replace(/(^\w+:|^)\/\//, '')}</p>
+                  <p className="text-sm font-semibold text-white/90 truncate">{data.website.replace(/(^\w+:|^)\/\//, '')}</p>
                 </div>
               </a>
             )}
 
-            {address && (
-              <a href={`https://maps.google.com/?q=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer"
+            {data.address && (
+              <a href={`https://maps.google.com/?q=${encodeURIComponent(data.address)}`} target="_blank" rel="noopener noreferrer"
                 className="flex items-center p-3 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.08] transition-all group">
                 <div className="w-12 h-12 rounded-lg bg-red-500/10 flex items-center justify-center text-red-400 group-hover:bg-red-500 group-hover:text-white transition-all mr-4">
                   <FiMapPin size={20} />
                 </div>
                 <div className="overflow-hidden">
                   <p className="text-[10px] uppercase tracking-wider text-white/40">Location</p>
-                  <p className="text-sm font-semibold text-white/90 truncate">{address}</p>
+                  <p className="text-sm font-semibold text-white/90 truncate">{data.address}</p>
                 </div>
               </a>
             )}
@@ -223,20 +247,20 @@ const AbstractMedia = ({ userData }) => {
             <h3 className="text-xs font-black uppercase tracking-widest text-white/30 mb-4 px-2">Social Profiles</h3>
             <div className="grid grid-cols-4 gap-3">
               {[
-                { id: 'whatsapp', val: whatsapp, icon: FaWhatsapp, color: 'hover:bg-[#25d366] text-[#25d366]' },
-                { id: 'instagram', val: instagram, icon: FiInstagram, color: 'hover:bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] text-[#e6683c]' },
-                { id: 'linkedin', val: linkedin, icon: FiLinkedin, color: 'hover:bg-[#0077b5] text-[#0077b5]' },
-                { id: 'github', val: github, icon: FiGithub, color: 'hover:bg-zinc-700 text-white' },
-                { id: 'twitter', val: twitter, icon: FiTwitter, color: 'hover:bg-[#1DA1F2] text-[#1DA1F2]' },
-                { id: 'facebook', val: facebook, icon: FaFacebook, color: 'hover:bg-[#1877f2] text-[#1877f2]' },
-                { id: 'youtube', val: youtube, icon: FaYoutube, color: 'hover:bg-[#ff0000] text-[#ff0000]' },
-                { id: 'telegram', val: telegram, icon: FaTelegram, color: 'hover:bg-[#0088cc] text-[#0088cc]' }
+                { id: 'data.whatsapp', val: data.whatsapp, icon: FaWhatsapp, color: 'hover:bg-[#25d366] text-[#25d366]' },
+                { id: 'data.instagram', val: data.instagram, icon: FiInstagram, color: 'hover:bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] text-[#e6683c]' },
+                { id: 'data.linkedin', val: data.linkedin, icon: FiLinkedin, color: 'hover:bg-[#0077b5] text-[#0077b5]' },
+                { id: 'data.github', val: data.github, icon: FiGithub, color: 'hover:bg-zinc-700 text-white' },
+                { id: 'data.twitter', val: data.twitter, icon: FiTwitter, color: 'hover:bg-[#1DA1F2] text-[#1DA1F2]' },
+                { id: 'data.facebook', val: data.facebook, icon: FaFacebook, color: 'hover:bg-[#1877f2] text-[#1877f2]' },
+                { id: 'data.youtube', val: data.youtube, icon: FaYoutube, color: 'hover:bg-[#ff0000] text-[#ff0000]' },
+                { id: 'data.telegram', val: data.telegram, icon: FaTelegram, color: 'hover:bg-[#0088cc] text-[#0088cc]' }
               ].map((social, i) => social.val && (
                 <motion.a
                   key={i}
                   whileHover={{ y: -3, scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  href={social.id === 'whatsapp' ? `https://wa.me/${social.val.replace(/\D/g, '')}` : (social.val.startsWith('http') ? social.val : `https://${social.id}.com/${social.val}`)}
+                  href={social.id === 'data.whatsapp' ? `https://wa.me/${social.val.replace(/\D/g, '')}` : (social.val.startsWith('http') ? social.val : `https://${social.id}.com/${social.val}`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`aspect-square rounded-2xl bg-white/[0.04] border border-white/5 flex items-center justify-center hover:text-white transition-all duration-300 shadow-sm ${social.color}`}
@@ -268,11 +292,11 @@ const AbstractMedia = ({ userData }) => {
           </motion.div>
 
           {/* FAQ Accordion Section */}
-          {faqs && faqs.length > 0 && (
+          {data.faqs && data.faqs.length > 0 && (
             <motion.div variants={itemVariants}>
               <h3 className="text-xs font-black uppercase tracking-widest text-white/30 mb-4 px-2">FAQ</h3>
               <div className="space-y-2">
-                {faqs.map((faq, index) => (
+                {data.faqs.map((faq, index) => (
                   <FaqItem key={index} question={faq.question} answer={faq.answer} />
                 ))}
               </div>

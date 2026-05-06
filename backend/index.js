@@ -15,7 +15,26 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 // --- MIDDLEWARE ---
-app.use(cors());
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:4000',
+    'https://cardyn.shop',
+    'https://www.cardyn.shop',
+    // Add your Vercel preview URL here if needed
+];
+app.use(cors({
+    origin: (origin, callback) => {
+        // Allow requests with no origin (e.g., mobile apps, Postman)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.some(o => origin.startsWith(o))) {
+            return callback(null, true);
+        }
+        // Allow all vercel.app subdomains for preview deployments
+        if (origin.endsWith('.vercel.app')) return callback(null, true);
+        callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 

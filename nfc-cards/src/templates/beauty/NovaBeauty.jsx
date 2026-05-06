@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
    FiPhone, FiMail, FiMapPin, FiInstagram, FiLinkedin,
@@ -80,6 +80,34 @@ const NovaBeauty = ({ userData }) => {
 
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    return (
       <div className="w-full min-h-screen bg-[#F0EBE6] text-[#2A2A2A] font-['Poppins',sans-serif] selection:bg-[#7C3B2E] selection:text-white flex justify-center pb-12">
 
@@ -92,20 +120,20 @@ const NovaBeauty = ({ userData }) => {
 
             {/* ================= HERO & PROFILE ================= */}
             <div className="w-full h-[220px] relative">
-               <img src={fictionalData.bannerImage} alt="Cosmetics Flatlay" className="w-full h-full object-cover" />
+               <img src={data.bannerImage} alt="Cosmetics Flatlay" className="w-full h-full object-cover" />
                <div className="absolute inset-0 bg-white/10" />
             </div>
 
             <div className="px-6 relative z-10 -mt-10 flex gap-4 items-end mb-6">
                <div className="w-24 h-24 rounded-2xl overflow-hidden border-4 border-white shadow-md bg-white shrink-0">
-                  <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover" />
+                  <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover" />
                </div>
                <div className="pb-1">
                   <h1 className="text-xl font-bold text-[#7C3B2E] tracking-tight leading-tight">
-                     {fictionalData.displayName}
+                     {data.displayName}
                   </h1>
                   <p className="text-sm font-semibold text-[#2A2A2A] mt-0.5">
-                     {fictionalData.role}
+                     {data.role}
                   </p>
                </div>
             </div>
@@ -113,27 +141,27 @@ const NovaBeauty = ({ userData }) => {
             {/* ================= BIO ================= */}
             <div className="px-6 mb-6">
                <p className="text-xs text-[#555] leading-relaxed text-center font-medium">
-                  {fictionalData.bio}
+                  {data.bio}
                </p>
             </div>
 
             {/* ================= CONTACT INFO GRID ================= */}
             <div className="px-6 grid grid-cols-2 gap-3 mb-8">
-               {fictionalData.email && (
+               {data.email && (
                   <div className="bg-[#F6EFEA] p-3 rounded-xl flex items-center gap-3 shadow-sm border border-[#E8DCCB]">
                      <FiMail className="text-[#7C3B2E] shrink-0" size={16} />
                      <div className="overflow-hidden">
                         <p className="text-[9px] font-bold uppercase text-[#7C3B2E]">Email Address</p>
-                        <p className="text-[10px] text-[#444] font-medium truncate">{fictionalData.email}</p>
+                        <p className="text-[10px] text-[#444] font-medium truncate">{data.email}</p>
                      </div>
                   </div>
                )}
-               {fictionalData.phone && (
+               {data.phone && (
                   <div className="bg-[#F6EFEA] p-3 rounded-xl flex items-center gap-3 shadow-sm border border-[#E8DCCB]">
                      <FiPhone className="text-[#7C3B2E] shrink-0" size={16} />
                      <div className="overflow-hidden">
                         <p className="text-[9px] font-bold uppercase text-[#7C3B2E]">Mobile Number</p>
-                        <p className="text-[10px] text-[#444] font-medium truncate">{fictionalData.phone}</p>
+                        <p className="text-[10px] text-[#444] font-medium truncate">{data.phone}</p>
                      </div>
                   </div>
                )}
@@ -146,12 +174,12 @@ const NovaBeauty = ({ userData }) => {
                      </div>
                   </div>
                )}
-               {fictionalData.address && (
+               {data.address && (
                   <div className="bg-[#F6EFEA] p-3 rounded-xl flex items-center gap-3 shadow-sm border border-[#E8DCCB]">
                      <FiMapPin className="text-[#7C3B2E] shrink-0" size={16} />
                      <div className="overflow-hidden">
                         <p className="text-[9px] font-bold uppercase text-[#7C3B2E]">Location</p>
-                        <p className="text-[10px] text-[#444] font-medium truncate">{fictionalData.address}</p>
+                        <p className="text-[10px] text-[#444] font-medium truncate">{data.address}</p>
                      </div>
                   </div>
                )}
@@ -160,11 +188,11 @@ const NovaBeauty = ({ userData }) => {
             {/* ================= SOCIAL ICONS ================= */}
             <div className="flex justify-center gap-5 px-6 mb-4">
                {[
-                  { val: fictionalData.facebook, icon: FaFacebookF, link: `https://facebook.com/${fictionalData.facebook}` },
-                  { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` },
-                  { val: fictionalData.linkedin, icon: FiLinkedin, link: `https://linkedin.com/in/${fictionalData.linkedin}` },
-                  { val: fictionalData.instagram, icon: FiInstagram, link: `https://instagram.com/${fictionalData.instagram}` },
-                  { val: fictionalData.twitter, icon: FiTwitter, link: `https://twitter.com/${fictionalData.twitter}` }
+                  { val: data.facebook, icon: FaFacebookF, link: `https://facebook.com/${data.facebook}` },
+                  { val: data.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${data.whatsapp}` },
+                  { val: data.linkedin, icon: FiLinkedin, link: `https://linkedin.com/in/${data.linkedin}` },
+                  { val: data.instagram, icon: FiInstagram, link: `https://instagram.com/${data.instagram}` },
+                  { val: data.twitter, icon: FiTwitter, link: `https://twitter.com/${data.twitter}` }
                ].map((social, i) => social.val && (
                   <a
                      key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"
@@ -284,7 +312,7 @@ const NovaBeauty = ({ userData }) => {
                <SectionDivider title="QR Code" />
                <div className="flex justify-center gap-4 mb-6">
                   <div className="w-28 h-28 rounded-xl overflow-hidden shadow-sm border border-[#E8DCCB]">
-                     <img src={fictionalData.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                     <img src={data.profileImage} alt="Profile" className="w-full h-full object-cover" />
                   </div>
                   <div className="w-28 h-28 bg-white rounded-xl shadow-sm border-2 border-[#7C3B2E] p-2 flex items-center justify-center">
                      {/* Mock QR Code Pattern using generic API image for visual completeness */}

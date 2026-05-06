@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiArrowRight,
@@ -119,6 +119,34 @@ const ModernLeader = ({ userData }) => {
 
    const vCardData = { ...userData, ...fictionalData };
 
+   // ✅ MERGE: userData overrides fictional defaults
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
+
    const fadeUp = {
       hidden: { opacity: 0, y: 15 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
@@ -154,33 +182,33 @@ const ModernLeader = ({ userData }) => {
                   animate={{ y: [-5, 5, -5] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                   className="w-40 h-40 rounded-[2.5rem] bg-white/10 p-2 shadow-[0_0_50px_rgba(192,38,211,0.3)] backdrop-blur-xl border border-white/20 mb-8 rotate-3"
                >
-                  <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover rounded-[2rem] -rotate-3" />
+                  <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover rounded-[2rem] -rotate-3" />
                </motion.div>
 
-               {fictionalData.businessName && (
+               {data.businessName && (
                   <div className="bg-white/10 backdrop-blur-md border border-white/20 px-5 py-2 rounded-full mb-6 flex items-center gap-3">
                      <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-                     <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-200">{fictionalData.businessName}</span>
+                     <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-200">{data.businessName}</span>
                   </div>
                )}
 
                <h1 className="text-4xl font-extrabold tracking-tight mb-2 drop-shadow-lg">
-                  {fictionalData.displayName}
+                  {data.displayName}
                </h1>
                <p className="text-fuchsia-300 font-semibold text-sm uppercase tracking-widest mb-6 drop-shadow-md">
-                  {fictionalData.role}
+                  {data.role}
                </p>
                <p className="text-slate-300 text-sm leading-relaxed max-w-sm px-4">
-                  {fictionalData.bio}
+                  {data.bio}
                </p>
             </motion.div>
 
             {/* ================= COMMUNICATION PILLS (SCROLLING TRAY) ================= */}
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="w-full overflow-x-auto hide-scrollbar -mx-4 px-4 py-2">
                <div className="flex gap-3 w-max">
-                  {fictionalData.phone && <SpatialPill icon={FiPhone} text="Call Studio" href={`tel:${fictionalData.phone}`} />}
-                  {fictionalData.email && <SpatialPill icon={FiMail} text="Email Connect" href={`mailto:${fictionalData.email}`} />}
-                  {fictionalData.website && <SpatialPill icon={FiGlobe} text="Launch Portal" href={`https://${fictionalData.website}`} />}
+                  {data.phone && <SpatialPill icon={FiPhone} text="Call Studio" href={`tel:${data.phone}`} />}
+                  {data.email && <SpatialPill icon={FiMail} text="Email Connect" href={`mailto:${data.email}`} />}
+                  {data.website && <SpatialPill icon={FiGlobe} text="Launch Portal" href={`https://${data.website}`} />}
                </div>
             </motion.div>
 
@@ -249,11 +277,11 @@ const ModernLeader = ({ userData }) => {
                   <h3 className="text-sm font-bold uppercase tracking-widest text-slate-200">Global Presence</h3>
                </div>
 
-               {fictionalData.address && (
+               {data.address && (
                   <div className="bg-white/5 border border-white/10 p-5 rounded-3xl mb-4 flex items-center justify-between group cursor-pointer hover:bg-white/10 transition-colors">
                      <div>
                         <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-1">Primary Node</p>
-                        <p className="text-sm font-semibold text-white">{fictionalData.address}</p>
+                        <p className="text-sm font-semibold text-white">{data.address}</p>
                      </div>
                      <FiArrowRight className="text-blue-400 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -302,9 +330,9 @@ const ModernLeader = ({ userData }) => {
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="py-2">
                <div className="flex justify-center gap-5">
                   {[
-                     { val: fictionalData.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${fictionalData.linkedin}` },
-                     { val: fictionalData.twitter, icon: FaTwitter, link: `https://twitter.com/${fictionalData.twitter}` },
-                     { val: fictionalData.github, icon: FaGithub, link: `https://github.com/${fictionalData.github}` },
+                     { val: data.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${data.linkedin}` },
+                     { val: data.twitter, icon: FaTwitter, link: `https://twitter.com/${data.twitter}` },
+                     { val: data.github, icon: FaGithub, link: `https://github.com/${data.github}` },
                      { val: fictionalData.discord, icon: FaDiscord, link: `#` }
                   ].map((social, i) => social.val && (
                      <a

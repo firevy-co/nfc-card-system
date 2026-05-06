@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiWind,
@@ -114,20 +114,31 @@ const SteelFrame = ({ userData }) => {
       ]
    };
 
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
    const data = {
+      ...fictionalData,
       displayName: userData?.displayName || fictionalData.displayName,
-      role: userData?.designation || userData?.role || fictionalData.role,
-      phone: userData?.mobileNumber || userData?.phone || fictionalData.phone,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
       email: userData?.email || fictionalData.email,
       website: userData?.website || fictionalData.website,
-      address: userData?.address || userData?.city || fictionalData.address,
-      companyName: userData?.companyName || fictionalData.businessName,
-      bio: userData?.bio || fictionalData.bio,
-      avatar: userData?.avatar,
-      logo: userData?.logo,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
       linkedin: userData?.linkedin || fictionalData.linkedin,
       twitter: userData?.twitter || fictionalData.twitter,
       instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
    };
 
    const vCardData = { ...userData, ...fictionalData };
@@ -146,7 +157,7 @@ const SteelFrame = ({ userData }) => {
             {/* ================= HERO IDENTITY (Organic Curve) ================= */}
             <div className="w-full relative">
                <div className="w-full h-[280px] relative rounded-b-[3rem] overflow-hidden shadow-sm">
-                  <img src={fictionalData.bannerImage} alt="Green Architecture" className="w-full h-full object-cover opacity-90" />
+                  <img src={data.bannerImage} alt="Green Architecture" className="w-full h-full object-cover opacity-90" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#064E3B]/80 via-[#064E3B]/20 to-transparent" />
                </div>
 

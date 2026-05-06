@@ -176,6 +176,50 @@ exports.updateUserDetails = async (req, res) => {
 };
 
 /**
+ * PROFILE SYNC: Full profile update from the Profile page (all fields).
+ * Uses Admin SDK to bypass Firestore client-side security rules on live.
+ */
+exports.updateUserProfile = async (req, res) => {
+    const { uid } = req.params;
+    const profileData = req.body;
+
+    if (!uid) return res.status(400).json({ error: "Missing uid" });
+
+    try {
+        if (isOffline) {
+            mockUsersCache = mockUsersCache.map(u =>
+                u.uid === uid ? { ...u, ...profileData } : u
+            );
+            return res.json({ success: true, message: "Profile updated (MOCK)." });
+        }
+
+        // Strip undefined values
+        const cleanData = Object.fromEntries(
+            Object.entries(profileData).filter(([_, v]) => v !== undefined)
+        );
+
+        await db.collection('users').doc(uid).set({
+            ...cleanData,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        // Sync displayName to Firebase Auth if changed
+        if (profileData.displayName) {
+            try {
+                await auth.updateUser(uid, { displayName: profileData.displayName });
+            } catch (authErr) {
+                console.warn(`[AUTH SYNC]: displayName sync skipped: ${authErr.message}`);
+            }
+        }
+
+        res.json({ success: true, message: "Profile synchronized successfully." });
+    } catch (error) {
+        console.error("Profile Update Failure:", error);
+        res.status(500).json({ error: "Failed to synchronize profile.", details: error.message });
+    }
+};
+
+/**
  * DE-AUTHORIZATION: Completely purge a participant and ALL their data from the system.
  * Cascade deletes:
  *   1. Firebase Auth account

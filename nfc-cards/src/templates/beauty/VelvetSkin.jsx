@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiTwitter,
@@ -118,6 +118,34 @@ const VelvetSkin = ({ userData }) => {
    // Merge for the button function
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    const fadeUp = {
       hidden: { opacity: 0, y: 20 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -131,7 +159,7 @@ const VelvetSkin = ({ userData }) => {
 
             {/* ================= HERO & HEADER ================= */}
             <div className="w-full h-[260px] relative rounded-b-[40px] overflow-hidden">
-               <img src={fictionalData.bannerImage} alt="Spa Ambience" className="w-full h-full object-cover opacity-90" />
+               <img src={data.bannerImage} alt="Spa Ambience" className="w-full h-full object-cover opacity-90" />
                <div className="absolute inset-0 bg-gradient-to-t from-[#2C3D33]/60 via-transparent to-transparent" />
             </div>
 
@@ -142,7 +170,7 @@ const VelvetSkin = ({ userData }) => {
                      initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.5 }}
                      className="w-32 h-32 rounded-[2rem] bg-[#FAFAF7] p-2 shadow-lg"
                   >
-                     <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover rounded-[1.5rem]" />
+                     <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover rounded-[1.5rem]" />
                   </motion.div>
                   <div className="pb-2 text-right">
                      <div className="flex items-center justify-end gap-1 text-[#8DA399] mb-1">
@@ -153,17 +181,17 @@ const VelvetSkin = ({ userData }) => {
                </div>
 
                <div>
-                  <h1 className="text-3xl font-serif font-bold text-[#2C3D33] mb-1">{fictionalData.displayName}</h1>
-                  <p className="text-[#8DA399] text-sm font-semibold uppercase tracking-wider mb-4">{fictionalData.role}</p>
+                  <h1 className="text-3xl font-serif font-bold text-[#2C3D33] mb-1">{data.displayName}</h1>
+                  <p className="text-[#8DA399] text-sm font-semibold uppercase tracking-wider mb-4">{data.role}</p>
 
-                  {fictionalData.businessName && (
+                  {data.businessName && (
                      <div className="inline-flex items-center gap-2 bg-[#E8E8E0]/40 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest text-[#2C3D33] mb-5">
                         <FaLeaf className="text-[#8DA399]" />
-                        {fictionalData.businessName}
+                        {data.businessName}
                      </div>
                   )}
                   <p className="text-[#66736A] text-sm leading-relaxed mb-6">
-                     {fictionalData.bio}
+                     {data.bio}
                   </p>
                </div>
             </div>
@@ -183,10 +211,10 @@ const VelvetSkin = ({ userData }) => {
                {/* ================= QUICK ACTIONS ================= */}
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="grid grid-cols-4 gap-3">
                   {[
-                     { icon: FiPhone, label: "Call", link: `tel:${fictionalData.phone}` },
-                     { icon: FiMail, label: "Email", link: `mailto:${fictionalData.email}` },
-                     { icon: FiMapPin, label: "Map", link: `https://maps.google.com/?q=${fictionalData.address}` },
-                     { icon: FiGlobe, label: "Web", link: `https://${fictionalData.website}` }
+                     { icon: FiPhone, label: "Call", link: `tel:${data.phone}` },
+                     { icon: FiMail, label: "Email", link: `mailto:${data.email}` },
+                     { icon: FiMapPin, label: "Map", link: `https://maps.google.com/?q=${data.address}` },
+                     { icon: FiGlobe, label: "Web", link: `https://${data.website}` }
                   ].map((action, i) => (
                      <a key={i} href={action.link || null} target="_blank" rel="noopener noreferrer" className="bg-white border border-[#E8E8E0] rounded-2xl p-4 flex flex-col items-center justify-center gap-2 hover:border-[#8DA399] hover:shadow-md transition-all group">
                         <action.icon size={20} className="text-[#8DA399] group-hover:text-[#2C3D33] transition-colors" />
@@ -354,10 +382,10 @@ const VelvetSkin = ({ userData }) => {
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                   <div className="flex justify-center gap-3 py-2">
                      {[
-                        { val: fictionalData.instagram, icon: FiInstagram, link: `https://instagram.com/${fictionalData.instagram}` },
-                        { val: fictionalData.tiktok, icon: FaTiktok, link: `https://tiktok.com/@${fictionalData.tiktok}` },
-                        { val: fictionalData.facebook, icon: FaFacebookF, link: `https://facebook.com/${fictionalData.facebook}` },
-                        { val: fictionalData.twitter, icon: FiTwitter, link: `https://twitter.com/${fictionalData.twitter}` }
+                        { val: data.instagram, icon: FiInstagram, link: `https://instagram.com/${data.instagram}` },
+                        { val: data.tiktok, icon: FaTiktok, link: `https://tiktok.com/@${data.tiktok}` },
+                        { val: data.facebook, icon: FaFacebookF, link: `https://facebook.com/${data.facebook}` },
+                        { val: data.twitter, icon: FiTwitter, link: `https://twitter.com/${data.twitter}` }
                      ].map((social, i) => social.val && (
                         <a
                            key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"

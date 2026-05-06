@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiLinkedin, FiTwitter,
@@ -116,6 +116,34 @@ const BoldEntrepreneur = ({ userData }) => {
 
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    const fadeUp = {
       hidden: { opacity: 0, y: 30 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -142,7 +170,7 @@ const BoldEntrepreneur = ({ userData }) => {
                   className="w-36 h-36 rounded-[2.5rem] p-1.5 bg-gradient-to-br from-emerald-400 via-blue-500 to-purple-600 shadow-[0_20px_50px_rgba(16,185,129,0.3)] mb-8 rotate-3 hover:rotate-0 transition-transform duration-500"
                >
                   <div className="w-full h-full rounded-[2.2rem] overflow-hidden bg-[#0A1118]">
-                     <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover opacity-90" />
+                     <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover opacity-90" />
                   </div>
                </motion.div>
 
@@ -150,27 +178,27 @@ const BoldEntrepreneur = ({ userData }) => {
                   initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6, delay: 0.2 }}
                   className="text-4xl font-['Playfair_Display'] font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-100 to-gray-400 tracking-tight text-center mb-2"
                >
-                  {fictionalData.displayName}
+                  {data.displayName}
                </motion.h1>
 
                <motion.p
                   initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6, delay: 0.3 }}
                   className="text-emerald-400 font-bold text-xs uppercase tracking-[0.25em] text-center mb-6"
                >
-                  {fictionalData.role}
+                  {data.role}
                </motion.p>
 
-               {fictionalData.businessName && (
+               {data.businessName && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mb-8">
                      <div className="bg-white/5 backdrop-blur-md border border-white/10 px-6 py-2 rounded-full flex items-center gap-2 shadow-lg">
                         <FaBuilding className="text-emerald-400 shrink-0" size={14} />
-                        <span className="text-xs font-semibold uppercase tracking-widest text-gray-300">{fictionalData.businessName}</span>
+                        <span className="text-xs font-semibold uppercase tracking-widest text-gray-300">{data.businessName}</span>
                      </div>
                   </motion.div>
                )}
 
                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-sm text-gray-400 leading-relaxed text-center font-light px-2 mb-2">
-                  "{fictionalData.bio}"
+                  "{data.bio}"
                </motion.p>
             </div>
 
@@ -189,14 +217,14 @@ const BoldEntrepreneur = ({ userData }) => {
 
                {/* ================= QUICK CONTACT (PILLS) ================= */}
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="grid grid-cols-2 gap-3">
-                  {fictionalData.phone && (
-                     <a href={`tel:${fictionalData.phone}`} className="bg-gradient-to-br from-emerald-500/20 to-emerald-900/20 backdrop-blur-xl border border-emerald-500/30 p-4 rounded-3xl flex flex-col items-center justify-center gap-3 hover:bg-emerald-500/30 transition-all text-white group">
+                  {data.phone && (
+                     <a href={`tel:${data.phone}`} className="bg-gradient-to-br from-emerald-500/20 to-emerald-900/20 backdrop-blur-xl border border-emerald-500/30 p-4 rounded-3xl flex flex-col items-center justify-center gap-3 hover:bg-emerald-500/30 transition-all text-white group">
                         <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform"><FiPhone size={20} /></div>
                         <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-center">Secure Line</span>
                      </a>
                   )}
-                  {fictionalData.email && (
-                     <a href={`mailto:${fictionalData.email}`} className="bg-white/5 backdrop-blur-xl border border-white/10 p-4 rounded-3xl flex flex-col items-center justify-center gap-3 hover:bg-white/10 transition-all text-white group">
+                  {data.email && (
+                     <a href={`mailto:${data.email}`} className="bg-white/5 backdrop-blur-xl border border-white/10 p-4 rounded-3xl flex flex-col items-center justify-center gap-3 hover:bg-white/10 transition-all text-white group">
                         <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-gray-400 group-hover:text-emerald-400 group-hover:scale-110 transition-transform"><FiMail size={20} /></div>
                         <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-center truncate max-w-full">Direct Email</span>
                      </a>
@@ -303,15 +331,15 @@ const BoldEntrepreneur = ({ userData }) => {
                {/* ================= HQ & FAQ ================= */}
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                   <GlassPanel title="Operations Base" icon={FiMapPin}>
-                     {fictionalData.address && (
+                     {data.address && (
                         <div className="flex items-start gap-4 pb-5 border-b border-white/10 mb-5">
                            <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-emerald-400 shrink-0">
                               <FiMapPin size={18} />
                            </div>
                            <div>
                               <p className="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-1">Corporate HQ</p>
-                              <p className="text-sm font-medium text-white leading-snug mb-1.5">{fictionalData.address}</p>
-                              <a href={`https://maps.google.com/?q=${encodeURIComponent(fictionalData.address)}`} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-widest font-bold text-emerald-400 hover:text-emerald-300 transition-colors">Get Directions</a>
+                              <p className="text-sm font-medium text-white leading-snug mb-1.5">{data.address}</p>
+                              <a href={`https://maps.google.com/?q=${encodeURIComponent(data.address)}`} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-widest font-bold text-emerald-400 hover:text-emerald-300 transition-colors">Get Directions</a>
                            </div>
                         </div>
                      )}
@@ -340,8 +368,8 @@ const BoldEntrepreneur = ({ userData }) => {
                {/* ================= SOCIAL NETWORK ================= */}
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                   <GlassPanel title="Digital Presence" icon={FiGlobe} className="!mb-8">
-                     {fictionalData.website && (
-                        <a href={`https://${fictionalData.website}`} target="_blank" rel="noopener noreferrer" className="w-full bg-white/5 border border-white/10 p-4 rounded-2xl flex justify-between items-center hover:bg-emerald-500/20 hover:border-emerald-500/50 transition-all mb-6 group">
+                     {data.website && (
+                        <a href={`https://${data.website}`} target="_blank" rel="noopener noreferrer" className="w-full bg-white/5 border border-white/10 p-4 rounded-2xl flex justify-between items-center hover:bg-emerald-500/20 hover:border-emerald-500/50 transition-all mb-6 group">
                            <div className="flex items-center gap-3">
                               <FiGlobe className="text-emerald-400 shrink-0" size={20} />
                               <span className="font-bold text-xs uppercase tracking-widest text-white truncate">Access Portfolio</span>
@@ -352,8 +380,8 @@ const BoldEntrepreneur = ({ userData }) => {
 
                      <div className="flex justify-center gap-3">
                         {[
-                           { val: fictionalData.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${fictionalData.linkedin}` },
-                           { val: fictionalData.twitter, icon: FaTwitter, link: `https://twitter.com/${fictionalData.twitter}` }
+                           { val: data.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${data.linkedin}` },
+                           { val: data.twitter, icon: FaTwitter, link: `https://twitter.com/${data.twitter}` }
                         ].map((social, i) => social.val && (
                            <a
                               key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"

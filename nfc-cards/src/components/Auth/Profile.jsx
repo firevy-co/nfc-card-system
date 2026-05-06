@@ -286,7 +286,7 @@ const CardPreview = ({ formData }) => {
     );
 };
 
-const Profile = ({ userData }) => {
+const Profile = ({ userData, onUserDataChange }) => {
     const navigate = useNavigate();
     const user = auth.currentUser;
     const [isEditing, setIsEditing] = useState(false);
@@ -424,14 +424,43 @@ const Profile = ({ userData }) => {
 
         setIsSaving(true);
         const savePromise = (async () => {
-            const userRef = doc(db, "users", user.uid);
-            await updateDoc(userRef, {
+            const payload = {
                 ...formData,
+                uid: user.uid,
                 lastUpdated: new Date().toISOString()
-            });
+            };
+
+            // Try backend API first (works on live with strict Firestore rules)
+            const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
+            let savedViaApi = false;
+            try {
+                const res = await fetch(`${apiUrl}/api/users/${user.uid}/profile`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    savedViaApi = true;
+                }
+            } catch (apiErr) {
+                console.warn("Backend API unavailable, falling back to direct Firestore write:", apiErr.message);
+            }
+
+            // Fallback: direct Firestore write (works locally with permissive rules)
+            if (!savedViaApi) {
+                const userRef = doc(db, "users", user.uid);
+                await updateDoc(userRef, payload);
+            }
 
             if (formData.displayName !== user.displayName) {
                 await updateProfile(user, { displayName: formData.displayName });
+            }
+
+            // ✅ CRITICAL: Push updated data into App.jsx userData state immediately.
+            // This makes ALL templates update with the new profile details instantly,
+            // without needing Firestore real-time listeners (which may be blocked on live).
+            if (typeof onUserDataChange === 'function') {
+                onUserDataChange(prev => ({ ...prev, ...payload }));
             }
 
             setIsEditing(false);

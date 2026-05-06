@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiTwitter,
@@ -105,6 +105,34 @@ const VintageAudioEngineer = ({ userData }) => {
    // Merge for the button function, but display only fictional data
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    const fadeUp = {
       hidden: { opacity: 0, y: 30 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -121,7 +149,7 @@ const VintageAudioEngineer = ({ userData }) => {
             {/* ================= TICKET HEADER ================= */}
             <div className="w-full relative border-b-4 border-[#2d2a26] bg-white">
                <div className="h-56 relative overflow-hidden sepia contrast-125 border-b-4 border-[#2d2a26]">
-                  <img src={fictionalData.bannerImage} alt="Studio" className="w-full h-full object-cover" />
+                  <img src={data.bannerImage} alt="Studio" className="w-full h-full object-cover" />
                   {/* Halftone Overlay */}
                   <div className="absolute inset-0 opacity-20 mix-blend-overlay bg-[radial-gradient(circle_at_center,black_1px,transparent_1px)] bg-[size:4px_4px]" />
                </div>
@@ -135,22 +163,22 @@ const VintageAudioEngineer = ({ userData }) => {
                      initial={{ rotate: -5, scale: 0.9 }} animate={{ rotate: 3, scale: 1 }} transition={{ type: "spring" }}
                      className="w-32 h-32 mx-auto rounded-none border-4 border-[#2d2a26] bg-[#e3b505] p-1 shadow-[6px_6px_0_0_#2d2a26] -mt-24 mb-6 relative z-10"
                   >
-                     <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover grayscale contrast-150" />
+                     <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover grayscale contrast-150" />
                   </motion.div>
 
                   <h1 className="text-4xl font-serif font-black uppercase tracking-tighter text-[#2d2a26] leading-none mb-2">
-                     {fictionalData.displayName}
+                     {data.displayName}
                   </h1>
                   <p className="font-bold text-sm uppercase tracking-widest text-[#e65a37] mb-4">
-                     {fictionalData.role}
+                     {data.role}
                   </p>
 
                   <div className="inline-block border-2 border-dashed border-[#2d2a26] px-4 py-2 bg-[#f4f1ea] mb-6">
-                     <span className="text-xs font-bold uppercase">{fictionalData.businessName}</span>
+                     <span className="text-xs font-bold uppercase">{data.businessName}</span>
                   </div>
 
                   <p className="text-xs leading-relaxed font-serif text-center max-w-sm mx-auto font-medium">
-                     "{fictionalData.bio}"
+                     "{data.bio}"
                   </p>
                </div>
             </div>
@@ -171,14 +199,14 @@ const VintageAudioEngineer = ({ userData }) => {
                <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                   <SectionHeading title="Contact" subtitle="Dial In" />
                   <div className="grid grid-cols-2 gap-4">
-                     {fictionalData.phone && (
-                        <a href={`tel:${fictionalData.phone}`} className="border-2 border-[#2d2a26] bg-white p-4 shadow-[4px_4px_0_0_#2d2a26] hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#e65a37] transition-all flex flex-col items-center gap-2 group">
+                     {data.phone && (
+                        <a href={`tel:${data.phone}`} className="border-2 border-[#2d2a26] bg-white p-4 shadow-[4px_4px_0_0_#2d2a26] hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#e65a37] transition-all flex flex-col items-center gap-2 group">
                            <FiPhone size={24} className="text-[#2d2a26]" />
                            <span className="text-[10px] font-bold uppercase">Telephone</span>
                         </a>
                      )}
-                     {fictionalData.email && (
-                        <a href={`mailto:${fictionalData.email}`} className="border-2 border-[#2d2a26] bg-white p-4 shadow-[4px_4px_0_0_#2d2a26] hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#e65a37] transition-all flex flex-col items-center gap-2 group">
+                     {data.email && (
+                        <a href={`mailto:${data.email}`} className="border-2 border-[#2d2a26] bg-white p-4 shadow-[4px_4px_0_0_#2d2a26] hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#e65a37] transition-all flex flex-col items-center gap-2 group">
                            <FiMail size={24} className="text-[#2d2a26]" />
                            <span className="text-[10px] font-bold uppercase">Telegram</span>
                         </a>
@@ -274,13 +302,13 @@ const VintageAudioEngineer = ({ userData }) => {
                <motion.section initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                   <SectionHeading title="Links" subtitle="Find Us" />
 
-                  {fictionalData.address && (
-                     <a href={`https://maps.google.com/?q=${encodeURIComponent(fictionalData.address)}`} target="_blank" rel="noopener noreferrer" className="block border-2 border-[#2d2a26] bg-[#3f6153] p-4 shadow-[4px_4px_0_0_#2d2a26] mb-6 hover:-translate-y-1 transition-transform group">
+                  {data.address && (
+                     <a href={`https://maps.google.com/?q=${encodeURIComponent(data.address)}`} target="_blank" rel="noopener noreferrer" className="block border-2 border-[#2d2a26] bg-[#3f6153] p-4 shadow-[4px_4px_0_0_#2d2a26] mb-6 hover:-translate-y-1 transition-transform group">
                         <div className="flex items-center gap-3 text-[#f4f1ea]">
                            <FiMapPin size={20} className="shrink-0 text-[#e3b505]" />
                            <div>
                               <p className="text-[10px] font-bold uppercase tracking-widest text-[#e3b505] mb-1">Studio Location</p>
-                              <p className="text-sm font-serif font-bold">{fictionalData.address}</p>
+                              <p className="text-sm font-serif font-bold">{data.address}</p>
                            </div>
                         </div>
                      </a>
@@ -288,8 +316,8 @@ const VintageAudioEngineer = ({ userData }) => {
 
                   <div className="grid grid-cols-4 gap-3">
                      {[
-                        { val: fictionalData.instagram, icon: FiInstagram, link: `https://instagram.com/${fictionalData.instagram}`, bg: 'bg-[#e65a37]' },
-                        { val: fictionalData.twitter, icon: FiTwitter, link: `https://twitter.com/${fictionalData.twitter}`, bg: 'bg-[#e3b505]' },
+                        { val: data.instagram, icon: FiInstagram, link: `https://instagram.com/${data.instagram}`, bg: 'bg-[#e65a37]' },
+                        { val: data.twitter, icon: FiTwitter, link: `https://twitter.com/${data.twitter}`, bg: 'bg-[#e3b505]' },
                         { val: fictionalData.spotify, icon: FaSpotify, link: `https://spotify.com/artist/${fictionalData.spotify}`, bg: 'bg-[#3f6153]' },
                         { val: fictionalData.soundcloud, icon: FaSoundcloud, link: `https://soundcloud.com/${fictionalData.soundcloud}`, bg: 'bg-white' }
                      ].map((social, i) => social.val && (

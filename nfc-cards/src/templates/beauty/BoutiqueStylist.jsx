@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiTwitter,
@@ -109,6 +109,34 @@ const BoutiqueStylist = ({ userData }) => {
    // Merge incoming user data for the download function only
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    const fadeUp = {
       hidden: { opacity: 0, y: 20 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -127,7 +155,7 @@ const BoutiqueStylist = ({ userData }) => {
 
             {/* ================= HEADER & BANNER ================= */}
             <div className="relative w-full h-[280px] bg-white overflow-hidden rounded-b-[3rem] shadow-sm">
-               <img src={fictionalData.bannerImage} alt="Spa" className="w-full h-full object-cover opacity-80" />
+               <img src={data.bannerImage} alt="Spa" className="w-full h-full object-cover opacity-80" />
                <div className="absolute inset-0 bg-gradient-to-t from-[#FFF5F2] via-transparent to-transparent" />
             </div>
 
@@ -140,24 +168,24 @@ const BoutiqueStylist = ({ userData }) => {
                      initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6 }}
                      className="w-36 h-36 rounded-full overflow-hidden border-4 border-white bg-white shadow-[0_10px_30px_rgba(230,190,175,0.4)] mb-5 relative"
                   >
-                     <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover" />
+                     <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover" />
                   </motion.div>
 
                   <h1 className="text-3xl font-serif text-[#4A3B35] tracking-tight mb-1">
-                     {fictionalData.displayName}
+                     {data.displayName}
                   </h1>
                   <p className="text-[#C49B8D] text-xs font-bold uppercase tracking-[0.2em] mb-4">
-                     {fictionalData.role}
+                     {data.role}
                   </p>
 
-                  {fictionalData.businessName && (
+                  {data.businessName && (
                      <div className="bg-white/60 backdrop-blur-md border border-white text-[#7A6A63] px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 shadow-sm">
-                        {fictionalData.businessName}
+                        {data.businessName}
                      </div>
                   )}
 
                   <p className="text-[#7A6A63] text-sm leading-relaxed font-light mb-8">
-                     {fictionalData.bio}
+                     {data.bio}
                   </p>
 
                   {/* Soft Stats Ribbon */}
@@ -177,19 +205,19 @@ const BoutiqueStylist = ({ userData }) => {
                {/* ================= DIRECT COMMS ================= */}
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                   <div className="flex gap-3">
-                     <a href={`tel:${fictionalData.phone}`} className="flex-1 bg-white/70 backdrop-blur-xl border border-white/50 p-4 rounded-3xl hover:bg-white transition-colors flex flex-col items-center gap-2 group shadow-[0_4px_15px_rgba(230,190,175,0.1)]">
+                     <a href={`tel:${data.phone}`} className="flex-1 bg-white/70 backdrop-blur-xl border border-white/50 p-4 rounded-3xl hover:bg-white transition-colors flex flex-col items-center gap-2 group shadow-[0_4px_15px_rgba(230,190,175,0.1)]">
                         <div className="w-10 h-10 rounded-full bg-[#FFF5F2] flex items-center justify-center text-[#C49B8D] group-hover:scale-110 transition-transform">
                            <FiPhone size={18} />
                         </div>
                         <span className="text-[10px] font-bold uppercase tracking-widest text-[#7A6A63]">Call</span>
                      </a>
-                     <a href={`mailto:${fictionalData.email}`} className="flex-1 bg-white/70 backdrop-blur-xl border border-white/50 p-4 rounded-3xl hover:bg-white transition-colors flex flex-col items-center gap-2 group shadow-[0_4px_15px_rgba(230,190,175,0.1)]">
+                     <a href={`mailto:${data.email}`} className="flex-1 bg-white/70 backdrop-blur-xl border border-white/50 p-4 rounded-3xl hover:bg-white transition-colors flex flex-col items-center gap-2 group shadow-[0_4px_15px_rgba(230,190,175,0.1)]">
                         <div className="w-10 h-10 rounded-full bg-[#FFF5F2] flex items-center justify-center text-[#C49B8D] group-hover:scale-110 transition-transform">
                            <FiMail size={18} />
                         </div>
                         <span className="text-[10px] font-bold uppercase tracking-widest text-[#7A6A63]">Email</span>
                      </a>
-                     <a href={`https://${fictionalData.website}`} target="_blank" rel="noopener noreferrer" className="flex-1 bg-white/70 backdrop-blur-xl border border-white/50 p-4 rounded-3xl hover:bg-white transition-colors flex flex-col items-center gap-2 group shadow-[0_4px_15px_rgba(230,190,175,0.1)]">
+                     <a href={`https://${data.website}`} target="_blank" rel="noopener noreferrer" className="flex-1 bg-white/70 backdrop-blur-xl border border-white/50 p-4 rounded-3xl hover:bg-white transition-colors flex flex-col items-center gap-2 group shadow-[0_4px_15px_rgba(230,190,175,0.1)]">
                         <div className="w-10 h-10 rounded-full bg-[#FFF5F2] flex items-center justify-center text-[#C49B8D] group-hover:scale-110 transition-transform">
                            <FiGlobe size={18} />
                         </div>
@@ -283,14 +311,14 @@ const BoutiqueStylist = ({ userData }) => {
                   <DelicateCard>
                      <SectionHeading title="Details" subtitle="Visit Us" />
 
-                     {fictionalData.address && (
+                     {data.address && (
                         <div className="flex items-center gap-4 pb-5 border-b border-[#E6BEAF]/30 mb-5">
                            <div className="w-10 h-10 rounded-full bg-[#FFF5F2] flex items-center justify-center text-[#C49B8D] shrink-0">
                               <FiMapPin size={18} />
                            </div>
                            <div>
-                              <p className="text-sm font-medium text-[#4A3B35] leading-snug">{fictionalData.address}</p>
-                              <a href={`https://maps.google.com/?q=${encodeURIComponent(fictionalData.address)}`} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-widest font-bold text-[#C49B8D] hover:underline mt-1 inline-block">Map it</a>
+                              <p className="text-sm font-medium text-[#4A3B35] leading-snug">{data.address}</p>
+                              <a href={`https://maps.google.com/?q=${encodeURIComponent(data.address)}`} target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-widest font-bold text-[#C49B8D] hover:underline mt-1 inline-block">Map it</a>
                            </div>
                         </div>
                      )}
@@ -316,10 +344,10 @@ const BoutiqueStylist = ({ userData }) => {
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                   <div className="flex justify-center gap-3">
                      {[
-                        { val: fictionalData.instagram, icon: FiInstagram, link: `https://instagram.com/${fictionalData.instagram}` },
-                        { val: fictionalData.tiktok, icon: FaTiktok, link: `https://tiktok.com/@${fictionalData.tiktok}` },
+                        { val: data.instagram, icon: FiInstagram, link: `https://instagram.com/${data.instagram}` },
+                        { val: data.tiktok, icon: FaTiktok, link: `https://tiktok.com/@${data.tiktok}` },
                         { val: fictionalData.pinterest, icon: FaPinterest, link: `https://pinterest.com/${fictionalData.pinterest}` },
-                        { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` }
+                        { val: data.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${data.whatsapp}` }
                      ].map((social, i) => social.val && (
                         <a
                            key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"

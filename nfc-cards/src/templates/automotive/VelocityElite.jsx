@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiLinkedin,
@@ -109,6 +109,34 @@ const VelocityElite = ({ userData }) => {
 
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    return (
       <div className="w-full min-h-screen bg-[#F1F5F9] text-slate-800 font-['Lato',sans-serif] selection:bg-[#D4AF37] selection:text-white flex justify-center pb-28">
 
@@ -116,7 +144,7 @@ const VelocityElite = ({ userData }) => {
 
             {/* ================= HERO & HEADER ================= */}
             <div className="relative w-full h-[320px] bg-[#0A1128] overflow-hidden">
-               <img src={fictionalData.bannerImage} alt="Aviation" className="w-full h-full object-cover opacity-30 mix-blend-luminosity" />
+               <img src={data.bannerImage} alt="Aviation" className="w-full h-full object-cover opacity-30 mix-blend-luminosity" />
                <div className="absolute inset-0 bg-gradient-to-t from-[#0A1128] via-[#0A1128]/50 to-transparent" />
 
                {/* Subtle Grid Pattern Overlay */}
@@ -130,7 +158,7 @@ const VelocityElite = ({ userData }) => {
                   className="bg-white rounded-xl shadow-[0_20px_40px_rgba(10,17,40,0.1)] p-8 text-center border-t-4 border-[#D4AF37]"
                >
                   <div className="w-28 h-28 mx-auto rounded-full overflow-hidden border-4 border-white shadow-lg -mt-20 mb-4 bg-white relative">
-                     <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover" />
+                     <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover" />
                      {/* Verified Badge */}
                      <div className="absolute bottom-1 right-1 w-6 h-6 bg-[#D4AF37] rounded-full border-2 border-white flex items-center justify-center">
                         <FiCheckCircle size={12} className="text-white" />
@@ -138,20 +166,20 @@ const VelocityElite = ({ userData }) => {
                   </div>
 
                   <h1 className="text-3xl font-serif font-black text-[#0A1128] tracking-tight mb-1">
-                     {fictionalData.displayName}
+                     {data.displayName}
                   </h1>
                   <p className="text-[#D4AF37] text-xs font-bold uppercase tracking-[0.2em] mb-4">
-                     {fictionalData.role}
+                     {data.role}
                   </p>
 
-                  {fictionalData.businessName && (
+                  {data.businessName && (
                      <div className="inline-block bg-[#0A1128] text-white px-4 py-1.5 rounded text-[10px] font-bold uppercase tracking-widest mb-6">
-                        {fictionalData.businessName}
+                        {data.businessName}
                      </div>
                   )}
 
                   <p className="text-slate-600 text-sm leading-relaxed font-medium">
-                     {fictionalData.bio}
+                     {data.bio}
                   </p>
 
                   {/* Metrics Ribbon */}
@@ -171,14 +199,14 @@ const VelocityElite = ({ userData }) => {
                {/* ================= FAST ACTION COMMS ================= */}
                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                   <div className="grid grid-cols-2 gap-3 mb-6">
-                     {fictionalData.phone && (
-                        <a href={`tel:${fictionalData.phone}`} className="bg-[#0A1128] text-white p-4 rounded-xl shadow-md hover:bg-[#D4AF37] transition-colors flex flex-col items-center gap-2 group">
+                     {data.phone && (
+                        <a href={`tel:${data.phone}`} className="bg-[#0A1128] text-white p-4 rounded-xl shadow-md hover:bg-[#D4AF37] transition-colors flex flex-col items-center gap-2 group">
                            <FiPhone size={20} className="text-[#D4AF37] group-hover:text-white transition-colors" />
                            <span className="text-[10px] font-bold uppercase tracking-widest">Concierge Line</span>
                         </a>
                      )}
-                     {fictionalData.email && (
-                        <a href={`mailto:${fictionalData.email}`} className="bg-white border border-slate-200 text-[#0A1128] p-4 rounded-xl shadow-sm hover:border-[#D4AF37] transition-colors flex flex-col items-center gap-2">
+                     {data.email && (
+                        <a href={`mailto:${data.email}`} className="bg-white border border-slate-200 text-[#0A1128] p-4 rounded-xl shadow-sm hover:border-[#D4AF37] transition-colors flex flex-col items-center gap-2">
                            <FiMail size={20} className="text-[#D4AF37]" />
                            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Secure Email</span>
                         </a>
@@ -237,12 +265,12 @@ const VelocityElite = ({ userData }) => {
                {/* ================= CONTACT & LOGISTICS ================= */}
                <ExecutiveCard title="Operations Base" icon={FiMapPin}>
                   <div className="grid gap-6">
-                     {fictionalData.address && (
-                        <a href={`https://maps.google.com/?q=${encodeURIComponent(fictionalData.address)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 bg-slate-50 p-4 rounded-lg hover:bg-slate-100 transition-colors border border-slate-100">
+                     {data.address && (
+                        <a href={`https://maps.google.com/?q=${encodeURIComponent(data.address)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 bg-slate-50 p-4 rounded-lg hover:bg-slate-100 transition-colors border border-slate-100">
                            <div className="text-[#D4AF37]"><FiMapPin size={24} /></div>
                            <div>
                               <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-1">Headquarters</p>
-                              <p className="text-sm font-bold text-[#0A1128]">{fictionalData.address}</p>
+                              <p className="text-sm font-bold text-[#0A1128]">{data.address}</p>
                            </div>
                         </a>
                      )}
@@ -270,8 +298,8 @@ const VelocityElite = ({ userData }) => {
 
                {/* ================= NETWORK & LINKS ================= */}
                <ExecutiveCard title="Global Network" icon={FiGlobe}>
-                  {fictionalData.website && (
-                     <a href={`https://${fictionalData.website}`} target="_blank" rel="noopener noreferrer" className="w-full bg-[#0A1128] text-white p-4 rounded-lg flex justify-between items-center hover:bg-[#D4AF37] transition-colors mb-6 shadow-md group">
+                  {data.website && (
+                     <a href={`https://${data.website}`} target="_blank" rel="noopener noreferrer" className="w-full bg-[#0A1128] text-white p-4 rounded-lg flex justify-between items-center hover:bg-[#D4AF37] transition-colors mb-6 shadow-md group">
                         <span className="font-bold text-xs uppercase tracking-widest">Access Private Portal</span>
                         <FiSend className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                      </a>
@@ -279,10 +307,10 @@ const VelocityElite = ({ userData }) => {
 
                   <div className="grid grid-cols-4 gap-3">
                      {[
-                        { val: fictionalData.linkedin, icon: FiLinkedin, link: `https://linkedin.com/in/${fictionalData.linkedin}` },
-                        { val: fictionalData.instagram, icon: FiInstagram, link: `https://instagram.com/${fictionalData.instagram}` },
-                        { val: fictionalData.twitter, icon: FiTwitter, link: `https://twitter.com/${fictionalData.twitter}` },
-                        { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` }
+                        { val: data.linkedin, icon: FiLinkedin, link: `https://linkedin.com/in/${data.linkedin}` },
+                        { val: data.instagram, icon: FiInstagram, link: `https://instagram.com/${data.instagram}` },
+                        { val: data.twitter, icon: FiTwitter, link: `https://twitter.com/${data.twitter}` },
+                        { val: data.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${data.whatsapp}` }
                      ].map((social, i) => social.val && (
                         <a
                            key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"

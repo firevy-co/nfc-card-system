@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiArrowRight,
@@ -110,6 +110,34 @@ const CorporateGlass = ({ userData }) => {
 
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    const fadeUp = {
       hidden: { opacity: 0, y: 15 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
@@ -124,33 +152,33 @@ const CorporateGlass = ({ userData }) => {
             {/* ================= HEADER / MASTHEAD ================= */}
             <div className="w-full border-b-2 border-black relative bg-gray-100">
                <div className="h-48 w-full overflow-hidden border-b border-black">
-                  <img src={fictionalData.bannerImage} alt="HQ" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-60" />
+                  <img src={data.bannerImage} alt="HQ" className="w-full h-full object-cover grayscale mix-blend-multiply opacity-60" />
                </div>
 
                <div className="p-6 relative">
                   <div className="flex justify-between items-start">
                      {/* Profile Image - Sharp Square */}
                      <div className="w-28 h-28 border-2 border-black bg-white p-1 -mt-16 relative z-10 shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
-                        <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover grayscale" />
+                        <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover grayscale" />
                      </div>
 
-                     {fictionalData.businessName && (
+                     {data.businessName && (
                         <div className="flex items-center gap-2 border border-black px-3 py-1 bg-white shadow-[2px_2px_0_0_rgba(0,0,0,1)]">
                            <FaBuilding className="text-blue-700" size={12} />
-                           <span className="text-[10px] font-bold uppercase tracking-widest">{fictionalData.businessName}</span>
+                           <span className="text-[10px] font-bold uppercase tracking-widest">{data.businessName}</span>
                         </div>
                      )}
                   </div>
 
                   <div className="mt-5">
                      <h1 className="text-4xl font-serif font-black text-black tracking-tight leading-none mb-2">
-                        {fictionalData.displayName}
+                        {data.displayName}
                      </h1>
                      <p className="text-blue-700 font-mono text-xs font-bold uppercase tracking-[0.2em] mb-4">
-                        {fictionalData.role}
+                        {data.role}
                      </p>
                      <p className="text-gray-700 text-sm leading-relaxed font-serif">
-                        {fictionalData.bio}
+                        {data.bio}
                      </p>
                   </div>
                </div>
@@ -174,26 +202,26 @@ const CorporateGlass = ({ userData }) => {
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                <LedgerSection title="Communications" sectionNumber="02">
                   <div className="grid grid-cols-1 gap-3">
-                     {fictionalData.phone && (
-                        <a href={`tel:${fictionalData.phone}`} className="w-full flex items-center justify-between border border-black p-4 hover:bg-blue-50 transition-colors group">
+                     {data.phone && (
+                        <a href={`tel:${data.phone}`} className="w-full flex items-center justify-between border border-black p-4 hover:bg-blue-50 transition-colors group">
                            <div className="flex items-center gap-4">
                               <FiPhone size={20} className="text-blue-700" />
-                              <span className="font-mono text-sm font-bold">{fictionalData.phone}</span>
+                              <span className="font-mono text-sm font-bold">{data.phone}</span>
                            </div>
                            <span className="text-[10px] uppercase font-bold text-gray-400 group-hover:text-blue-700">Direct Line</span>
                         </a>
                      )}
-                     {fictionalData.email && (
-                        <a href={`mailto:${fictionalData.email}`} className="w-full flex items-center justify-between border border-black p-4 hover:bg-blue-50 transition-colors group">
+                     {data.email && (
+                        <a href={`mailto:${data.email}`} className="w-full flex items-center justify-between border border-black p-4 hover:bg-blue-50 transition-colors group">
                            <div className="flex items-center gap-4">
                               <FiMail size={20} className="text-blue-700" />
-                              <span className="font-mono text-sm font-bold truncate max-w-[200px]">{fictionalData.email}</span>
+                              <span className="font-mono text-sm font-bold truncate max-w-[200px]">{data.email}</span>
                            </div>
                            <span className="text-[10px] uppercase font-bold text-gray-400 group-hover:text-blue-700">Email</span>
                         </a>
                      )}
-                     {fictionalData.website && (
-                        <a href={`https://${fictionalData.website}`} target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-between border border-black bg-black text-white p-4 hover:bg-blue-700 transition-colors group">
+                     {data.website && (
+                        <a href={`https://${data.website}`} target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-between border border-black bg-black text-white p-4 hover:bg-blue-700 transition-colors group">
                            <div className="flex items-center gap-4">
                               <FiGlobe size={20} className="text-white" />
                               <span className="font-bold text-sm tracking-wide uppercase">Corporate Portal</span>
@@ -284,12 +312,12 @@ const CorporateGlass = ({ userData }) => {
             {/* ================= 07 // LOGISTICS & FAQ ================= */}
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                <LedgerSection title="Operations" sectionNumber="07">
-                  {fictionalData.address && (
+                  {data.address && (
                      <div className="flex items-start gap-4 pb-5 border-b border-gray-200 mb-5">
                         <FiMapPin size={20} className="text-blue-700 mt-0.5 shrink-0" />
                         <div>
                            <p className="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-1">Corporate HQ</p>
-                           <p className="text-sm font-semibold text-black leading-snug">{fictionalData.address}</p>
+                           <p className="text-sm font-semibold text-black leading-snug">{data.address}</p>
                         </div>
                      </div>
                   )}
@@ -320,9 +348,9 @@ const CorporateGlass = ({ userData }) => {
                <LedgerSection title="Network" sectionNumber="08">
                   <div className="flex flex-wrap justify-center gap-4">
                      {[
-                        { val: fictionalData.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${fictionalData.linkedin}` },
-                        { val: fictionalData.twitter, icon: FaTwitter, link: `https://twitter.com/${fictionalData.twitter}` },
-                        { val: fictionalData.github, icon: FaGithub, link: `https://github.com/${fictionalData.github}` }
+                        { val: data.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${data.linkedin}` },
+                        { val: data.twitter, icon: FaTwitter, link: `https://twitter.com/${data.twitter}` },
+                        { val: data.github, icon: FaGithub, link: `https://github.com/${data.github}` }
                      ].map((social, i) => social.val && (
                         <a
                            key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"

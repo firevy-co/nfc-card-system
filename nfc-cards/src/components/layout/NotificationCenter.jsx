@@ -25,6 +25,9 @@ const NotificationCenter = ({ isAdmin, theme }) => {
     useEffect(() => {
         if (!auth.currentUser) return;
 
+        let mounted = true;
+        let unsubscribe = null;
+
         let q;
         if (isAdmin) {
             // Admins see all Unread inquiries
@@ -41,26 +44,36 @@ const NotificationCenter = ({ isAdmin, theme }) => {
             );
         }
 
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            let data = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
+        try {
+            unsubscribe = onSnapshot(q, (snapshot) => {
+                if (!mounted) return;
+                let data = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
 
-            // Manual sorting in memory to avoid needing composite indexes
-            if (isAdmin) {
-                data.sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
-            } else {
-                data.sort((a, b) => (b.lastUpdated?.toMillis?.() || 0) - (a.lastUpdated?.toMillis?.() || 0));
+                // Manual sorting in memory to avoid needing composite indexes
+                if (isAdmin) {
+                    data.sort((a, b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
+                } else {
+                    data.sort((a, b) => (b.lastUpdated?.toMillis?.() || 0) - (a.lastUpdated?.toMillis?.() || 0));
+                }
+
+                setNotifications(data.slice(0, 5));
+                setUnreadCount(data.length);
+            }, (_error) => {
+                // Silently catch permission-denied / assertion errors
+            });
+        } catch (_err) {
+            // Silently ignore if Firestore client is in a bad state
+        }
+
+        return () => {
+            mounted = false;
+            if (unsubscribe) {
+                try { unsubscribe(); } catch (_) { /* ignore cleanup errors */ }
             }
-
-            setNotifications(data.slice(0, 5)); // Final slice for UI
-            setUnreadCount(data.length);
-        }, (error) => {
-            // Silently catch permission-denied to keep the console completely clean
-        });
-
-        return () => unsubscribe();
+        };
     }, [isAdmin]);
 
     const handleNotificationClick = (id) => {

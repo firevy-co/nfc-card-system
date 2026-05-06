@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiArrowUpRight,
@@ -115,6 +115,34 @@ const ClassicExecutive = ({ userData }) => {
 
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    const fadeUp = {
       hidden: { opacity: 0, x: -10 },
       visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } }
@@ -129,24 +157,24 @@ const ClassicExecutive = ({ userData }) => {
             {/* ================= HERO HEADER ================= */}
             <div className="w-full relative bg-[#0F172A] pb-10">
                <div className="h-[200px] w-full overflow-hidden opacity-40 mix-blend-luminosity">
-                  <img src={fictionalData.bannerImage} alt="Office" className="w-full h-full object-cover" />
+                  <img src={data.bannerImage} alt="Office" className="w-full h-full object-cover" />
                </div>
                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0F172A]" />
 
                <div className="relative z-10 px-8 -mt-16 flex flex-col items-start">
                   <div className="w-28 h-28 bg-white p-1 shadow-xl mb-5 rounded-2xl rotate-3 hover:rotate-0 transition-transform duration-300">
-                     <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover rounded-xl" />
+                     <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover rounded-xl" />
                   </div>
 
-                  {fictionalData.businessName && (
+                  {data.businessName && (
                      <div className="bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest mb-3">
-                        {fictionalData.businessName}
+                        {data.businessName}
                      </div>
                   )}
 
-                  <h1 className="text-3xl font-bold text-white tracking-tight mb-1">{fictionalData.displayName}</h1>
-                  <p className="text-cyan-400 font-semibold text-sm uppercase tracking-wide mb-4">{fictionalData.role}</p>
-                  <p className="text-slate-300 text-sm leading-relaxed">"{fictionalData.bio}"</p>
+                  <h1 className="text-3xl font-bold text-white tracking-tight mb-1">{data.displayName}</h1>
+                  <p className="text-cyan-400 font-semibold text-sm uppercase tracking-wide mb-4">{data.role}</p>
+                  <p className="text-slate-300 text-sm leading-relaxed">"{data.bio}"</p>
                </div>
             </div>
 
@@ -171,20 +199,20 @@ const ClassicExecutive = ({ userData }) => {
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp}>
                   <TimelineSection title="Comms Directory" icon={FiLink}>
                      <div className="grid grid-cols-2 gap-3">
-                        {fictionalData.phone && (
-                           <a href={`tel:${fictionalData.phone}`} className="bg-[#0F172A] text-white p-4 rounded-xl flex flex-col items-center justify-center gap-2 shadow-[4px_4px_0_0_#06B6D4] hover:translate-x-1 hover:-translate-y-1 transition-transform">
+                        {data.phone && (
+                           <a href={`tel:${data.phone}`} className="bg-[#0F172A] text-white p-4 rounded-xl flex flex-col items-center justify-center gap-2 shadow-[4px_4px_0_0_#06B6D4] hover:translate-x-1 hover:-translate-y-1 transition-transform">
                               <FiPhone size={20} className="text-cyan-400" />
                               <span className="text-[10px] font-bold uppercase tracking-widest">Office Line</span>
                            </a>
                         )}
-                        {fictionalData.email && (
-                           <a href={`mailto:${fictionalData.email}`} className="bg-white border border-slate-300 p-4 rounded-xl flex flex-col items-center justify-center gap-2 shadow-[4px_4px_0_0_#0F172A] hover:translate-x-1 hover:-translate-y-1 transition-transform">
+                        {data.email && (
+                           <a href={`mailto:${data.email}`} className="bg-white border border-slate-300 p-4 rounded-xl flex flex-col items-center justify-center gap-2 shadow-[4px_4px_0_0_#0F172A] hover:translate-x-1 hover:-translate-y-1 transition-transform">
                               <FiMail size={20} className="text-slate-900" />
                               <span className="text-[10px] font-bold uppercase tracking-widest text-slate-700">Email Desk</span>
                            </a>
                         )}
-                        {fictionalData.website && (
-                           <a href={`https://${fictionalData.website}`} target="_blank" rel="noopener noreferrer" className="col-span-2 bg-white border border-slate-300 p-4 rounded-xl flex justify-between items-center group shadow-sm hover:border-cyan-500 transition-colors">
+                        {data.website && (
+                           <a href={`https://${data.website}`} target="_blank" rel="noopener noreferrer" className="col-span-2 bg-white border border-slate-300 p-4 rounded-xl flex justify-between items-center group shadow-sm hover:border-cyan-500 transition-colors">
                               <div className="flex items-center gap-3">
                                  <FiGlobe className="text-cyan-500" size={20} />
                                  <span className="text-xs font-bold uppercase tracking-widest text-slate-800">Corporate Portal</span>
@@ -286,7 +314,7 @@ const ClassicExecutive = ({ userData }) => {
                      <div className="mb-6 bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
                         <div className="flex items-center gap-2 mb-3 border-b border-slate-100 pb-2">
                            <FiMapPin className="text-cyan-600" size={16} />
-                           <span className="text-xs font-bold text-slate-800">{fictionalData.address}</span>
+                           <span className="text-xs font-bold text-slate-800">{data.address}</span>
                         </div>
                         {fictionalData.hours.map((bh, i) => (
                            <div key={i} className="flex justify-between items-center py-1.5 text-xs">
@@ -321,8 +349,8 @@ const ClassicExecutive = ({ userData }) => {
                      {/* Socials */}
                      <div className="flex gap-3 mb-8">
                         {[
-                           { val: fictionalData.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${fictionalData.linkedin}` },
-                           { val: fictionalData.twitter, icon: FaTwitter, link: `https://twitter.com/${fictionalData.twitter}` }
+                           { val: data.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${data.linkedin}` },
+                           { val: data.twitter, icon: FaTwitter, link: `https://twitter.com/${data.twitter}` }
                         ].map((social, i) => social.val && (
                            <a
                               key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"

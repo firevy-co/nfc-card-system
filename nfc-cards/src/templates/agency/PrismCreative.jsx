@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   FiMail, FiGlobe, FiMapPin, FiInstagram, FiLinkedin,
@@ -48,41 +48,67 @@ const FaqTile = ({ question, answer }) => {
 
 const BentoDashboard = ({ userData }) => {
   // Completely fictional persona: Marcus Thorne, Indie Game Dev
-  const {
-    displayName = "Marcus Thorne",
-    email = "marcus@polygridgames.com",
-    role = "Indie Game Developer",
-    phone = "+1 (555) 777-8888",
-    website = "www.polygridgames.com",
-    address = "Seattle, WA, United States",
-    businessName = "Polygrid Studios",
-    twitter = "marcusthorne_dev",
-    youtube = "polygrid",
-    discord = "marcus_dev#1234",
-    profileImage = "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=400&h=400&fit=crop",
-    bio = "Solo indie dev crafting atmospheric pixel-art adventures and synth-heavy soundtracks. Creator of 'Neon Drifter'.",
-    status = "Developing 'Cyber Hound' 🐕",
-    services = [
+  const fictionalData = {
+    displayName: "Marcus Thorne",
+    email: "marcus@polygridgames.com",
+    role: "Indie Game Developer",
+    phone: "+1 (555) 777-8888",
+    website: "www.polygridgames.com",
+    address: "Seattle, WA, United States",
+    businessName: "Polygrid Studios",
+    twitter: "marcusthorne_dev",
+    youtube: "polygrid",
+    discord: "marcus_dev#1234",
+    profileImage: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=400&h=400&fit=crop",
+    bio: "Solo indie dev crafting atmospheric pixel-art adventures and synth-heavy soundtracks. Creator of 'Neon Drifter'.",
+    status: "Developing 'Cyber Hound' 🐕",
+    services: [
       { title: "Unity C# Dev", icon: FiCode, color: "text-blue-500 bg-blue-50" },
       { title: "Sound Design", icon: FiHeadphones, color: "text-purple-500 bg-purple-50" },
       { title: "Pixel Art", icon: FiMonitor, color: "text-pink-500 bg-pink-50" },
       { title: "Game Logic", icon: FiCpu, color: "text-emerald-500 bg-emerald-50" }
     ],
-    games = [
+    games: [
       { title: "Neon Drifter", stats: "100k+ Units Sold", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&h=400&fit=crop" },
       { title: "Abyssal Station", stats: "Early Access", img: "https://images.unsplash.com/photo-1614294149010-950b698f72c0?w=600&h=400&fit=crop" }
     ],
-    stats = [
+    stats: [
       { label: "Shipped Titles", val: "3" },
       { label: "Years Exp", val: "7" },
       { label: "Awards", val: "4" }
     ],
-    faqs = [
+    faqs: [
       { question: "Are you available for freelance sound design?", answer: "Currently, I am fully booked working on 'Cyber Hound', but I am accepting inquiries for Q3 2027." },
       { question: "What engine do you use?", answer: "I primarily use Unity for 3D/2.5D projects, and Godot for pure 2D pixel art games." },
       { question: "Can I stream your games?", answer: "Absolutely! Streaming and monetization of my games on Twitch/YouTube is 100% permitted and encouraged." }
     ]
-  } = userData || {};
+  };
+
+  // ✅ MERGE: userData takes priority over fictional placeholders
+  const data = {
+    ...fictionalData,
+    displayName: userData?.displayName || fictionalData.displayName,
+    role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+    phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+    email: userData?.email || fictionalData.email,
+    website: userData?.website || fictionalData.website,
+    address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+    businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+    whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+    linkedin: userData?.linkedin || fictionalData.linkedin,
+    twitter: userData?.twitter || fictionalData.twitter,
+    instagram: userData?.instagram || fictionalData.instagram,
+    facebook: userData?.facebook || fictionalData.facebook,
+    github: userData?.github || fictionalData.github,
+    youtube: userData?.youtube || fictionalData.youtube,
+    tiktok: userData?.tiktok || fictionalData.tiktok,
+    telegram: userData?.telegram || fictionalData.telegram,
+    bio: userData?.bio || fictionalData.bio,
+    profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+    avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+    logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+    bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+  };
 
   return (
     <div className="w-full min-h-screen bg-[#F4F4F5] text-gray-900 font-['Outfit',sans-serif] pb-24 flex justify-center">
@@ -94,21 +120,21 @@ const BentoDashboard = ({ userData }) => {
           {/* Status Badge */}
           <div className="absolute -top-3 right-6 bg-green-500 text-white text-[10px] font-bold uppercase px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 animate-pulse">
             <div className="w-1.5 h-1.5 bg-white rounded-full" />
-            {status}
+            {data.status}
           </div>
 
           <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
             <div className="w-28 h-28 shrink-0 rounded-full p-1 bg-gradient-to-tr from-indigo-500 to-pink-500">
-              <img src={profileImage} alt={displayName} className="w-full h-full object-cover rounded-full border-4 border-white" />
+              <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover rounded-full border-4 border-white" />
             </div>
             <div className="text-center sm:text-left flex-1">
-              <h1 className="text-3xl font-black text-gray-900 tracking-tight">{displayName}</h1>
-              <p className="text-indigo-500 font-bold text-sm mb-3">{role}</p>
-              <p className="text-gray-500 text-sm leading-relaxed mb-4">{bio}</p>
+              <h1 className="text-3xl font-black text-gray-900 tracking-tight">{data.displayName}</h1>
+              <p className="text-indigo-500 font-bold text-sm mb-3">{data.role}</p>
+              <p className="text-gray-500 text-sm leading-relaxed mb-4">{data.bio}</p>
 
-              {businessName && (
+              {data.businessName && (
                 <span className="inline-block bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-md">
-                  {businessName}
+                  {data.businessName}
                 </span>
               )}
             </div>
@@ -132,7 +158,7 @@ const BentoDashboard = ({ userData }) => {
           <BentoTile delay={0.3} className="flex flex-col justify-between">
             <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Metrics</h3>
             <div className="space-y-3">
-              {stats.map((stat, i) => (
+              {data.stats.map((stat, i) => (
                 <div key={i} className="flex justify-between items-end border-b border-gray-100 pb-2 last:border-0 last:pb-0">
                   <span className="text-2xl font-black leading-none text-gray-800">{stat.val}</span>
                   <span className="text-[10px] font-bold text-gray-400 uppercase">{stat.label}</span>
@@ -146,12 +172,12 @@ const BentoDashboard = ({ userData }) => {
             <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Connect</h3>
             <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
               {[
-                { id: 'twitter', val: twitter, icon: FiTwitter, color: 'bg-[#1DA1F2]/10 text-[#1DA1F2]' },
-                { id: 'youtube', val: youtube, icon: FaYoutube, color: 'bg-[#ff0000]/10 text-[#ff0000]' },
-                { id: 'discord', val: discord, icon: FaDiscord, color: 'bg-[#5865f2]/10 text-[#5865f2]' },
+                { id: 'data.twitter', val: data.twitter, icon: FiTwitter, color: 'bg-[#1DA1F2]/10 text-[#1DA1F2]' },
+                { id: 'data.youtube', val: data.youtube, icon: FaYoutube, color: 'bg-[#ff0000]/10 text-[#ff0000]' },
+                { id: 'data.discord', val: data.discord, icon: FaDiscord, color: 'bg-[#5865f2]/10 text-[#5865f2]' },
                 { id: 'steam', val: "steam", icon: FaSteam, color: 'bg-slate-800/10 text-slate-800' },
                 { id: 'twitch', val: "twitch", icon: FaTwitch, color: 'bg-[#9146FF]/10 text-[#9146FF]' },
-                { id: 'mail', val: email, icon: FiMail, color: 'bg-gray-100 text-gray-600', link: `mailto:${email}` }
+                { id: 'mail', val: data.email, icon: FiMail, color: 'bg-gray-100 text-gray-600', link: `mailto:${data.email}` }
               ].map((social, i) => social.val && (
                 <a
                   key={i}
@@ -169,7 +195,7 @@ const BentoDashboard = ({ userData }) => {
           {/* ================= 5. PORTFOLIO / GAMES (Full Width) ================= */}
           <BentoTile colSpan={2} delay={0.5} paddingClass="p-0" bgClass="bg-transparent" className="border-0 shadow-none overflow-hidden">
             <div className="grid grid-cols-2 gap-4 h-full">
-              {games.map((game, idx) => (
+              {data.games.map((game, idx) => (
                 <motion.div key={idx} whileHover={{ y: -5 }} className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.04)] group">
                   <img src={game.img} alt={game.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent p-5 flex flex-col justify-end">
@@ -186,7 +212,7 @@ const BentoDashboard = ({ userData }) => {
           <BentoTile colSpan={2} delay={0.6}>
             <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Skill Tree</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {services.map((svc, i) => (
+              {data.services.map((svc, i) => (
                 <div key={i} className="flex flex-col items-center text-center p-3 rounded-2xl bg-gray-50 border border-gray-100">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-2 ${svc.color}`}>
                     <svc.icon size={18} />
@@ -198,37 +224,37 @@ const BentoDashboard = ({ userData }) => {
           </BentoTile>
 
           {/* ================= 7. LOCATION & LINKS (Square) ================= */}
-          {address && (
+          {data.address && (
             <BentoTile delay={0.7} className="flex flex-col justify-between group hover:border-indigo-200 transition-colors cursor-pointer" >
-              <a href={`https://maps.google.com/?q=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="h-full flex flex-col">
+              <a href={`https://maps.google.com/?q=${encodeURIComponent(data.address)}`} target="_blank" rel="noopener noreferrer" className="h-full flex flex-col">
                 <div className="w-10 h-10 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <FiMapPin size={20} />
                 </div>
                 <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Basecamp</h3>
-                <p className="text-sm font-bold text-gray-800">{address}</p>
+                <p className="text-sm font-bold text-gray-800">{data.address}</p>
               </a>
             </BentoTile>
           )}
 
           {/* ================= 8. WEBSITE LINK (Square) ================= */}
-          {website && (
+          {data.website && (
             <BentoTile delay={0.8} className="flex flex-col justify-between group hover:border-indigo-200 transition-colors cursor-pointer" >
-              <a href={website.startsWith('http') ? website : `https://${website}`} target="_blank" rel="noopener noreferrer" className="h-full flex flex-col">
+              <a href={data.website.startsWith('http') ? data.website : `https://${data.website}`} target="_blank" rel="noopener noreferrer" className="h-full flex flex-col">
                 <div className="w-10 h-10 bg-indigo-50 text-indigo-500 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <FiGlobe size={20} />
                 </div>
                 <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Portfolio</h3>
-                <p className="text-sm font-bold text-gray-800 truncate">{website.replace(/(^\w+:|^)\/\//, '')}</p>
+                <p className="text-sm font-bold text-gray-800 truncate">{data.website.replace(/(^\w+:|^)\/\//, '')}</p>
               </a>
             </BentoTile>
           )}
 
           {/* ================= 9. FAQ WIDGET (Full Width) ================= */}
-          {faqs && faqs.length > 0 && (
+          {data.faqs && data.faqs.length > 0 && (
             <BentoTile colSpan={2} delay={0.9} bgClass="bg-gray-50" className="border border-gray-100 shadow-inner">
               <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Transmission Logs (FAQ)</h3>
               <div>
-                {faqs.map((faq, index) => <FaqTile key={index} question={faq.question} answer={faq.answer} />)}
+                {data.faqs.map((faq, index) => <FaqTile key={index} question={faq.question} answer={faq.answer} />)}
               </div>
             </BentoTile>
           )}

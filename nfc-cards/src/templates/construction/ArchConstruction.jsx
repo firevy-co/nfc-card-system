@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiBriefcase,
@@ -61,23 +61,20 @@ const AgencyAccordion = ({ question, answer }) => {
 // --- Main Component ---
 
 const ArchConstruction = ({ userData }) => {
-   // Extract user avatar, but override name/role to "Admin"
-   const { avatar, logo } = userData || {};
-
-   // Maximum Fictional Content for a Digital Agency / Business VCard
+   // Maximum Fictional Content for fallback only
    const fictionalData = {
-      displayName: "Admin",
-      role: "Admin",
+      displayName: "Your Name",
+      role: "Your Role",
       phone: "+1 (555) 123-4567",
-      email: "admin@nexus-digital.agency",
-      website: "www.nexus-digital.agency",
+      email: "hello@yourdomain.com",
+      website: "www.yourdomain.com",
       address: "1200 Innovation Drive, Silicon Valley, CA",
-      businessName: "Nexus Digital Agency",
+      businessName: "Your Company",
       whatsapp: "15551234567",
-      linkedin: "nexus-admin",
-      twitter: "nexus_agency",
-      instagram: "nexus.digital",
-      bio: "We are a full-service digital agency specializing in high-performance web applications, brand identity, and scalable enterprise systems. We transform complex problems into elegant digital experiences.",
+      linkedin: "your-profile",
+      twitter: "your_handle",
+      instagram: "your.handle",
+      bio: "We are a full-service digital agency specializing in high-performance web applications, brand identity, and scalable enterprise systems.",
       bannerImage: "https://images.unsplash.com/photo-1557683316-973673baf926?w=1200&h=600&fit=crop",
       defaultAvatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop",
       services: [
@@ -92,8 +89,8 @@ const ArchConstruction = ({ userData }) => {
          { title: "Corporate Portal", category: "Development", img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=600&fit=crop" }
       ],
       testimonials: [
-         { name: "Sarah Collins", role: "CEO, TechFlow", text: "Nexus completely overhauled our platform. Their attention to detail and engineering speed is unmatched in the industry." },
-         { name: "David Chen", role: "Founder, Zenith", text: "Working with the Admin team was seamless. They delivered a world-class product that immediately increased our user retention." }
+         { name: "Sarah Collins", role: "CEO, TechFlow", text: "Their attention to detail and engineering speed is unmatched in the industry." },
+         { name: "David Chen", role: "Founder, Zenith", text: "They delivered a world-class product that immediately increased our user retention." }
       ],
       hours: [
          { day: "Monday - Friday", hours: "09:00 AM - 06:00 PM" },
@@ -101,13 +98,41 @@ const ArchConstruction = ({ userData }) => {
          { day: "Sunday", hours: "Closed" }
       ],
       faqs: [
-         { question: "What is your typical project timeline?", answer: "Most standard web applications take 8-12 weeks from discovery to deployment. Enterprise systems may require 4-6 months." },
-         { question: "Do you offer post-launch support?", answer: "Yes, we offer comprehensive SLA packages that include 24/7 monitoring, security patches, and feature updates." },
-         { question: "How do we start a new project?", answer: "Simply fill out the contact form below or reach out via email. We will schedule a 30-minute discovery call to align on your vision." }
+         { question: "What is your typical project timeline?", answer: "Most standard web applications take 8-12 weeks from discovery to deployment." },
+         { question: "Do you offer post-launch support?", answer: "Yes, we offer comprehensive SLA packages including 24/7 monitoring and security patches." },
+         { question: "How do we start a new project?", answer: "Reach out via email or the contact form below. We'll schedule a 30-minute discovery call." }
       ]
    };
 
-   const vCardData = { ...userData, ...fictionalData };
+   // ✅ MERGE: userData takes priority; fictional data is fallback only
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
+
+   const vCardData = { ...userData, ...data };
 
    const fadeUp = {
       hidden: { opacity: 0, y: 20 },
@@ -122,7 +147,7 @@ const ArchConstruction = ({ userData }) => {
 
             {/* ================= HERO HEADER (Smooth Arc) ================= */}
             <div className="relative w-full h-[260px] bg-indigo-900">
-               <img src={fictionalData.bannerImage} alt="Cover" className="w-full h-full object-cover opacity-40 mix-blend-overlay" />
+               <img src={data.bannerImage} alt="Cover" className="w-full h-full object-cover opacity-40 mix-blend-overlay" />
                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-indigo-900/90" />
 
                {/* Perfectly smooth, symmetrical SVG Arc */}
@@ -141,12 +166,12 @@ const ArchConstruction = ({ userData }) => {
                >
                   {/* Pure white inner circle for seamless logo integration */}
                   <div className="w-[120px] h-[120px] rounded-full overflow-hidden bg-white flex items-center justify-center shadow-inner">
-                     {avatar ? (
-                        <img src={avatar} alt="Admin Profile" className="w-full h-full object-cover" />
-                     ) : logo ? (
-                        <img src={logo} alt="System Logo" className="w-full h-full object-contain p-4" />
+                     {data.avatar ? (
+                        <img src={data.avatar} alt="Profile" className="w-full h-full object-cover" />
+                     ) : data.logo ? (
+                        <img src={data.logo} alt="Logo" className="w-full h-full object-contain p-4" />
                      ) : (
-                        <img src={fictionalData.defaultAvatar} alt="Default Admin" className="w-full h-full object-cover" />
+                        <img src={data.defaultAvatar} alt="Default" className="w-full h-full object-cover" />
                      )}
                   </div>
                   {/* Verification Badge */}
@@ -156,11 +181,11 @@ const ArchConstruction = ({ userData }) => {
                </motion.div>
 
                <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
-                  <h1 className="text-3xl font-black text-gray-900 tracking-tight mb-1">{fictionalData.displayName}</h1>
-                  <p className="text-indigo-600 font-bold text-xs uppercase tracking-[0.2em] mb-3">{fictionalData.role}</p>
-                  {fictionalData.businessName && (
+                  <h1 className="text-3xl font-black text-gray-900 tracking-tight mb-1">{data.displayName}</h1>
+                  <p className="text-indigo-600 font-bold text-xs uppercase tracking-[0.2em] mb-3">{data.role}</p>
+                  {data.businessName && (
                      <div className="inline-block bg-indigo-50 text-indigo-700 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-sm border border-indigo-100 mb-5">
-                        {fictionalData.businessName}
+                        {data.businessName}
                      </div>
                   )}
                </motion.div>
@@ -168,11 +193,11 @@ const ArchConstruction = ({ userData }) => {
                {/* Floating Quick Actions */}
                <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="w-full flex justify-center gap-4 mt-2">
                   {[
-                     { icon: FiPhone, link: `tel:${fictionalData.phone}`, color: "bg-emerald-50 text-emerald-600 border-emerald-100" },
-                     { icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}`, color: "bg-green-50 text-green-600 border-green-100" },
-                     { icon: FiMail, link: `mailto:${fictionalData.email}`, color: "bg-blue-50 text-blue-600 border-blue-100" },
-                     { icon: FiMapPin, link: `https://maps.google.com/?q=${fictionalData.address}`, color: "bg-rose-50 text-rose-600 border-rose-100" }
-                  ].map((action, i) => action.link && (
+                     { icon: FiPhone, link: data.phone ? `tel:${data.phone}` : null, color: "bg-emerald-50 text-emerald-600 border-emerald-100" },
+                     { icon: FaWhatsapp, link: data.whatsapp ? `https://wa.me/${data.whatsapp}` : null, color: "bg-green-50 text-green-600 border-green-100" },
+                     { icon: FiMail, link: data.email ? `mailto:${data.email}` : null, color: "bg-blue-50 text-blue-600 border-blue-100" },
+                     { icon: FiMapPin, link: data.address ? `https://maps.google.com/?q=${data.address}` : null, color: "bg-rose-50 text-rose-600 border-rose-100" }
+                  ].filter(a => a.link).map((action, i) => (
                      <a key={i} href={action.link} target="_blank" rel="noopener noreferrer" className={`w-12 h-12 rounded-2xl flex items-center justify-center border shadow-sm hover:-translate-y-1 transition-transform ${action.color}`}>
                         <action.icon size={20} />
                      </a>
@@ -185,7 +210,7 @@ const ArchConstruction = ({ userData }) => {
                {/* ================= ABOUT US ================= */}
                <SectionWrapper title="About Us" subtitle="Who We Are" delay={0.1}>
                   <p className="text-gray-600 text-sm leading-relaxed text-center font-medium">
-                     {fictionalData.bio}
+                     {data.bio}
                   </p>
                </SectionWrapper>
 
@@ -193,10 +218,10 @@ const ArchConstruction = ({ userData }) => {
                <SectionWrapper title="Contact Details" subtitle="Reach Out" delay={0.2}>
                   <div className="space-y-3">
                      {[
-                        { icon: FiPhone, title: "Phone Number", val: fictionalData.phone, link: `tel:${fictionalData.phone}` },
-                        { icon: FiMail, title: "Email Address", val: fictionalData.email, link: `mailto:${fictionalData.email}` },
-                        { icon: FiGlobe, title: "Website", val: fictionalData.website, link: `https://${fictionalData.website}` },
-                        { icon: FiMapPin, title: "Office Location", val: fictionalData.address, link: `https://maps.google.com/?q=${fictionalData.address}` }
+                        { icon: FiPhone, title: "Phone Number", val: data.phone, link: `tel:${data.phone}` },
+                        { icon: FiMail, title: "Email Address", val: data.email, link: `mailto:${data.email}` },
+                        { icon: FiGlobe, title: "Website", val: data.website, link: `https://${data.website}` },
+                        { icon: FiMapPin, title: "Office Location", val: data.address, link: `https://maps.google.com/?q=${data.address}` }
                      ].map((item, idx) => item.val && (
                         <a key={idx} href={item.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:bg-indigo-50 hover:border-indigo-100 transition-colors group">
                            <div className="w-10 h-10 bg-white rounded-full shadow-sm flex items-center justify-center text-indigo-500 shrink-0">
@@ -333,10 +358,10 @@ const ArchConstruction = ({ userData }) => {
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="py-2 mb-6">
                   <div className="flex justify-center gap-4">
                      {[
-                        { val: fictionalData.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${fictionalData.linkedin}` },
-                        { val: fictionalData.twitter, icon: FaTwitter, link: `https://twitter.com/${fictionalData.twitter}` },
-                        { val: fictionalData.instagram, icon: FaInstagram, link: `https://instagram.com/${fictionalData.instagram}` }
-                     ].map((social, i) => social.val && (
+                        { val: data.linkedin, icon: FaLinkedinIn, link: `https://linkedin.com/in/${data.linkedin}` },
+                        { val: data.twitter, icon: FaTwitter, link: `https://twitter.com/${data.twitter}` },
+                        { val: data.instagram, icon: FaInstagram, link: `https://instagram.com/${data.instagram}` }
+                     ].filter(s => s.val).map((social, i) => (
                         <a
                            key={i} href={social.link} target="_blank" rel="noopener noreferrer"
                            className="w-12 h-12 bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:text-white hover:bg-indigo-600 hover:border-indigo-600 transition-all rounded-full shadow-sm hover:shadow-lg hover:-translate-y-1"

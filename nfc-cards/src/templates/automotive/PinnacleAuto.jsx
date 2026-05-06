@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiLinkedin,
@@ -107,6 +107,34 @@ const ExoticAutoBroker = ({ userData }) => {
 
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    const fadeUp = {
       hidden: { opacity: 0, y: 20 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
@@ -120,7 +148,7 @@ const ExoticAutoBroker = ({ userData }) => {
 
             {/* ================= HEADER & SHOWROOM BANNER ================= */}
             <div className="w-full h-[280px] relative">
-               <img src={fictionalData.bannerImage} alt="Showroom" className="w-full h-full object-cover opacity-60" />
+               <img src={data.bannerImage} alt="Showroom" className="w-full h-full object-cover opacity-60" />
                <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#0A0A0A]" />
             </div>
 
@@ -131,23 +159,23 @@ const ExoticAutoBroker = ({ userData }) => {
                   className="flex flex-col items-center text-center"
                >
                   <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-[#0A0A0A] bg-[#121212] shadow-2xl mb-4 relative z-10">
-                     <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover" />
+                     <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover" />
                   </div>
 
                   <h1 className="text-2xl font-bold text-white tracking-tight mb-1">
-                     {fictionalData.displayName}
+                     {data.displayName}
                   </h1>
                   <p className="text-blue-500 font-medium text-xs uppercase tracking-widest mb-4">
-                     {fictionalData.role}
+                     {data.role}
                   </p>
 
                   <div className="bg-[#121212] border border-[#2A2A2A] px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-6 flex items-center gap-2">
                      <FiShield className="text-blue-500" size={14} />
-                     {fictionalData.businessName}
+                     {data.businessName}
                   </div>
 
                   <p className="text-gray-400 text-sm leading-relaxed px-2">
-                     {fictionalData.bio}
+                     {data.bio}
                   </p>
                </motion.div>
             </div>
@@ -168,21 +196,21 @@ const ExoticAutoBroker = ({ userData }) => {
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                   <ChromeCard>
                      <div className="grid grid-cols-2 gap-3 mb-4">
-                        {fictionalData.phone && (
-                           <a href={`tel:${fictionalData.phone}`} className="bg-[#1A1A1A] p-4 rounded-xl hover:bg-[#222] transition-colors flex flex-col items-center gap-2 border border-[#333]">
+                        {data.phone && (
+                           <a href={`tel:${data.phone}`} className="bg-[#1A1A1A] p-4 rounded-xl hover:bg-[#222] transition-colors flex flex-col items-center gap-2 border border-[#333]">
                               <FiPhone size={20} className="text-blue-500" />
                               <span className="text-[10px] font-bold uppercase tracking-widest text-gray-300">Call Desk</span>
                            </a>
                         )}
-                        {fictionalData.email && (
-                           <a href={`mailto:${fictionalData.email}`} className="bg-[#1A1A1A] p-4 rounded-xl hover:bg-[#222] transition-colors flex flex-col items-center gap-2 border border-[#333]">
+                        {data.email && (
+                           <a href={`mailto:${data.email}`} className="bg-[#1A1A1A] p-4 rounded-xl hover:bg-[#222] transition-colors flex flex-col items-center gap-2 border border-[#333]">
                               <FiMail size={20} className="text-blue-500" />
                               <span className="text-[10px] font-bold uppercase tracking-widest text-gray-300">Email</span>
                            </a>
                         )}
                      </div>
-                     {fictionalData.website && (
-                        <a href={`https://${fictionalData.website}`} target="_blank" rel="noopener noreferrer" className="w-full bg-[#1A1A1A] border border-[#333] p-4 rounded-xl flex justify-between items-center hover:bg-[#222] transition-colors group">
+                     {data.website && (
+                        <a href={`https://${data.website}`} target="_blank" rel="noopener noreferrer" className="w-full bg-[#1A1A1A] border border-[#333] p-4 rounded-xl flex justify-between items-center hover:bg-[#222] transition-colors group">
                            <span className="font-bold text-xs uppercase tracking-widest text-gray-300">View Inventory Portal</span>
                            <FiGlobe className="text-gray-500 group-hover:text-blue-500 transition-colors" />
                         </a>
@@ -258,12 +286,12 @@ const ExoticAutoBroker = ({ userData }) => {
                   <SectionTitle title="Logistics" subtitle="Showroom Details" icon={FiMapPin} />
                   <ChromeCard>
 
-                     {fictionalData.address && (
+                     {data.address && (
                         <div className="flex items-start gap-4 pb-5 border-b border-[#2A2A2A] mb-5">
                            <FiMapPin size={20} className="text-blue-500 mt-0.5 shrink-0" />
                            <div>
                               <p className="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-1">Location</p>
-                              <p className="text-sm font-medium text-gray-200 leading-snug">{fictionalData.address}</p>
+                              <p className="text-sm font-medium text-gray-200 leading-snug">{data.address}</p>
                            </div>
                         </div>
                      )}
@@ -289,10 +317,10 @@ const ExoticAutoBroker = ({ userData }) => {
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                   <div className="flex justify-center gap-3">
                      {[
-                        { val: fictionalData.instagram, icon: FiInstagram, link: `https://instagram.com/${fictionalData.instagram}` },
-                        { val: fictionalData.linkedin, icon: FiLinkedin, link: `https://linkedin.com/in/${fictionalData.linkedin}` },
-                        { val: fictionalData.youtube, icon: FaYoutube, link: `https://youtube.com/${fictionalData.youtube}` },
-                        { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` }
+                        { val: data.instagram, icon: FiInstagram, link: `https://instagram.com/${data.instagram}` },
+                        { val: data.linkedin, icon: FiLinkedin, link: `https://linkedin.com/in/${data.linkedin}` },
+                        { val: data.youtube, icon: FaYoutube, link: `https://youtube.com/${data.youtube}` },
+                        { val: data.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${data.whatsapp}` }
                      ].map((social, i) => social.val && (
                         <a
                            key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiMonitor, FiCamera, FiGlobe, FiMail, FiPhone, FiMapPin,
@@ -54,45 +54,71 @@ const FaqAccordion = ({ question, answer }) => {
 
 const CreativeAgency = ({ userData }) => {
    // Extensive fallback data showcasing a full-featured profile
-   const {
-      displayName = "Studio Identity",
-      email = "hello@studio.com",
-      role = "Full-Stack Developer",
-      phone,
-      mobileNumber = "+1 (555) 123-4567",
-      website = "www.studio-identity.com",
-      address = "Tech District, Innovation Hub",
-      businessName = "Digital Commerce Solutions",
-      instagram, linkedin, twitter, github = "developer", youtube, whatsapp = "15551234567", facebook, telegram,
-      bio = "Specializing in high-end e-commerce architectures, seamless React interfaces, and intelligent web applications.",
-      profileImage = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
-      bannerImage = "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&h=400&fit=crop",
-      services = [
+   const fictionalData = {
+      displayName: "Studio Identity",
+      email: "hello@studio.com",
+      role: "Full-Stack Developer",
+      phone: "+1 (555) 123-4567",
+      mobileNumber: "+1 (555) 123-4567",
+      website: "www.studio-identity.com",
+      address: "Tech District, Innovation Hub",
+      businessName: "Digital Commerce Solutions",
+      instagram: "", linkedin: "", twitter: "", github: "developer", youtube: "", whatsapp: "15551234567", facebook: "", telegram: "",
+      bio: "Specializing in high-end e-commerce architectures, seamless React interfaces, and intelligent web applications.",
+      profileImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+      bannerImage: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&h=400&fit=crop",
+      services: [
          { title: "E-Commerce Systems", desc: "Custom Shopify & catalog-mode platforms for luxury retail.", icon: FiLayout, color: "bg-blue-50 text-blue-600" },
          { title: "React Applications", desc: "Dynamic, state-driven interfaces with Framer Motion.", icon: FiCode, color: "bg-purple-50 text-purple-600" },
          { title: "AI Integrations", desc: "Implementing intelligent background removal and image processing.", icon: FiCpu, color: "bg-emerald-50 text-emerald-600" }
       ],
-      portfolio = [
+      portfolio: [
          { title: "Mahadev Furniture", category: "E-Commerce", img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=600&fit=crop" },
          { title: "PDJ Jewellers", category: "Catalog Mode", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&h=600&fit=crop" },
          { title: "Smart Media Tool", category: "React / AI API", img: "https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=600&h=600&fit=crop" }
       ],
-      testimonials = [
+      testimonials: [
          { name: "Ronak G.", role: "Tech Lead", text: "Exceptional architecture on the recent React and Firebase builds. The custom components were flawless." },
          { name: "Sarah J.", role: "Store Owner", text: "Transformed our jewelry catalog into a stunning digital experience." }
       ],
-      businessHours = [
+      businessHours: [
          { day: "Monday - Friday", hours: "09:00 AM - 06:00 PM" },
          { day: "Saturday", hours: "10:00 AM - 02:00 PM" },
          { day: "Sunday", hours: "Offline" }
       ],
-      faqs = [
+      faqs: [
          { question: "Do you build custom Shopify Liquid sections?", answer: "Yes, fully custom sections built from scratch to match exact brand requirements without relying on bulky templates." },
          { question: "Can you handle Framer and React animations?", answer: "Absolutely. Smooth, high-performance animations are integrated standard into all modern web builds." }
       ]
-   } = userData || {};
+   };
 
-   const finalPhone = phone || mobileNumber;
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
+
+   const finalPhone = data.phone || data.mobileNumber;
 
    // Animation Variants
    const scrollReveal = {
@@ -110,7 +136,7 @@ const CreativeAgency = ({ userData }) => {
             <section id="home" className="relative bg-white rounded-b-[2.5rem] shadow-sm z-20 pb-8">
                {/* Header Image */}
                <div className="w-full h-56 relative rounded-b-[2.5rem] overflow-hidden">
-                  <img src={bannerImage} alt="Cover" className="w-full h-full object-cover" />
+                  <img src={data.bannerImage} alt="Cover" className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                </div>
 
@@ -120,20 +146,20 @@ const CreativeAgency = ({ userData }) => {
                      initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.5 }}
                      className="w-32 h-32 mx-auto rounded-[2rem] overflow-hidden border-4 border-white bg-white shadow-xl relative z-20 mb-5"
                   >
-                     <img src={profileImage} alt={displayName} className="w-full h-full object-cover" />
+                     <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover" />
                   </motion.div>
 
-                  <h1 className="text-3xl font-black tracking-tight text-gray-900 mb-1">{displayName}</h1>
-                  <p className="text-blue-600 font-bold text-sm tracking-wide mb-3">{role}</p>
+                  <h1 className="text-3xl font-black tracking-tight text-gray-900 mb-1">{data.displayName}</h1>
+                  <p className="text-blue-600 font-bold text-sm tracking-wide mb-3">{data.role}</p>
 
-                  {businessName && (
+                  {data.businessName && (
                      <div className="inline-flex items-center justify-center bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-5">
-                        {businessName}
+                        {data.businessName}
                      </div>
                   )}
 
                   <p className="text-gray-500 text-sm leading-relaxed mb-8 px-2">
-                     {bio}
+                     {data.bio}
                   </p>
 
                   {/* Primary CTA */}
@@ -163,25 +189,25 @@ const CreativeAgency = ({ userData }) => {
                         </div>
                      </a>
                   )}
-                  {email && (
-                     <a href={`mailto:${email}`} className="flex items-center p-4 rounded-2xl bg-gray-50 border border-gray-100 hover:bg-white hover:shadow-md transition-all group">
+                  {data.email && (
+                     <a href={`mailto:${data.email}`} className="flex items-center p-4 rounded-2xl bg-gray-50 border border-gray-100 hover:bg-white hover:shadow-md transition-all group">
                         <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-gray-900 group-hover:bg-gray-900 group-hover:text-white transition-colors mr-4">
                            <FiMail size={20} />
                         </div>
                         <div className="overflow-hidden">
                            <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-0.5">Email</p>
-                           <p className="text-sm font-bold text-gray-900 truncate">{email}</p>
+                           <p className="text-sm font-bold text-gray-900 truncate">{data.email}</p>
                         </div>
                      </a>
                   )}
-                  {website && (
-                     <a href={website.startsWith('http') ? website : `https://${website}`} target="_blank" rel="noopener noreferrer" className="flex items-center p-4 rounded-2xl bg-gray-50 border border-gray-100 hover:bg-white hover:shadow-md transition-all group">
+                  {data.website && (
+                     <a href={data.website.startsWith('http') ? data.website : `https://${data.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center p-4 rounded-2xl bg-gray-50 border border-gray-100 hover:bg-white hover:shadow-md transition-all group">
                         <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-gray-900 group-hover:bg-gray-900 group-hover:text-white transition-colors mr-4">
                            <FiGlobe size={20} />
                         </div>
                         <div className="overflow-hidden">
                            <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-0.5">Website</p>
-                           <p className="text-sm font-bold text-gray-900 truncate">{website.replace(/(^\w+:|^)\/\//, '')}</p>
+                           <p className="text-sm font-bold text-gray-900 truncate">{data.website.replace(/(^\w+:|^)\/\//, '')}</p>
                         </div>
                      </a>
                   )}
@@ -189,11 +215,11 @@ const CreativeAgency = ({ userData }) => {
             </motion.section>
 
             {/* ================= EXPERTISE / SERVICES ================= */}
-            {services && services.length > 0 && (
-               <motion.section id="services" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={scrollReveal} className="px-8 pb-8">
+            {data.services && data.services.length > 0 && (
+               <motion.section id="data.services" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={scrollReveal} className="px-8 pb-8">
                   <SectionHeader title="Capabilities" subtitle="Expertise" />
                   <div className="grid grid-cols-1 gap-4">
-                     {services.map((svc, i) => (
+                     {data.services.map((svc, i) => (
                         <div key={i} className="p-6 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${svc.color}`}>
                               <svc.icon size={22} />
@@ -207,11 +233,11 @@ const CreativeAgency = ({ userData }) => {
             )}
 
             {/* ================= PORTFOLIO / GALLERY ================= */}
-            {portfolio && portfolio.length > 0 && (
-               <motion.section id="portfolio" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={scrollReveal} className="px-8 pb-8">
+            {data.portfolio && data.portfolio.length > 0 && (
+               <motion.section id="data.portfolio" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={scrollReveal} className="px-8 pb-8">
                   <SectionHeader title="Selected Work" subtitle="Portfolio" />
                   <div className="space-y-4">
-                     {portfolio.map((item, index) => (
+                     {data.portfolio.map((item, index) => (
                         <motion.div key={index} whileHover={{ scale: 1.02 }} className="group relative rounded-3xl overflow-hidden shadow-sm cursor-pointer border border-gray-100">
                            <div className="aspect-video w-full">
                               <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
@@ -227,11 +253,11 @@ const CreativeAgency = ({ userData }) => {
             )}
 
             {/* ================= TESTIMONIALS ================= */}
-            {testimonials && testimonials.length > 0 && (
+            {data.testimonials && data.testimonials.length > 0 && (
                <motion.section initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={scrollReveal} className="px-8 pb-8 overflow-hidden">
                   <SectionHeader title="Feedback" subtitle="Client Reviews" />
                   <div className="flex overflow-x-auto gap-4 pb-6 pt-2 snap-x minimal-scrollbar -mx-8 px-8">
-                     {testimonials.map((test, i) => (
+                     {data.testimonials.map((test, i) => (
                         <div key={i} className="min-w-[300px] p-6 rounded-3xl bg-gray-50 border border-gray-100 snap-center relative">
                            <div className="absolute top-6 right-6 text-yellow-400 flex gap-1">
                               <FiStar size={14} className="fill-current" />
@@ -254,25 +280,25 @@ const CreativeAgency = ({ userData }) => {
 
             {/* ================= BUSINESS HOURS & LOCATION ================= */}
             <motion.section initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={scrollReveal} className="px-8 pb-8 grid gap-6">
-               {address && (
+               {data.address && (
                   <div>
                      <SectionHeader title="Headquarters" subtitle="Location" />
-                     <a href={`https://maps.google.com/?q=${encodeURIComponent(address)}`} target="_blank" rel="noopener noreferrer" className="block p-6 rounded-3xl bg-gray-50 border border-gray-100 hover:shadow-md transition-shadow">
+                     <a href={`https://maps.google.com/?q=${encodeURIComponent(data.address)}`} target="_blank" rel="noopener noreferrer" className="block p-6 rounded-3xl bg-gray-50 border border-gray-100 hover:shadow-md transition-shadow">
                         <div className="flex items-start gap-4">
                            <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-500 shrink-0">
                               <FiMapPin size={18} />
                            </div>
-                           <p className="text-gray-700 text-sm font-medium leading-relaxed">{address}</p>
+                           <p className="text-gray-700 text-sm font-medium leading-relaxed">{data.address}</p>
                         </div>
                      </a>
                   </div>
                )}
 
-               {businessHours && businessHours.length > 0 && (
+               {data.businessHours && data.businessHours.length > 0 && (
                   <div>
                      <SectionHeader title="Availability" subtitle="Business Hours" />
                      <div className="p-6 rounded-3xl bg-white border border-gray-100 shadow-sm">
-                        {businessHours.map((bh, i) => (
+                        {data.businessHours.map((bh, i) => (
                            <div key={i} className="flex justify-between items-center py-3 border-b border-gray-50 last:border-0 last:pb-0 first:pt-0">
                               <span className="text-gray-500 font-medium text-sm">{bh.day}</span>
                               <span className={`text-sm font-bold ${bh.hours === 'Offline' ? 'text-gray-400' : 'text-gray-900'}`}>{bh.hours}</span>
@@ -288,18 +314,18 @@ const CreativeAgency = ({ userData }) => {
                <SectionHeader title="Network" subtitle="Social Media" />
                <div className="grid grid-cols-4 gap-3 mb-10">
                   {[
-                     { id: 'whatsapp', val: whatsapp, icon: FaWhatsapp, color: 'hover:bg-[#25d366] hover:text-white text-[#25d366]' },
-                     { id: 'instagram', val: instagram, icon: FiInstagram, color: 'hover:bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] hover:text-white text-[#e6683c]' },
-                     { id: 'linkedin', val: linkedin, icon: FiLinkedin, color: 'hover:bg-[#0077b5] hover:text-white text-[#0077b5]' },
-                     { id: 'github', val: github, icon: FiGithub, color: 'hover:bg-gray-900 hover:text-white text-gray-900' },
-                     { id: 'twitter', val: twitter, icon: FiTwitter, color: 'hover:bg-[#1DA1F2] hover:text-white text-[#1DA1F2]' },
-                     { id: 'facebook', val: facebook, icon: FaFacebook, color: 'hover:bg-[#1877f2] hover:text-white text-[#1877f2]' },
-                     { id: 'youtube', val: youtube, icon: FaYoutube, color: 'hover:bg-[#ff0000] hover:text-white text-[#ff0000]' },
-                     { id: 'telegram', val: telegram, icon: FaTelegram, color: 'hover:bg-[#0088cc] hover:text-white text-[#0088cc]' }
+                     { id: 'data.whatsapp', val: data.whatsapp, icon: FaWhatsapp, color: 'hover:bg-[#25d366] hover:text-white text-[#25d366]' },
+                     { id: 'data.instagram', val: data.instagram, icon: FiInstagram, color: 'hover:bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] hover:text-white text-[#e6683c]' },
+                     { id: 'data.linkedin', val: data.linkedin, icon: FiLinkedin, color: 'hover:bg-[#0077b5] hover:text-white text-[#0077b5]' },
+                     { id: 'data.github', val: data.github, icon: FiGithub, color: 'hover:bg-gray-900 hover:text-white text-gray-900' },
+                     { id: 'data.twitter', val: data.twitter, icon: FiTwitter, color: 'hover:bg-[#1DA1F2] hover:text-white text-[#1DA1F2]' },
+                     { id: 'data.facebook', val: data.facebook, icon: FaFacebook, color: 'hover:bg-[#1877f2] hover:text-white text-[#1877f2]' },
+                     { id: 'data.youtube', val: data.youtube, icon: FaYoutube, color: 'hover:bg-[#ff0000] hover:text-white text-[#ff0000]' },
+                     { id: 'data.telegram', val: data.telegram, icon: FaTelegram, color: 'hover:bg-[#0088cc] hover:text-white text-[#0088cc]' }
                   ].map((social, i) => social.val && (
                      <a
                         key={i}
-                        href={social.id === 'whatsapp' ? `https://wa.me/${social.val.replace(/\D/g, '')}` : (social.val.startsWith('http') ? social.val : `https://${social.id}.com/${social.val}`)}
+                        href={social.id === 'data.whatsapp' ? `https://wa.me/${social.val.replace(/\D/g, '')}` : (social.val.startsWith('http') ? social.val : `https://${social.id}.com/${social.val}`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`aspect-square rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center transition-all duration-300 group ${social.color}`}
@@ -309,11 +335,11 @@ const CreativeAgency = ({ userData }) => {
                   ))}
                </div>
 
-               {faqs && faqs.length > 0 && (
+               {data.faqs && data.faqs.length > 0 && (
                   <div className="mb-8">
                      <SectionHeader title="Information" subtitle="FAQ" />
                      <div>
-                        {faqs.map((faq, index) => <FaqAccordion key={index} question={faq.question} answer={faq.answer} />)}
+                        {data.faqs.map((faq, index) => <FaqAccordion key={index} question={faq.question} answer={faq.answer} />)}
                      </div>
                   </div>
                )}
@@ -330,10 +356,10 @@ const CreativeAgency = ({ userData }) => {
                <a href="#home" className="text-gray-400 hover:text-gray-900 transition-colors flex flex-col items-center gap-1 group">
                   <FiHome size={20} className="group-hover:-translate-y-1 transition-transform" />
                </a>
-               <a href="#services" className="text-gray-400 hover:text-blue-600 transition-colors flex flex-col items-center gap-1 group">
+               <a href="#data.services" className="text-gray-400 hover:text-blue-600 transition-colors flex flex-col items-center gap-1 group">
                   <FiBriefcase size={20} className="group-hover:-translate-y-1 transition-transform" />
                </a>
-               <a href="#portfolio" className="text-gray-400 hover:text-purple-600 transition-colors flex flex-col items-center gap-1 group">
+               <a href="#data.portfolio" className="text-gray-400 hover:text-purple-600 transition-colors flex flex-col items-center gap-1 group">
                   <FiImage size={20} className="group-hover:-translate-y-1 transition-transform" />
                </a>
                <a href="#contact" className="text-gray-400 hover:text-emerald-600 transition-colors flex flex-col items-center gap-1 group">

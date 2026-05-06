@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiTwitter,
@@ -106,6 +106,34 @@ const GlowStudio = ({ userData }) => {
    // Merge for the button function, but display only fictional data
    const vCardData = { ...userData, ...fictionalData };
 
+
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   
+   // ✅ MERGE: userData takes priority over fictional placeholders
+   const data = {
+      ...fictionalData,
+      displayName: userData?.displayName || fictionalData.displayName,
+      role: userData?.designation || userData?.job || userData?.businessRole || userData?.role || fictionalData.role || fictionalData.jobTitle,
+      phone: userData?.phone || userData?.mobileNumber || fictionalData.phone,
+      email: userData?.email || fictionalData.email,
+      website: userData?.website || fictionalData.website,
+      address: userData?.address || [userData?.city, userData?.state, userData?.country].filter(Boolean).join(', ') || fictionalData.address,
+      businessName: userData?.companyName || userData?.company || userData?.businessName || fictionalData.businessName || fictionalData.company,
+      whatsapp: userData?.whatsapp || fictionalData.whatsapp,
+      linkedin: userData?.linkedin || fictionalData.linkedin,
+      twitter: userData?.twitter || fictionalData.twitter,
+      instagram: userData?.instagram || fictionalData.instagram,
+      facebook: userData?.facebook || fictionalData.facebook,
+      github: userData?.github || fictionalData.github,
+      youtube: userData?.youtube || fictionalData.youtube,
+      tiktok: userData?.tiktok || fictionalData.tiktok,
+      telegram: userData?.telegram || fictionalData.telegram,
+      bio: userData?.bio || fictionalData.bio,
+      profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
+      logo: userData?.logo || userData?.profileImage || fictionalData.logo,
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
+   };
    const fadeUp = {
       hidden: { opacity: 0, y: 20 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -119,7 +147,7 @@ const GlowStudio = ({ userData }) => {
 
             {/* ================= HEADER BANNER ================= */}
             <div className="w-full h-[300px] relative rounded-b-[3rem] overflow-hidden border-b border-[#2A2A2A]">
-               <img src={fictionalData.bannerImage} alt="Glam Studio" className="w-full h-full object-cover opacity-50 mix-blend-luminosity" />
+               <img src={data.bannerImage} alt="Glam Studio" className="w-full h-full object-cover opacity-50 mix-blend-luminosity" />
                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0C] via-[#0A0A0C]/60 to-transparent" />
             </div>
 
@@ -131,24 +159,24 @@ const GlowStudio = ({ userData }) => {
                   className="w-32 h-40 mx-auto p-1 bg-gradient-to-b from-[#FF007F] to-[#4A00E0] shadow-[0_0_30px_rgba(255,0,127,0.3)] mb-5"
                   style={{ borderRadius: '100px 100px 20px 20px' }}
                >
-                  <img src={fictionalData.profileImage} alt={fictionalData.displayName} className="w-full h-full object-cover grayscale contrast-125" style={{ borderRadius: '96px 96px 16px 16px' }} />
+                  <img src={data.profileImage} alt={data.displayName} className="w-full h-full object-cover grayscale contrast-125" style={{ borderRadius: '96px 96px 16px 16px' }} />
                </motion.div>
 
                <h1 className="text-3xl font-black text-white tracking-tighter mb-1 font-serif italic">
-                  {fictionalData.displayName}
+                  {data.displayName}
                </h1>
                <p className="text-[#FF007F] text-xs font-bold uppercase tracking-[0.2em] mb-4">
-                  {fictionalData.role}
+                  {data.role}
                </p>
 
-               {fictionalData.businessName && (
+               {data.businessName && (
                   <div className="inline-block bg-[#121212] border border-[#2A2A2A] text-gray-300 px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 shadow-sm">
-                     {fictionalData.businessName}
+                     {data.businessName}
                   </div>
                )}
 
                <p className="text-gray-400 text-sm leading-relaxed px-2 font-medium">
-                  {fictionalData.bio}
+                  {data.bio}
                </p>
             </div>
 
@@ -166,20 +194,20 @@ const GlowStudio = ({ userData }) => {
 
                {/* ================= DIRECT COMMS ================= */}
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="grid grid-cols-2 gap-3">
-                  {fictionalData.phone && (
-                     <a href={`tel:${fictionalData.phone}`} className="bg-[#121212] border border-[#2A2A2A] p-4 rounded-2xl flex flex-col items-center gap-2 hover:border-[#FF007F] hover:bg-[#1A1A1A] transition-all group">
+                  {data.phone && (
+                     <a href={`tel:${data.phone}`} className="bg-[#121212] border border-[#2A2A2A] p-4 rounded-2xl flex flex-col items-center gap-2 hover:border-[#FF007F] hover:bg-[#1A1A1A] transition-all group">
                         <FiPhone size={22} className="text-gray-400 group-hover:text-[#FF007F] transition-colors" />
                         <span className="text-[10px] font-bold uppercase tracking-widest text-gray-300">Call Studio</span>
                      </a>
                   )}
-                  {fictionalData.email && (
-                     <a href={`mailto:${fictionalData.email}`} className="bg-[#121212] border border-[#2A2A2A] p-4 rounded-2xl flex flex-col items-center gap-2 hover:border-[#FF007F] hover:bg-[#1A1A1A] transition-all group">
+                  {data.email && (
+                     <a href={`mailto:${data.email}`} className="bg-[#121212] border border-[#2A2A2A] p-4 rounded-2xl flex flex-col items-center gap-2 hover:border-[#FF007F] hover:bg-[#1A1A1A] transition-all group">
                         <FiMail size={22} className="text-gray-400 group-hover:text-[#FF007F] transition-colors" />
                         <span className="text-[10px] font-bold uppercase tracking-widest text-gray-300">Email Us</span>
                      </a>
                   )}
-                  {fictionalData.website && (
-                     <a href={`https://${fictionalData.website}`} target="_blank" rel="noopener noreferrer" className="col-span-2 bg-gradient-to-r from-[#FF007F] to-[#4A00E0] p-[1px] rounded-2xl hover:scale-[1.02] transition-transform">
+                  {data.website && (
+                     <a href={`https://${data.website}`} target="_blank" rel="noopener noreferrer" className="col-span-2 bg-gradient-to-r from-[#FF007F] to-[#4A00E0] p-[1px] rounded-2xl hover:scale-[1.02] transition-transform">
                         <div className="bg-[#121212] rounded-[15px] p-4 flex justify-between items-center w-full">
                            <span className="text-xs font-bold uppercase tracking-widest text-white">Book Appointment</span>
                            <FiCalendar size={18} className="text-[#FF007F]" />
@@ -262,14 +290,14 @@ const GlowStudio = ({ userData }) => {
 
                {/* ================= LOCATION & HOURS ================= */}
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="grid gap-4">
-                  {fictionalData.address && (
-                     <a href={`https://maps.google.com/?q=${encodeURIComponent(fictionalData.address)}`} target="_blank" rel="noopener noreferrer" className="bg-[#121212] p-5 rounded-3xl border border-[#2A2A2A] flex items-center gap-4 hover:border-[#FF007F] transition-colors group">
+                  {data.address && (
+                     <a href={`https://maps.google.com/?q=${encodeURIComponent(data.address)}`} target="_blank" rel="noopener noreferrer" className="bg-[#121212] p-5 rounded-3xl border border-[#2A2A2A] flex items-center gap-4 hover:border-[#FF007F] transition-colors group">
                         <div className="w-12 h-12 rounded-full bg-[#1A1A1A] flex items-center justify-center text-[#FF007F] shrink-0 group-hover:scale-110 transition-transform">
                            <FiMapPin size={20} />
                         </div>
                         <div>
                            <p className="text-[10px] uppercase tracking-widest font-bold text-gray-500 mb-1">Studio Location</p>
-                           <p className="text-sm font-bold text-white leading-snug">{fictionalData.address}</p>
+                           <p className="text-sm font-bold text-white leading-snug">{data.address}</p>
                         </div>
                      </a>
                   )}
@@ -294,11 +322,11 @@ const GlowStudio = ({ userData }) => {
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                   <div className="flex flex-wrap justify-center gap-3">
                      {[
-                        { val: fictionalData.instagram, icon: FiInstagram, link: `https://instagram.com/${fictionalData.instagram}` },
-                        { val: fictionalData.tiktok, icon: FaTiktok, link: `https://tiktok.com/@${fictionalData.tiktok}` },
+                        { val: data.instagram, icon: FiInstagram, link: `https://instagram.com/${data.instagram}` },
+                        { val: data.tiktok, icon: FaTiktok, link: `https://tiktok.com/@${data.tiktok}` },
                         { val: fictionalData.pinterest, icon: FaPinterest, link: `https://pinterest.com/${fictionalData.pinterest}` },
-                        { val: fictionalData.twitter, icon: FiTwitter, link: `https://twitter.com/${fictionalData.twitter}` },
-                        { val: fictionalData.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${fictionalData.whatsapp}` }
+                        { val: data.twitter, icon: FiTwitter, link: `https://twitter.com/${data.twitter}` },
+                        { val: data.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${data.whatsapp}` }
                      ].map((social, i) => social.val && (
                         <a
                            key={i} href={social.link || null} target="_blank" rel="noopener noreferrer"

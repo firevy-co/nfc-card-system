@@ -34,7 +34,7 @@ const ProtectedRoute = ({ children, user, userData, loading, adminOnly = false }
 
     // 5. APPROVED: Inject identity context into children
     if (React.isValidElement(children)) {
-        return React.cloneElement(children, { user, userData });
+        return React.cloneElement(children, { user, userData, onUserDataChange: children.props.onUserDataChange });
     }
     return children;
 };
