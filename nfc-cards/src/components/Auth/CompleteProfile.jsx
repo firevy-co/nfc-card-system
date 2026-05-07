@@ -463,16 +463,30 @@ const CompleteProfile = ({ userData }) => {
         city: "",
     });
 
-    // 2. MERGE CLOUD DATA - Sync during render for React 19 compliance
-    // Pre-populate ALL fields from the database (not just empty ones) so returning
-    // users always see their previously saved data in the form.
+    // GUARD: If userData hasn't loaded from Firestore yet, show a loading skeleton.
+    if (userData === null || userData === undefined) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-10 h-10 border-4 border-black border-t-transparent rounded-full animate-spin" />
+                    <p className="text-xs font-black uppercase tracking-widest text-gray-400">Loading Identity...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // REDIRECT: If user has already completed onboarding, send them to their dashboard.
+    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job || userData?.name;
+    if (hasData) {
+        if (isAdmin) return <Navigate to="/admin/analytics" />;
+        return <Navigate to="/user/home" />;
+    }
+
+    // MERGE CLOUD DATA into form state on first load and whenever userData changes.
     if (userData && userData !== prevUserData) {
         let changed = false;
         const merged = { ...formData };
         Object.keys(userData).forEach(key => {
-            // Merge cloud data into form. For fields the user has actively typed into
-            // (prevUserData was already set), prefer the local value. For the first
-            // load (prevUserData is null), always prefer the cloud value.
             const isFirstLoad = prevUserData === null;
             if (userData[key] !== undefined && userData[key] !== null && userData[key] !== "") {
                 if (isFirstLoad || (!formData[key] || formData[key] === "")) {
@@ -481,20 +495,17 @@ const CompleteProfile = ({ userData }) => {
                 }
             }
         });
-        // ALWAYS force email from the currently logged-in user's profile.
-        // This overrides any stale value that may have come from a previous session's backup.
+        // Always force current user's email
         if (userData.email && merged.email !== userData.email) {
             merged.email = userData.email;
             changed = true;
         }
-        // Map displayName -> name if name is not set
+        // Map displayName → name if name is not set
         if (userData.displayName && !merged.name) {
             merged.name = userData.displayName;
             changed = true;
         }
-        if (changed) {
-            setFormData(merged);
-        }
+        if (changed) setFormData(merged);
         setPrevUserData(userData);
     }
 
@@ -524,22 +535,30 @@ const CompleteProfile = ({ userData }) => {
     };
 
     const handleSave = async () => {
-        // Validation: Identity Mode Enforcement
-        // Common fields required for ALL identities
-        const commonFields = ['email', 'phone', 'businessRole', 'address'];
-        const missingCommon = commonFields.filter(field => !formData[field]);
-
-        if (missingCommon.length > 0) {
-            toast.error(`Required: ${missingCommon.join(', ')}`);
+        // ── VALIDATION ──────────────────────────────────────────────────────
+        // Only email is hard-required (it's always sourced from Firebase Auth).
+        // Phone, businessRole, and address are strongly encouraged but not hard-blocked
+        // so users with partial profiles (e.g., name/bio only) can still save.
+        if (!formData.email) {
+            toast.error('Email is required. Please sign in again.');
             return;
         }
 
-        // Conditional validation based on the active tab/intent
+        // Warn (not block) for missing recommended contact fields
+        const recommendedFields = ['phone', 'businessRole', 'address'];
+        const missingRecommended = recommendedFields.filter(f => !formData[f]);
+        if (missingRecommended.length === recommendedFields.length) {
+            // All three are missing — block save with a helpful message
+            toast.error(`Please fill in at least your Phone, Role, or Address so contacts can reach you.`);
+            return;
+        }
+
+        // Either personal (name + bio) OR business (company + job) must be complete
         const isPersonalComplete = formData.name && formData.bio;
         const isBusinessComplete = formData.company && formData.job;
 
         if (!isPersonalComplete && !isBusinessComplete) {
-            toast.error("Please complete either Personal info (Name & Bio) or Business info (Company & Job).");
+            toast.error('Please complete either Personal info (Name & Bio) or Business info (Company & Job).');
             return;
         }
 
@@ -618,28 +637,6 @@ const CompleteProfile = ({ userData }) => {
             error: 'Failed to deploy identity.'
         });
     };
-
-    // GUARD: If userData hasn't loaded from Firestore yet, show a loading skeleton
-    // instead of flashing the empty form. This prevents the form from appearing
-    // briefly to already-onboarded users while Firestore is still responding.
-    if (userData === null || userData === undefined) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-10 h-10 border-4 border-black border-t-transparent rounded-full animate-spin" />
-                    <p className="text-xs font-black uppercase tracking-widest text-gray-400">Loading Identity...</p>
-                </div>
-            </div>
-        );
-    }
-
-    // REDIRECT: If user has already completed onboarding, send them to their dashboard.
-    // This is the primary gate that prevents a returning user from seeing the form.
-    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job || userData?.name;
-    if (hasData) {
-        if (isAdmin) return <Navigate to="/admin/analytics" />;
-        return <Navigate to="/user/home" />;
-    }
 
 
     return (

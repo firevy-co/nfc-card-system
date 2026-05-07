@@ -32,6 +32,16 @@ function App() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // ── ONE-TIME LEGACY CLEANUP ──────────────────────────────────────────────
+  // Wipe any real-data keys that old deployments wrote to localStorage.
+  // Only the 'theme' UI preference is allowed to remain.
+  useEffect(() => {
+    ['onboarding_backup', 'identity_nodes'].forEach(key => {
+      try { localStorage.removeItem(key); } catch (_) {}
+    });
+  }, []);
+  // ────────────────────────────────────────────────────────────────────────
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (authenticatedUser) => {
       setUser(authenticatedUser);
