@@ -34,7 +34,7 @@ const Login = () => {
 
             const userData = userDoc.data();
             localStorage.removeItem("onboarding_backup");
-            const hasData = userData.onboarded || userData.phone || userData.company || userData.job;
+            const hasData = userData.onboarded || userData.phone || userData.company || userData.job || userData.name;
             
             if (hasData) {
                 if (userData.role === 'Admin') {
@@ -83,7 +83,7 @@ const Login = () => {
             } else {
                 const userData = userDoc.data();
                 localStorage.removeItem("onboarding_backup");
-                const hasData = userData.onboarded || userData.phone || userData.company || userData.job;
+                const hasData = userData.onboarded || userData.phone || userData.company || userData.job || userData.name;
                 
                 if (hasData) {
                     if (userData.role === 'Admin') {

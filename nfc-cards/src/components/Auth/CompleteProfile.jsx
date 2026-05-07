@@ -480,21 +480,32 @@ const CompleteProfile = ({ userData }) => {
     });
 
     // 2. MERGE CLOUD DATA - Sync during render for React 19 compliance
+    // Pre-populate ALL fields from the database (not just empty ones) so returning
+    // users always see their previously saved data in the form.
     if (userData && userData !== prevUserData) {
         let changed = false;
         const merged = { ...formData };
         Object.keys(userData).forEach(key => {
-            // Only merge cloud data if the local form data field is empty
-            // This prevents overwriting user's active unsaved changes after a refresh
-            if (userData[key] && userData[key] !== "" && (!formData[key] || formData[key] === "")) {
-                merged[key] = userData[key];
-                changed = true;
+            // Merge cloud data into form. For fields the user has actively typed into
+            // (prevUserData was already set), prefer the local value. For the first
+            // load (prevUserData is null), always prefer the cloud value.
+            const isFirstLoad = prevUserData === null;
+            if (userData[key] !== undefined && userData[key] !== null && userData[key] !== "") {
+                if (isFirstLoad || (!formData[key] || formData[key] === "")) {
+                    merged[key] = userData[key];
+                    changed = true;
+                }
             }
         });
         // ALWAYS force email from the currently logged-in user's profile.
         // This overrides any stale value that may have come from a previous session's backup.
         if (userData.email && merged.email !== userData.email) {
             merged.email = userData.email;
+            changed = true;
+        }
+        // Map displayName -> name if name is not set
+        if (userData.displayName && !merged.name) {
+            merged.name = userData.displayName;
             changed = true;
         }
         if (changed) {
@@ -614,12 +625,27 @@ const CompleteProfile = ({ userData }) => {
         });
     };
 
-    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job;
+    // GUARD: If userData hasn't loaded from Firestore yet, show a loading skeleton
+    // instead of flashing the empty form. This prevents the form from appearing
+    // briefly to already-onboarded users while Firestore is still responding.
+    if (userData === null || userData === undefined) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-10 h-10 border-4 border-black border-t-transparent rounded-full animate-spin" />
+                    <p className="text-xs font-black uppercase tracking-widest text-gray-400">Loading Identity...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // REDIRECT: If user has already completed onboarding, send them to their dashboard.
+    // This is the primary gate that prevents a returning user from seeing the form.
+    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job || userData?.name;
     if (hasData) {
         if (isAdmin) return <Navigate to="/admin/analytics" />;
         return <Navigate to="/user/home" />;
     }
-
 
 
     return (

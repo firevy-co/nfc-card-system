@@ -190,7 +190,7 @@ function App() {
               element={
                 user ? (
                   (() => {
-                    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job;
+                    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job || userData?.name;
                     if (hasData) {
                       return userData?.role === 'Admin' ? <Navigate to="/admin/analytics" /> : <Navigate to="/user/home" />;
                     } else {
