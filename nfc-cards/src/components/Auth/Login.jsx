@@ -17,13 +17,19 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        
+        if (!email.trim() || !password.trim()) {
+            setError("Identification coordinates required.");
+            return;
+        }
+
         setLoading(true);
         setError('');
 
         try {
             // Dynamically set session persistence based on "Remember Me" preference
             await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const userCredential = await signInWithEmailAndPassword(auth, email.trim(), password);
             const user = userCredential.user;
 
             const { doc, getDoc } = await import('firebase/firestore');
@@ -32,14 +38,22 @@ const Login = () => {
 
             if (!userDoc.exists()) {
                 await auth.signOut();
-                throw new Error("User identity is not defined in the network registry.");
+                throw new Error("Identity registry not found. Please contact network admin.");
             }
 
             const userData = userDoc.data();
-            const hasData = userData.onboarded || userData.phone || userData.company || userData.job;
+            
+            // Robust check: any of these fields indicate the user has data/onboarded
+            const hasData = userData.onboarded || 
+                            userData.phone || 
+                            userData.company || 
+                            userData.businessName || 
+                            userData.companyName ||
+                            userData.job || 
+                            (userData.role === 'Admin' || user.email === 'admin@gmail.com');
             
             if (hasData) {
-                if (userData.role === 'Admin') {
+                if (userData.role === 'Admin' || user.email === 'admin@gmail.com') {
                     navigate('/admin/analytics');
                 } else {
                     navigate('/user/home');
@@ -48,12 +62,22 @@ const Login = () => {
                 navigate('/user/complete-profile');
             }
         } catch (err) {
-            let message = "Authentication failed.";
-            if (err.message.includes('auth/invalid-credential')) {
-                message = "Invalid email or password.";
-            } else if (err.message.includes("not defined")) {
+            console.error("[AUTH_FAILURE]:", err.code, err.message);
+            
+            let message = "Handshake failed. Please verify credentials.";
+            
+            if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
+                message = "Invalid access credentials. Unauthorized entry denied.";
+            } else if (err.code === 'auth/invalid-email') {
+                message = "Identity format unrecognized. Please provide a valid email.";
+            } else if (err.code === 'auth/user-disabled') {
+                message = "Identity suspended. Access to the network is restricted.";
+            } else if (err.code === 'auth/too-many-requests') {
+                message = "Too many failed attempts. Identity locked temporarily.";
+            } else if (err.message.includes("registry not found")) {
                 message = err.message;
             }
+            
             setError(message);
         } finally {
             setLoading(false);

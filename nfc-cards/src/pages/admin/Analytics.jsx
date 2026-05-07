@@ -69,6 +69,7 @@ const Analytics = ({ user, userData }) => {
                ...prev, 
                usersCount: snap.size,
                onboardedCount: onboarded,
+               allUsers: users,
                progress: {
                   ...prev.progress,
                   development: devProgress,
@@ -332,6 +333,60 @@ const Analytics = ({ user, userData }) => {
                </div>
             </div>
 
+            {/* BUSINESS DIRECTORY & TEMPLATE USAGE */}
+            <div className="bg-white  backdrop-blur-xl border border-black/5  p-6 rounded-[2rem] shadow-sm mt-8 transition-all overflow-hidden">
+               <div className="flex items-center justify-between mb-8">
+                  <div>
+                     <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.3em] mb-1">Active Identity Nodes</h3>
+                     <p className="text-[10px] font-bold text-foreground/40 uppercase tracking-widest">Cross-Network Organizational Audit</p>
+                  </div>
+                  <div className="px-4 py-2 rounded-xl bg-primary/10 text-primary font-black text-[10px] uppercase tracking-widest border border-primary/20">
+                     Live Stream Enabled
+                  </div>
+               </div>
+
+               <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                     <thead>
+                        <tr className="border-b border-black/5">
+                           <th className="pb-4 text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground">Organization</th>
+                           <th className="pb-4 text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground">Architect</th>
+                           <th className="pb-4 text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground">Template Selected</th>
+                           <th className="pb-4 text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground text-right">Status</th>
+                        </tr>
+                     </thead>
+                     <tbody className="divide-y divide-black/5">
+                        {stats.allUsers?.filter(u => u.onboarded).map((biz, idx) => (
+                           <tr key={idx} className="group hover:bg-black/[0.02] transition-colors">
+                              <td className="py-5">
+                                 <div className="flex flex-col">
+                                    <span className="font-black text-xs text-foreground tracking-tight">{biz.company || biz.businessName || 'Personal Hub'}</span>
+                                    <span className="text-[9px] font-bold text-muted-foreground opacity-40 uppercase tracking-widest">{biz.businessRole || 'Standard'}</span>
+                                 </div>
+                              </td>
+                              <td className="py-5">
+                                 <div className="flex items-center gap-3">
+                                    <div className="w-7 h-7 rounded-lg bg-black text-white flex items-center justify-center text-[10px] font-black">
+                                       {(biz.displayName || 'U').charAt(0)}
+                                    </div>
+                                    <span className="text-xs font-bold text-foreground/70">{biz.displayName || 'Anonymous'}</span>
+                                 </div>
+                              </td>
+                              <td className="py-5">
+                                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/10">
+                                    <div className="w-1 h-1 rounded-full bg-primary shadow-[0_0_5px_rgba(var(--primary),0.5)]"></div>
+                                    <span className="text-[10px] font-black text-primary uppercase tracking-widest">{biz.templateId || 'NOT_SELECTED'}</span>
+                                 </div>
+                              </td>
+                              <td className="py-5 text-right">
+                                 <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest bg-emerald-500/10 px-2.5 py-1 rounded-full">Active</span>
+                              </td>
+                           </tr>
+                        ))}
+                     </tbody>
+                  </table>
+               </div>
+            </div>
          </div>
       </Layout>
    );

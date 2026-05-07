@@ -20,8 +20,9 @@ const allowedOrigins = [
     'http://localhost:4000',
     'https://cardyn.shop',
     'https://www.cardyn.shop',
-    // Add your Vercel preview URL here if needed
-];
+    process.env.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(cors({
     origin: (origin, callback) => {
         // Allow requests with no origin (e.g., mobile apps, Postman)

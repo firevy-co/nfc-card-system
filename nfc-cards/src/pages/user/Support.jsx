@@ -18,6 +18,7 @@ const Support = ({ userData }) => {
     const [reply, setReply] = useState("");
 
     useEffect(() => {
+        let mounted = true;
         if (!auth.currentUser) return;
 
         const q = query(
@@ -25,26 +26,40 @@ const Support = ({ userData }) => {
             where("uid", "==", auth.currentUser.uid)
         );
 
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            let data = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
+        let unsubscribe = () => {};
+        try {
+            unsubscribe = onSnapshot(q, (snapshot) => {
+                if (!mounted) return;
+                let data = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
 
-            // Memory-side sorting to bypass composite index requirements
-            data.sort((a, b) => {
-                const timeA = a.createdAt?.toMillis?.() || 0;
-                const timeB = b.createdAt?.toMillis?.() || 0;
-                return timeB - timeA;
+                // Memory-side sorting to bypass composite index requirements
+                data.sort((a, b) => {
+                    const timeA = a.createdAt?.toMillis?.() || 0;
+                    const timeB = b.createdAt?.toMillis?.() || 0;
+                    return timeB - timeA;
+                });
+
+                setConversations(data);
+            }, (error) => {
+                console.warn("[SUPPORT]: Inquiries listener error:", error.message);
             });
+        } catch (err) {
+            console.warn("[SUPPORT]: Failed to init inquiries listener:", err);
+        }
 
-            setConversations(data);
-        });
-
-        return () => unsubscribe();
-    }, []);
+        return () => {
+            mounted = false;
+            if (unsubscribe) {
+                try { unsubscribe(); } catch (e) { /* ignore cleanup fail */ }
+            }
+        };
+    }, [auth.currentUser?.uid]);
 
     useEffect(() => {
+        let mounted = true;
         if (!selectedConv) {
             setMessages([]);
             return;
@@ -55,15 +70,28 @@ const Support = ({ userData }) => {
             orderBy("createdAt", "asc")
         );
 
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const data = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            setMessages(data);
-        });
+        let unsubscribe = () => {};
+        try {
+            unsubscribe = onSnapshot(q, (snapshot) => {
+                if (!mounted) return;
+                const data = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                setMessages(data);
+            }, (error) => {
+                console.warn("[SUPPORT]: Messages listener error:", error.message);
+            });
+        } catch (err) {
+            console.warn("[SUPPORT]: Failed to init messages listener:", err);
+        }
 
-        return () => unsubscribe();
+        return () => {
+            mounted = false;
+            if (unsubscribe) {
+                try { unsubscribe(); } catch (e) { /* ignore cleanup fail */ }
+            }
+        };
     }, [selectedConv]);
 
     const handleSubmit = async (e) => {

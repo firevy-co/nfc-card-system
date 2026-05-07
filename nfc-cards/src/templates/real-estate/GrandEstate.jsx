@@ -106,7 +106,7 @@ const GrandEstate = ({ userData }) => {
          <div className="px-5 max-w-md mx-auto -mt-8 space-y-6">
 
             {/* BIO */}
-            {(bio || true) && (
+            {bio && (
                <div className="bg-indigo-900/30 border border-indigo-800 rounded-2xl p-5 backdrop-blur">
                   <p className="text-indigo-100 text-sm italic leading-6 text-center">
                      "{bio || "Helping clients find premium homes, villas and investments with trusted guidance."}"

@@ -19,8 +19,11 @@ import {
     FiGlobe,
     FiLayout,
     FiUser,
-    FiUpload
+    FiUpload,
+    FiFacebook,
+    FiYoutube
 } from 'react-icons/fi';
+import { FaTiktok } from 'react-icons/fa';
 import { Country, State, City } from "country-state-city";
 import { TEMPLATES } from '../../templates/templateRegistry';
 import TemplateRenderer from '../../templates/TemplateRenderer';
@@ -32,6 +35,7 @@ import toast from 'react-hot-toast';
 import { HexColorPicker } from "react-colorful";
 import * as Fa from 'react-icons/fa';
 import { API_BASE_URL } from '../../config/api';
+import axios from 'axios';
 
 const isLight = (color) => {
     if (!color || typeof color !== 'string' || color.length < 7) return false;
@@ -340,6 +344,9 @@ const Profile = ({ userData, onUserDataChange }) => {
         let changed = false;
         const merged = { ...formData };
         Object.keys(userData).forEach(key => {
+            // Internal state flags should NEVER be merged into the persistent form state
+            if (key === 'exists' || key === 'uid') return;
+
             if (userData[key] && userData[key] !== "" && formData[key] !== userData[key]) {
                 merged[key] = userData[key];
                 changed = true;
@@ -441,16 +448,13 @@ const Profile = ({ userData, onUserDataChange }) => {
                 console.warn("[PROFILE]: Direct Firestore write failed:", fsErr.message);
             }
 
-            // STEP 2 (SECONDARY): Also call the backend API.
+            // STEP 2 (SECONDARY/SYNC): Also call the backend API via Axios.
             // This syncs to companyDetails and uses Admin SDK (bypasses strict rules).
             try {
-                await fetch(`${API_BASE_URL}/api/users/${user.uid}/profile`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+                await axios.put(`${API_BASE_URL}/api/users/${user.uid}/profile`, payload);
+                console.log("[PROFILE]: Backend API synchronization complete.");
             } catch (apiErr) {
-                console.warn("[PROFILE]: Backend API unavailable:", apiErr.message);
+                console.warn("[PROFILE]: Backend API unreachable or rejected sync:", apiErr.message);
             }
 
             if (formData.displayName !== user.displayName) {
@@ -499,7 +503,7 @@ const Profile = ({ userData, onUserDataChange }) => {
         }
     };
 
-const inputClasses = `w-full bg-white border border-gray-200 rounded-full px-6 py-4 text-sm font-medium text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all placeholder:text-gray-300 disabled:bg-gray-50 disabled:text-gray-600 cursor-pointer`;
+    const inputClasses = `w-full bg-white border border-gray-200 rounded-full px-6 py-4 text-sm font-medium text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all placeholder:text-gray-300 disabled:bg-gray-50 disabled:text-gray-600 cursor-pointer`;
     const labelClasses = `text-sm font-bold text-gray-900 mb-3 block px-1`;
     const isAdmin = userData?.role === "Admin";
 
@@ -828,23 +832,40 @@ const inputClasses = `w-full bg-white border border-gray-200 rounded-full px-6 p
                                             value={formData.displayName}
                                             onChange={(e) => handleInputChange('displayName', e.target.value)}
                                             className={inputClasses}
-                                            placeholder="e.g. Dharmik Prajapati"
+                                            placeholder="e.g. Enter email"
                                         />
                                     </div>
 
-                                    <div className="space-y-1">
-                                        <label className={labelClasses}>Business Category <span className="text-red-500">*</span></label>
-                                        <select
-                                            disabled={!isEditing}
-                                            value={formData.businessRole}
-                                            onChange={(e) => handleInputChange('businessRole', e.target.value)}
-                                            className={`${inputClasses} appearance-none`}
-                                        >
-                                            <option value="">Select Category</option>
-                                            {['Business', 'Luxury', 'Technology', 'Agency', 'Healthcare', 'Automotive', 'Real Estate', 'Legal', 'Hospitality', 'Fitness', 'Construction', 'Beauty', 'Creator', 'Service'].map(role => (
-                                                <option key={role} value={role}>{role}</option>
-                                            ))}
-                                        </select>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div className="space-y-3">
+                                            <label className={labelClasses}>Organization Name</label>
+                                            <div className="relative group">
+                                                <FiBriefcase className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-black transition-colors pointer-events-none" size={16} />
+                                                <input
+                                                    type="text"
+                                                    disabled={!isEditing}
+                                                    value={formData.company || formData.businessName || ''}
+                                                    onChange={(e) => handleInputChange('company', e.target.value)}
+                                                    className={`${inputClasses} pl-14 font-black uppercase tracking-widest text-[11px]`}
+                                                    placeholder="Enter your organization..."
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-3">
+                                            <label className={labelClasses}>Business Role</label>
+                                            <div className="relative group">
+                                                <FiBriefcase className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-black transition-colors pointer-events-none" size={16} />
+                                                <input
+                                                    type="text"
+                                                    disabled={!isEditing}
+                                                    value={formData.businessRole || ''}
+                                                    onChange={(e) => handleInputChange('businessRole', e.target.value)}
+                                                    className={`${inputClasses} pl-14 font-black uppercase tracking-widest text-[11px]`}
+                                                    placeholder="e.g. Creative Director"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div className="space-y-1">
@@ -992,6 +1013,9 @@ const inputClasses = `w-full bg-white border border-gray-200 rounded-full px-6 p
                                                 { id: 'linkedin', label: 'LinkedIn', icon: FiLinkedin },
                                                 { id: 'instagram', label: 'Instagram', icon: FiInstagram },
                                                 { id: 'twitter', label: 'X / Twitter', icon: FiTwitter },
+                                                { id: 'facebook', label: 'Facebook', icon: FiFacebook },
+                                                { id: 'youtube', label: 'YouTube', icon: FiYoutube },
+                                                { id: 'tiktok', label: 'TikTok', icon: FaTiktok },
                                                 { id: 'whatsapp', label: 'WhatsApp', icon: FiPhone },
                                                 { id: 'telegram', label: 'Telegram', icon: FiSend },
                                                 { id: 'skype', label: 'Skype', icon: FiMessageCircle },

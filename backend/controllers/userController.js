@@ -114,20 +114,31 @@ exports.syncUser = async (req, res) => {
 
         const userRef = db.collection('users').doc(uid);
         const docSnap = await userRef.get();
+        const isAdmin = email && email.toLowerCase() === 'admin@gmail.com';
+
         if (!docSnap.exists) {
             const newUser = {
                 uid,
                 email: email || '',
-                displayName: displayName || 'Architect',
-                role: 'User',
+                displayName: displayName || (isAdmin ? 'Admin' : 'Architect'),
+                role: isAdmin ? 'Admin' : 'User',
                 createdAt: admin.firestore.FieldValue.serverTimestamp(),
                 status: 'Active',
-                onboarded: false
+                onboarded: isAdmin
             };
             await userRef.set(newUser);
             return res.json(newUser);
         }
-        res.json({ ...docSnap.data(), uid });
+        
+        // If user exists but is admin@gmail.com and not marked as admin, update it
+        const currentData = docSnap.data();
+        if (isAdmin && (currentData.role !== 'Admin' || !currentData.onboarded)) {
+            const updates = { role: 'Admin', onboarded: true };
+            await userRef.update(updates);
+            return res.json({ ...currentData, ...updates, uid });
+        }
+
+        res.json({ ...currentData, uid });
     } catch (error) {
         console.error("Identity Sync Failure:", error);
         res.status(500).json({ error: "Failed to sync user", details: error.message });

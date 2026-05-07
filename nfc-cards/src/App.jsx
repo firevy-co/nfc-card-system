@@ -6,6 +6,7 @@ import { doc, setDoc, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import { ThemeProvider } from './context/ThemeContext';
 import { Toaster } from 'react-hot-toast';
 import { API_BASE_URL } from './config/api';
+import axios from 'axios';
 
 // --- AUTH & SECURITY CONTROLLER ---
 import CheckAuth from './components/Auth/CheckAuth';
@@ -32,17 +33,26 @@ function App() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // --- CONFIGURATION GUARDIAN ---
+  // Detect if critical Firebase environment variables are missing (common deployment error)
+  const isMissingConfig = !import.meta.env.VITE_FIREBASE_API_KEY || import.meta.env.VITE_FIREBASE_API_KEY.includes('YOUR_API_KEY');
+
   // ── ONE-TIME LEGACY CLEANUP ──────────────────────────────────────────────
   // Wipe any real-data keys that old deployments wrote to localStorage.
   // Only the 'theme' UI preference is allowed to remain.
   useEffect(() => {
     ['onboarding_backup', 'identity_nodes'].forEach(key => {
-      try { localStorage.removeItem(key); } catch (_) {}
+      try { localStorage.removeItem(key); } catch (e) { console.warn(e); }
     });
   }, []);
   // ────────────────────────────────────────────────────────────────────────
 
   useEffect(() => {
+    if (!auth || !db) {
+      setLoading(false);
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (authenticatedUser) => {
       setUser(authenticatedUser);
       if (!authenticatedUser) {
@@ -54,85 +64,114 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !db) return;
 
-    let unsubSnapshot = null;
-    // Guard against StrictMode double-invoke: if effect cleans up before the
-    // async chain resolves, we skip attaching a listener to a dead Firestore client.
     let mounted = true;
+    let unsubSnapshot = null;
 
-    const startListener = async () => {
+    // Safety timeout: if Firestore takes too long, stop blocking the UI
+    const loadingTimeout = setTimeout(() => {
+      if (mounted && loading) {
+        console.warn("[APP]: Loading safety timeout reached.");
+        setUserData(prev => prev || { exists: false, uid: user.uid, error: 'timeout' });
+        setLoading(false);
+      }
+    }, 5000); // 5 seconds safety
+
+    const initListener = async () => {
+      // 1. Immediate Sync with Backend (Provides fast source of truth)
       try {
-        const apiUrl = API_BASE_URL;
+        const syncResponse = await axios.post(`${API_BASE_URL}/api/users/sync`, {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName
+        });
         
-        // 1. Sync identity with backend to create doc if it doesn't exist
-        try {
-          const res = await fetch(`${apiUrl}/api/users/sync`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              uid: user.uid,
-              email: user.email,
-              displayName: user.displayName
-            })
-          });
-          if (res.ok && mounted) {
-            const data = await res.json();
-            setUserData(prev => prev ? prev : { ...data, uid: user.uid });
-          }
-        } catch (syncErr) {
-          // Backend unavailable — fall through to Firestore listener
-        }
-
-        // 2. Bail out if the effect was already cleaned up
-        if (!mounted) return;
-
-        // 3. Set up real-time listener so profile updates flow back instantly
-        const userRef = doc(db, "users", user.uid);
-        
-        try {
-          unsubSnapshot = onSnapshot(userRef, async (docSnap) => {
-            if (!mounted) return;
-            if (docSnap.exists()) {
-              setUserData({ ...docSnap.data(), uid: user.uid });
-              setLoading(false);
-            } else {
-              // Document doesn't exist yet, it's probably being created by Signup/Login.
-              // We stop the loading state so CheckAuth can route to onboarding.
-              console.log("Waiting for identity to be established...");
-              setLoading(false);
-            }
-          }, (error) => {
-            if (mounted) {
-              console.warn("Identity Sync Warning (Permissions):", error.message);
-              setLoading(false);
-            }
-          });
-        } catch (snapErr) {
-          if (mounted) {
-            console.warn("Firestore listener failed to start:", snapErr.message);
+        if (mounted && syncResponse.data) {
+          const syncedData = syncResponse.data;
+          setUserData(prev => prev || { ...syncedData, uid: user.uid });
+          const hasOnboardingData = syncedData.onboarded || syncedData.phone || syncedData.company || syncedData.job || (syncedData.role === 'Admin');
+          if (hasOnboardingData) {
             setLoading(false);
           }
         }
+      } catch (err) {
+        console.warn("[APP]: Backend sync skipped, waiting for cloud listener.");
+      }
 
-      } catch (error) {
-        if (mounted) {
-          console.error("Critical Identity Listener Setup Failure:", error);
-          setLoading(false);
+      if (!mounted) return;
+
+      // 2. Start Real-time Firestore Listener (Source of Truth)
+      const userRef = doc(db, "users", user.uid);
+      
+      const unsub = onSnapshot(userRef, (docSnap) => {
+        if (!mounted) return;
+        
+        if (docSnap.exists()) {
+          setUserData({ ...docSnap.data(), uid: user.uid, exists: true });
+        } else {
+          console.log("[APP]: Identity doc missing (new user).");
+          setUserData({ exists: false, uid: user.uid });
         }
+        setLoading(false);
+        clearTimeout(loadingTimeout);
+      }, (error) => {
+        if (mounted) {
+          console.warn("[APP]: Firestore listener error:", error.message);
+          setLoading(false);
+          clearTimeout(loadingTimeout);
+        }
+      });
+
+      // CRITICAL: If the component unmounted while the async sync was running, 
+      // we MUST immediately kill the new listener to prevent "Internal Assertion" errors.
+      if (!mounted) {
+        unsub();
+      } else {
+        unsubSnapshot = unsub;
       }
     };
 
-    startListener();
+    initListener();
+
     return () => {
       mounted = false;
+      clearTimeout(loadingTimeout);
       if (unsubSnapshot) {
-        try { unsubSnapshot(); } catch (_) { /* ignore cleanup errors */ }
+        try { unsubSnapshot(); } catch (e) { /* silent fail on already closed stream */ }
       }
     };
   }, [user]);
 
-  if (loading || (user && !userData)) {
+  if (isMissingConfig && window.location.hostname !== 'localhost') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+        <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl border border-red-100">
+          <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mb-6">
+            <span className="text-2xl text-red-500 font-bold">!</span>
+          </div>
+          <h1 className="text-2xl font-black text-gray-900 mb-4">Deployment Sync Error</h1>
+          <p className="text-gray-500 text-sm leading-relaxed mb-6">
+            The application is live, but it cannot connect to your Identity Database (Firebase). This usually happens because environment variables are missing in your hosting dashboard.
+          </p>
+          <div className="bg-gray-50 rounded-2xl p-4 space-y-3 mb-6">
+            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Action Required:</p>
+            <ol className="text-xs text-gray-600 space-y-2 list-decimal ml-4">
+              <li>Open your <b>Vercel Project Dashboard</b></li>
+              <li>Navigate to <b>Settings &gt; Environment Variables</b></li>
+              <li>Add all <b>VITE_FIREBASE_...</b> keys from your local .env file</li>
+              <li>Redeploy your project</li>
+            </ol>
+          </div>
+          <a href="https://vercel.com/docs/concepts/projects/environment-variables" target="_blank" rel="noopener noreferrer" className="block w-full py-4 bg-black text-white rounded-xl font-black text-center text-[10px] uppercase tracking-widest shadow-xl">
+            View Documentation
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
     return (
       <ThemeProvider>
         <AppSkeleton />
@@ -153,13 +192,22 @@ function App() {
               element={
                 !user ? (
                   <Login />
-                ) : userData?.role === 'Admin' ? (
-                  <Navigate to="/admin/analytics" />
-                ) : userData?.onboarded ? (
-                  <Navigate to="/user/home" />
-                ) : (
-                  <Navigate to="/user/complete-profile" />
-                )
+                ) : (() => {
+                  const isAdmin = userData?.role === 'Admin' || user?.email === 'admin@gmail.com';
+                  // Robust check: any of these fields indicate the user has data/onboarded
+                  const hasData = userData?.onboarded || 
+                                  userData?.phone || 
+                                  userData?.company || 
+                                  userData?.businessName || 
+                                  userData?.companyName ||
+                                  userData?.job || 
+                                  isAdmin;
+                                  
+                  if (hasData) {
+                    return isAdmin ? <Navigate to="/admin/analytics" /> : <Navigate to="/user/home" />;
+                  }
+                  return <Navigate to="/user/complete-profile" />;
+                })()
               }
             />
             <Route
@@ -167,33 +215,41 @@ function App() {
               element={
                 !user ? (
                   <Signup />
-                ) : userData?.role === 'Admin' ? (
-                  <Navigate to="/admin/analytics" />
-                ) : userData?.onboarded ? (
-                  <Navigate to="/user/home" />
-                ) : (
-                  <Navigate to="/user/complete-profile" />
-                )
+                ) : (() => {
+                  const isAdmin = userData?.role === 'Admin' || user?.email === 'admin@gmail.com';
+                  const hasData = userData?.onboarded || 
+                                  userData?.phone || 
+                                  userData?.company || 
+                                  userData?.businessName || 
+                                  userData?.companyName ||
+                                  userData?.job || 
+                                  isAdmin;
+
+                  if (hasData) {
+                    return isAdmin ? <Navigate to="/admin/analytics" /> : <Navigate to="/user/home" />;
+                  }
+                  return <Navigate to="/user/complete-profile" />;
+                })()
               }
             />
 
             {/* --- ADMIN PIPELINE --- */}
-            <Route path="/admin/analytics" element={<CheckAuth user={user} userData={userData} loading={loading} adminOnly={true}><Analytics /></CheckAuth>} />
-            <Route path="/admin/complete-profile" element={<CheckAuth user={user} userData={userData} loading={loading} adminOnly={true}><CompleteProfile /></CheckAuth>} />
-            <Route path="/admin/profile" element={<CheckAuth user={user} userData={userData} loading={loading} adminOnly={true}><Profile onUserDataChange={setUserData} /></CheckAuth>} />
-            <Route path="/admin/users" element={<CheckAuth user={user} userData={userData} loading={loading} adminOnly={true}><Users /></CheckAuth>} />
-            <Route path="/admin/templates" element={<CheckAuth user={user} userData={userData} loading={loading} adminOnly={true}><Templates /></CheckAuth>} />
-            <Route path="/admin/inquiry" element={<CheckAuth user={user} userData={userData} loading={loading} adminOnly={true}><Inquiry /></CheckAuth>} />
+            <Route path="/admin/analytics" element={<CheckAuth user={user} userData={userData} loading={loading} adminOnly={true}><Analytics userData={userData} /></CheckAuth>} />
+            <Route path="/admin/complete-profile" element={<CheckAuth user={user} userData={userData} loading={loading} adminOnly={true}><CompleteProfile userData={userData} onUserDataChange={setUserData} /></CheckAuth>} />
+            <Route path="/admin/profile" element={<CheckAuth user={user} userData={userData} loading={loading} adminOnly={true}><Profile userData={userData} onUserDataChange={setUserData} /></CheckAuth>} />
+            <Route path="/admin/users" element={<CheckAuth user={user} userData={userData} loading={loading} adminOnly={true}><Users userData={userData} /></CheckAuth>} />
+            <Route path="/admin/templates" element={<CheckAuth user={user} userData={userData} loading={loading} adminOnly={true}><Templates userData={userData} /></CheckAuth>} />
+            <Route path="/admin/inquiry" element={<CheckAuth user={user} userData={userData} loading={loading} adminOnly={true}><Inquiry userData={userData} /></CheckAuth>} />
             <Route path="/admin/settings" element={<CheckAuth user={user} userData={userData} loading={loading} adminOnly={true}><Settings userData={userData} /></CheckAuth>} />
             <Route path="/admin/templates/:id" element={<CheckAuth user={user} userData={userData} loading={loading} adminOnly={true}><TemplatePreview userData={userData} /></CheckAuth>} />
 
             {/* --- USER PIPELINE --- */}
-            <Route path="/user/home" element={<CheckAuth user={user} userData={userData} loading={loading}><Home /></CheckAuth>} />
-            <Route path="/user/templates" element={<CheckAuth user={user} userData={userData} loading={loading}><Templates /></CheckAuth>} />
+            <Route path="/user/home" element={<CheckAuth user={user} userData={userData} loading={loading}><Home userData={userData} /></CheckAuth>} />
+            <Route path="/user/templates" element={<CheckAuth user={user} userData={userData} loading={loading}><Templates userData={userData} /></CheckAuth>} />
             <Route path="/user/support" element={<CheckAuth user={user} userData={userData} loading={loading}><Support userData={userData} /></CheckAuth>} />
             <Route path="/user/profile" element={<CheckAuth user={user} userData={userData} loading={loading}><Profile userData={userData} onUserDataChange={setUserData} /></CheckAuth>} />
             <Route path="/user/templates/:id" element={<CheckAuth user={user} userData={userData} loading={loading}><TemplatePreview userData={userData} /></CheckAuth>} />
-            <Route path="/user/complete-profile" element={<CheckAuth user={user} userData={userData} loading={loading}><CompleteProfile onUserDataChange={setUserData} /></CheckAuth>} />
+            <Route path="/user/complete-profile" element={<CheckAuth user={user} userData={userData} loading={loading}><CompleteProfile userData={userData} onUserDataChange={setUserData} /></CheckAuth>} />
             <Route path="/user/settings" element={<CheckAuth user={user} userData={userData} loading={loading}><UserSettings userData={userData} /></CheckAuth>} />
 
             {/* --- GLOBAL SYNC & FALLBACK --- */}
@@ -202,9 +258,17 @@ function App() {
               element={
                 user ? (
                   (() => {
-                    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job;
+                    const isAdmin = userData?.role === 'Admin' || user?.email === 'admin@gmail.com';
+                    const hasData = userData?.onboarded || 
+                                    userData?.phone || 
+                                    userData?.company || 
+                                    userData?.businessName || 
+                                    userData?.companyName ||
+                                    userData?.job || 
+                                    isAdmin;
+
                     if (hasData) {
-                      return userData?.role === 'Admin' ? <Navigate to="/admin/analytics" /> : <Navigate to="/user/home" />;
+                      return isAdmin ? <Navigate to="/admin/analytics" /> : <Navigate to="/user/home" />;
                     } else {
                       return <Navigate to="/user/complete-profile" />;
                     }

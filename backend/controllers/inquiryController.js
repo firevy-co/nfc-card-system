@@ -81,3 +81,37 @@ exports.updateInquiryStatus = async (req, res) => {
         res.status(500).json({ error: "Failed to update inquiry status", details: error.message });
     }
 };
+
+/**
+ * POST /api/inquiries
+ * Create a new inquiry.
+ */
+exports.createInquiry = async (req, res) => {
+    const { name, email, brief, vector, targetUid } = req.body;
+
+    if (!name || !email || !brief) {
+        return res.status(400).json({ error: "Name, email, and brief are required." });
+    }
+
+    try {
+        const newInquiry = {
+            name,
+            email,
+            brief,
+            vector: vector || 'General',
+            targetUid: targetUid || 'System',
+            status: 'Unread',
+            createdAt: new Date().toISOString()
+        };
+
+        const docRef = await db.collection('inquiries').add(newInquiry);
+        res.status(201).json({ 
+            success: true, 
+            id: docRef.id, 
+            message: "Inquiry successfully submitted to the network." 
+        });
+    } catch (error) {
+        console.error("[INQUIRY CREATE ERROR]:", error);
+        res.status(500).json({ error: "Failed to submit inquiry", details: error.message });
+    }
+};

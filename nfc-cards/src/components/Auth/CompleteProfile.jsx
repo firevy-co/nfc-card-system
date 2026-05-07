@@ -10,17 +10,17 @@ import { signOut, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 import { API_BASE_URL } from "../../config/api";
+import axios from "axios";
 
 
 
 const IconCard = ({ icon: _Icon, label, field, onClick, required, isFilled }) => (
     <div
         onClick={() => onClick(field)}
-        className={`p-4 rounded-xl border cursor-pointer flex flex-col items-center justify-center transition-all active:scale-95 relative ${
-            isFilled 
-                ? "bg-black text-white border-black shadow-md" 
+        className={`p-4 rounded-xl border cursor-pointer flex flex-col items-center justify-center transition-all active:scale-95 relative ${isFilled
+                ? "bg-black text-white border-black shadow-md"
                 : "bg-gray-50 text-gray-900 border-gray-100 hover:bg-gray-100"
-        }`}
+            }`}
     >
         {required && !isFilled && <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-red-500 rounded-full" />}
         {isFilled && <div className="absolute top-2 right-2 text-emerald-400"><Fi.FiCheck size={10} /></div>}
@@ -507,6 +507,9 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
         let changed = false;
         const merged = { ...formData };
         Object.keys(userData).forEach(key => {
+            // Internal state flags should NEVER be merged into the persistent form state
+            if (key === 'exists' || key === 'uid') return;
+
             const isFirstLoad = prevUserData === null;
             if (userData[key] !== undefined && userData[key] !== null && userData[key] !== "") {
                 if (isFirstLoad || (!formData[key] || formData[key] === "")) {
@@ -535,6 +538,10 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
     const handleLogoUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
+            if (file.size > 1024 * 1024) {
+                toast.error("Logo file is too large. Please use a file smaller than 1MB.");
+                return;
+            }
             const reader = new FileReader();
             reader.onloadend = () => {
                 setFormData(prev => ({ ...prev, logo: reader.result, logoType: 'file' }));
@@ -546,6 +553,10 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
     const handleProfileImageUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
+            if (file.size > 1024 * 1024) {
+                toast.error("Profile image is too large. Please use a file smaller than 1MB.");
+                return;
+            }
             const reader = new FileReader();
             reader.onloadend = () => {
                 setFormData(prev => ({ ...prev, profileImage: reader.result, profileImageType: 'file' }));
@@ -556,7 +567,7 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
 
     const handleSave = async () => {
         if (isSaving) return;
-        
+
         // ── VALIDATION ──────────────────────────────────────────────────────
         // Only email is hard-required (it's always sourced from Firebase Auth).
         // Phone, businessRole, and address are strongly encouraged but not hard-blocked
@@ -592,75 +603,51 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
             // immediately so CheckAuth can read the fresh value without a race
             // condition, even if the backend API is down or in MOCK mode.
             // ─────────────────────────────────────────────────────────────
-            let clientWriteSuccess = false;
             try {
                 const finalName = formData.name || userData.displayName || '';
-                const updatedData = {
+                const payload = {
+                    uid: userData.uid,
                     ...formData,
                     displayName: finalName,
                     name: finalName,
                     onboarded: true,
-                    status: 'Active',
-                    updatedAt: new Date().toISOString(),
+                    status: 'Active'
                 };
 
-                await setDoc(doc(db, "users", userData.uid), updatedData, { merge: true });
+                // ─────────────────────────────────────────────────────────────
+                // PRIMARY SAVE: Backend API (POST method)
+                // This bypasses client-side Firestore rules and connection drops
+                // ─────────────────────────────────────────────────────────────
+                const response = await axios.post(`${API_BASE_URL}/api/users/onboard`, payload);
+                
+                if (!response.data || !response.data.success) {
+                    throw new Error(response.data?.error || "Backend synchronization failed.");
+                }
 
-                // Sync with Firebase Auth
-                await updateProfile(auth.currentUser, { displayName: finalName });
+                console.log("[ONBOARD]: Backend synchronized participant profile.");
 
-                // Update global state immediately to prevent race condition redirection
+                // 2. Auth Profile Sync (Fast client-side update for immediate UI feedback)
+                try {
+                    await updateProfile(auth.currentUser, { displayName: finalName });
+                } catch (e) {
+                    console.warn("[ONBOARD]: Auth sync skipped (non-critical).");
+                }
+
+                // 3. Global State Update (Triggers App re-render to reflect new status)
                 if (onUserDataChange) {
-                    onUserDataChange(prev => ({ ...prev, ...updatedData }));
+                    onUserDataChange(prev => ({ 
+                        ...prev, 
+                        ...payload,
+                        onboarded: true 
+                    }));
                 }
 
-                clientWriteSuccess = true;
-                console.log("[ONBOARD]: Direct Firestore write succeeded.");
-            } catch (fsErr) {
-                console.warn("[ONBOARD]: Direct Firestore write failed:", fsErr.message);
+                // 4. Local Redirection Signal
+                setIsSaved(true);
+            } catch (err) {
+                console.error("[ONBOARD]: Deployment failure:", err.message);
+                throw new Error(err.response?.data?.error || err.message || "Failed to deploy identity hub.");
             }
-
-            // ─────────────────────────────────────────────────────────────
-            // STEP 2 (SECONDARY): Also call the backend API.
-            // This saves to the companyDetails collection and syncs via Admin SDK.
-            // If the backend is in MOCK mode or down, we log a warning but
-            // do NOT block navigation — the Firestore write already succeeded.
-            // ─────────────────────────────────────────────────────────────
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/users/onboard`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ 
-                        uid: userData.uid, 
-                        ...formData
-                    }),
-                });
-                const result = await response.json().catch(() => ({}));
-                // If backend is in MOCK mode, it won't actually save anything
-                if (result?.message?.includes('MOCK')) {
-                    console.warn("[ONBOARD]: Backend is in MOCK mode — profile saved via Firestore client only.");
-                }
-                if (!response.ok) {
-                    console.warn("[ONBOARD]: Backend API returned non-OK:", response.status);
-                }
-            } catch (apiErr) {
-                console.warn("[ONBOARD]: Backend API unreachable:", apiErr.message);
-            }
-
-            // ─────────────────────────────────────────────────────────────
-            // STEP 3: If BOTH saves failed, abort — something is very wrong.
-            // ─────────────────────────────────────────────────────────────
-            if (!clientWriteSuccess) {
-                throw new Error("Could not save your profile. Check your connection and try again.");
-            }
-
-            // ─────────────────────────────────────────────────────────────
-            // STEP 4: Signal successful save via local state.
-            // Setting isSaved=true triggers the Navigate guard at the top of
-            // the render function immediately, without waiting for the
-            // Firestore snapshot to propagate back to App.jsx.
-            // ─────────────────────────────────────────────────────────────
-            setIsSaved(true);
         })().finally(() => setIsSaving(false));
 
         toast.promise(savePromise, {
@@ -805,7 +792,7 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
                             </div>
 
                             {/* Activate Design Architecture Button */}
-                            <button 
+                            <button
                                 onClick={handleSave}
                                 className="w-full mt-6 py-4 bg-black text-white rounded-xl font-black text-[10px] uppercase tracking-widest shadow-xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
                             >
@@ -837,9 +824,6 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
                             <IconCard icon={Fi.FiLinkedin} label="LinkedIn" field="linkedin" onClick={setActiveField} isFilled={!!formData.linkedin} />
                             <IconCard icon={Fi.FiTwitter} label="X / Twitter" field="twitter" onClick={setActiveField} isFilled={!!formData.twitter} />
                             <IconCard icon={Fi.FiInstagram} label="Instagram" field="instagram" onClick={setActiveField} isFilled={!!formData.instagram} />
-                            <IconCard icon={Fi.FiFacebook} label="Facebook" field="facebook" onClick={setActiveField} isFilled={!!formData.facebook} />
-                            <IconCard icon={Fi.FiYoutube} label="YouTube" field="youtube" onClick={setActiveField} isFilled={!!formData.youtube} />
-                            <IconCard icon={Fa.FaTiktok} label="TikTok" field="tiktok" onClick={setActiveField} isFilled={!!formData.tiktok} />
                         </Section>
 
                         <Section title="Messaging">
@@ -870,9 +854,6 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
                             <IconCard icon={Fi.FiLinkedin} label="LinkedIn" field="linkedin" onClick={setActiveField} isFilled={!!formData.linkedin} />
                             <IconCard icon={Fi.FiTwitter} label="X / Twitter" field="twitter" onClick={setActiveField} isFilled={!!formData.twitter} />
                             <IconCard icon={Fi.FiInstagram} label="Instagram" field="instagram" onClick={setActiveField} isFilled={!!formData.instagram} />
-                            <IconCard icon={Fi.FiFacebook} label="Facebook" field="facebook" onClick={setActiveField} isFilled={!!formData.facebook} />
-                            <IconCard icon={Fi.FiYoutube} label="YouTube" field="youtube" onClick={setActiveField} isFilled={!!formData.youtube} />
-                            <IconCard icon={Fa.FaTiktok} label="TikTok" field="tiktok" onClick={setActiveField} isFilled={!!formData.tiktok} />
                         </Section>
 
                         <Section title="Messaging">

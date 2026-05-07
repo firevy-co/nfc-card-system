@@ -12,6 +12,7 @@ import MobileFooter from '../../components/layout/MobileFooter';
 import toast from 'react-hot-toast';
 import { API_BASE_URL } from "../../config/api";
 import ConfirmationModal from '../../components/layout/ConfirmationModal';
+import axios from 'axios';
 
 const Inquiry = ({ userData }) => {
     const [inquiries, setInquiries] = useState([]);
@@ -65,17 +66,8 @@ const Inquiry = ({ userData }) => {
 
     const handleStatusUpdate = async (id, status) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/api/inquiries/${id}/status`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status })
-            });
-
-            if (response.ok) {
-                toast.success(`Status updated to ${status}`);
-            } else {
-                throw new Error("Update failed");
-            }
+            await axios.patch(`${API_BASE_URL}/api/inquiries/${id}/status`, { status });
+            toast.success(`Status updated to ${status}`);
         } catch (err) {
             toast.error("Status update failed.");
         }
@@ -91,21 +83,14 @@ const Inquiry = ({ userData }) => {
 
         setIsDeleting(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/api/inquiries/${inquiryToDelete.id}`, {
-                method: 'DELETE'
-            });
+            await axios.delete(`${API_BASE_URL}/api/inquiries/${inquiryToDelete.id}`);
+            toast.success("Inquiry and message thread purged.");
+            // OPTIMISTIC UI: Remove from local state immediately
+            setInquiries(prev => prev.filter(iq => iq.id !== inquiryToDelete.id));
 
-            if (response.ok) {
-                toast.success("Inquiry and message thread purged.");
-                // OPTIMISTIC UI: Remove from local state immediately
-                setInquiries(prev => prev.filter(iq => iq.id !== inquiryToDelete.id));
-
-                if (selectedInquiry?.id === inquiryToDelete.id) setSelectedInquiry(null);
-                setIsDeleteModalOpen(false);
-                setInquiryToDelete(null);
-            } else {
-                throw new Error("Purge failed");
-            }
+            if (selectedInquiry?.id === inquiryToDelete.id) setSelectedInquiry(null);
+            setIsDeleteModalOpen(false);
+            setInquiryToDelete(null);
         } catch (err) {
             toast.error("Purge failure. Cloud sync check required.");
         } finally {

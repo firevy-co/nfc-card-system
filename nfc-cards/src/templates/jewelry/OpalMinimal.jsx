@@ -3,6 +3,56 @@ import * as FiIcons from "react-icons/fi";
 import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
+const getUrl = (type, value) => {
+  if (!value) return "#";
+  if (value.startsWith("http")) return value;
+
+  switch (type) {
+    case "instagram":
+      return `https://instagram.com/${value.replace("@", "")}`;
+    case "linkedin":
+      return `https://linkedin.com/company/${value.replace("@", "")}`;
+    case "website":
+      return `https://${value}`;
+    default:
+      return value;
+  }
+};
+
+const SectionTitle = ({ title }) => (
+  <div className="px-5 pt-7 pb-3">
+    <p className="text-[#d6ad4a] text-[10px] tracking-[0.38em] uppercase font-semibold">
+      {title}
+    </p>
+  </div>
+);
+
+const CardLink = ({ icon: Icon, title, subtitle, url }) => (
+  <a
+    href={url || null}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="mx-4 mb-3 bg-[#111111] border border-[#252525] rounded-sm p-4 flex items-center justify-between hover:border-[#d6ad4a] transition-all duration-300"
+  >
+    <div className="flex items-center gap-3">
+      <div className="w-11 h-11 border border-[#2c2c2c] bg-black flex items-center justify-center">
+        <Icon size={16} className="text-[#d6ad4a]" />
+      </div>
+
+      <div>
+        <p className="text-[10px] uppercase tracking-[0.25em] text-white">
+          {title}
+        </p>
+        {subtitle && (
+          <p className="text-[10px] text-zinc-500 mt-1">{subtitle}</p>
+        )}
+      </div>
+    </div>
+
+    <FiIcons.FiArrowUpRight size={14} className="text-[#d6ad4a]" />
+  </a>
+);
+
 const OpalMinimal = ({ userData }) => {
   const {
     displayName = "AURELIUS JEWELS",
@@ -15,56 +65,6 @@ const OpalMinimal = ({ userData }) => {
     linkedin = "https://linkedin.com/company/aureliusjewels",
     logo,
   } = userData || {};
-
-  const getUrl = (type, value) => {
-    if (!value) return "#";
-    if (value.startsWith("http")) return value;
-
-    switch (type) {
-      case "instagram":
-        return `https://instagram.com/${value.replace("@", "")}`;
-      case "linkedin":
-        return `https://linkedin.com/company/${value.replace("@", "")}`;
-      case "website":
-        return `https://${value}`;
-      default:
-        return value;
-    }
-  };
-
-  const SectionTitle = ({ title }) => (
-    <div className="px-5 pt-7 pb-3">
-      <p className="text-[#d6ad4a] text-[10px] tracking-[0.38em] uppercase font-semibold">
-        {title}
-      </p>
-    </div>
-  );
-
-  const CardLink = ({ icon: Icon, title, subtitle, url }) => (
-    <a
-      href={url || null}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="mx-4 mb-3 bg-[#111111] border border-[#252525] rounded-sm p-4 flex items-center justify-between hover:border-[#d6ad4a] transition-all duration-300"
-    >
-      <div className="flex items-center gap-3">
-        <div className="w-11 h-11 border border-[#2c2c2c] bg-black flex items-center justify-center">
-          <Icon size={16} className="text-[#d6ad4a]" />
-        </div>
-
-        <div>
-          <p className="text-[10px] uppercase tracking-[0.25em] text-white">
-            {title}
-          </p>
-          {subtitle && (
-            <p className="text-[10px] text-zinc-500 mt-1">{subtitle}</p>
-          )}
-        </div>
-      </div>
-
-      <FiIcons.FiArrowUpRight size={14} className="text-[#d6ad4a]" />
-    </a>
-  );
 
   const jewelleryImages = [
     "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=900&q=80",

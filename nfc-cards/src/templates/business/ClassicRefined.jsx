@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiLinkedin, FiTwitter,
@@ -7,6 +7,7 @@ import {
 } from 'react-icons/fi';
 import { FaLinkedinIn, FaTwitter, FaWhatsapp, FaInstagram, FaQuoteLeft } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
+import InquiryForm from '../common/InquiryForm';
 import PoweredBy from "../PoweredBy";
 
 // --- Corporate Sub-components ---
@@ -283,14 +284,11 @@ const ClassicRefined = ({ userData }) => {
                <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
                   <SectionTitle title="Inquiry" subtitle="Request Consultation" />
                   <div className="bg-white border border-slate-200 p-6 shadow-sm">
-                     <div className="space-y-4 mb-6">
-                        <input type="text" placeholder="Full Name" className="w-full bg-[#F8FAFC] border border-slate-200 px-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0F172A]" />
-                        <input type="email" placeholder="Email Address" className="w-full bg-[#F8FAFC] border border-slate-200 px-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0F172A]" />
-                        <textarea placeholder="Nature of Inquiry..." rows="3" className="w-full bg-[#F8FAFC] border border-slate-200 px-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0F172A] resize-none"></textarea>
-                     </div>
-                     <button className="w-full bg-[#0F172A] text-white py-3.5 font-bold text-xs uppercase tracking-widest hover:bg-slate-800 transition-colors">
-                        Submit Inquiry
-                     </button>
+                     <InquiryForm 
+                        targetUid={userData?.uid} 
+                        vector={data.businessName || 'Classic Refined'} 
+                        themeColor="#0F172A"
+                     />
                   </div>
                </motion.div>
 

@@ -15,6 +15,12 @@ router.get('/', inquiryController.getAllInquiries);
 router.delete('/:id', inquiryController.deleteInquiry);
 
 /**
+ * POST /api/inquiries
+ * Submit a new inquiry to the network.
+ */
+router.post('/', inquiryController.createInquiry);
+
+/**
  * PATCH /api/inquiries/:id/status
  * Update inquiry status (Unread / Processing / Resolved).
  */

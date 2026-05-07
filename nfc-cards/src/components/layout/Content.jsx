@@ -13,6 +13,7 @@ import { TEMPLATES } from "../../templates/templateRegistry";
 import toast from 'react-hot-toast';
 import { API_BASE_URL } from "../../config/api";
 import ConfirmationModal from "./ConfirmationModal";
+import axios from 'axios';
 
 
 export default function Content({ userData }) {
@@ -36,11 +37,8 @@ export default function Content({ userData }) {
 
   const fetchCategories = useCallback(async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/categories`);
-      if (response.ok) {
-        const data = await response.json();
-        setCustomCategories(data);
-      }
+      const { data } = await axios.get(`${API_BASE_URL}/api/categories`);
+      setCustomCategories(data);
     } catch (error) {
       console.warn("Failed to fetch custom categories");
     }
@@ -54,19 +52,11 @@ export default function Content({ userData }) {
     e.preventDefault();
     if (!newCategoryName.trim()) return;
     try {
-      const response = await fetch(`${API_BASE_URL}/api/categories`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newCategoryName.trim() })
-      });
-      if (response.ok) {
-        toast.success("Category deployed.");
-        setNewCategoryName("");
-        setIsAddingCategory(false);
-        fetchCategories();
-      } else {
-        toast.error("Failed to deploy category.");
-      }
+      await axios.post(`${API_BASE_URL}/api/categories`, { name: newCategoryName.trim() });
+      toast.success("Category deployed.");
+      setNewCategoryName("");
+      setIsAddingCategory(false);
+      fetchCategories();
     } catch {
       toast.error("Handshake failed.");
     }
@@ -74,15 +64,9 @@ export default function Content({ userData }) {
 
   const handleDeleteCategory = async (catId) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/categories/${catId}`, {
-        method: "DELETE"
-      });
-      if (response.ok) {
-        toast.success("Category purged.");
-        fetchCategories();
-      } else {
-        toast.error("Failed to purge category.");
-      }
+      await axios.delete(`${API_BASE_URL}/api/categories/${catId}`);
+      toast.success("Category purged.");
+      fetchCategories();
     } catch {
       toast.error("Handshake failed.");
     }
@@ -124,32 +108,27 @@ export default function Content({ userData }) {
   const fetchTemplates = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/templates`);
+      const { data } = await axios.get(`${API_BASE_URL}/api/templates`);
 
-      if (response.ok) {
-        const data = await response.json();
-        // Merge API data with static registry, deduplicating by id
-        const combined = [
-          ...data,
-          ...TEMPLATES.filter(tn => !data.find(d => d.id === tn.id))
-        ];
-        setLocalTemplates(combined);
+      // Merge API data with static registry, deduplicating by id
+      const combined = [
+        ...data,
+        ...TEMPLATES.filter(tn => !data.find(d => d.id === tn.id))
+      ];
+      setLocalTemplates(combined);
 
-        // AUTO-RECOMMEND: Multi-layer matching logic
-        if (!isAdmin && userData) {
-          const userRole = (userData.businessRole || "").toLowerCase();
-          const userQuery = (userData.businessName || userData.companyName || "").toLowerCase();
+      // AUTO-RECOMMEND: Multi-layer matching logic
+      if (!isAdmin && userData) {
+        const userRole = (userData.businessRole || "").toLowerCase();
+        const userQuery = (userData.businessName || userData.companyName || "").toLowerCase();
 
-          const match = combined.find(t =>
-            t.category.toLowerCase() === userRole ||
-            (userQuery && (t.category.toLowerCase().includes(userQuery) ||
-              userQuery.includes(t.category.toLowerCase()) ||
-              t.tags?.some(tag => userQuery.includes(tag.toLowerCase()))))
-          );
-          if (match) setSelectedCategory(match.category);
-        }
-      } else {
-        throw new Error("Sync Handshake Failed.");
+        const match = combined.find(t =>
+          t.category.toLowerCase() === userRole ||
+          (userQuery && (t.category.toLowerCase().includes(userQuery) ||
+            userQuery.includes(t.category.toLowerCase()) ||
+            t.tags?.some(tag => userQuery.includes(tag.toLowerCase()))))
+        );
+        if (match) setSelectedCategory(match.category);
       }
     } catch {
       console.warn("[SYNC]: Cloud offline. Falling back to static registry.");
@@ -189,20 +168,16 @@ export default function Content({ userData }) {
         ? `${API_BASE_URL}/api/templates/${editingTemplate.id}`
         : `${API_BASE_URL}/api/templates`;
 
-      const response = await fetch(url, {
-        method: isEditing ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(finalTemplateData)
-      });
-
-      if (response.ok) {
-        setIsModalOpen(false);
-        setEditingTemplate(null);
-        fetchTemplates();
-        toast.success(isEditing ? "Node re-architected." : "Node deployed.");
+      if (isEditing) {
+        await axios.put(url, finalTemplateData);
       } else {
-        throw new Error("Cloud Sync Failed.");
+        await axios.post(url, finalTemplateData);
       }
+
+      setIsModalOpen(false);
+      setEditingTemplate(null);
+      fetchTemplates();
+      toast.success(isEditing ? "Node re-architected." : "Node deployed.");
     } catch {
       toast.error("Failed to save template. Please check your connection and try again.");
     }
@@ -223,19 +198,13 @@ export default function Content({ userData }) {
 
     setIsDeleting(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/templates/${nodeToDelete}`, {
-        method: 'DELETE'
-      });
-      if (response.ok) {
-        toast.success("Identity node purged.");
-        // OPTIMISTIC UI: Remove from local state immediately
-        setLocalTemplates(prev => prev.filter(n => n.id !== nodeToDelete));
+      await axios.delete(`${API_BASE_URL}/api/templates/${nodeToDelete}`);
+      toast.success("Identity node purged.");
+      // OPTIMISTIC UI: Remove from local state immediately
+      setLocalTemplates(prev => prev.filter(n => n.id !== nodeToDelete));
 
-        setIsDeleteModalOpen(false);
-        setNodeToDelete(null);
-      } else {
-        throw new Error("Purge Failed.");
-      }
+      setIsDeleteModalOpen(false);
+      setNodeToDelete(null);
     } catch {
       toast.error("Failed to delete template. Please check your connection and try again.");
       setIsDeleteModalOpen(false);

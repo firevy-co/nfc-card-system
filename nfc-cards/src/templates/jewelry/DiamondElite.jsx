@@ -3,6 +3,55 @@ import * as FiIcons from "react-icons/fi";
 import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
+const getSocialUrl = (platform, value) => {
+  if (!value) return "#";
+  if (value.startsWith("http")) return value;
+
+  switch (platform) {
+    case "instagram":
+      return `https://instagram.com/${value.replace("@", "")}`;
+    case "facebook":
+      return `https://facebook.com/${value}`;
+    case "linkedin":
+      return `https://linkedin.com/in/${value}`;
+    case "twitter":
+      return `https://twitter.com/${value}`;
+    case "website":
+      return `https://${value}`;
+    default:
+      return value;
+  }
+};
+
+const ActionCard = ({ icon: Icon, title, subtitle, url }) => (
+  <a
+    href={url || null}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-full bg-white/80 backdrop-blur-xl border border-[#eadfca] rounded-2xl p-4 flex items-center gap-4 hover:shadow-xl transition-all"
+  >
+    <div className="w-11 h-11 rounded-full bg-[#f8f3eb] flex items-center justify-center">
+      <Icon size={18} className="text-[#b68d40]" />
+    </div>
+
+    <div className="flex-1">
+      <p className="text-[11px] uppercase tracking-[0.18em] text-[#2c2418] font-semibold">
+        {title}
+      </p>
+      {subtitle && (
+        <p className="text-[10px] text-[#7a6b57] mt-1 truncate">
+          {subtitle}
+        </p>
+      )}
+    </div>
+
+    <FiIcons.FiArrowUpRight
+      size={16}
+      className="text-[#b68d40]"
+    />
+  </a>
+);
+
 const DiamondElite = ({ userData }) => {
   const {
     displayName = "DIAMOND ELITE",
@@ -23,55 +72,6 @@ const DiamondElite = ({ userData }) => {
 
   const displayRole = designation || role;
   const finalAddress = address || city;
-
-  const getSocialUrl = (platform, value) => {
-    if (!value) return "#";
-    if (value.startsWith("http")) return value;
-
-    switch (platform) {
-      case "instagram":
-        return `https://instagram.com/${value.replace("@", "")}`;
-      case "facebook":
-        return `https://facebook.com/${value}`;
-      case "linkedin":
-        return `https://linkedin.com/in/${value}`;
-      case "twitter":
-        return `https://twitter.com/${value}`;
-      case "website":
-        return `https://${value}`;
-      default:
-        return value;
-    }
-  };
-
-  const ActionCard = ({ icon: Icon, title, subtitle, url }) => (
-    <a
-      href={url || null}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="w-full bg-white/80 backdrop-blur-xl border border-[#eadfca] rounded-2xl p-4 flex items-center gap-4 hover:shadow-xl transition-all"
-    >
-      <div className="w-11 h-11 rounded-full bg-[#f8f3eb] flex items-center justify-center">
-        <Icon size={18} className="text-[#b68d40]" />
-      </div>
-
-      <div className="flex-1">
-        <p className="text-[11px] uppercase tracking-[0.18em] text-[#2c2418] font-semibold">
-          {title}
-        </p>
-        {subtitle && (
-          <p className="text-[10px] text-[#7a6b57] mt-1 truncate">
-            {subtitle}
-          </p>
-        )}
-      </div>
-
-      <FiIcons.FiArrowUpRight
-        size={16}
-        className="text-[#b68d40]"
-      />
-    </a>
-  );
 
   const gallery = [
     "https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=900&q=80",
@@ -121,7 +121,7 @@ const DiamondElite = ({ userData }) => {
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-3xl font-bold text-[#b68d40]">
-                  {displayName[0]}
+                  {displayName ? displayName[0] : 'D'}
                 </div>
               )}
             </div>

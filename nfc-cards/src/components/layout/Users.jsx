@@ -3,6 +3,7 @@ import { API_BASE_URL } from "../../config/api";
 import Layout from "./layout";
 import { useState, useEffect } from 'react';
 import ConfirmationModal from './ConfirmationModal';
+import axios from 'axios';
 
 const Users = ({ userData }) => {
     const [usersList, setUsersList] = useState([]);
@@ -29,14 +30,9 @@ const Users = ({ userData }) => {
     const fetchUsersFromBackend = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/api/users`);
-            if (response.ok) {
-                const data = await response.json();
-                setUsersList(data);
-                setSystemStatus('SYNCED');
-            } else {
-                setSystemStatus('GATEWAY_ERROR');
-            }
+            const { data } = await axios.get(`${API_BASE_URL}/api/users`);
+            setUsersList(data);
+            setSystemStatus('SYNCED');
         } catch (error) {
             console.error("Backend Handshake Failure:", error);
             setSystemStatus('OFFLINE');
@@ -63,20 +59,10 @@ const Users = ({ userData }) => {
         e.preventDefault();
         setIsSaving(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/api/users/${editingUser.uid}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
-
-            if (response.ok) {
-                setEditingUser(null);
-                showToast("Identity credentials successfully re-architected.");
-                fetchUsersFromBackend();
-            } else {
-                const err = await response.json();
-                showToast(err.error || "Update Failure", "error");
-            }
+            await axios.put(`${API_BASE_URL}/api/users/${editingUser.uid}`, formData);
+            setEditingUser(null);
+            showToast("Identity credentials successfully re-architected.");
+            fetchUsersFromBackend();
         } catch (error) {
             console.error("Identity Update Failure:", error);
             showToast("Cloud Synchronisation Error. Check Backend Connection.", "error");
@@ -95,18 +81,13 @@ const Users = ({ userData }) => {
 
         setIsDeleting(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/api/users/${userToDelete.uid}`, {
-                method: 'DELETE'
-            });
-
-            if (response.ok) {
-                showToast("Identity purged successfully.", "success");
-                // OPTIMISTIC UI: Remove from local state immediately
-                setUsersList(prev => prev.filter(user => user.uid !== userToDelete.uid));
-                
-                setIsDeleteModalOpen(false);
-                setUserToDelete(null);
-            }
+            await axios.delete(`${API_BASE_URL}/api/users/${userToDelete.uid}`);
+            showToast("Identity purged successfully.", "success");
+            // OPTIMISTIC UI: Remove from local state immediately
+            setUsersList(prev => prev.filter(user => user.uid !== userToDelete.uid));
+            
+            setIsDeleteModalOpen(false);
+            setUserToDelete(null);
         } catch (error) {
             console.error("De-authorization Failure:", error);
             showToast("Purge failure. Sync check required.", "error");
@@ -325,9 +306,9 @@ const Users = ({ userData }) => {
                             <tr className="bg-black/5 dark:bg-white/5 border-b border-black/5 dark:border-white/10">
                                 <th className="px-10 py-6 text-[10px] font-black capitalize tracking-[0.3em] text-foreground/50">Operational Node</th>
                                 <th className="px-10 py-6 text-[10px] font-black capitalize tracking-[0.3em] text-foreground/50">Organization</th>
-                                <th className="px-10 py-6 text-[10px] font-black capitalize tracking-[0.3em] text-foreground/50">Contact Details</th>
-                                <th className="px-10 py-6 text-[10px] font-black capitalize tracking-[0.3em] text-foreground/50">Clearance Status</th>
-                                <th className="px-10 py-6 text-[10px] font-black capitalize tracking-[0.3em] text-foreground/50">Network Pulse</th>
+                                <th className="px-10 py-6 text-[10px] font-black capitalize tracking-[0.3em] text-foreground/50">Industry / Role</th>
+                                <th className="px-10 py-6 text-[10px] font-black capitalize tracking-[0.3em] text-foreground/50">Active Template</th>
+                                <th className="px-10 py-6 text-[10px] font-black capitalize tracking-[0.3em] text-foreground/50">Clearance</th>
                                 <th className="px-10 py-6 text-[10px] font-black capitalize tracking-[0.3em] text-foreground/50 text-right">Actions</th>
                             </tr>
                         </thead>
@@ -351,23 +332,27 @@ const Users = ({ userData }) => {
                                                 </div>
                                                 <div className="flex flex-col">
                                                     <span className="text-foreground font-black tracking-tighter text-lg">{user.displayName || 'Architect'}</span>
-                                                    <span className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] opacity-40 mt-1">UID: {user.uid.substring(0, 8)}</span>
+                                                    <span className="text-[10px] text-muted-foreground font-bold opacity-60 mt-0.5">{user.email}</span>
+                                                    <span className="text-[9px] text-muted-foreground font-black uppercase tracking-[0.2em] opacity-40 mt-1.5">ID: {user.uid.substring(0, 8)}</span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="px-10 py-8">
                                             <div className="flex flex-col">
-                                                <span className="text-foreground/80 font-black text-xs uppercase tracking-widest">{user.businessName || 'Personal Node'}</span>
+                                                <span className="text-foreground/80 font-black text-xs uppercase tracking-widest">{user.company || user.businessName || 'Personal Node'}</span>
                                                 <span className="text-[9px] text-muted-foreground font-bold opacity-40 uppercase tracking-[0.1em] mt-1">Identity Origin</span>
                                             </div>
                                         </td>
                                         <td className="px-10 py-8">
-                                            <div className="flex flex-col gap-1.5">
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-1.5 h-1.5 rounded-full bg-primary/30"></div>
-                                                    <span className="text-foreground font-bold text-xs">{user.email || 'N/A'}</span>
-                                                </div>
-                                                <span className="text-[10px] text-muted-foreground font-bold opacity-40 pl-3.5 whitespace-nowrap">Last Auth: {user.lastSignIn ? new Date(user.lastSignIn).toLocaleDateString() : 'N/A'}</span>
+                                            <div className="flex flex-col">
+                                                <span className="text-foreground/80 font-black text-[10px] uppercase tracking-widest">{user.businessRole || 'N/A'}</span>
+                                                <span className="text-[9px] text-muted-foreground font-bold opacity-40 uppercase tracking-[0.1em] mt-1">Designation</span>
+                                            </div>
+                                        </td>
+                                        <td className="px-10 py-8">
+                                            <div className="flex flex-col">
+                                                <span className="text-primary font-black text-[10px] uppercase tracking-widest">{user.templateId || 'Not Selected'}</span>
+                                                <span className="text-[9px] text-muted-foreground font-bold opacity-40 uppercase tracking-[0.1em] mt-1">Deployment Node</span>
                                             </div>
                                         </td>
                                         <td className="px-10 py-8">
@@ -377,17 +362,6 @@ const Users = ({ userData }) => {
                                                 }`}>
                                                 {user.role === 'Admin' ? <FiShield size={10} className="mr-2" /> : <FiUser size={10} className="mr-2" />}
                                                 {user.role || 'User'}
-                                            </div>
-                                        </td>
-                                        <td className="px-10 py-8">
-                                            <div className="flex items-center gap-3">
-                                                <div className="relative">
-                                                    <div className={`w-2.5 h-2.5 rounded-full shadow-[0_0_12px] ${user.status === 'Active' ? 'bg-emerald-500 shadow-emerald-500/60' : 'bg-amber-500 shadow-amber-500/60'}`}></div>
-                                                    <div className={`absolute inset-0 rounded-full animate-ping opacity-30 ${user.status === 'Active' ? 'bg-emerald-500' : 'bg-amber-500'}`}></div>
-                                                </div>
-                                                <span className={`text-[10px] font-black uppercase tracking-[0.15em] ${user.status === 'Active' ? 'text-emerald-500/80' : 'text-amber-500/80'}`}>
-                                                    {user.status || 'Standby'}
-                                                </span>
                                             </div>
                                         </td>
                                         <td className="px-10 py-8 text-right">

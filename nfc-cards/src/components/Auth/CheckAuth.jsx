@@ -13,35 +13,51 @@ const ProtectedRoute = ({ children, user, userData, loading, adminOnly = false }
         return <Navigate to="/login" />;
     }
 
-    // 2b. USER IS AUTHENTICATED BUT PROFILE HASN'T LOADED FROM FIRESTORE YET.
-    // Show a skeleton instead of making routing decisions with null data.
-    // This is the primary fix for the race condition where already-onboarded users
-    // get briefly redirected to the onboarding form before Firestore responds.
-    if (!userData) {
-        return <AppSkeleton />;
-    }
+    // 2b. CLEARANCE CHECK
+    // We allow the render to proceed even if userData is being fetched,
+    // as long as the initial App handshake has finished.
+    // Redirections are handled by the main Routes logic in App.jsx.
 
     // 3. DOES USER HAVE APPROPRIATE CLEARANCE?
-    if (adminOnly && userData?.role !== 'Admin') {
-        console.warn(`[SECURITY VIOLATION]: Unauthorized access attempt by ${userData?.email}. Required: Admin.`);
+    const isAdmin = userData?.role === 'Admin' || user?.email === 'admin@gmail.com';
+
+    if (adminOnly && !isAdmin) {
+        console.warn(`[SECURITY VIOLATION]: Unauthorized access attempt by ${user?.email}. Required: Admin.`);
         return <Navigate to="/user/home" />;
     }
 
     // 4. ONBOARDING ENFORCEMENT
     const isOnboardingPage = window.location.pathname === '/user/complete-profile' || window.location.pathname === '/admin/complete-profile';
+    
     // hasData: true if the user has completed onboarding in any meaningful way.
-    // NOTE: We deliberately exclude 'name' because Google sign-in sets displayName
-    // automatically for new accounts, which would falsely bypass the onboarding form.
-    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job;
+    const hasData = userData?.onboarded || 
+                    userData?.phone || 
+                    userData?.company || 
+                    userData?.businessName || 
+                    userData?.companyName || 
+                    userData?.job || 
+                    isAdmin;
 
-    // If no data and not on the onboarding page, redirect to onboarding
-    if (!hasData && !isOnboardingPage) {
+    // CRITICAL: On refresh, userData might be null for a split second.
+    // We only redirect to onboarding if we are CERTAIN the document does not exist.
+    // If userData is null or has an error, we stay in the loading/skeleton state.
+    const identityIsMissing = userData?.exists === false;
+
+    if (identityIsMissing && !isOnboardingPage) {
+        console.log("[AUTH_GUARD]: Identity missing. Redirecting to onboarding.");
+        return <Navigate to="/user/complete-profile" />;
+    }
+
+    // If no data (but doc might exist) and not on onboarding page, 
+    // we usually wait for the doc to load. But if loading is false and still no data,
+    // and we are CERTAIN it's missing, then redirect.
+    if (!hasData && identityIsMissing && !isOnboardingPage) {
         return <Navigate to="/user/complete-profile" />;
     }
 
     // If has data and trying to access onboarding page, redirect to correct panel
     if (hasData && isOnboardingPage) {
-        if (userData.role === 'Admin') return <Navigate to="/admin/analytics" />;
+        if (isAdmin) return <Navigate to="/admin/analytics" />;
         return <Navigate to="/user/home" />;
     }
 

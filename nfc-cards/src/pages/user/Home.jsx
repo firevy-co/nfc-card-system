@@ -38,93 +38,117 @@ const Home = ({ userData }) => {
         impressions: 0
     });
 
-    useEffect(() => {
-        if (!auth.currentUser || !userData) return;
+    const [inquiries, setInquiries] = useState([]);
 
-        // 1. Listen for User's Inquiries (Digital Connections)
+    // 1. Listen for User's Inquiries (Digital Connections) - STABILIZED
+    useEffect(() => {
+        let mounted = true;
+        if (!auth.currentUser) return;
+
         const q = query(
             collection(db, "inquiries"),
             where("uid", "==", auth.currentUser.uid)
         );
 
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const data = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-
-            // Calculate Task Progress & Productivity
-            const resolved = data.filter(iq => iq.status === "Resolved").length;
-            const unread = data.filter(iq => iq.status === "Unread").length;
-            
-            // Development progress based on profile completeness (mock calculation from fields)
-            const profileFields = ['displayName', 'email', 'phone', 'companyName', 'designation', 'bio', 'logo', 'onboarded'];
-            const filledFields = profileFields.filter(f => userData[f]).length;
-            const devProgress = Math.round((filledFields / profileFields.length) * 100);
-            
-            const designProgress = userData.onboarded ? 100 : 30;
-            const testingProgress = data.length > 0 ? Math.round((resolved / data.length) * 100) : 0;
-
-            // Trend Data (Last 5 days)
-            const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-            const last5Days = [];
-            for(let i = 4; i >= 0; i--) {
-                const d = new Date();
-                d.setDate(d.getDate() - i);
-                const dayName = days[d.getDay()];
-                const dayStart = new Date(d.setHours(0,0,0,0));
-                const dayEnd = new Date(d.setHours(23,59,59,999));
-                
-                const activeInDay = data.filter(iq => {
-                    const created = iq.createdAt?.toDate?.() || new Date(iq.createdAt);
-                    return created >= dayStart && created <= dayEnd;
-                }).length;
-                last5Days.push({ day: dayName, active: activeInDay, pause: Math.max(0, activeInDay - 1) });
-            }
-
-            const totalHours = data.length * 1.8;
-            const pulseHours = Math.floor(totalHours);
-            const pulseMinutes = Math.round((totalHours - pulseHours) * 60);
-
-            // Memory-side sorting for activities
-            const sortedData = [...data].sort((a, b) => {
-                const timeA = a.createdAt?.toMillis?.() || 0;
-                const timeB = b.createdAt?.toMillis?.() || 0;
-                return timeB - timeA;
+        let unsubscribe = () => {};
+        try {
+            unsubscribe = onSnapshot(q, (snapshot) => {
+                if (!mounted) return;
+                const data = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                setInquiries(data);
+            }, (error) => {
+                console.warn("[HOME]: Firestore listener encountered an issue:", error.message);
             });
+        } catch (err) {
+            console.warn("[HOME]: Critical failure initializing Firestore listener:", err);
+        }
 
-            setStats(prev => ({
-                ...prev,
-                connectionsCount: snapshot.size,
-                templatesCount: userData?.onboarded ? 1 : 0,
-                recentActivities: sortedData.slice(0, 4).map(iq => ({
-                    label: `Inquiry: ${iq.vector}`,
-                    time: iq.createdAt?.toDate ? iq.createdAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now'
-                })),
-                progress: {
-                    development: devProgress,
-                    design: designProgress,
-                    testing: testingProgress,
-                    total: Math.round((devProgress + designProgress + testingProgress) / 3)
-                },
-                identityData: [
-                    { name: "Completed", value: userData.onboarded ? 100 : 0, color: COLORS.emerald },
-                    { name: "In Progress", value: !userData.onboarded && filledFields > 0 ? 50 : 0, color: COLORS.pink },
-                    { name: "Upcoming", value: !userData.onboarded && filledFields === 0 ? 100 : 0, color: COLORS.blue },
-                ],
-                trendData: last5Days,
-                productivity: {
-                    pulse: `${pulseHours}h ${pulseMinutes}m`,
-                    delay: `${Math.floor(unread * 0.4)}h ${Math.round((unread * 0.4 % 1) * 60)}m`,
-                    pulseChange: Math.round((resolved / (data.length || 1)) * 100),
-                    delayChange: Math.round((unread / (data.length || 1)) * 100)
-                },
-                impressions: (userData.views || data.length * 7 || 0).toLocaleString()
-            }));
+        return () => {
+            mounted = false;
+            if (unsubscribe) {
+                try { unsubscribe(); } catch (e) { /* ignore cleanup fails */ }
+            }
+        };
+    }, [auth.currentUser?.uid]); // Only resubscribe if UID changes
+
+    // 2. Calculate Task Progress & Productivity when data or user profile changes
+    useEffect(() => {
+        if (!userData) return;
+
+        const data = inquiries;
+
+        // Calculate Task Progress & Productivity
+        const resolved = data.filter(iq => iq.status === "Resolved").length;
+        const unread = data.filter(iq => iq.status === "Unread").length;
+
+        // Development progress based on profile completeness (mock calculation from fields)
+        const profileFields = ['displayName', 'email', 'phone', 'companyName', 'designation', 'bio', 'logo', 'onboarded'];
+        const filledFields = profileFields.filter(f => userData[f]).length;
+        const devProgress = Math.round((filledFields / profileFields.length) * 100);
+
+        const designProgress = userData.onboarded ? 100 : 30;
+        const testingProgress = data.length > 0 ? Math.round((resolved / data.length) * 100) : 0;
+
+        // Trend Data (Last 5 days)
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const last5Days = [];
+        for (let i = 4; i >= 0; i--) {
+            const d = new Date();
+            d.setDate(d.getDate() - i);
+            const dayName = days[d.getDay()];
+            const dayStart = new Date(d.setHours(0, 0, 0, 0));
+            const dayEnd = new Date(d.setHours(23, 59, 59, 999));
+
+            const activeInDay = data.filter(iq => {
+                const created = iq.createdAt?.toDate?.() || new Date(iq.createdAt);
+                return created >= dayStart && created <= dayEnd;
+            }).length;
+            last5Days.push({ day: dayName, active: activeInDay, pause: Math.max(0, activeInDay - 1) });
+        }
+
+        const totalHours = data.length * 1.8;
+        const pulseHours = Math.floor(totalHours);
+        const pulseMinutes = Math.round((totalHours - pulseHours) * 60);
+
+        // Memory-side sorting for activities
+        const sortedData = [...data].sort((a, b) => {
+            const timeA = a.createdAt?.toMillis?.() || 0;
+            const timeB = b.createdAt?.toMillis?.() || 0;
+            return timeB - timeA;
         });
 
-        return () => unsubscribe();
-    }, [userData]);
+        setStats(prev => ({
+            ...prev,
+            connectionsCount: data.length,
+            templatesCount: userData?.onboarded ? 1 : 0,
+            recentActivities: sortedData.slice(0, 4).map(iq => ({
+                label: `Inquiry: ${iq.vector}`,
+                time: iq.createdAt?.toDate ? iq.createdAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now'
+            })),
+            progress: {
+                development: devProgress,
+                design: designProgress,
+                testing: testingProgress,
+                total: Math.round((devProgress + designProgress + testingProgress) / 3)
+            },
+            identityData: [
+                { name: "Completed", value: userData.onboarded ? 100 : 0, color: COLORS.emerald },
+                { name: "In Progress", value: !userData.onboarded && filledFields > 0 ? 50 : 0, color: COLORS.pink },
+                { name: "Upcoming", value: !userData.onboarded && filledFields === 0 ? 100 : 0, color: COLORS.blue },
+            ],
+            trendData: last5Days,
+            productivity: {
+                pulse: `${pulseHours}h ${pulseMinutes}m`,
+                delay: `${Math.floor(unread * 0.4)}h ${Math.round((unread * 0.4 % 1) * 60)}m`,
+                pulseChange: Math.round((resolved / (data.length || 1)) * 100),
+                delayChange: Math.round((unread / (data.length || 1)) * 100)
+            },
+            impressions: (userData.views || data.length * 7 || 0).toLocaleString()
+        }));
+    }, [userData, inquiries]);
 
     if (!userData) return null;
 
