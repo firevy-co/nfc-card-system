@@ -434,8 +434,9 @@ const Profile = ({ userData, onUserDataChange }) => {
             // STEP 1 (PRIMARY): Always write directly to Firestore.
             // This is reliable even when the backend is in MOCK mode on Render.
             try {
+                const { setDoc } = await import('firebase/firestore');
                 const userRef = doc(db, "users", user.uid);
-                await updateDoc(userRef, payload);
+                await setDoc(userRef, payload, { merge: true });
             } catch (fsErr) {
                 // Firestore rules may block this on production — log and continue
                 console.warn("[PROFILE]: Direct Firestore write failed:", fsErr.message);

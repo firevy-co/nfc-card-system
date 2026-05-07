@@ -30,8 +30,9 @@ const ProtectedRoute = ({ children, user, userData, loading, adminOnly = false }
     // 4. ONBOARDING ENFORCEMENT
     const isOnboardingPage = window.location.pathname === '/user/complete-profile' || window.location.pathname === '/admin/complete-profile';
     // hasData: true if the user has completed onboarding in any meaningful way.
-    // Includes 'name' to catch users who only set personal (not business) info.
-    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job || userData?.name;
+    // NOTE: We deliberately exclude 'name' because Google sign-in sets displayName
+    // automatically for new accounts, which would falsely bypass the onboarding form.
+    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job;
 
     // If no data and not on the onboarding page, redirect to onboarding
     if (!hasData && !isOnboardingPage) {

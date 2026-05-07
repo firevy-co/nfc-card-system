@@ -12,14 +12,19 @@ import { API_BASE_URL } from "../../config/api";
 
 
 
-const IconCard = ({ icon: _Icon, label, field, onClick, required }) => (
+const IconCard = ({ icon: _Icon, label, field, onClick, required, isFilled }) => (
     <div
         onClick={() => onClick(field)}
-        className="p-4 rounded-xl border bg-gray-50 hover:bg-gray-100 cursor-pointer flex flex-col items-center justify-center transition-all active:scale-95 relative"
+        className={`p-4 rounded-xl border cursor-pointer flex flex-col items-center justify-center transition-all active:scale-95 relative ${
+            isFilled 
+                ? "bg-black text-white border-black shadow-md" 
+                : "bg-gray-50 text-gray-900 border-gray-100 hover:bg-gray-100"
+        }`}
     >
-        {required && <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-red-500 rounded-full" />}
+        {required && !isFilled && <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-red-500 rounded-full" />}
+        {isFilled && <div className="absolute top-2 right-2 text-emerald-400"><Fi.FiCheck size={10} /></div>}
         <_Icon size={18} />
-        <span className="text-xs mt-2">{label}</span>
+        <span className="text-[10px] font-bold mt-2 uppercase tracking-tight">{label}</span>
     </div>
 );
 
@@ -431,9 +436,12 @@ const CompleteProfile = ({ userData }) => {
     const [activeField, setActiveField] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
     const [prevUserData, setPrevUserData] = useState(null);
+    // isSaved: local flag set immediately after a successful Firestore write.
+    // This triggers the redirect without waiting for the Firestore snapshot to propagate.
+    const [isSaved, setIsSaved] = useState(false);
 
     const [formData, setFormData] = useState({
-        label: "Work Identity",
+        label: "",
         templateId: "layout_1",
         themeColor: "#0f172a",
         name: "",
@@ -475,8 +483,17 @@ const CompleteProfile = ({ userData }) => {
         );
     }
 
-    // REDIRECT: If user has already completed onboarding, send them to their dashboard.
-    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job || userData?.name;
+    // REDIRECT (post-save): isSaved is set immediately after Firestore write succeeds,
+    // providing an instant redirect without waiting for the snapshot to propagate.
+    if (isSaved) {
+        if (isAdmin) return <Navigate to="/admin/analytics" />;
+        return <Navigate to="/user/home" />;
+    }
+
+    // REDIRECT (already-onboarded): Only redirect if the user has meaningful profile
+    // data beyond just a displayName (which Google sets on every new account).
+    // We check for phone, company, job, or the explicit onboarded flag.
+    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job;
     if (hasData) {
         if (isAdmin) return <Navigate to="/admin/analytics" />;
         return <Navigate to="/user/home" />;
@@ -535,6 +552,8 @@ const CompleteProfile = ({ userData }) => {
     };
 
     const handleSave = async () => {
+        if (isSaving) return;
+        
         // ── VALIDATION ──────────────────────────────────────────────────────
         // Only email is hard-required (it's always sourced from Firebase Auth).
         // Phone, businessRole, and address are strongly encouraged but not hard-blocked
@@ -562,6 +581,7 @@ const CompleteProfile = ({ userData }) => {
             return;
         }
 
+        setIsSaving(true);
         const savePromise = (async () => {
             // ─────────────────────────────────────────────────────────────
             // STEP 1 (PRIMARY): Write directly to Firestore via the client SDK.
@@ -620,16 +640,14 @@ const CompleteProfile = ({ userData }) => {
                 throw new Error("Could not save your profile. Check your connection and try again.");
             }
 
-            // Profile saved successfully to Firestore.
-
-            // Navigate to the correct dashboard
-            const role = userData?.role || formData.role || 'User';
-            if (role === 'Admin') {
-                navigate("/admin/analytics");
-            } else {
-                navigate("/user/home");
-            }
-        })();
+            // ─────────────────────────────────────────────────────────────
+            // STEP 4: Signal successful save via local state.
+            // Setting isSaved=true triggers the Navigate guard at the top of
+            // the render function immediately, without waiting for the
+            // Firestore snapshot to propagate back to App.jsx.
+            // ─────────────────────────────────────────────────────────────
+            setIsSaved(true);
+        })().finally(() => setIsSaving(false));
 
         toast.promise(savePromise, {
             loading: 'Architecting your identity...',
@@ -663,7 +681,7 @@ const CompleteProfile = ({ userData }) => {
                     <h3 className="text-sm mb-3 font-semibold opacity-60">Label this card</h3>
                     <input
                         className="w-full p-3 rounded-lg bg-gray-50 border border-transparent focus:border-black/5 outline-none font-bold text-sm sm:text-base"
-                        placeholder="Work"
+                        placeholder="e.g. Work, Personal, Business..."
                         value={formData.label}
                         onChange={(e) =>
                             setFormData({ ...formData, label: e.target.value })
@@ -789,29 +807,29 @@ const CompleteProfile = ({ userData }) => {
                 {activeTab === "personal" && (
                     <>
                         <Section title="Personal Information">
-                            <IconCard icon={Fi.FiUser} label="Name" field="name" onClick={setActiveField} required />
-                            <IconCard icon={Fi.FiAward} label="Business Role" field="businessRole" onClick={setActiveField} required />
-                            <IconCard icon={Fi.FiFileText} label="Bio" field="bio" onClick={setActiveField} required />
+                            <IconCard icon={Fi.FiUser} label="Name" field="name" onClick={setActiveField} required isFilled={!!formData.name} />
+                            <IconCard icon={Fi.FiAward} label="Business Role" field="businessRole" onClick={setActiveField} required isFilled={!!formData.businessRole} />
+                            <IconCard icon={Fi.FiFileText} label="Bio" field="bio" onClick={setActiveField} required isFilled={!!formData.bio} />
                         </Section>
 
                         <Section title="Contact & General">
-                            <IconCard icon={Fi.FiMail} label="Email" field="email" onClick={setActiveField} required />
-                            <IconCard icon={Fi.FiPhone} label="Phone" field="phone" onClick={setActiveField} required />
-                            <IconCard icon={Fi.FiMapPin} label="Address" field="address" onClick={setActiveField} required />
-                            <IconCard icon={Fi.FiGlobe} label="Website" field="website" onClick={setActiveField} />
+                            <IconCard icon={Fi.FiMail} label="Email" field="email" onClick={setActiveField} required isFilled={!!formData.email} />
+                            <IconCard icon={Fi.FiPhone} label="Phone" field="phone" onClick={setActiveField} required isFilled={!!formData.phone} />
+                            <IconCard icon={Fi.FiMapPin} label="Address" field="address" onClick={setActiveField} required isFilled={!!formData.address} />
+                            <IconCard icon={Fi.FiGlobe} label="Website" field="website" onClick={setActiveField} isFilled={!!formData.website} />
                         </Section>
 
                         <Section title="Social Presence">
-                            <IconCard icon={Fi.FiLinkedin} label="LinkedIn" field="linkedin" onClick={setActiveField} />
-                            <IconCard icon={Fi.FiTwitter} label="X / Twitter" field="twitter" onClick={setActiveField} />
-                            <IconCard icon={Fi.FiInstagram} label="Instagram" field="instagram" onClick={setActiveField} />
+                            <IconCard icon={Fi.FiLinkedin} label="LinkedIn" field="linkedin" onClick={setActiveField} isFilled={!!formData.linkedin} />
+                            <IconCard icon={Fi.FiTwitter} label="X / Twitter" field="twitter" onClick={setActiveField} isFilled={!!formData.twitter} />
+                            <IconCard icon={Fi.FiInstagram} label="Instagram" field="instagram" onClick={setActiveField} isFilled={!!formData.instagram} />
                         </Section>
 
                         <Section title="Messaging">
-                            <IconCard icon={Fi.FiMessageSquare} label="Discord" field="discord" onClick={setActiveField} />
-                            <IconCard icon={Fi.FiSend} label="Telegram" field="telegram" onClick={setActiveField} />
-                            <IconCard icon={Fi.FiPhone} label="WhatsApp" field="whatsapp" onClick={setActiveField} />
-                            <IconCard icon={Fi.FiMessageCircle} label="Skype" field="skype" onClick={setActiveField} />
+                            <IconCard icon={Fi.FiMessageSquare} label="Discord" field="discord" onClick={setActiveField} isFilled={!!formData.discord} />
+                            <IconCard icon={Fi.FiSend} label="Telegram" field="telegram" onClick={setActiveField} isFilled={!!formData.telegram} />
+                            <IconCard icon={Fi.FiPhone} label="WhatsApp" field="whatsapp" onClick={setActiveField} isFilled={!!formData.whatsapp} />
+                            <IconCard icon={Fi.FiMessageCircle} label="Skype" field="skype" onClick={setActiveField} isFilled={!!formData.skype} />
                         </Section>
                     </>
                 )}
@@ -819,29 +837,29 @@ const CompleteProfile = ({ userData }) => {
                 {activeTab === "business" && (
                     <>
                         <Section title="Company Information">
-                            <IconCard icon={Fi.FiHome} label="Company Name" field="company" onClick={setActiveField} required />
-                            <IconCard icon={Fi.FiBriefcase} label="Job Title" field="job" onClick={setActiveField} required />
-                            <IconCard icon={Fi.FiAward} label="Business Role" field="businessRole" onClick={setActiveField} required />
+                            <IconCard icon={Fi.FiHome} label="Company Name" field="company" onClick={setActiveField} required isFilled={!!formData.company} />
+                            <IconCard icon={Fi.FiBriefcase} label="Job Title" field="job" onClick={setActiveField} required isFilled={!!formData.job} />
+                            <IconCard icon={Fi.FiAward} label="Business Role" field="businessRole" onClick={setActiveField} required isFilled={!!formData.businessRole} />
                         </Section>
 
                         <Section title="Contact & General">
-                            <IconCard icon={Fi.FiMail} label="Email" field="email" onClick={setActiveField} required />
-                            <IconCard icon={Fi.FiPhone} label="Phone" field="phone" onClick={setActiveField} required />
-                            <IconCard icon={Fi.FiMapPin} label="Address" field="address" onClick={setActiveField} required />
-                            <IconCard icon={Fi.FiGlobe} label="Website" field="website" onClick={setActiveField} />
+                            <IconCard icon={Fi.FiMail} label="Email" field="email" onClick={setActiveField} required isFilled={!!formData.email} />
+                            <IconCard icon={Fi.FiPhone} label="Phone" field="phone" onClick={setActiveField} required isFilled={!!formData.phone} />
+                            <IconCard icon={Fi.FiMapPin} label="Address" field="address" onClick={setActiveField} required isFilled={!!formData.address} />
+                            <IconCard icon={Fi.FiGlobe} label="Website" field="website" onClick={setActiveField} isFilled={!!formData.website} />
                         </Section>
 
                         <Section title="Social Presence">
-                            <IconCard icon={Fi.FiLinkedin} label="LinkedIn" field="linkedin" onClick={setActiveField} />
-                            <IconCard icon={Fi.FiTwitter} label="X / Twitter" field="twitter" onClick={setActiveField} />
-                            <IconCard icon={Fi.FiInstagram} label="Instagram" field="instagram" onClick={setActiveField} />
+                            <IconCard icon={Fi.FiLinkedin} label="LinkedIn" field="linkedin" onClick={setActiveField} isFilled={!!formData.linkedin} />
+                            <IconCard icon={Fi.FiTwitter} label="X / Twitter" field="twitter" onClick={setActiveField} isFilled={!!formData.twitter} />
+                            <IconCard icon={Fi.FiInstagram} label="Instagram" field="instagram" onClick={setActiveField} isFilled={!!formData.instagram} />
                         </Section>
 
                         <Section title="Messaging">
-                            <IconCard icon={Fi.FiMessageSquare} label="Discord" field="discord" onClick={setActiveField} />
-                            <IconCard icon={Fi.FiSend} label="Telegram" field="telegram" onClick={setActiveField} />
-                            <IconCard icon={Fi.FiPhone} label="WhatsApp" field="whatsapp" onClick={setActiveField} />
-                            <IconCard icon={Fi.FiMessageCircle} label="Skype" field="skype" onClick={setActiveField} />
+                            <IconCard icon={Fi.FiMessageSquare} label="Discord" field="discord" onClick={setActiveField} isFilled={!!formData.discord} />
+                            <IconCard icon={Fi.FiSend} label="Telegram" field="telegram" onClick={setActiveField} isFilled={!!formData.telegram} />
+                            <IconCard icon={Fi.FiPhone} label="WhatsApp" field="whatsapp" onClick={setActiveField} isFilled={!!formData.whatsapp} />
+                            <IconCard icon={Fi.FiMessageCircle} label="Skype" field="skype" onClick={setActiveField} isFilled={!!formData.skype} />
                         </Section>
                     </>
                 )}
@@ -860,9 +878,11 @@ const CompleteProfile = ({ userData }) => {
                     </button>
                     <button
                         onClick={handleSave}
-                        className="bg-black text-white px-10 py-4 rounded-xl font-black text-xs uppercase tracking-widest shadow-2xl hover:brightness-110 transition-all active:scale-95 w-full sm:w-auto"
+                        disabled={isSaving}
+                        className={`bg-black text-white px-10 py-4 rounded-xl font-black text-xs uppercase tracking-widest shadow-2xl hover:brightness-110 transition-all active:scale-95 w-full sm:w-auto flex items-center justify-center gap-3 ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
-                        Save & Continue
+                        {isSaving && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />}
+                        {isSaving ? 'Deploying...' : 'Save & Continue'}
                     </button>
                 </div>
 

@@ -36,7 +36,7 @@ const Login = () => {
             }
 
             const userData = userDoc.data();
-            const hasData = userData.onboarded || userData.phone || userData.company || userData.job || userData.name;
+            const hasData = userData.onboarded || userData.phone || userData.company || userData.job;
             
             if (hasData) {
                 if (userData.role === 'Admin') {
@@ -85,7 +85,7 @@ const Login = () => {
                 navigate('/user/complete-profile');
             } else {
                 const userData = userDoc.data();
-                const hasData = userData.onboarded || userData.phone || userData.company || userData.job || userData.name;
+                const hasData = userData.onboarded || userData.phone || userData.company || userData.job;
                 
                 if (hasData) {
                     if (userData.role === 'Admin') {
