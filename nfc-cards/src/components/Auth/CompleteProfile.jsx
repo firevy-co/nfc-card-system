@@ -6,7 +6,7 @@ import * as Fi from "react-icons/fi";
 import * as Fa from "react-icons/fa";
 import { HexColorPicker } from "react-colorful";
 import { auth, db } from "@/firebase.config";
-import { signOut } from "firebase/auth";
+import { signOut, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 import { API_BASE_URL } from "../../config/api";
@@ -429,7 +429,7 @@ const CardPreview = ({ formData }) => {
     );
 };
 
-const CompleteProfile = ({ userData }) => {
+const CompleteProfile = ({ userData, onUserDataChange }) => {
     const navigate = useNavigate();
     const isAdmin = userData?.role === "Admin";
 
@@ -595,18 +595,24 @@ const CompleteProfile = ({ userData }) => {
             let clientWriteSuccess = false;
             try {
                 const finalName = formData.name || userData.displayName || '';
-                await setDoc(doc(db, "users", userData.uid), {
+                const updatedData = {
                     ...formData,
                     displayName: finalName,
                     name: finalName,
                     onboarded: true,
                     status: 'Active',
                     updatedAt: new Date().toISOString(),
-                }, { merge: true });
+                };
+
+                await setDoc(doc(db, "users", userData.uid), updatedData, { merge: true });
 
                 // Sync with Firebase Auth
-                const { updateProfile } = await import('firebase/auth');
                 await updateProfile(auth.currentUser, { displayName: finalName });
+
+                // Update global state immediately to prevent race condition redirection
+                if (onUserDataChange) {
+                    onUserDataChange(prev => ({ ...prev, ...updatedData }));
+                }
 
                 clientWriteSuccess = true;
                 console.log("[ONBOARD]: Direct Firestore write succeeded.");

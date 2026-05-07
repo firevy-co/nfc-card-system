@@ -98,8 +98,9 @@ function App() {
               setLoading(false);
             } else {
               // Document doesn't exist yet, it's probably being created by Signup/Login.
-              // We just wait for the next snapshot.
+              // We stop the loading state so CheckAuth can route to onboarding.
               console.log("Waiting for identity to be established...");
+              setLoading(false);
             }
           }, (error) => {
             if (mounted) {
@@ -192,7 +193,7 @@ function App() {
             <Route path="/user/support" element={<CheckAuth user={user} userData={userData} loading={loading}><Support userData={userData} /></CheckAuth>} />
             <Route path="/user/profile" element={<CheckAuth user={user} userData={userData} loading={loading}><Profile userData={userData} onUserDataChange={setUserData} /></CheckAuth>} />
             <Route path="/user/templates/:id" element={<CheckAuth user={user} userData={userData} loading={loading}><TemplatePreview userData={userData} /></CheckAuth>} />
-            <Route path="/user/complete-profile" element={<CheckAuth user={user} userData={userData} loading={loading}><CompleteProfile /></CheckAuth>} />
+            <Route path="/user/complete-profile" element={<CheckAuth user={user} userData={userData} loading={loading}><CompleteProfile onUserDataChange={setUserData} /></CheckAuth>} />
             <Route path="/user/settings" element={<CheckAuth user={user} userData={userData} loading={loading}><UserSettings userData={userData} /></CheckAuth>} />
 
             {/* --- GLOBAL SYNC & FALLBACK --- */}
