@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { auth, googleProvider } from '@/firebase.config';
+import { auth, googleProvider, setPersistence, browserLocalPersistence } from '@/firebase.config';
 import { createUserWithEmailAndPassword, updateProfile, signInWithPopup } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../layout/layout';
@@ -22,7 +22,8 @@ const Signup = () => {
         setError('');
 
         try {
-
+            // New accounts use LOCAL persistence by default (session survives restarts)
+            await setPersistence(auth, browserLocalPersistence);
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
@@ -41,7 +42,6 @@ const Signup = () => {
                 status: 'Active'
             });
 
-            localStorage.removeItem("onboarding_backup");
             navigate('/user/complete-profile');
         } catch (err) {
             setError(err.message.includes('email-already-in-use') ? 'Email already registered.' : err.message);
@@ -54,6 +54,8 @@ const Signup = () => {
         setLoading(true);
         setError('');
         try {
+            // Google sign-up: always LOCAL persistence
+            await setPersistence(auth, browserLocalPersistence);
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
 
@@ -70,11 +72,9 @@ const Signup = () => {
                     createdAt: serverTimestamp(),
                     status: 'Active'
                 });
-                localStorage.removeItem("onboarding_backup");
                 navigate('/user/complete-profile');
             } else {
                 const userData = userDoc.data();
-                localStorage.removeItem("onboarding_backup");
                 const hasData = userData.onboarded || userData.phone || userData.company || userData.job;
                 
                 if (hasData) {

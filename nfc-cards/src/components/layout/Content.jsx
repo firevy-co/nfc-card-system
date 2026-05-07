@@ -120,19 +120,18 @@ export default function Content({ userData }) {
     }
   }, [isAdmin]);
 
-  // FETCH: Sync with Cloud Orchestrator (with Local Persistence Deduplication)
+  // FETCH: Sync with Cloud Orchestrator
   const fetchTemplates = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch(`${API_BASE_URL}/api/templates`);
-      const localCache = JSON.parse(localStorage.getItem('identity_nodes') || '[]');
 
       if (response.ok) {
         const data = await response.json();
+        // Merge API data with static registry, deduplicating by id
         const combined = [
           ...data,
-          ...localCache.filter(ln => !data.find(d => d.id === ln.id)),
-          ...TEMPLATES.filter(tn => !data.find(d => d.id === tn.id) && !localCache.find(l => l.id === tn.id))
+          ...TEMPLATES.filter(tn => !data.find(d => d.id === tn.id))
         ];
         setLocalTemplates(combined);
 
@@ -153,20 +152,16 @@ export default function Content({ userData }) {
         throw new Error("Sync Handshake Failed.");
       }
     } catch {
-      console.warn("[SYNC]: Cloud offline. Activating Identity Deduplication Firewall.");
-      const localCache = JSON.parse(localStorage.getItem('identity_nodes') || '[]');
-      const combined = [
-        ...localCache,
-        ...TEMPLATES.filter(tn => !localCache.find(l => l.id === tn.id))
-      ];
-      setLocalTemplates(combined);
+      console.warn("[SYNC]: Cloud offline. Falling back to static registry.");
+      // Fallback: show only static templates when API is unreachable
+      setLocalTemplates(TEMPLATES);
 
       // Fallback RECOMMEND logic
       if (!isAdmin && userData) {
         const userRole = (userData.businessRole || "").toLowerCase();
         const userQuery = (userData.businessName || userData.companyName || "").toLowerCase();
 
-        const match = combined.find(t =>
+        const match = TEMPLATES.find(t =>
           t.category.toLowerCase() === userRole ||
           (userQuery && (t.category.toLowerCase().includes(userQuery) ||
             userQuery.includes(t.category.toLowerCase()) ||
@@ -209,28 +204,7 @@ export default function Content({ userData }) {
         throw new Error("Cloud Sync Failed.");
       }
     } catch {
-      const localCache = JSON.parse(localStorage.getItem('identity_nodes') || '[]');
-      const updatedNode = {
-        ...templateData,
-        id: editingTemplate ? editingTemplate.id : `local_${Date.now()}`,
-        status: 'Local Only'
-      };
-
-      let newCache;
-      if (editingTemplate) {
-        const exists = localCache.find(n => n.id === editingTemplate.id);
-        newCache = exists
-          ? localCache.map(n => n.id === editingTemplate.id ? updatedNode : n)
-          : [updatedNode, ...localCache];
-      } else {
-        newCache = [updatedNode, ...localCache];
-      }
-
-      localStorage.setItem('identity_nodes', JSON.stringify(newCache));
-      setIsModalOpen(false);
-      setEditingTemplate(null);
-      fetchTemplates();
-      toast.success("Identity stored in local cache.");
+      toast.error("Failed to save template. Please check your connection and try again.");
     }
   };
 
@@ -263,12 +237,9 @@ export default function Content({ userData }) {
         throw new Error("Purge Failed.");
       }
     } catch {
-      const localCache = JSON.parse(localStorage.getItem('identity_nodes') || '[]');
-      localStorage.setItem('identity_nodes', JSON.stringify(localCache.filter(n => n.id !== nodeToDelete)));
-      fetchTemplates();
+      toast.error("Failed to delete template. Please check your connection and try again.");
       setIsDeleteModalOpen(false);
       setNodeToDelete(null);
-      toast.success("Identity node purged from local cache.");
     } finally {
       setIsDeleting(false);
     }

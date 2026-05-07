@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { auth, googleProvider } from '@/firebase.config';
+import { auth, googleProvider, setPersistence, browserLocalPersistence, browserSessionPersistence } from '@/firebase.config';
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo (2).png';
@@ -12,6 +12,7 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(true);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
@@ -20,6 +21,8 @@ const Login = () => {
         setError('');
 
         try {
+            // Dynamically set session persistence based on "Remember Me" preference
+            await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
@@ -33,7 +36,6 @@ const Login = () => {
             }
 
             const userData = userDoc.data();
-            localStorage.removeItem("onboarding_backup");
             const hasData = userData.onboarded || userData.phone || userData.company || userData.job || userData.name;
             
             if (hasData) {
@@ -62,6 +64,8 @@ const Login = () => {
         setLoading(true);
         setError('');
         try {
+            // Google sign-in always uses LOCAL persistence (Google manages its own session)
+            await setPersistence(auth, browserLocalPersistence);
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
 
@@ -78,11 +82,9 @@ const Login = () => {
                     createdAt: serverTimestamp(),
                     status: 'Active'
                 });
-                localStorage.removeItem("onboarding_backup");
                 navigate('/user/complete-profile');
             } else {
                 const userData = userDoc.data();
-                localStorage.removeItem("onboarding_backup");
                 const hasData = userData.onboarded || userData.phone || userData.company || userData.job || userData.name;
                 
                 if (hasData) {
@@ -182,6 +184,23 @@ const Login = () => {
                             >
                                 {loading ? "Authenticating..." : "Sign In"}
                             </button>
+
+                            {/* Remember Me */}
+                            <label className="flex items-center gap-3 cursor-pointer group mt-1">
+                                <div
+                                    onClick={() => setRememberMe(!rememberMe)}
+                                    className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${
+                                        rememberMe
+                                            ? 'bg-gradient-to-r from-[#7c3aed] to-[#db2777] border-transparent'
+                                            : 'border-gray-200 bg-white'
+                                    }`}
+                                >
+                                    {rememberMe && <Fi.FiCheck size={12} className="text-white" />}
+                                </div>
+                                <span className="text-xs font-bold text-gray-400 group-hover:text-gray-600 transition-colors select-none">
+                                    Remember me on this device
+                                </span>
+                            </label>
 
                             <div className="relative py-4 flex items-center">
                                 <div className="flex-grow border-t border-gray-100"></div>

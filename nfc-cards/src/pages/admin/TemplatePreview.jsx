@@ -5,11 +5,14 @@ import TemplateRenderer from '../../templates/TemplateRenderer';
 import { FiArrowLeft, FiCheckCircle, FiSmartphone, FiTablet, FiMonitor, FiRotateCw } from 'react-icons/fi';
 import { TEMPLATES } from '../../templates/templateRegistry';
 import toast from 'react-hot-toast';
+import { API_BASE_URL } from '../../config/api';
 
 /**
  * TEMPLATE PREVIEW PAGE
  * Renders a specific template based on the ID from the URL.
  * Includes a device switcher and orientation controls for visual testing.
+ * Template blueprint is resolved from the backend API → registry → url id.
+ * No data is read from or written to localStorage.
  */
 const TemplatePreview = ({ userData }) => {
     const { id } = useParams();
@@ -17,20 +20,31 @@ const TemplatePreview = ({ userData }) => {
     const [device, setDevice] = useState('mobile');
     const [isLandscape, setIsLandscape] = useState(false);
     const [confirming, setConfirming] = useState(false);
+    const [blueprintId, setBlueprintId] = useState(id);
 
-    // Resolve the actual blueprint templateId from localStorage → registry → fallback to url id
-    const resolveTemplateId = () => {
-        const localCache = JSON.parse(localStorage.getItem('identity_nodes') || '[]');
-        const localNode = localCache.find(n => n.id === id);
-        if (localNode?.templateId) return localNode.templateId;
-
-        const registryNode = TEMPLATES.find(t => t.id === id);
-        if (registryNode) return registryNode.id; // registry templates use their own id as the blueprint
-
-        return id; // fallback
-    };
-
-    const blueprintId = resolveTemplateId();
+    // Resolve template blueprint: API → registry → url id fallback (no localStorage)
+    useEffect(() => {
+        const resolveBlueprint = async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/templates`);
+                if (response.ok) {
+                    const templates = await response.json();
+                    const apiNode = templates.find(t => t.id === id);
+                    if (apiNode?.templateId) {
+                        setBlueprintId(apiNode.templateId);
+                        return;
+                    }
+                }
+            } catch {
+                // API unreachable — fall through to registry
+            }
+            // Registry fallback
+            const registryNode = TEMPLATES.find(t => t.id === id);
+            if (registryNode) setBlueprintId(registryNode.id);
+            // else keep url id as-is
+        };
+        resolveBlueprint();
+    }, [id]);
 
     const handleConfirm = async () => {
         if (!userData?.uid) return;

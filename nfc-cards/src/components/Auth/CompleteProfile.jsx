@@ -432,51 +432,35 @@ const CompleteProfile = ({ userData }) => {
     const [isSaving, setIsSaving] = useState(false);
     const [prevUserData, setPrevUserData] = useState(null);
 
-    const [formData, setFormData] = useState(() => {
-        const backup = localStorage.getItem("onboarding_backup");
-        const baseData = {
-            label: "Work Identity",
-            templateId: "layout_1",
-            themeColor: "#0f172a",
-            name: "",
-            email: "",
-            phone: "",
-            whatsapp: "",
-            businessRole: "",
-            bio: "",
-            address: "",
-            job: "",
-            company: "",
-            logo: "",
-            website: "",
-            linkedin: "",
-            twitter: "",
-            instagram: "",
-            facebook: "",
-            youtube: "",
-            tiktok: "",
-            telegram: "",
-            discord: "",
-            skype: "",
-            country: "",
-            countryCode: "",
-            state: "",
-            stateCode: "",
-            city: "",
-        };
-
-        if (backup) {
-            try {
-                const parsed = JSON.parse(backup);
-                // SECURITY: Always use current user's email, never restore from backup.
-                // This prevents a previous user's email from appearing for a new user.
-                delete parsed.email;
-                return { ...baseData, ...parsed };
-            } catch (e) {
-                console.error("Backup parse failed", e);
-            }
-        }
-        return baseData;
+    const [formData, setFormData] = useState({
+        label: "Work Identity",
+        templateId: "layout_1",
+        themeColor: "#0f172a",
+        name: "",
+        email: "",
+        phone: "",
+        whatsapp: "",
+        businessRole: "",
+        bio: "",
+        address: "",
+        job: "",
+        company: "",
+        logo: "",
+        website: "",
+        linkedin: "",
+        twitter: "",
+        instagram: "",
+        facebook: "",
+        youtube: "",
+        tiktok: "",
+        telegram: "",
+        discord: "",
+        skype: "",
+        country: "",
+        countryCode: "",
+        state: "",
+        stateCode: "",
+        city: "",
     });
 
     // 2. MERGE CLOUD DATA - Sync during render for React 19 compliance
@@ -514,24 +498,8 @@ const CompleteProfile = ({ userData }) => {
         setPrevUserData(userData);
     }
 
-    // Save to localStorage on change - GUARDED
-    useEffect(() => {
-        if (prevUserData) {
-            try {
-                // Exclude large base64 strings to prevent QuotaExceededError
-                const backupData = { ...formData };
-                if (backupData.logo && backupData.logo.startsWith('data:image')) delete backupData.logo;
-                if (backupData.profileImage && backupData.profileImage.startsWith('data:image')) delete backupData.profileImage;
-                // SECURITY: Never persist email to localStorage backup.
-                // Email is always sourced from the live authenticated session.
-                delete backupData.email;
-                
-                localStorage.setItem("onboarding_backup", JSON.stringify(backupData));
-            } catch (err) {
-                console.warn("Failed to save backup to localStorage", err);
-            }
-        }
-    }, [formData, prevUserData]);
+    // NOTE: Form data is NOT persisted to localStorage.
+    // All data is sourced from and saved to Firebase Firestore only.
 
     const handleLogoUpload = (e) => {
         const file = e.target.files[0];
@@ -633,8 +601,7 @@ const CompleteProfile = ({ userData }) => {
                 throw new Error("Could not save your profile. Check your connection and try again.");
             }
 
-            // Clear local backup on success
-            localStorage.removeItem("onboarding_backup");
+            // Profile saved successfully to Firestore.
 
             // Navigate to the correct dashboard
             const role = userData?.role || formData.role || 'User';

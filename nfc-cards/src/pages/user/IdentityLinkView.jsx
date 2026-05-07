@@ -3,13 +3,15 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import TemplateRenderer from '../../templates/TemplateRenderer';
 import AppSkeleton from '../../components/layout/AppSkeleton';
 import { TEMPLATES } from '../../templates/templateRegistry';
+import { API_BASE_URL } from '../../config/api';
 
 /**
  * PUBLIC IDENTITY VIEW
  * Renders a personalized identity node for public consumption (e.g., NFC scan).
  * Logic:
- * 1. Resolve template blueprint from ID.
- * 2. Resolve user data from 'u' query parameter (fetching from Firestore).
+ * 1. Resolve user data from Firestore using the 'u' query parameter.
+ * 2. Resolve template blueprint: API first → registry fallback → url id fallback.
+ * No data is read from or written to localStorage.
  */
 const IdentityLinkView = () => {
     const { id } = useParams();
@@ -24,7 +26,7 @@ const IdentityLinkView = () => {
         const resolveData = async () => {
             setLoading(true);
             try {
-                // 1. Resolve User Data
+                // 1. Resolve User Data from Firestore
                 if (userId) {
                     const { doc, getDoc } = await import('firebase/firestore');
                     const { db } = await import('@/firebase.config');
@@ -35,15 +37,26 @@ const IdentityLinkView = () => {
                     }
                 }
 
-                // 2. Resolve Template blueprint
-                const localCache = JSON.parse(localStorage.getItem('identity_nodes') || '[]');
-                const localNode = localCache.find(n => n.id === id);
+                // 2. Resolve Template blueprint: API → registry → url id fallback
+                let resolved = false;
+                try {
+                    const response = await fetch(`${API_BASE_URL}/api/templates`);
+                    if (response.ok) {
+                        const templates = await response.json();
+                        const apiNode = templates.find(t => t.id === id);
+                        if (apiNode?.templateId) {
+                            setBlueprintId(apiNode.templateId);
+                            resolved = true;
+                        }
+                    }
+                } catch {
+                    // API unreachable — fall through to registry
+                }
 
-                if (localNode?.templateId) {
-                    setBlueprintId(localNode.templateId);
-                } else {
+                if (!resolved) {
                     const registryNode = TEMPLATES.find(t => t.id === id);
                     if (registryNode) setBlueprintId(registryNode.id);
+                    // If still not found, blueprintId stays as url id (set in useState default)
                 }
             } catch (error) {
                 console.error("Public Identity Resolution Failed:", error);
@@ -68,4 +81,3 @@ const IdentityLinkView = () => {
 };
 
 export default IdentityLinkView;
-
