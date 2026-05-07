@@ -57,6 +57,7 @@ app.get('/api/status', (req, res) => {
     res.json({
         status: isOffline ? "STANDBY (MOCK)" : "ONLINE",
         identity_hub: isOffline ? "DISCONNECTED" : "SYNCED",
+        isOffline,
         handshake: true,
         timestamp: new Date().toISOString()
     });

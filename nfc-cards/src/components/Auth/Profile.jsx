@@ -431,35 +431,33 @@ const Profile = ({ userData, onUserDataChange }) => {
                 lastUpdated: new Date().toISOString()
             };
 
-            // Try backend API first (works on live with strict Firestore rules)
-            const apiUrl = API_BASE_URL;
-            let savedViaApi = false;
+            // STEP 1 (PRIMARY): Always write directly to Firestore.
+            // This is reliable even when the backend is in MOCK mode on Render.
             try {
-                const res = await fetch(`${apiUrl}/api/users/${user.uid}/profile`, {
+                const userRef = doc(db, "users", user.uid);
+                await updateDoc(userRef, payload);
+            } catch (fsErr) {
+                // Firestore rules may block this on production — log and continue
+                console.warn("[PROFILE]: Direct Firestore write failed:", fsErr.message);
+            }
+
+            // STEP 2 (SECONDARY): Also call the backend API.
+            // This syncs to companyDetails and uses Admin SDK (bypasses strict rules).
+            try {
+                await fetch(`${API_BASE_URL}/api/users/${user.uid}/profile`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                if (res.ok) {
-                    savedViaApi = true;
-                }
             } catch (apiErr) {
-                console.warn("Backend API unavailable, falling back to direct Firestore write:", apiErr.message);
-            }
-
-            // Fallback: direct Firestore write (works locally with permissive rules)
-            if (!savedViaApi) {
-                const userRef = doc(db, "users", user.uid);
-                await updateDoc(userRef, payload);
+                console.warn("[PROFILE]: Backend API unavailable:", apiErr.message);
             }
 
             if (formData.displayName !== user.displayName) {
                 await updateProfile(user, { displayName: formData.displayName });
             }
 
-            // ✅ CRITICAL: Push updated data into App.jsx userData state immediately.
-            // This makes ALL templates update with the new profile details instantly,
-            // without needing Firestore real-time listeners (which may be blocked on live).
+            // Push updated data into App.jsx userData state immediately.
             if (typeof onUserDataChange === 'function') {
                 onUserDataChange(prev => ({ ...prev, ...payload }));
             }

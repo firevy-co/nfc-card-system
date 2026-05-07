@@ -5,9 +5,14 @@ let auth = null;
 let isOffline = false;
 
 try {
-    const serviceAccount = process.env.SERVICE_ACCOUNT_KEY 
-        ? JSON.parse(process.env.SERVICE_ACCOUNT_KEY) 
-        : require("../serviceAccountKey.json");
+    const rawKey = process.env.SERVICE_ACCOUNT_KEY;
+    // CRITICAL FIX: When a JSON key is pasted into Render/Railway env vars,
+    // the \n inside "private_key" becomes a literal \\n (escaped). 
+    // JSON.parse() will then fail with a SyntaxError, causing isOffline = true.
+    // We must convert \\n back to real newlines before parsing.
+    const serviceAccount = rawKey
+        ? JSON.parse(rawKey.replace(/\\n/g, '\n'))
+        : require('../serviceAccountKey.json');
 
     console.log("[FIREBASE INIT]: Attempting to initialize with Project ID:", serviceAccount.project_id);
 

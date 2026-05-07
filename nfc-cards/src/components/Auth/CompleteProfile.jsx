@@ -576,40 +576,67 @@ const CompleteProfile = ({ userData }) => {
         }
 
         const savePromise = (async () => {
-            const response = await fetch(`${API_BASE_URL}/api/users/onboard`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ 
-                    uid: userData.uid, 
-                    ...formData
-                }),
-            });
-            if (!response.ok) throw new Error("Onboarding failed");
-            
-            // FIX: Race condition prevention.
-            // The backend sets onboarded:true via Admin SDK, but the client-side
-            // onSnapshot listener in App.jsx may not have received the update yet
-            // when navigate() fires. We do a direct client-side Firestore update
-            // here so the local snapshot fires IMMEDIATELY — ensuring CheckAuth
-            // has fresh userData before the navigation resolves.
+            // ─────────────────────────────────────────────────────────────
+            // STEP 1 (PRIMARY): Write directly to Firestore via the client SDK.
+            // This is the authoritative save for routing. It sets onboarded:true
+            // immediately so CheckAuth can read the fresh value without a race
+            // condition, even if the backend API is down or in MOCK mode.
+            // ─────────────────────────────────────────────────────────────
+            let clientWriteSuccess = false;
             try {
-                const { doc, updateDoc } = await import('firebase/firestore');
-                const { db } = await import('@/firebase.config');
-                await updateDoc(doc(db, "users", userData.uid), {
+                const { doc, setDoc } = await import('firebase/firestore');
+                const { db: firestoreDb } = await import('@/firebase.config');
+                await setDoc(doc(firestoreDb, "users", userData.uid), {
+                    ...formData,
+                    name: formData.name || userData.displayName || '',
                     onboarded: true,
-                    phone: formData.phone || '',
-                    company: formData.company || '',
-                    job: formData.job || '',
-                });
+                    status: 'Active',
+                    updatedAt: new Date().toISOString(),
+                }, { merge: true });
+                clientWriteSuccess = true;
+                console.log("[ONBOARD]: Direct Firestore write succeeded.");
             } catch (fsErr) {
-                // Non-critical: backend already saved, just log and continue
-                console.warn("[ONBOARD]: Client-side snapshot sync skipped:", fsErr.message);
+                console.warn("[ONBOARD]: Direct Firestore write failed:", fsErr.message);
             }
-            
-            // Clear backup on success
+
+            // ─────────────────────────────────────────────────────────────
+            // STEP 2 (SECONDARY): Also call the backend API.
+            // This saves to the companyDetails collection and syncs via Admin SDK.
+            // If the backend is in MOCK mode or down, we log a warning but
+            // do NOT block navigation — the Firestore write already succeeded.
+            // ─────────────────────────────────────────────────────────────
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/users/onboard`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        uid: userData.uid, 
+                        ...formData
+                    }),
+                });
+                const result = await response.json().catch(() => ({}));
+                // If backend is in MOCK mode, it won't actually save anything
+                if (result?.message?.includes('MOCK')) {
+                    console.warn("[ONBOARD]: Backend is in MOCK mode — profile saved via Firestore client only.");
+                }
+                if (!response.ok) {
+                    console.warn("[ONBOARD]: Backend API returned non-OK:", response.status);
+                }
+            } catch (apiErr) {
+                console.warn("[ONBOARD]: Backend API unreachable:", apiErr.message);
+            }
+
+            // ─────────────────────────────────────────────────────────────
+            // STEP 3: If BOTH saves failed, abort — something is very wrong.
+            // ─────────────────────────────────────────────────────────────
+            if (!clientWriteSuccess) {
+                throw new Error("Could not save your profile. Check your connection and try again.");
+            }
+
+            // Clear local backup on success
             localStorage.removeItem("onboarding_backup");
-            
-            // Determine role from userData (authoritative source) or fallback to formData
+
+            // Navigate to the correct dashboard
             const role = userData?.role || formData.role || 'User';
             if (role === 'Admin') {
                 navigate("/admin/analytics");
