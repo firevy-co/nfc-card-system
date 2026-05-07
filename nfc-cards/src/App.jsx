@@ -5,6 +5,7 @@ import { auth, db } from '@/firebase.config';
 import { doc, setDoc, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import { ThemeProvider } from './context/ThemeContext';
 import { Toaster } from 'react-hot-toast';
+import { API_BASE_URL } from './config/api';
 
 // --- AUTH & SECURITY CONTROLLER ---
 import CheckAuth from './components/Auth/CheckAuth';
@@ -52,7 +53,7 @@ function App() {
 
     const startListener = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
+        const apiUrl = API_BASE_URL;
         
         // 1. Sync identity with backend to create doc if it doesn't exist
         try {

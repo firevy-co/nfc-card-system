@@ -31,6 +31,7 @@ import MobileFooter from '../layout/MobileFooter';
 import toast from 'react-hot-toast';
 import { HexColorPicker } from "react-colorful";
 import * as Fa from 'react-icons/fa';
+import { API_BASE_URL } from '../../config/api';
 
 const isLight = (color) => {
     if (!color || typeof color !== 'string' || color.length < 7) return false;
@@ -431,7 +432,7 @@ const Profile = ({ userData, onUserDataChange }) => {
             };
 
             // Try backend API first (works on live with strict Firestore rules)
-            const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
+            const apiUrl = API_BASE_URL;
             let savedViaApi = false;
             try {
                 const res = await fetch(`${apiUrl}/api/users/${user.uid}/profile`, {
