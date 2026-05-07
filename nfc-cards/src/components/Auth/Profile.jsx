@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { auth, db } from '@/firebase.config';
 import { useNavigate } from 'react-router-dom';
 import { signOut, updateProfile } from 'firebase/auth';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import {
     FiActivity,
     FiBriefcase,
@@ -434,7 +434,6 @@ const Profile = ({ userData, onUserDataChange }) => {
             // STEP 1 (PRIMARY): Always write directly to Firestore.
             // This is reliable even when the backend is in MOCK mode on Render.
             try {
-                const { setDoc } = await import('firebase/firestore');
                 const userRef = doc(db, "users", user.uid);
                 await setDoc(userRef, payload, { merge: true });
             } catch (fsErr) {

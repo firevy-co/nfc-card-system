@@ -5,8 +5,9 @@ import { Country, State, City } from "country-state-city";
 import * as Fi from "react-icons/fi";
 import * as Fa from "react-icons/fa";
 import { HexColorPicker } from "react-colorful";
-import { auth } from "@/firebase.config";
+import { auth, db } from "@/firebase.config";
 import { signOut } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 import { API_BASE_URL } from "../../config/api";
 
@@ -469,6 +470,8 @@ const CompleteProfile = ({ userData }) => {
         state: "",
         stateCode: "",
         city: "",
+        profileImage: "",
+        profileImageType: "file",
     });
 
     // GUARD: If userData hasn't loaded from Firestore yet, show a loading skeleton.
@@ -591,15 +594,20 @@ const CompleteProfile = ({ userData }) => {
             // ─────────────────────────────────────────────────────────────
             let clientWriteSuccess = false;
             try {
-                const { doc, setDoc } = await import('firebase/firestore');
-                const { db: firestoreDb } = await import('@/firebase.config');
-                await setDoc(doc(firestoreDb, "users", userData.uid), {
+                const finalName = formData.name || userData.displayName || '';
+                await setDoc(doc(db, "users", userData.uid), {
                     ...formData,
-                    name: formData.name || userData.displayName || '',
+                    displayName: finalName,
+                    name: finalName,
                     onboarded: true,
                     status: 'Active',
                     updatedAt: new Date().toISOString(),
                 }, { merge: true });
+
+                // Sync with Firebase Auth
+                const { updateProfile } = await import('firebase/auth');
+                await updateProfile(auth.currentUser, { displayName: finalName });
+
                 clientWriteSuccess = true;
                 console.log("[ONBOARD]: Direct Firestore write succeeded.");
             } catch (fsErr) {
@@ -823,6 +831,9 @@ const CompleteProfile = ({ userData }) => {
                             <IconCard icon={Fi.FiLinkedin} label="LinkedIn" field="linkedin" onClick={setActiveField} isFilled={!!formData.linkedin} />
                             <IconCard icon={Fi.FiTwitter} label="X / Twitter" field="twitter" onClick={setActiveField} isFilled={!!formData.twitter} />
                             <IconCard icon={Fi.FiInstagram} label="Instagram" field="instagram" onClick={setActiveField} isFilled={!!formData.instagram} />
+                            <IconCard icon={Fi.FiFacebook} label="Facebook" field="facebook" onClick={setActiveField} isFilled={!!formData.facebook} />
+                            <IconCard icon={Fi.FiYoutube} label="YouTube" field="youtube" onClick={setActiveField} isFilled={!!formData.youtube} />
+                            <IconCard icon={Fa.FaTiktok} label="TikTok" field="tiktok" onClick={setActiveField} isFilled={!!formData.tiktok} />
                         </Section>
 
                         <Section title="Messaging">
@@ -853,6 +864,9 @@ const CompleteProfile = ({ userData }) => {
                             <IconCard icon={Fi.FiLinkedin} label="LinkedIn" field="linkedin" onClick={setActiveField} isFilled={!!formData.linkedin} />
                             <IconCard icon={Fi.FiTwitter} label="X / Twitter" field="twitter" onClick={setActiveField} isFilled={!!formData.twitter} />
                             <IconCard icon={Fi.FiInstagram} label="Instagram" field="instagram" onClick={setActiveField} isFilled={!!formData.instagram} />
+                            <IconCard icon={Fi.FiFacebook} label="Facebook" field="facebook" onClick={setActiveField} isFilled={!!formData.facebook} />
+                            <IconCard icon={Fi.FiYoutube} label="YouTube" field="youtube" onClick={setActiveField} isFilled={!!formData.youtube} />
+                            <IconCard icon={Fa.FaTiktok} label="TikTok" field="tiktok" onClick={setActiveField} isFilled={!!formData.tiktok} />
                         </Section>
 
                         <Section title="Messaging">
