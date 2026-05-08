@@ -91,39 +91,62 @@ function App() {
         
         if (mounted && syncResponse.data) {
           const syncedData = syncResponse.data;
-          // Only update if we don't have better data yet
-          setUserData(prev => prev || { ...syncedData, uid: user.uid });
+          // IMPORTANT: If backend says they are onboarded, we can stop loading early.
+          const hasOnboardingData = syncedData.onboarded || 
+                                  syncedData.phone || 
+                                  syncedData.company || 
+                                  syncedData.job || 
+                                  syncedData.businessRole || 
+                                  (syncedData.role === 'Admin');
+
+          setUserData(prev => {
+            const newData = { ...syncedData, uid: user.uid };
+            // If the user has data, we can treat it as 'exists' even before Firestore confirms
+            if (hasOnboardingData) newData.exists = true;
+            return prev ? { ...newData, ...prev } : newData;
+          });
           
-          const hasOnboardingData = syncedData.onboarded || syncedData.phone || syncedData.company || syncedData.job || syncedData.businessRole || (syncedData.role === 'Admin');
           if (hasOnboardingData) {
+            console.log("[APP]: Backend confirmed onboarded status. Releasing UI.");
             setLoading(false);
             clearTimeout(loadingTimeout);
           }
         }
       } catch (err) {
-        console.warn("[APP]: Backend sync skipped, waiting for cloud listener.");
+        console.warn("[APP]: Backend sync skipped or failed:", err.message);
       }
 
       if (!mounted) return;
 
-      // 2. Start Real-time Firestore Listener (Source of Truth)
+      // 2. Start Real-time Firestore Listener (Authoritative Source)
       const userRef = doc(db, "users", user.uid);
       
       const unsub = onSnapshot(userRef, (docSnap) => {
         if (!mounted) return;
         
         if (docSnap.exists()) {
-          setUserData({ ...docSnap.data(), uid: user.uid, exists: true });
+          const data = docSnap.data();
+          setUserData({ ...data, uid: user.uid, exists: true });
+          setLoading(false);
+          clearTimeout(loadingTimeout);
         } else {
-          console.log("[APP]: Identity doc missing (new user).");
-          setUserData({ exists: false, uid: user.uid });
+          // Document does not exist in Firestore. 
+          // Check if we already got data from the backend sync before calling them 'new'.
+          setUserData(prev => {
+            if (prev && (prev.onboarded || prev.phone || prev.company)) {
+              // Backend has data, so we don't mark exists: false
+              return { ...prev, exists: true };
+            }
+            console.log("[APP]: Identity doc missing (new user confirmed).");
+            return { exists: false, uid: user.uid };
+          });
+          setLoading(false);
+          clearTimeout(loadingTimeout);
         }
-        setLoading(false);
-        clearTimeout(loadingTimeout);
       }, (error) => {
         if (mounted) {
           console.warn("[APP]: Firestore listener error:", error.message);
-          // If Firestore fails, we might still have backend data.
+          // If Firestore fails, we rely on whatever we have (backend data or timeout)
           setLoading(false);
           clearTimeout(loadingTimeout);
         }
@@ -200,7 +223,8 @@ function App() {
                   <Login />
                 ) : (() => {
                   const isAdmin = userData?.role === 'Admin' || user?.email === 'admin@gmail.com';
-                  // Robust check: any of these fields indicate the user has data/onboarded
+                  // CRITICAL: Any of these fields indicate the user has data/onboarded.
+                  // We also check for 'exists: true' to prevent premature redirects.
                   const hasData = userData?.onboarded || 
                                   userData?.phone || 
                                   userData?.company || 
@@ -208,12 +232,22 @@ function App() {
                                   userData?.businessName || 
                                   userData?.companyName ||
                                   userData?.job || 
+                                  userData?.bio ||
                                   isAdmin;
                                   
                   if (hasData) {
+                    console.log("[AUTH]: User has data. Redirecting to home/analytics.");
                     return isAdmin ? <Navigate to="/admin/analytics" /> : <Navigate to="/user/home" />;
                   }
-                  return <Navigate to="/user/complete-profile" />;
+
+                  // Only redirect to onboarding if we are CERTAIN the user is new
+                  if (userData?.exists === false) {
+                    console.log("[AUTH]: New user confirmed. Redirecting to onboarding.");
+                    return <Navigate to="/user/complete-profile" />;
+                  }
+
+                  // Otherwise, stay put or go to home (CheckAuth will handle the rest)
+                  return <Navigate to="/user/home" />;
                 })()
               }
             />
@@ -231,12 +265,17 @@ function App() {
                                   userData?.businessName || 
                                   userData?.companyName ||
                                   userData?.job || 
+                                  userData?.bio ||
                                   isAdmin;
 
                   if (hasData) {
                     return isAdmin ? <Navigate to="/admin/analytics" /> : <Navigate to="/user/home" />;
                   }
-                  return <Navigate to="/user/complete-profile" />;
+                  
+                  if (userData?.exists === false) {
+                    return <Navigate to="/user/complete-profile" />;
+                  }
+                  return <Navigate to="/user/home" />;
                 })()
               }
             />
@@ -274,12 +313,17 @@ function App() {
                                     userData?.businessName || 
                                     userData?.companyName ||
                                     userData?.job || 
+                                    userData?.bio ||
                                     isAdmin;
 
                     if (hasData) {
                       return isAdmin ? <Navigate to="/admin/analytics" /> : <Navigate to="/user/home" />;
-                    } else {
+                    } else if (userData?.exists === false) {
                       return <Navigate to="/user/complete-profile" />;
+                    } else {
+                      // If we are unsure (loading finished but no exists flag), 
+                      // default to home to avoid annoying the user.
+                      return <Navigate to="/user/home" />;
                     }
                   })()
                 ) : (

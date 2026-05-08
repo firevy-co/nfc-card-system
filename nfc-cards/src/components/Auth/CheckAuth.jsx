@@ -40,19 +40,21 @@ const ProtectedRoute = ({ children, user, userData, loading, adminOnly = false }
                     userData?.bio ||
                     isAdmin;
 
-    // CRITICAL: On refresh, userData might be null for a split second.
-    // We only redirect to onboarding if we are CERTAIN the document does not exist.
+    // CRITICAL: We only redirect to onboarding if we are CERTAIN the document does not exist.
+    // If hasData is true, they definitely don't need to be on the onboarding page.
     const identityIsMissing = userData?.exists === false;
 
-    if (identityIsMissing && !isOnboardingPage) {
-        console.log("[AUTH_GUARD]: Identity missing. Redirecting to onboarding.");
-        return <Navigate to="/user/complete-profile" />;
-    }
-
-    // If has data and trying to access onboarding page, redirect to correct panel
+    // If they have data and are trying to access onboarding page, redirect to correct panel
     if (hasData && isOnboardingPage) {
+        console.log("[AUTH_GUARD]: User already has data. Redirecting away from onboarding.");
         if (isAdmin) return <Navigate to="/admin/analytics" />;
         return <Navigate to="/user/home" />;
+    }
+
+    // Only redirect to onboarding if we are CERTAIN the identity is missing AND they aren't already there.
+    if (identityIsMissing && !isOnboardingPage && !hasData) {
+        console.log("[AUTH_GUARD]: Identity missing confirmed. Redirecting to onboarding.");
+        return <Navigate to="/user/complete-profile" />;
     }
 
     // 5. APPROVED: Inject identity context into children
