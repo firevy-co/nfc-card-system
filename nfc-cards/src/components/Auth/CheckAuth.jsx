@@ -33,25 +33,19 @@ const ProtectedRoute = ({ children, user, userData, loading, adminOnly = false }
     const hasData = userData?.onboarded || 
                     userData?.phone || 
                     userData?.company || 
+                    userData?.businessRole ||
                     userData?.businessName || 
                     userData?.companyName || 
                     userData?.job || 
+                    userData?.bio ||
                     isAdmin;
 
     // CRITICAL: On refresh, userData might be null for a split second.
     // We only redirect to onboarding if we are CERTAIN the document does not exist.
-    // If userData is null or has an error, we stay in the loading/skeleton state.
     const identityIsMissing = userData?.exists === false;
 
     if (identityIsMissing && !isOnboardingPage) {
         console.log("[AUTH_GUARD]: Identity missing. Redirecting to onboarding.");
-        return <Navigate to="/user/complete-profile" />;
-    }
-
-    // If no data (but doc might exist) and not on onboarding page, 
-    // we usually wait for the doc to load. But if loading is false and still no data,
-    // and we are CERTAIN it's missing, then redirect.
-    if (!hasData && identityIsMissing && !isOnboardingPage) {
         return <Navigate to="/user/complete-profile" />;
     }
 

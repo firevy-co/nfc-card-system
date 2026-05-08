@@ -73,10 +73,12 @@ function App() {
     const loadingTimeout = setTimeout(() => {
       if (mounted && loading) {
         console.warn("[APP]: Loading safety timeout reached.");
-        setUserData(prev => prev || { exists: false, uid: user.uid, error: 'timeout' });
+        // We do NOT set exists: false here anymore. 
+        // We just stop blocking the UI and let the components handle partial data.
+        setUserData(prev => prev || { uid: user.uid, error: 'timeout' });
         setLoading(false);
       }
-    }, 5000); // 5 seconds safety
+    }, 15000); // 15 seconds safety (Render free tier can be slow)
 
     const initListener = async () => {
       // 1. Immediate Sync with Backend (Provides fast source of truth)
@@ -89,10 +91,13 @@ function App() {
         
         if (mounted && syncResponse.data) {
           const syncedData = syncResponse.data;
+          // Only update if we don't have better data yet
           setUserData(prev => prev || { ...syncedData, uid: user.uid });
-          const hasOnboardingData = syncedData.onboarded || syncedData.phone || syncedData.company || syncedData.job || (syncedData.role === 'Admin');
+          
+          const hasOnboardingData = syncedData.onboarded || syncedData.phone || syncedData.company || syncedData.job || syncedData.businessRole || (syncedData.role === 'Admin');
           if (hasOnboardingData) {
             setLoading(false);
+            clearTimeout(loadingTimeout);
           }
         }
       } catch (err) {
@@ -118,6 +123,7 @@ function App() {
       }, (error) => {
         if (mounted) {
           console.warn("[APP]: Firestore listener error:", error.message);
+          // If Firestore fails, we might still have backend data.
           setLoading(false);
           clearTimeout(loadingTimeout);
         }
@@ -198,6 +204,7 @@ function App() {
                   const hasData = userData?.onboarded || 
                                   userData?.phone || 
                                   userData?.company || 
+                                  userData?.businessRole ||
                                   userData?.businessName || 
                                   userData?.companyName ||
                                   userData?.job || 
@@ -220,6 +227,7 @@ function App() {
                   const hasData = userData?.onboarded || 
                                   userData?.phone || 
                                   userData?.company || 
+                                  userData?.businessRole ||
                                   userData?.businessName || 
                                   userData?.companyName ||
                                   userData?.job || 
@@ -262,6 +270,7 @@ function App() {
                     const hasData = userData?.onboarded || 
                                     userData?.phone || 
                                     userData?.company || 
+                                    userData?.businessRole ||
                                     userData?.businessName || 
                                     userData?.companyName ||
                                     userData?.job || 

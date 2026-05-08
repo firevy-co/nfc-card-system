@@ -495,8 +495,15 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
 
     // REDIRECT (already-onboarded): Only redirect if the user has meaningful profile
     // data beyond just a displayName (which Google sets on every new account).
-    // We check for phone, company, job, or the explicit onboarded flag.
-    const hasData = userData?.onboarded || userData?.phone || userData?.company || userData?.job;
+    const hasData = userData?.onboarded || 
+                    userData?.phone || 
+                    userData?.company || 
+                    userData?.businessRole ||
+                    userData?.businessName ||
+                    userData?.companyName ||
+                    userData?.job || 
+                    userData?.bio;
+
     if (hasData) {
         if (isAdmin) return <Navigate to="/admin/analytics" />;
         return <Navigate to="/user/home" />;
