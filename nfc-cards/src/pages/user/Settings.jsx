@@ -58,7 +58,7 @@ const UserSettings = ({ userData }) => {
 
             <main className="flex-1 max-w-[1600px] mx-auto w-full px-4 sm:px-8 lg:px-16 pb-28">
                 {/* NAVIGATION SPACER */}
-                <div className="h-28 sm:h-32 lg:h-40" />
+                <div className="h-20 sm:h-24 lg:h-28" />
 
                 {/* PAGE HEADER */}
                 <div className="mb-10">

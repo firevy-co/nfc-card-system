@@ -35,7 +35,7 @@ exports.getAllUsers = async (req, res) => {
         const listUsersResult = await auth.listUsers(100);
         const snapshot = await db.collection('users').get();
         console.log(`[IDENTITY AUDIT]: Found ${listUsersResult.users.length} Auth users and ${snapshot.size} Firestore profiles.`);
-        
+
         const firestoreUsers = {};
         snapshot.forEach(doc => { firestoreUsers[doc.id] = doc.data(); });
 
@@ -95,13 +95,13 @@ exports.syncUser = async (req, res) => {
             let mockUser = mockUsersCache.find(u => u.uid === uid);
             if (!mockUser) {
                 const isAdmin = email && email.toLowerCase().includes('admin');
-                mockUser = { 
-                    uid, 
-                    email, 
-                    displayName: displayName || (isAdmin ? 'Admin' : 'Architect'), 
-                    role: isAdmin ? 'Admin' : 'User', 
-                    status: 'Active', 
-                    onboarded: isAdmin 
+                mockUser = {
+                    uid,
+                    email,
+                    displayName: displayName || (isAdmin ? 'Admin' : 'Architect'),
+                    role: isAdmin ? 'Admin' : 'User',
+                    status: 'Active',
+                    onboarded: isAdmin
                 };
                 mockUsersCache.push(mockUser);
             } else if (email && email.toLowerCase().includes('admin')) {
@@ -129,7 +129,7 @@ exports.syncUser = async (req, res) => {
             await userRef.set(newUser);
             return res.json(newUser);
         }
-        
+
         // If user exists but is admin@gmail.com and not marked as admin, update it
         const currentData = docSnap.data();
         if (isAdmin && (currentData.role !== 'Admin' || !currentData.onboarded)) {
@@ -321,9 +321,17 @@ exports.deleteUser = async (req, res) => {
  * CLEARANCE LEVEL: Update a participant's system authority (Admin/User).
  */
 exports.updateUserRole = async (req, res) => {
-    const { uid, role } = req.body;
+    const { uid } = req.params;
+    const { role } = req.body;
 
     try {
+        if (isOffline) {
+            mockUsersCache = mockUsersCache.map(u =>
+                u.uid === uid ? { ...u, role } : u
+            );
+            return res.json({ message: `Security clearance level updated to ${role} for ${uid} (MOCK)` });
+        }
+
         await db.collection('users').doc(uid).set({
             role: role,
             isAdmin: role === 'Admin',

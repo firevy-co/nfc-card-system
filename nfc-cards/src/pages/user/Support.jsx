@@ -150,8 +150,6 @@ const Support = ({ userData }) => {
     return (
         <Layout userData={userData} title="Support Terminal">
             <div className="w-full px-4 sm:px-8 lg:px-16 pb-20 animate-in fade-in duration-1000 font-['Mulish']">
-                {/* NAVIGATION SPACER */}
-                <div className="h-28 sm:h-32 lg:h-40" />
                 
                 {/* Header Section */}
                 <header className="flex flex-col gap-4 border-b border-black/[0.05] pb-12 mb-10">

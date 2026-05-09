@@ -37,6 +37,9 @@ const Inquiry = ({ userData }) => {
             }));
             setInquiries(data);
             setLoading(false);
+        }, (error) => {
+            console.error("[INQUIRY]: Live inquiries listener error:", error.message);
+            setLoading(false);
         });
         return () => unsubscribe();
     }, []);
@@ -59,6 +62,8 @@ const Inquiry = ({ userData }) => {
                 ...doc.data()
             }));
             setMessages(data);
+        }, (error) => {
+            console.error("[INQUIRY]: Message thread listener error:", error.message);
         });
 
         return () => unsubscribe();
@@ -139,7 +144,7 @@ const Inquiry = ({ userData }) => {
 
             <main className="flex-1 p-4 sm:p-8 lg:p-16 pb-28 lg:pb-8 max-w-[1600px] mx-auto w-full">
                 {/* NAVIGATION SPACER */}
-                <div className="h-28 sm:h-32 lg:h-40" />
+                <div className="h-20 sm:h-24 lg:h-28" />
 
                 <header className="mb-10 sm:mb-16 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-10 animate-in fade-in slide-in-from-top-4 duration-1000">
                     <div className="flex-1">
@@ -161,20 +166,13 @@ const Inquiry = ({ userData }) => {
                 </header>
 
                 <div className="w-full px-0 sm:px-0">
-                    <div className="bg-white border border-zinc-100 rounded-[2rem] sm:rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.05)] overflow-hidden">
+                    <div className="bg-white border border-zinc-100 rounded-2xl sm:rounded-3xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] overflow-hidden">
 
                         {/* MOBILE CARDS (< md) */}
                         <div className="md:hidden divide-y divide-zinc-50">
-                            {loading ? (
-                                Array.from({ length: 4 }).map((_, i) => (
-                                    <div key={i} className="p-5">
-                                        <div className="w-40 h-8 skeleton-box rounded-xl mb-2" />
-                                        <div className="w-24 h-5 skeleton-box rounded-lg" />
-                                    </div>
-                                ))
-                            ) : filteredInquiries.length > 0 ? (
+                            {filteredInquiries.length > 0 ? (
                                 filteredInquiries.map((iq) => (
-                                    <div key={iq.id} className="p-5 hover:bg-zinc-50 transition-all">
+                                    <div key={iq.id} className="p-4 hover:bg-zinc-50 transition-all">
                                         <div className="flex items-start justify-between mb-2">
                                             <div>
                                                 <p className="font-black text-black tracking-tighter">{iq.name}</p>
@@ -191,13 +189,13 @@ const Inquiry = ({ userData }) => {
                                             <div className="flex items-center gap-2">
                                                 <button
                                                     onClick={() => setSelectedInquiry(iq)}
-                                                    className="px-4 py-1.5 rounded-xl bg-black text-white font-black uppercase tracking-wider text-[9px] active:scale-95 transition-all"
+                                                    className="px-4 py-1.5 rounded-lg bg-black text-white font-black uppercase tracking-wider text-[9px] active:scale-95 transition-all"
                                                 >
                                                     View
                                                 </button>
                                                 <button
                                                     onClick={() => confirmDelete(iq)}
-                                                    className="w-8 h-8 rounded-xl bg-red-50 text-red-400 flex items-center justify-center active:scale-95"
+                                                    className="w-8 h-8 rounded-lg bg-red-50 text-red-400 flex items-center justify-center active:scale-95"
                                                 >
                                                     <FiTrash2 size={14} />
                                                 </button>
@@ -205,36 +203,22 @@ const Inquiry = ({ userData }) => {
                                         </div>
                                     </div>
                                 ))
-                            ) : (
-                                <div className="p-16 text-center opacity-30">
-                                    <FiMessageSquare size={36} className="mx-auto mb-4 text-black" />
-                                    <p className="font-black uppercase tracking-[0.3em] text-xs text-black">No active inquiries</p>
-                                </div>
-                            )}
+                            ) : null}
                         </div>
 
                         {/* DESKTOP TABLE (≥ md) */}
                         <div className="hidden md:block overflow-x-auto">
                             <table className="w-full border-collapse">
                                 <thead>
-                                    <tr className="border-b border-zinc-50 bg-zinc-50/50">
-                                        <th className="px-10 py-7 text-left text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Origin Identity</th>
-                                        <th className="px-10 py-7 text-left text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Primary Vector</th>
-                                        <th className="px-10 py-7 text-left text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Status</th>
-                                        <th className="px-10 py-7 text-right text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Actions</th>
+                                    <tr className="border-b border-zinc-100 bg-zinc-50">
+                                        <th className="px-8 py-5 text-left text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Origin Identity</th>
+                                        <th className="px-8 py-5 text-left text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Primary Vector</th>
+                                        <th className="px-8 py-5 text-left text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Status</th>
+                                        <th className="px-8 py-5 text-right text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {loading ? (
-                                        Array.from({ length: 8 }).map((_, i) => (
-                                            <tr key={i} className="border-b border-zinc-50 last:border-0 hover:bg-zinc-50/50 transition-all">
-                                                <td className="px-10 py-10"><div className="w-48 h-12 skeleton-box rounded-2xl" /></td>
-                                                <td className="px-10 py-10"><div className="w-32 h-8 skeleton-box rounded-xl" /></td>
-                                                <td className="px-10 py-10"><div className="w-24 h-6 skeleton-box rounded-full" /></td>
-                                                <td className="px-10 py-10 text-right"><div className="w-24 h-11 skeleton-box rounded-2xl ml-auto" /></td>
-                                            </tr>
-                                        ))
-                                    ) : filteredInquiries.length > 0 ? (
+                                    {filteredInquiries.length > 0 ? (
                                         <AnimatePresence>
                                             {filteredInquiries.map((iq, idx) => (
                                                 <motion.tr
@@ -244,37 +228,37 @@ const Inquiry = ({ userData }) => {
                                                     transition={{ delay: idx * 0.05 }}
                                                     className="border-b border-zinc-50 last:border-0 hover:bg-zinc-50/50 transition-all group"
                                                 >
-                                                    <td className="px-10 py-9">
+                                                    <td className="px-8 py-6">
                                                         <div className="flex flex-col">
-                                                            <span className="text-black font-black tracking-tighter text-lg whitespace-nowrap">{iq.name}</span>
-                                                            <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-[0.1em] mt-1">{iq.email}</span>
+                                                            <span className="text-black font-black tracking-tighter text-base whitespace-nowrap">{iq.name}</span>
+                                                            <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-[0.1em] mt-0.5">{iq.email}</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-10 py-9">
-                                                        <div className="inline-flex items-center px-4 py-2 rounded-xl bg-zinc-50 border border-zinc-100">
+                                                    <td className="px-8 py-6">
+                                                        <div className="inline-flex items-center px-3 py-1.5 rounded-lg bg-zinc-50 border border-zinc-100">
                                                             <span className="text-[10px] font-black uppercase tracking-[0.15em] text-zinc-600 whitespace-nowrap">{iq.vector}</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-10 py-9">
+                                                    <td className="px-8 py-6">
                                                         <div className="flex items-center gap-3">
-                                                            <div className={`w-2 h-2 rounded-full ${iq.status === 'Unread' ? 'bg-amber-500 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.6)]' :
+                                                            <div className={`w-1.5 h-1.5 rounded-full ${iq.status === 'Unread' ? 'bg-amber-500 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.6)]' :
                                                                 iq.status === 'Resolved' ? 'bg-emerald-500' : 'bg-black'
                                                                 }`}></div>
                                                             <span className={`text-[10px] font-black uppercase tracking-[0.15em] ${iq.status === 'Unread' ? 'text-amber-500' : 'text-zinc-500'
                                                                 }`}>{iq.status}</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-10 py-9 text-right">
-                                                        <div className="flex items-center justify-end gap-3">
+                                                    <td className="px-8 py-6 text-right">
+                                                        <div className="flex items-center justify-end gap-2">
                                                             <button
                                                                 onClick={() => setSelectedInquiry(iq)}
-                                                                className="px-6 py-2.5 rounded-xl bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] hover:brightness-125 transition-all shadow-lg active:scale-95"
+                                                                className="px-5 py-2 rounded-lg bg-black text-white font-black uppercase tracking-[0.2em] text-[9px] hover:brightness-125 transition-all active:scale-95"
                                                             >
                                                                 Audit Brief
                                                             </button>
                                                             <button
                                                                 onClick={() => confirmDelete(iq)}
-                                                                className="w-10 h-10 rounded-xl bg-red-50 text-red-400 hover:text-red-500 hover:bg-red-100 transition-all flex items-center justify-center active:scale-95"
+                                                                className="w-9 h-9 rounded-lg bg-red-50 text-red-400 hover:text-red-500 hover:bg-red-100 transition-all flex items-center justify-center active:scale-95"
                                                             >
                                                                 <FiTrash2 size={16} />
                                                             </button>
@@ -288,10 +272,19 @@ const Inquiry = ({ userData }) => {
                             </table>
                         </div>
 
-                        {!loading && filteredInquiries.length === 0 && (
-                            <div className="px-10 py-32 text-center opacity-30">
-                                <FiMessageSquare size={48} className="mx-auto mb-6 text-black animate-pulse" />
-                                <p className="font-black uppercase tracking-[0.4em] text-xs text-black">No active inquiries in priority buffer</p>
+                        {filteredInquiries.length === 0 && (
+                            <div className="px-10 py-32 text-center">
+                                <div className="opacity-30">
+                                    <FiMessageSquare size={48} className={`mx-auto mb-6 text-black ${loading ? 'animate-bounce' : 'animate-pulse'}`} />
+                                    <p className="font-black uppercase tracking-[0.4em] text-xs text-black">
+                                        {loading ? "Syncing identity network..." : "No active inquiries in priority buffer"}
+                                    </p>
+                                </div>
+                                {loading && (
+                                    <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mt-4 animate-pulse">
+                                        Handshaking with secure protocol...
+                                    </p>
+                                )}
                             </div>
                         )}
                     </div>

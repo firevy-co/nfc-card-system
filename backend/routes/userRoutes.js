@@ -40,4 +40,10 @@ router.post('/onboard', userController.completeProfile);
  */
 router.delete('/:uid', userController.deleteUser);
 
+/**
+ * CLEARANCE LEVEL: PATCH /api/users/:uid/role
+ * Updates a participant's system authority (Admin/User).
+ */
+router.patch('/:uid/role', userController.updateUserRole);
+
 module.exports = router;

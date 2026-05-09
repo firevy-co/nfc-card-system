@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import TemplateCard from "../admin/TemplateCard";
+import TemplateCardSkeleton from "./TemplateCardSkeleton";
 import CreateTemplateModal from "../admin/CreateTemplateModal";
 import {
   FiPlus,
@@ -427,10 +428,9 @@ export default function Content({ userData }) {
             {/* IDENTITY GRID */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {loading ? (
-                <div className="col-span-full py-48 flex flex-col items-center justify-center gap-6">
-                  <div className="w-12 h-12 border-4 border-accent/10 border-t-accent rounded-full animate-spin"></div>
-                  <p className="font-black uppercase tracking-[0.3em] text-[10px] text-muted-foreground">Accessing Registry</p>
-                </div>
+                Array.from({ length: 6 }).map((_, i) => (
+                  <TemplateCardSkeleton key={i} />
+                ))
               ) : (
                 <>
                   {isAdmin && (

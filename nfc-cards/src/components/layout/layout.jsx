@@ -62,7 +62,7 @@ const Layout = ({
 
         <main className={`flex-1 overflow-y-auto animate-in fade-in slide-in-from-bottom-4 duration-700 bg-muted/10 ${hideTopNav ? 'p-0' : (actualHideTopNav ? 'p-0 pb-24 lg:pb-8' : 'p-4 sm:p-8 lg:p-16')}`}>
           <div className="max-w-[1600px] mx-auto">
-            {!hideTopNav && actualHideTopNav && <div className="h-28 sm:h-32 lg:h-40" />}
+            {!hideTopNav && actualHideTopNav && <div className="h-20 sm:h-24 lg:h-28" />}
             {children}
           </div>
         </main>
