@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { isOffline } = require('./config/firebase');
+const { isOffline, firebaseInitError } = require('./config/firebase');
 
 const app = express();
 
@@ -60,6 +60,7 @@ app.get('/api/status', (req, res) => {
         identity_hub: isOffline ? "DISCONNECTED" : "SYNCED",
         environment: process.env.NODE_ENV || 'development',
         firebase_connected: !isOffline,
+        firebase_error: firebaseInitError,
         service_account_source: process.env.SERVICE_ACCOUNT_KEY ? 'env_var' : 'local_file',
         cors_allowed_origins: allowedOrigins,
         handshake: true,

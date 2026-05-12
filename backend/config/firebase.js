@@ -3,28 +3,35 @@ const admin = require('firebase-admin');
 let db = null;
 let auth = null;
 let isOffline = false;
+let firebaseInitError = null;
 
 try {
     let rawKey = process.env.SERVICE_ACCOUNT_KEY;
     let serviceAccount;
 
     if (rawKey) {
-        // CLEANUP: Render/Railway often wrap strings in extra quotes or escape newlines differently
         let cleanKey = rawKey.trim();
         
-        // Remove surrounding quotes if they exist
+        // Strategy 1: Remove surrounding quotes if they exist (common in Render/Railway)
         if (cleanKey.startsWith('"') && cleanKey.endsWith('"')) {
             cleanKey = cleanKey.substring(1, cleanKey.length - 1);
         }
         
-        // Fix escaped newlines
+        // Strategy 2: Fix escaped newlines (very common)
         cleanKey = cleanKey.replace(/\\n/g, '\n');
+        
+        // Strategy 3: Unescape any escaped double quotes if the whole thing was stringified
+        // but only if it looks like it's double-escaped
+        if (cleanKey.includes('\\"')) {
+            cleanKey = cleanKey.replace(/\\"/g, '"');
+        }
 
         try {
             serviceAccount = JSON.parse(cleanKey);
             console.log("[FIREBASE INIT]: Successfully parsed SERVICE_ACCOUNT_KEY from environment.");
         } catch (parseError) {
-            console.error("[FIREBASE INIT]: Failed to parse SERVICE_ACCOUNT_KEY JSON. Check for trailing commas or hidden characters.");
+            firebaseInitError = `JSON Parse Error: ${parseError.message}. Content starts with: ${cleanKey.substring(0, 20)}...`;
+            console.error("[FIREBASE INIT]:", firebaseInitError);
             throw parseError;
         }
     } else {
@@ -32,7 +39,8 @@ try {
             serviceAccount = require('../serviceAccountKey.json');
             console.log("[FIREBASE INIT]: Using serviceAccountKey.json file.");
         } catch (fileError) {
-            console.warn("[FIREBASE INIT]: No SERVICE_ACCOUNT_KEY env var and no serviceAccountKey.json file found.");
+            firebaseInitError = "Missing SERVICE_ACCOUNT_KEY env var and serviceAccountKey.json file.";
+            console.warn("[FIREBASE INIT]:", firebaseInitError);
             throw new Error("Missing credentials");
         }
     }
@@ -41,7 +49,6 @@ try {
 
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
-        // Note: Firestore doesn't strictly need databaseURL, but it's good for consistency
         databaseURL: `https://${serviceAccount.project_id}.firebaseio.com`
     });
 
@@ -49,9 +56,10 @@ try {
     auth = admin.auth();
     console.log("[IDENTITY SYSTEM]: CLOUD INFRASTRUCTURE SYNCHRONISED SUCCESSFULLY.");
 } catch (error) {
+    if (!firebaseInitError) firebaseInitError = error.message;
     console.error("[FIREBASE INIT ERROR]:", error.message);
     isOffline = true;
     console.warn("[WARNING]: Operating in MOCK/STANDBY MODE.");
 }
 
-module.exports = { admin, db, auth, isOffline };
+module.exports = { admin, db, auth, isOffline, firebaseInitError };
