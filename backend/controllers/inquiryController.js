@@ -21,25 +21,22 @@ const deleteSubcollection = async (collectionRef, batchSize = 100) => {
 exports.getAllInquiries = async (req, res) => {
     const { uid } = req.query;
     try {
-        let queryRef = db.collection('inquiries').orderBy('createdAt', 'desc');
+        let queryRef = db.collection('inquiries');
         
         if (uid) {
-            queryRef = db.collection('inquiries')
-                .where('uid', '==', uid);
-            // Note: If using orderBy and where on different fields, a composite index is needed.
-            // For now, we'll fetch and sort in memory if uid is provided to avoid index errors for the user.
+            queryRef = queryRef.where('uid', '==', uid);
         }
 
+        // Always fetch all and sort in memory if needed, or use a complex query if indexes are ready.
+        // For simplicity and reliability in this environment, we'll fetch and sort.
         const snapshot = await queryRef.get();
         let inquiries = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-        if (uid) {
-            inquiries.sort((a, b) => {
-                const timeA = new Date(a.createdAt).getTime() || 0;
-                const timeB = new Date(b.createdAt).getTime() || 0;
-                return timeB - timeA;
-            });
-        }
+        inquiries.sort((a, b) => {
+            const timeA = new Date(a.lastUpdated || a.createdAt).getTime() || 0;
+            const timeB = new Date(b.lastUpdated || b.createdAt).getTime() || 0;
+            return timeB - timeA;
+        });
 
         res.json(inquiries);
     } catch (error) {
@@ -86,11 +83,23 @@ exports.createMessage = async (req, res) => {
 
         const docRef = await db.collection('inquiries').doc(id).collection('messages').add(newMessage);
         
-        // Update the main inquiry doc for status and sorting
-        await db.collection('inquiries').doc(id).update({
+        // Update the main inquiry doc for status, sorting, and unread flags
+        const updateData = {
             lastUpdated: new Date().toISOString(),
-            status: sender === 'User' ? 'Processing' : 'Resolved'
-        });
+            lastMessage: text
+        };
+
+        if (sender === 'User') {
+            updateData.status = 'Processing';
+            updateData.adminUnread = true;
+            updateData.userUnread = false;
+        } else {
+            updateData.status = 'Replied';
+            updateData.userUnread = true;
+            updateData.adminUnread = false;
+        }
+
+        await db.collection('inquiries').doc(id).update(updateData);
 
         res.status(201).json({
             success: true,
@@ -133,7 +142,7 @@ exports.updateInquiryStatus = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    const validStatuses = ['Unread', 'Processing', 'Resolved'];
+    const validStatuses = ['Unread', 'Processing', 'Replied', 'Resolved'];
     if (!validStatuses.includes(status)) {
         return res.status(400).json({ error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` });
     }
@@ -147,6 +156,30 @@ exports.updateInquiryStatus = async (req, res) => {
     } catch (error) {
         console.error("[INQUIRY STATUS ERROR]:", error);
         res.status(500).json({ error: "Failed to update inquiry status", details: error.message });
+    }
+};
+
+/**
+ * PATCH /api/inquiries/:id/read
+ * Mark an inquiry as read for admin or user.
+ */
+exports.markAsRead = async (req, res) => {
+    const { id } = req.params;
+    const { isAdmin } = req.body;
+
+    try {
+        const updateData = {};
+        if (isAdmin) {
+            updateData.adminUnread = false;
+        } else {
+            updateData.userUnread = false;
+        }
+
+        await db.collection('inquiries').doc(id).update(updateData);
+        res.json({ success: true, message: "Marked as read." });
+    } catch (error) {
+        console.error("[INQUIRY READ ERROR]:", error);
+        res.status(500).json({ error: "Failed to mark as read", details: error.message });
     }
 };
 
@@ -169,7 +202,11 @@ exports.createInquiry = async (req, res) => {
             uid,
             vector: vector || 'General',
             status: 'Unread',
-            createdAt: new Date().toISOString()
+            adminUnread: true,
+            userUnread: false,
+            createdAt: new Date().toISOString(),
+            lastUpdated: new Date().toISOString(),
+            lastMessage: brief
         };
 
         const docRef = await db.collection('inquiries').add(newInquiry);
@@ -183,3 +220,4 @@ exports.createInquiry = async (req, res) => {
         res.status(500).json({ error: "Failed to submit inquiry", details: error.message });
     }
 };
+

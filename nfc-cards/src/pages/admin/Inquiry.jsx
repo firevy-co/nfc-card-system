@@ -62,6 +62,17 @@ const Inquiry = ({ userData }) => {
             setMessages([]);
             return;
         }
+
+        // Mark as read when opened
+        const markAsRead = async () => {
+            try {
+                await axios.patch(`${API_BASE_URL}/api/inquiries/${selectedInquiry.id}/read`, { isAdmin: true });
+            } catch (err) {
+                console.error("Read sync error:", err);
+            }
+        };
+        markAsRead();
+
         fetchMessages(selectedInquiry.id);
         const interval = setInterval(() => fetchMessages(selectedInquiry.id), 5000);
         return () => clearInterval(interval);
@@ -246,13 +257,14 @@ const Inquiry = ({ userData }) => {
                                                     </td>
                                                     <td className="px-10 py-8">
                                                         <div className="flex items-center gap-3">
-                                                            <div className={`w-2 h-2 rounded-full ${
-                                                                iq.status === 'Unread' ? 'bg-amber-500 animate-pulse shadow-[0_0_12px_rgba(245,158,11,0.5)]' :
-                                                                iq.status === 'Resolved' ? 'bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.3)]' : 
-                                                                'bg-black'
+                                                            <div className={`w-3 h-3 rounded-full ${
+                                                                iq.status?.toLowerCase() === 'unread' ? 'bg-red-500 animate-pulse shadow-[0_0_15px_rgba(239,68,68,0.5)]' :
+                                                                iq.status?.toLowerCase() === 'replied' ? 'bg-[#7BB9D4] shadow-[0_0_15px_rgba(123,185,212,0.3)]' :
+                                                                iq.status?.toLowerCase() === 'resolved' ? 'bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)]' : 
+                                                                'bg-zinc-300'
                                                             }`}></div>
                                                             <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${
-                                                                iq.status === 'Unread' ? 'text-amber-500' : 'text-zinc-500'
+                                                                iq.status?.toLowerCase() === 'unread' ? 'text-red-500' : 'text-zinc-500'
                                                             }`}>{iq.status}</span>
                                                         </div>
                                                     </td>
@@ -395,22 +407,28 @@ const Inquiry = ({ userData }) => {
                                     </div>
 
                                     {/* Thread Messages */}
-                                    <div className="space-y-6">
+                                    <div className="space-y-10">
                                         {messages.map((msg) => (
                                             <div key={msg.id} className={`flex flex-col ${msg.sender === 'Admin' ? 'items-end' : 'items-start'}`}>
-                                                <div className={`p-4 px-6 rounded-2xl max-w-[85%] text-sm font-bold shadow-sm ${msg.sender === 'Admin'
+                                                <div className={`p-5 px-7 rounded-[2rem] max-w-[85%] text-sm font-bold shadow-sm transition-all hover:shadow-md ${msg.sender === 'Admin'
                                                     ? 'bg-black text-white rounded-tr-none'
-                                                    : 'bg-white border border-zinc-100 text-zinc-800 rounded-tl-none'
+                                                    : 'bg-zinc-100 border border-zinc-200/50 text-zinc-800 rounded-tl-none'
                                                     }`}>
                                                     <p className="leading-relaxed">{msg.text}</p>
                                                 </div>
-                                                <span className="text-[8px] font-black uppercase tracking-widest text-zinc-300 mt-2 px-2">
-                                                    {msg.sender === 'Admin' ? 'Identity Architect' : msg.sender} • {msg.createdAt ? (
-                                                        typeof msg.createdAt === 'string'
-                                                            ? new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                                                            : msg.createdAt.toDate?.()?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || 'Syncing'
-                                                    ) : 'Syncing'}
-                                                </span>
+                                                <div className="flex items-center gap-2 mt-2.5 px-3">
+                                                    <span className="text-[8px] font-black uppercase tracking-widest text-zinc-300">
+                                                        {msg.sender === 'Admin' ? 'Identity Architect' : msg.sender}
+                                                    </span>
+                                                    <span className="w-1 h-1 rounded-full bg-zinc-200"></span>
+                                                    <span className="text-[8px] font-black uppercase tracking-widest text-zinc-300">
+                                                        {msg.createdAt ? (
+                                                            typeof msg.createdAt === 'string'
+                                                                ? new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                                                                : msg.createdAt.toDate?.()?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || 'Syncing'
+                                                        ) : 'Syncing'}
+                                                    </span>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>

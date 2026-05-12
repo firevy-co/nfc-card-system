@@ -56,6 +56,16 @@ const Support = ({ userData }) => {
             return;
         }
 
+        // Mark as read when opened
+        const markAsRead = async () => {
+            try {
+                await axios.patch(`${API_BASE_URL}/api/inquiries/${selectedConv.id}/read`, { isAdmin: false });
+            } catch (err) {
+                console.error("Read sync error:", err);
+            }
+        };
+        markAsRead();
+
         fetchMessages(selectedConv.id);
         const interval = setInterval(() => fetchMessages(selectedConv.id), 5000); // Poll messages more frequently
         return () => clearInterval(interval);

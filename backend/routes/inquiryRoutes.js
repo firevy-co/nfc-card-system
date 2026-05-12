@@ -38,4 +38,10 @@ router.post('/', inquiryController.createInquiry);
  */
 router.patch('/:id/status', inquiryController.updateInquiryStatus);
 
+/**
+ * PATCH /api/inquiries/:id/read
+ * Mark an inquiry as read.
+ */
+router.patch('/:id/read', inquiryController.markAsRead);
+
 module.exports = router;
