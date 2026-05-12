@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { auth, db } from '@/firebase.config';
 import { useNavigate } from 'react-router-dom';
 import { signOut, updateProfile } from 'firebase/auth';
-import { doc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import {
     FiActivity,
     FiBriefcase,
@@ -597,23 +597,14 @@ const Profile = ({ userData, onUserDataChange }) => {
                 lastUpdated: new Date().toISOString()
             };
 
-            // STEP 1 (PRIMARY): Always write directly to Firestore.
-            // This is reliable even when the backend is in MOCK mode on Render.
-            try {
-                const userRef = doc(db, "users", user.uid);
-                await setDoc(userRef, payload, { merge: true });
-            } catch (fsErr) {
-                // Firestore rules may block this on production — log and continue
-                console.warn("[PROFILE]: Direct Firestore write failed:", fsErr.message);
-            }
-
-            // STEP 2 (SECONDARY/SYNC): Also call the backend API via Axios.
+            // PRIMARY: Call the backend API via Axios.
             // This syncs to companyDetails and uses Admin SDK (bypasses strict rules).
             try {
                 await axios.put(`${API_BASE_URL}/api/users/${user.uid}/profile`, payload);
                 console.log("[PROFILE]: Backend API synchronization complete.");
             } catch (apiErr) {
                 console.warn("[PROFILE]: Backend API unreachable or rejected sync:", apiErr.message);
+                throw new Error(apiErr.response?.data?.error || apiErr.message || "Backend synchronization failed.");
             }
 
             if (formData.displayName !== user.displayName) {

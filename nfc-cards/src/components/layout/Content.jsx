@@ -16,8 +16,6 @@ import { TEMPLATES } from "../../templates/templateRegistry";
 import toast from 'react-hot-toast';
 import { API_BASE_URL } from "../../config/api";
 import ConfirmationModal from "./ConfirmationModal";
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '@/firebase.config';
 import axios from 'axios';
 
 
@@ -226,12 +224,10 @@ export default function Content({ userData }) {
     if (!userData?.uid || isSelecting) return;
     setIsSelecting(true);
     try {
-      const userRef = doc(db, "users", userData.uid);
-
-      await setDoc(userRef, {
+      await axios.put(`${API_BASE_URL}/api/users/${userData.uid}/profile`, {
         templateId: templateId,
         lastTemplateUpdate: new Date().toISOString()
-      }, { merge: true });
+      });
 
       toast.success("Identity node selected successfully!");
     } catch (error) {
