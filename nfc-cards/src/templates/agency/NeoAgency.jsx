@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiLinkedin,
@@ -6,7 +6,7 @@ import {
   FiHome, FiImage, FiStar, FiClock, FiAward, FiLayout, FiCode,
   FiHexagon, FiTarget, FiTrendingUp, FiLayers, FiActivity
 } from 'react-icons/fi';
-import { FaWhatsapp, FaFacebook, FaYoutube, FaTelegram } from 'react-icons/fa';
+import { FaWhatsapp, FaFacebook, FaTelegram } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
 
@@ -64,7 +64,7 @@ const PremiumEleganceExpanded = ({ userData }) => {
     website: "www.luxedigital.io",
     address: "The Innovation District, Suite 400, New York, NY",
     businessName: "Luxe Digital Architecture",
-    instagram: "", linkedin: "", twitter: "", github: "alexwright", youtube: "", whatsapp: "15558901234", facebook: "", telegram: "",
+    instagram: "", linkedin: "", twitter: "", github: "alexwright", whatsapp: "15558901234", facebook: "", telegram: "",
     bio: "Crafting bespoke, high-performance digital storefronts and immersive web experiences for luxury brands and fine art curators.",
     mission: "My philosophy is rooted in the belief that digital luxury should feel effortless. I blend high-end aesthetic design with rigorous software engineering to create platforms that don't just sell, but tell a compelling brand story.",
     profileImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop",
@@ -129,15 +129,12 @@ const PremiumEleganceExpanded = ({ userData }) => {
     instagram: userData?.instagram || fictionalData.instagram,
     facebook: userData?.facebook || fictionalData.facebook,
     github: userData?.github || fictionalData.github,
-    youtube: userData?.youtube || fictionalData.youtube,
-    tiktok: userData?.tiktok || fictionalData.tiktok,
     telegram: userData?.telegram || fictionalData.telegram,
     bio: userData?.bio || fictionalData.bio,
     profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
     avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
     logo: userData?.logo || userData?.profileImage || fictionalData.logo,
-    bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
-  };
+    bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage };
 
   const finalPhone = data.phone || data.mobileNumber;
 
@@ -382,7 +379,7 @@ const PremiumEleganceExpanded = ({ userData }) => {
               { id: 'data.twitter', val: data.twitter, icon: FiTwitter },
               { id: 'data.github', val: data.github, icon: FiGithub },
               { id: 'data.facebook', val: data.facebook, icon: FaFacebook },
-              { id: 'data.youtube', val: data.youtube, icon: FaYoutube },
+
               { id: 'data.telegram', val: data.telegram, icon: FaTelegram },
               { id: 'data.whatsapp', val: data.whatsapp, icon: FaWhatsapp }
             ].map((social, i) => social.val && (

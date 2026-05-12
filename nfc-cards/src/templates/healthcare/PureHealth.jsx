@@ -8,12 +8,10 @@ import {
    FiInstagram,
    FiTwitter,
    FiLinkedin,
-   FiYoutube,
    FiUserPlus,
    FiStar,
    FiChevronLeft,
-   FiChevronRight,
-} from "react-icons/fi";
+   FiChevronRight } from "react-icons/fi";
 import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
@@ -71,10 +69,8 @@ const PureHealth = ({ userData }) => {
       instagram,
       linkedin,
       twitter,
-      youtube,
       logo,
-      bio,
-   } = userData || {};
+      bio } = userData || {};
 
    const services = [
       "Cardiology",
@@ -243,7 +239,7 @@ const PureHealth = ({ userData }) => {
                   <PureSocial icon={FiInstagram} href={instagram || null} />
                   <PureSocial icon={FiLinkedin} href={linkedin || null} />
                   <PureSocial icon={FiTwitter} href={twitter || null} />
-                  <PureSocial icon={FiYoutube} href={youtube || null} />
+
                </div>
 
                {/* BUTTON */}

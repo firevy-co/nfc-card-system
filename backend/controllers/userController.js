@@ -4,7 +4,7 @@ const { auth, db, isOffline, admin } = require('../config/firebase');
  * ARCHITECTURAL CACHE: Memory-resident identities for STANDBY MODE testing.
  */
 let mockUsersCache = [
-    { uid: 'abc-01', displayName: 'abc@gmail.com', email: 'abc@gmail.com', role: 'User', status: 'Standby' },
+    { uid: 'abc-01', displayName: 'abc@gmail.com', email: 'abc@gmail.com', role: 'User', status: 'Standby', templateId: 'modern_leader' },
     { uid: 'hem-02', displayName: 'hemanshu@gmail.com', email: 'hemanshu@gmail.com', role: 'User', status: 'Standby' },
 ];
 
@@ -47,7 +47,10 @@ exports.getAllUsers = async (req, res) => {
                 displayName: user.displayName || fsData.displayName || 'Architect',
                 role: fsData.role || (fsData.isAdmin ? 'Admin' : 'User'),
                 status: fsData.status || 'Active',
-                lastSignIn: user.metadata.lastSignInTime
+                lastSignIn: user.metadata.lastSignInTime,
+                templateId: fsData.templateId || null,
+                company: fsData.company || fsData.companyName || fsData.businessName || 'PERSONAL',
+                businessRole: fsData.businessRole || fsData.job || fsData.designation || 'N/A'
             };
         });
         res.json(users);
@@ -210,6 +213,12 @@ exports.updateUserProfile = async (req, res) => {
         );
 
         await db.collection('users').doc(uid).set({
+            ...cleanData,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        // Sync to companyDetails as well to prevent omissions
+        await db.collection('companyDetails').doc(uid).set({
             ...cleanData,
             updatedAt: admin.firestore.FieldValue.serverTimestamp()
         }, { merge: true });

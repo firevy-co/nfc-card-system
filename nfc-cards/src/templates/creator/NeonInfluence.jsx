@@ -3,7 +3,6 @@ import {
   FiPhone,
   FiMail,
   FiGlobe,
-  FiYoutube,
   FiLinkedin,
   FiTwitter,
   FiInstagram,
@@ -112,7 +111,6 @@ const NeonInfluence = ({ userData }) => {
     phone,
     website,
     address,
-    youtube,
     linkedin,
     twitter,
     instagram,
@@ -206,7 +204,7 @@ const NeonInfluence = ({ userData }) => {
           <div className="grid grid-cols-3 gap-3">
             <ServiceCard icon={FiGlobe} title="Web Dev" />
             <ServiceCard icon={FiInstagram} title="Marketing" />
-            <ServiceCard icon={FiYoutube} title="Content" />
+
           </div>
         </div>
 
@@ -236,7 +234,7 @@ const NeonInfluence = ({ userData }) => {
         =========================== */}
         <div className="flex justify-center gap-6 mt-6 pb-6">
           <SocialIcon icon={FiInstagram} href={instagram} color="text-pink-500" />
-          <SocialIcon icon={FiYoutube} href={youtube} color="text-red-500" />
+
           <SocialIcon icon={FiTwitter} href={twitter} color="text-blue-400" />
           <SocialIcon icon={FiLinkedin} href={linkedin} color="text-blue-600" />
         </div>

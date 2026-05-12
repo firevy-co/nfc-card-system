@@ -9,7 +9,6 @@ import {
    FiInstagram,
    FiTwitter,
    FiLinkedin,
-   FiYoutube,
    FiUserPlus,
    FiArrowRight,
    FiAward,
@@ -76,7 +75,6 @@ const PulseWorkout = ({ userData }) => {
       phone,
       website,
       address,
-      youtube,
       linkedin,
       twitter,
       instagram,
@@ -145,7 +143,7 @@ const PulseWorkout = ({ userData }) => {
 
                   <div className="flex gap-2 mt-4">
                      <PulseSocial icon={FiInstagram} href={instagram || null} />
-                     <PulseSocial icon={FiYoutube} href={youtube || null} />
+
                      <PulseSocial icon={FiTwitter} href={twitter || null} />
                      <PulseSocial icon={FiLinkedin} href={linkedin || null} />
                   </div>

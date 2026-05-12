@@ -18,7 +18,8 @@ export default function TemplateCard({
     onDelete,
     onEdit,
     onSelect,
-    isSelected = false
+    isSelected = false,
+    isSelecting = false
 }) {
     const navigate = useNavigate();
     const location = useLocation();
@@ -118,18 +119,25 @@ export default function TemplateCard({
                                 <FiEye size={16} />
                                 View
                             </button>
-                            <button
+                             <button
                                 onClick={onSelect}
-                                disabled={isSelected}
+                                disabled={isSelected || isSelecting}
                                 className={`col-span-3 flex items-center justify-center gap-2 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg active:scale-95 ${isSelected
                                     ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 cursor-default'
-                                    : 'bg-foreground text-background hover:brightness-110 active:scale-95'
+                                    : isSelecting 
+                                        ? 'bg-foreground/50 text-background/50 cursor-not-allowed'
+                                        : 'bg-foreground text-background hover:brightness-110 active:scale-95'
                                     }`}
                             >
                                 {isSelected ? (
                                     <>
                                         <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
                                         Active
+                                    </>
+                                ) : isSelecting ? (
+                                    <>
+                                        <div className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin"></div>
+                                        Syncing...
                                     </>
                                 ) : (
                                     'Select Template'

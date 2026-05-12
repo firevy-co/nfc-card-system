@@ -14,13 +14,11 @@ const ExpertTemplate = ({ userData }) => {
       instagram,
       facebook,
       twitter,
-      youtube,
       logo,
       role,
       designation,
       experience = "12+ Years Experience",
-      timing = "Open • 9 AM to 9 PM",
-   } = userData || {};
+      timing = "Open • 9 AM to 9 PM" } = userData || {};
 
    const displayRole = designation || role || "Premium Consultant";
 
@@ -35,23 +33,19 @@ const ExpertTemplate = ({ userData }) => {
       {
          icon: <FiIcons.FiAward />,
          title: "Certified Experts",
-         text: "Skilled professionals with trusted experience.",
-      },
+         text: "Skilled professionals with trusted experience." },
       {
          icon: <FiIcons.FiZap />,
          title: "Fast Response",
-         text: "Quick assistance with premium support.",
-      },
+         text: "Quick assistance with premium support." },
       {
          icon: <FiIcons.FiShield />,
          title: "Secure Process",
-         text: "Reliable and transparent working method.",
-      },
+         text: "Reliable and transparent working method." },
       {
          icon: <FiIcons.FiTrendingUp />,
          title: "Growth Focused",
-         text: "Solutions designed for better results.",
-      },
+         text: "Solutions designed for better results." },
    ];
 
    return (
@@ -231,7 +225,7 @@ const ExpertTemplate = ({ userData }) => {
                   {linkedin && <a href={linkedin || null} className="p-3 bg-white/5 rounded-xl text-white hover:bg-white/10"><FiIcons.FiLinkedin /></a>}
                   {facebook && <a href={facebook || null} className="p-3 bg-white/5 rounded-xl text-white hover:bg-white/10"><FiIcons.FiFacebook /></a>}
                   {twitter && <a href={twitter || null} className="p-3 bg-white/5 rounded-xl text-white hover:bg-white/10"><FiIcons.FiTwitter /></a>}
-                  {youtube && <a href={youtube || null} className="p-3 bg-white/5 rounded-xl text-white hover:bg-white/10"><FiIcons.FiYoutube /></a>}
+
                </div>
 
                <div className="mt-8">

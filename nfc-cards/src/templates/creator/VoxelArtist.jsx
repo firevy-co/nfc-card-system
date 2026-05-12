@@ -4,7 +4,6 @@ import {
    FiPhone,
    FiMail,
    FiGlobe,
-   FiYoutube,
    FiTwitter,
    FiInstagram,
    FiLinkedin,
@@ -139,7 +138,6 @@ const VoxelArtist = ({ userData }) => {
       phone,
       website,
       address,
-      youtube,
       linkedin,
       twitter,
       instagram,
@@ -233,7 +231,7 @@ const VoxelArtist = ({ userData }) => {
             {/* SOCIAL */}
             <div className="flex justify-center gap-6 mt-8 mb-8 border-t-2 border-dashed border-gray-300 pt-8">
                <VoxelSocial icon={FiInstagram} href={instagram} />
-               <VoxelSocial icon={FiYoutube} href={youtube} />
+
                <VoxelSocial icon={FiTwitter} href={twitter} />
                <VoxelSocial icon={FiLinkedin} href={linkedin} />
             </div>

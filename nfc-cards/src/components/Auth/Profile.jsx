@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { auth, db } from '@/firebase.config';
 import { useNavigate } from 'react-router-dom';
 import { signOut, updateProfile } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, onSnapshot } from 'firebase/firestore';
 import {
     FiActivity,
     FiBriefcase,
@@ -21,9 +21,9 @@ import {
     FiUser,
     FiUpload,
     FiFacebook,
-    FiYoutube
+    FiLink
 } from 'react-icons/fi';
-import { FaTiktok } from 'react-icons/fa';
+import { FaWhatsapp } from 'react-icons/fa';
 import { Country, State, City } from "country-state-city";
 import { TEMPLATES } from '../../templates/templateRegistry';
 import TemplateRenderer from '../../templates/TemplateRenderer';
@@ -57,12 +57,15 @@ const CardPreview = ({ formData }) => {
 
     const SocialIcons = ({ formData, light }) => {
         const icons = [
+            { id: 'website', icon: FiGlobe },
             { id: 'linkedin', icon: FiLinkedin },
             { id: 'instagram', icon: FiInstagram },
             { id: 'twitter', icon: FiTwitter },
+            { id: 'facebook', icon: FiFacebook },
             { id: 'telegram', icon: FiSend },
-            { id: 'youtube', icon: Fa.FaYoutube },
-            { id: 'tiktok', icon: Fa.FaTiktok },
+            { id: 'discord', icon: FiMessageCircle },
+            { id: 'whatsapp', icon: FaWhatsapp },
+            { id: 'skype', icon: FiMessageCircle },
         ].filter(social => formData[social.id]);
 
         if (icons.length === 0) return null;
@@ -153,10 +156,10 @@ const CardPreview = ({ formData }) => {
                         </div>
                         <div className="flex-1 flex flex-col items-center justify-center text-center">
                             <div className={`w-18 h-18 rounded-2xl rotate-3 mb-4 overflow-hidden border-2 ${light ? 'border-black/10' : 'border-white/20'}`}>
-                                {formData.logo && <img src={formData.logo} className="w-full h-full object-cover" />}
+                                {(formData.logo || formData.profileImage) && <img src={formData.logo || formData.profileImage} className="w-full h-full object-cover" />}
                             </div>
                             <h3 className="text-lg font-black leading-tight">{formData.displayName || "Your Name"}</h3>
-                            <p className="text-[10px] opacity-60 font-bold uppercase tracking-widest">{formData.businessRole}</p>
+                            <p className="text-[10px] opacity-60 font-bold uppercase tracking-widest">{formData.businessRole || formData.job || formData.designation}</p>
                             <LocationDisplay formData={formData} light={light} />
                         </div>
                         <SocialIcons formData={formData} light={light} />
@@ -171,11 +174,11 @@ const CardPreview = ({ formData }) => {
                         <div className="flex-1 flex flex-col items-center justify-center text-center px-4">
                             <div className={`w-24 h-24 rounded-full border-4 ${light ? 'border-black/5 bg-black/5' : 'border-white/10 bg-white/10'} p-1 mb-6 transition-transform duration-500 hover:scale-110 shadow-xl`}>
                                 <div className="w-full h-full rounded-full overflow-hidden">
-                                    {formData.logo ? <img src={formData.logo} className="w-full h-full object-cover" /> : <FiUser className="m-auto mt-6" size={32} />}
+                                    {(formData.logo || formData.profileImage) ? <img src={formData.logo || formData.profileImage} className="w-full h-full object-cover" /> : <FiUser className="m-auto mt-6" size={32} />}
                                 </div>
                             </div>
                             <h3 className="text-xl font-black mb-1">{formData.displayName || "Your Name"}</h3>
-                            <p className="text-[10px] opacity-60 font-black uppercase tracking-[0.2em]">{formData.businessRole || "Industry Expert"}</p>
+                            <p className="text-[10px] opacity-60 font-black uppercase tracking-[0.2em]">{formData.businessRole || formData.job || formData.designation || "Industry Expert"}</p>
                             <LocationDisplay formData={formData} light={light} />
                             <div className={`h-1 w-8 rounded-full mt-4 ${light ? 'bg-black/10' : 'bg-white/20'}`} />
                         </div>
@@ -207,11 +210,11 @@ const CardPreview = ({ formData }) => {
                         <div className="flex-1 flex flex-col pt-10">
                             <div className="flex items-center gap-4 mb-6">
                                 <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border-2 ${light ? 'border-black/10 bg-white/50' : 'border-white/20 bg-black/20'} backdrop-blur-md overflow-hidden rotate-3`}>
-                                    {formData.logo ? <img src={formData.logo} className="w-full h-full object-cover p-2" /> : <FiActivity size={24} />}
+                                    {(formData.logo || formData.profileImage) ? <img src={formData.logo || formData.profileImage} className="w-full h-full object-cover p-2" /> : <FiActivity size={24} />}
                                 </div>
                                 <div>
                                     <h3 className="text-lg font-black leading-tight">{formData.displayName || "Your Name"}</h3>
-                                    <p className="text-[9px] font-bold uppercase tracking-widest opacity-60">{formData.company || "Identity Enterprise"}</p>
+                                    <p className="text-[9px] font-bold uppercase tracking-widest opacity-60">{formData.company || formData.companyName || "Identity Enterprise"}</p>
                                 </div>
                             </div>
                             <LocationDisplay formData={formData} light={light} />
@@ -233,15 +236,15 @@ const CardPreview = ({ formData }) => {
                     <>
                         <div className="flex flex-col items-center justify-center h-34 mt-4">
                             <div className={`w-18 h-18 rounded-full border flex items-center justify-center overflow-hidden mb-3 ${light ? 'border-black/10 bg-black/5' : 'border-white/20 bg-white/10'}`}>
-                                {formData.logo ? (
-                                    <img src={formData.logo} alt="Profile" className="w-full h-full object-cover" />
+                                {(formData.logo || formData.profileImage) ? (
+                                    <img src={formData.logo || formData.profileImage} alt="Profile" className="w-full h-full object-cover" />
                                 ) : (
                                     <FiUser size={30} />
                                 )}
                             </div>
                             <h3 className="text-lg font-black">{formData.displayName || "Your Name"}</h3>
                             <p className={`${light ? "text-gray-500" : "opacity-70"} text-sm`}>
-                                {formData.businessRole || formData.job || "Your Role"}
+                                {formData.businessRole || formData.job || formData.designation || "Your Role"}
                             </p>
                         </div>
                         <div className="mt-8 space-y-4">
@@ -298,6 +301,7 @@ const Profile = ({ userData, onUserDataChange }) => {
     const [isSaving, setIsSaving] = useState(false);
     const [activeField, setActiveField] = useState(null);
     const [prevUserData, setPrevUserData] = useState(null);
+    const initialLoadDone = useRef(false);
     const [formData, setFormData] = useState({
         displayName: "",
         job: "",
@@ -316,57 +320,211 @@ const Profile = ({ userData, onUserDataChange }) => {
         linkedin: "",
         instagram: "",
         twitter: "",
-        youtube: "",
-        tiktok: "",
         discord: "",
         telegram: "",
         whatsapp: "",
-        venmo: "",
+        facebook: "",
         cashapp: "",
-        paypal: "",
-        zipCode: "",
         address: "",
         bio: "",
         profileImage: "",
         profileImageType: "file",
+        coverPhoto: "",
+        coverPhotoType: "file",
         templateId: "layout_1",
-        themeColor: "#0f172a"
+        themeColor: "#0f172a",
+        // Extended/Legacy mapping support
+        companyName: "",
+        designation: "",
+        jobTitle: "",
+        about: "",
+        description: "",
+        x: "",
+        skype: "",
+        threads: "",
+        snapchat: "",
+        behance: "",
+        dribbble: "",
+        medium: "",
+        github: "",
+        vimeo: "",
+        calendly: "",
+        zelle: ""
     });
 
     const [locationData, setLocationData] = useState({
         countries: Country.getAllCountries(),
         states: [],
-        cities: [],
+        cities: []
     });
 
-    // 2. MERGE CLOUD DATA - Sync during render for React 19 compliance
-    if (userData && userData !== prevUserData) {
-        let changed = false;
-        const merged = { ...formData };
-        Object.keys(userData).forEach(key => {
-            // Internal state flags should NEVER be merged into the persistent form state
-            if (key === 'exists' || key === 'uid') return;
+    // Field name mapping: legacy/variant field names → canonical form state keys
+    const FIELD_MAPPING = {
+        companyName: 'company',
+        organization: 'company',
+        businessName: 'company',
+        designation: 'businessRole',
+        jobTitle: 'job',
+        name: 'displayName',
+        mobileNumber: 'phone',
+        emailAddress: 'email',
+        about: 'bio',
+        description: 'bio',
+        x: 'twitter',
+        bannerImage: 'coverPhoto'
+    };
 
-            if (userData[key] && userData[key] !== "" && formData[key] !== userData[key]) {
-                merged[key] = userData[key];
-                changed = true;
+    // 2. MERGE CLOUD DATA - Sync via useEffect
+    useEffect(() => {
+        let unsubscribe = () => {};
+        
+        const fetchUserData = async () => {
+            if (!user?.uid) return;
+
+            try {
+                const userRef = doc(db, "users", user.uid);
+                unsubscribe = onSnapshot(userRef, (docSnap) => {
+                    // Build the authoritative data object from both props and Firestore
+                    let cloudData = {};
+                    
+                    // Layer 1: userData prop (from App.jsx's own listener)
+                    if (userData && typeof userData === 'object') {
+                        Object.keys(userData).forEach(key => {
+                            if (key === 'exists' || key === 'uid') return;
+                            if (userData[key] !== undefined && userData[key] !== null && userData[key] !== "") {
+                                cloudData[key] = userData[key];
+                            }
+                        });
+                    }
+                    
+                    // Layer 2: Firestore document (highest priority — overrides userData)
+                    if (docSnap.exists()) {
+                        const fsData = docSnap.data();
+                        Object.keys(fsData).forEach(key => {
+                            if (key === 'exists' || key === 'uid') return;
+                            if (fsData[key] !== undefined && fsData[key] !== null && fsData[key] !== "") {
+                                cloudData[key] = fsData[key];
+                            }
+                        });
+                    }
+
+                    // Helper: resolve a canonical form key to the best available value from cloudData
+                    const resolveValue = (canonicalKey) => {
+                        // Direct match first
+                        if (cloudData[canonicalKey] !== undefined && cloudData[canonicalKey] !== null && cloudData[canonicalKey] !== "") {
+                            return cloudData[canonicalKey];
+                        }
+                        // Try legacy/variant keys that map to this canonical key
+                        const variantKeys = Object.keys(FIELD_MAPPING).filter(k => FIELD_MAPPING[k] === canonicalKey);
+                        for (const vk of variantKeys) {
+                            if (cloudData[vk] !== undefined && cloudData[vk] !== null && cloudData[vk] !== "") {
+                                return cloudData[vk];
+                            }
+                        }
+                        return "";
+                    };
+
+                    setFormData(prev => {
+                        const isFirstLoad = !initialLoadDone.current;
+                        let changed = false;
+                        const merged = { ...prev };
+
+                        // Iterate over all canonical keys in formData
+                        Object.keys(merged).forEach(key => {
+                            if (key === 'exists' || key === 'uid') return;
+                            const cloudValue = resolveValue(key);
+                            
+                            if (isFirstLoad) {
+                                // On first load: Firebase is the source of truth for ALL fields
+                                if (cloudValue !== "" && merged[key] !== cloudValue) {
+                                    merged[key] = cloudValue;
+                                    changed = true;
+                                }
+                            } else {
+                                // On subsequent snapshots: only update if cloud has a non-empty value
+                                // and the local value is still empty (don't overwrite user edits)
+                                if (cloudValue !== "" && (!merged[key] || merged[key] === "")) {
+                                    merged[key] = cloudValue;
+                                    changed = true;
+                                }
+                            }
+                        });
+
+                        // Also pick up any extra keys from cloud that aren't in the initial form schema
+                        Object.keys(cloudData).forEach(key => {
+                            if (key === 'exists' || key === 'uid') return;
+                            if (FIELD_MAPPING[key]) return; // Skip variant keys (handled via canonical)
+                            if (merged[key] === undefined && cloudData[key] !== "" && cloudData[key] !== null && cloudData[key] !== undefined) {
+                                merged[key] = cloudData[key];
+                                changed = true;
+                            }
+                        });
+
+                        if (changed) {
+                            initialLoadDone.current = true;
+                        }
+
+                        return changed ? merged : prev;
+                    });
+
+                    // Populate location dropdowns based on stored country/state codes
+                    const countryCode = cloudData.countryCode;
+                    if (countryCode) {
+                        const states = State.getStatesOfCountry(countryCode);
+                        setLocationData((prev) => ({ ...prev, states }));
+
+                        const stateCode = cloudData.stateCode;
+                        if (stateCode) {
+                            const cities = City.getCitiesOfState(countryCode, stateCode);
+                            setLocationData((prev) => ({ ...prev, cities }));
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Error fetching user data:", error);
             }
+        };
+
+        fetchUserData();
+        return () => unsubscribe();
+    }, [user?.uid]);
+
+    // 3. SECONDARY SYNC — Fill empty fields from userData prop (arrives from App.jsx)
+    useEffect(() => {
+        if (!userData || typeof userData !== 'object') return;
+
+        setFormData(prev => {
+            let changed = false;
+            const merged = { ...prev };
+
+            const resolveFromProp = (canonicalKey) => {
+                if (userData[canonicalKey] !== undefined && userData[canonicalKey] !== null && userData[canonicalKey] !== "") {
+                    return userData[canonicalKey];
+                }
+                const variantKeys = Object.keys(FIELD_MAPPING).filter(k => FIELD_MAPPING[k] === canonicalKey);
+                for (const vk of variantKeys) {
+                    if (userData[vk] !== undefined && userData[vk] !== null && userData[vk] !== "") {
+                        return userData[vk];
+                    }
+                }
+                return "";
+            };
+
+            Object.keys(merged).forEach(key => {
+                if (key === 'exists' || key === 'uid') return;
+                // Only fill empty fields — don't overwrite values already set by onSnapshot
+                if (!merged[key] || merged[key] === "") {
+                    const propValue = resolveFromProp(key);
+                    if (propValue !== "") {
+                        merged[key] = propValue;
+                        changed = true;
+                    }
+                }
+            });
+
+            return changed ? merged : prev;
         });
-        if (changed) {
-            setFormData(merged);
-        }
-
-        if (userData.countryCode) {
-            const states = State.getStatesOfCountry(userData.countryCode);
-            setLocationData((prev) => ({ ...prev, states }));
-
-            if (userData.stateCode) {
-                const cities = City.getCitiesOfState(userData.countryCode, userData.stateCode);
-                setLocationData((prev) => ({ ...prev, cities }));
-            }
-        }
-        setPrevUserData(userData);
-    }
+    }, [userData]);
 
     const handleCountryChange = (e) => {
         const countryCode = e.target.value;
@@ -379,7 +537,7 @@ const Profile = ({ userData, onUserDataChange }) => {
             countryCode,
             state: "",
             stateCode: "",
-            city: "",
+            city: ""
         });
 
         setLocationData({ ...locationData, states, cities: [] });
@@ -394,7 +552,7 @@ const Profile = ({ userData, onUserDataChange }) => {
             ...formData,
             state: state ? state.name : "",
             stateCode,
-            city: "",
+            city: ""
         });
 
         setLocationData({ ...locationData, cities });
@@ -434,6 +592,7 @@ const Profile = ({ userData, onUserDataChange }) => {
         const savePromise = (async () => {
             const payload = {
                 ...formData,
+                name: formData.displayName,
                 uid: user.uid,
                 lastUpdated: new Date().toISOString()
             };
@@ -458,7 +617,21 @@ const Profile = ({ userData, onUserDataChange }) => {
             }
 
             if (formData.displayName !== user.displayName) {
-                await updateProfile(user, { displayName: formData.displayName });
+                try {
+                    const idToken = await user.getIdToken();
+                    const apiKey = import.meta.env.VITE_FIREBASE_API_KEY;
+                    
+                    const updatePayload = {
+                        idToken: idToken,
+                        displayName: formData.displayName,
+                        returnSecureToken: true
+                    };
+                    
+                    await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:update?key=${apiKey}`, updatePayload);
+                    console.log("[PROFILE]: Auth profile updated via Identity Toolkit REST API");
+                } catch (error) {
+                    console.error("[PROFILE]: Identity Toolkit API error:", error);
+                }
             }
 
             // Push updated data into App.jsx userData state immediately.
@@ -503,6 +676,17 @@ const Profile = ({ userData, onUserDataChange }) => {
         }
     };
 
+    const handleCoverPhotoUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData(prev => ({ ...prev, coverPhoto: reader.result, coverPhotoType: 'file' }));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const inputClasses = `w-full bg-white border border-gray-200 rounded-full px-6 py-4 text-sm font-medium text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all placeholder:text-gray-300 disabled:bg-gray-50 disabled:text-gray-600 cursor-pointer`;
     const labelClasses = `text-sm font-bold text-gray-900 mb-3 block px-1`;
     const isAdmin = userData?.role === "Admin";
@@ -530,9 +714,21 @@ const Profile = ({ userData, onUserDataChange }) => {
                     {/* --- PREMIUM SOCIAL BANNER HEADER --- */}
                     <div className="relative mb-32">
                         <div
-                            className="h-64 md:h-80 w-full relative overflow-hidden shadow-inner"
-                            style={{ background: 'linear-gradient(90deg, #5f5bff 0%, #8f88ff 30%, #d6d2ff 55%, #f1d6e6 80%, #f6eaf1 100%)' }}
+                            className="h-64 md:h-80 w-full relative overflow-hidden shadow-inner bg-cover bg-center"
+                            style={{
+                                backgroundImage: formData.coverPhoto ? `url(${formData.coverPhoto})` : 'none',
+                                background: !formData.coverPhoto ? 'linear-gradient(90deg, #5f5bff 0%, #8f88ff 30%, #d6d2ff 55%, #f1d6e6 80%, #f6eaf1 100%)' : ''
+                            }}
                         >
+                            {isEditing && (
+                                <label className="absolute inset-0 bg-black/20 hover:bg-black/40 flex items-center justify-center cursor-pointer transition-all group z-10">
+                                    <div className="flex flex-col items-center gap-2 text-white opacity-0 group-hover:opacity-100 transition-all">
+                                        <FiUpload size={32} />
+                                        <span className="font-black text-[10px] uppercase tracking-widest">Update Cover Photo</span>
+                                    </div>
+                                    <input type="file" className="hidden" accept="image/*" onChange={handleCoverPhotoUpload} />
+                                </label>
+                            )}
                             <div className="absolute top-10 left-20 w-32 h-32 bg-white/20 rounded-full blur-3xl animate-pulse" />
                             <div className="absolute bottom-10 right-40 w-64 h-64 bg-white/30 rounded-full blur-[100px]" />
 
@@ -695,7 +891,41 @@ const Profile = ({ userData, onUserDataChange }) => {
                                                 </div>
                                                 <div>
                                                     <h3 className="text-xl font-black text-gray-900 tracking-tight">Identity Studio</h3>
-                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Template & Branding Engine</p>
+                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1 mb-4">Template & Branding Engine</p>
+                                                    
+                                                    {formData.templateId && (
+                                                        <div className="flex items-center gap-3 bg-zinc-50 border border-zinc-200/50 p-2 pl-4 rounded-2xl group transition-all hover:border-blue-200">
+                                                            <div className="flex-1 min-w-0">
+                                                                <p className="text-[8px] font-black uppercase tracking-[0.2em] text-blue-600/60 mb-0.5">Live Identity Node</p>
+                                                                <p className="text-[10px] font-bold truncate text-zinc-500 font-mono">
+                                                                    {`${window.location.host}/url/${formData.templateId}?u=${user?.uid?.substring(0, 8)}...`}
+                                                                </p>
+                                                            </div>
+                                                            <div className="flex items-center gap-1">
+                                                                <button
+                                                                    onClick={() => {
+                                                                        const link = `${window.location.origin}/url/${formData.templateId}?u=${user?.uid}`;
+                                                                        navigator.clipboard.writeText(link);
+                                                                        toast.success("Identity URL copied to clipboard!");
+                                                                    }}
+                                                                    className="w-8 h-8 rounded-xl bg-white border border-zinc-200 flex items-center justify-center text-zinc-400 hover:text-blue-600 hover:border-blue-200 transition-all shadow-sm active:scale-90"
+                                                                    title="Copy Link"
+                                                                >
+                                                                    <FiLink size={14} />
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => {
+                                                                        const link = `${window.location.origin}/url/${formData.templateId}?u=${user?.uid}`;
+                                                                        window.open(link, '_blank');
+                                                                    }}
+                                                                    className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center hover:brightness-110 transition-all shadow-md active:scale-90"
+                                                                    title="Open in New Tab"
+                                                                >
+                                                                    <FiGlobe size={14} />
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
 
@@ -832,7 +1062,7 @@ const Profile = ({ userData, onUserDataChange }) => {
                                             value={formData.displayName}
                                             onChange={(e) => handleInputChange('displayName', e.target.value)}
                                             className={inputClasses}
-                                            placeholder="e.g. Enter email"
+                                            placeholder="e.g. John Doe"
                                         />
                                     </div>
 
@@ -856,14 +1086,17 @@ const Profile = ({ userData, onUserDataChange }) => {
                                             <label className={labelClasses}>Business Role</label>
                                             <div className="relative group">
                                                 <FiBriefcase className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-black transition-colors pointer-events-none" size={16} />
-                                                <input
-                                                    type="text"
+                                                <select
                                                     disabled={!isEditing}
                                                     value={formData.businessRole || ''}
                                                     onChange={(e) => handleInputChange('businessRole', e.target.value)}
-                                                    className={`${inputClasses} pl-14 font-black uppercase tracking-widest text-[11px]`}
-                                                    placeholder="e.g. Creative Director"
-                                                />
+                                                    className={`${inputClasses} pl-14 font-black uppercase tracking-widest text-[11px] appearance-none`}
+                                                >
+                                                    <option value="">Select Industry</option>
+                                                    {['Business', 'Luxury', 'Technology', 'Agency', 'Healthcare', 'Automotive', 'Real Estate', 'Legal', 'Hospitality', 'Fitness', 'Construction', 'Beauty', 'Creator', 'Service'].map(role => (
+                                                        <option key={role} value={role}>{role}</option>
+                                                    ))}
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -977,17 +1210,7 @@ const Profile = ({ userData, onUserDataChange }) => {
                                         />
                                     </div>
 
-                                    <div className="space-y-1">
-                                        <label className={labelClasses}>Zip Code</label>
-                                        <input
-                                            type="text"
-                                            disabled={!isEditing}
-                                            value={formData.zipCode || ""}
-                                            onChange={(e) => handleInputChange('zipCode', e.target.value)}
-                                            className={inputClasses}
-                                            placeholder="e.g. 10001"
-                                        />
-                                    </div>
+
 
                                     <div className="md:col-span-2 mt-8 space-y-1">
                                         <label className={labelClasses}>Identity Manifesto (Bio)</label>
@@ -1009,15 +1232,14 @@ const Profile = ({ userData, onUserDataChange }) => {
 
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
                                             {[
-                                                { id: 'website', label: 'Primary Network Hub (Website)', icon: FiGlobe },
+                                                { id: 'website', label: 'Primary Website', icon: FiGlobe },
                                                 { id: 'linkedin', label: 'LinkedIn', icon: FiLinkedin },
                                                 { id: 'instagram', label: 'Instagram', icon: FiInstagram },
                                                 { id: 'twitter', label: 'X / Twitter', icon: FiTwitter },
                                                 { id: 'facebook', label: 'Facebook', icon: FiFacebook },
-                                                { id: 'youtube', label: 'YouTube', icon: FiYoutube },
-                                                { id: 'tiktok', label: 'TikTok', icon: FaTiktok },
-                                                { id: 'whatsapp', label: 'WhatsApp', icon: FiPhone },
                                                 { id: 'telegram', label: 'Telegram', icon: FiSend },
+                                                { id: 'discord', label: 'Discord', icon: FiMessageCircle },
+                                                { id: 'whatsapp', label: 'WhatsApp', icon: FaWhatsapp },
                                                 { id: 'skype', label: 'Skype', icon: FiMessageCircle },
                                             ].map((node) => (
                                                 <div key={node.id} className="space-y-1">
@@ -1037,6 +1259,8 @@ const Profile = ({ userData, onUserDataChange }) => {
                                             ))}
                                         </div>
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>

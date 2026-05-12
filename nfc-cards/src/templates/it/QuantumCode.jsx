@@ -3,7 +3,6 @@ import * as Fi from "react-icons/fi";
 import {
    FaWhatsapp,
    FaFacebook,
-   FaYoutube,
    FaDiscord,
    FaTelegram,
    FaGithub,
@@ -27,7 +26,6 @@ const QuantumCode = ({ userData = {} }) => {
       bio = "We build futuristic software systems, premium interfaces and secure business automation solutions.",
       whatsapp,
       facebook,
-      youtube,
       discord,
       telegram,
       github,
@@ -53,7 +51,7 @@ const QuantumCode = ({ userData = {} }) => {
       { value: whatsapp, icon: FaWhatsapp, url: `https://wa.me/${String(whatsapp || "").replace(/\D/g, "")}` },
       { value: telegram, icon: FaTelegram, url: `https://t.me/${telegram}` },
       { value: facebook, icon: FaFacebook, url: `https://facebook.com/${facebook}` },
-      { value: youtube, icon: FaYoutube, url: `https://youtube.com/${youtube}` },
+
       { value: discord, icon: FaDiscord, url: discord },
       { value: instagram, icon: FaInstagram, url: `https://instagram.com/${instagram}` }
    ].filter((x) => x.value);

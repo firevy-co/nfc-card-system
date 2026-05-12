@@ -15,8 +15,7 @@ import {
    FiHeart,
    FiShield,
    FiUsers,
-   FiPlusCircle,
-} from "react-icons/fi";
+   FiPlusCircle } from "react-icons/fi";
 import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
@@ -35,8 +34,7 @@ const GourmetRestaurant = ({ userData }) => {
       coverImage,
       gallery,
       designation,
-      bio,
-   } = userData || {};
+      bio } = userData || {};
 
    const [copied, setCopied] = useState(false);
 
@@ -143,23 +141,19 @@ const GourmetRestaurant = ({ userData }) => {
                {
                   icon: <FiMail />,
                   title: "Email",
-                  value: email || "support@citycare.com",
-               },
+                  value: email || "support@citycare.com" },
                {
                   icon: <FiPhone />,
                   title: "Emergency",
-                  value: phone || "+91 98765 43210",
-               },
+                  value: phone || "+91 98765 43210" },
                {
                   icon: <FiGlobe />,
                   title: "Website",
-                  value: website || "www.citycare.com",
-               },
+                  value: website || "www.citycare.com" },
                {
                   icon: <FiMapPin />,
                   title: "Address",
-                  value: address || "Ahmedabad, Gujarat",
-               },
+                  value: address || "Ahmedabad, Gujarat" },
             ].map((item, i) => (
                <div
                   key={i}

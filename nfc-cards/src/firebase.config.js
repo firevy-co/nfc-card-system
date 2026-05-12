@@ -4,8 +4,7 @@ import {
     GoogleAuthProvider,
     setPersistence,
     browserLocalPersistence,
-    browserSessionPersistence,
-} from "firebase/auth";
+    browserSessionPersistence } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 export const isOffline =
@@ -19,8 +18,7 @@ const firebaseConfig = {
     storageBucket:     import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
     appId:             import.meta.env.VITE_FIREBASE_APP_ID,
-    measurementId:     import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-};
+    measurementId:     import.meta.env.VITE_FIREBASE_MEASUREMENT_ID };
 
 let app;
 let auth;

@@ -14,8 +14,7 @@ const TrustMedical = ({ userData }) => {
     instagram,
     facebook,
     twitter,
-    logo,
-  } = userData || {};
+    logo } = userData || {};
 
   const [reviewIndex, setReviewIndex] = useState(0);
 
@@ -47,18 +46,15 @@ const TrustMedical = ({ userData }) => {
     {
       name: "Rakesh",
       text: "Excellent doctors and very clean hospital.",
-      rating: 5,
-    },
+      rating: 5 },
     {
       name: "Priya",
       text: "Quick appointment and professional staff.",
-      rating: 5,
-    },
+      rating: 5 },
     {
       name: "Amit",
       text: "Best healthcare service in the city.",
-      rating: 4,
-    },
+      rating: 4 },
   ];
 
   const gallery = [

@@ -145,9 +145,7 @@ const TemplateRenderer = ({ templateId, userData: rawUserData }) => {
     instagram: rawUserData.instagram || "",
     facebook: rawUserData.facebook || "",
     twitter: rawUserData.twitter || rawUserData.x || "",
-    youtube: rawUserData.youtube || "",
     github: rawUserData.github || "",
-    tiktok: rawUserData.tiktok || "",
     telegram: rawUserData.telegram || "",
 
     // Theme & Branding

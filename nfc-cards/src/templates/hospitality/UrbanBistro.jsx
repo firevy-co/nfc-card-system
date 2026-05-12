@@ -1,8 +1,7 @@
 import React from 'react';
 import {
    FiPhone, FiMail, FiMapPin, FiGlobe,
-   FiInstagram, FiTwitter, FiLinkedin, FiYoutube,
-   FiUserPlus, FiActivity, FiClock
+   FiInstagram, FiTwitter, FiLinkedin, FiUserPlus, FiActivity, FiClock
 } from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
@@ -46,12 +45,10 @@ const UrbanBistro = ({ userData }) => {
       phone,
       website,
       address,
-      youtube,
       linkedin,
       twitter,
       instagram,
-      logo,
-   } = userData || {};
+      logo } = userData || {};
 
    const services = [
       "Cardiology",
@@ -152,7 +149,7 @@ const UrbanBistro = ({ userData }) => {
             {/* SOCIAL */}
             <div className="flex justify-center gap-4 py-2">
                {instagram && <a href={instagram || null}><FiInstagram /></a>}
-               {youtube && <a href={youtube || null}><FiYoutube /></a>}
+
                {twitter && <a href={twitter || null}><FiTwitter /></a>}
                {linkedin && <a href={linkedin || null}><FiLinkedin /></a>}
             </div>

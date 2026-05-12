@@ -116,8 +116,7 @@ const Inquiry = ({ userData }) => {
                 text: messageText,
                 sender: "Admin",
                 senderName: userData?.displayName || "System Architect",
-                createdAt: serverTimestamp(),
-            });
+                createdAt: serverTimestamp() });
 
             // 2. Automate status transition via backend to keep logic centralized
             if (selectedInquiry.status === "Unread") {

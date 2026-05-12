@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiTwitter,
@@ -6,7 +6,7 @@ import {
    FiDroplet, FiWind, FiSun, FiShoppingBag, FiMessageSquare,
    FiArrowRight, FiCheckCircle
 } from 'react-icons/fi';
-import { FaFacebookF, FaTiktok, FaLeaf, FaQuoteLeft } from 'react-icons/fa';
+import { FaFacebookF, FaLeaf, FaQuoteLeft } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
 
@@ -68,7 +68,6 @@ const VelvetSkin = ({ userData }) => {
       businessName: "Botanica Aesthetics",
       twitter: "celinelaurent",
       instagram: "botanica.skin",
-      tiktok: "celine.holistic",
       facebook: "botanicaaesthetics",
       bio: "Pioneering plant-based clinical skincare. We combine advanced non-invasive technology with wildcrafted botanicals to restore your skin's natural barrier and luminous glow.",
       profileImage: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop",
@@ -137,15 +136,12 @@ const VelvetSkin = ({ userData }) => {
       instagram: userData?.instagram || fictionalData.instagram,
       facebook: userData?.facebook || fictionalData.facebook,
       github: userData?.github || fictionalData.github,
-      youtube: userData?.youtube || fictionalData.youtube,
-      tiktok: userData?.tiktok || fictionalData.tiktok,
       telegram: userData?.telegram || fictionalData.telegram,
       bio: userData?.bio || fictionalData.bio,
       profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
       avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
       logo: userData?.logo || userData?.profileImage || fictionalData.logo,
-      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
-   };
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage };
    const fadeUp = {
       hidden: { opacity: 0, y: 20 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -383,7 +379,7 @@ const VelvetSkin = ({ userData }) => {
                   <div className="flex justify-center gap-3 py-2">
                      {[
                         { val: data.instagram, icon: FiInstagram, link: `https://instagram.com/${data.instagram}` },
-                        { val: data.tiktok, icon: FaTiktok, link: `https://tiktok.com/@${data.tiktok}` },
+
                         { val: data.facebook, icon: FaFacebookF, link: `https://facebook.com/${data.facebook}` },
                         { val: data.twitter, icon: FiTwitter, link: `https://twitter.com/${data.twitter}` }
                      ].map((social, i) => social.val && (

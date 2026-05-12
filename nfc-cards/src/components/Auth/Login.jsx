@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo (2).png';
 import * as Fi from "react-icons/fi";
 import { motion } from 'framer-motion';
+import axios from 'axios';
+import { API_BASE_URL } from '../../config/api';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -32,35 +34,36 @@ const Login = () => {
             const userCredential = await signInWithEmailAndPassword(auth, email.trim(), password);
             const user = userCredential.user;
 
-            const { doc, getDoc } = await import('firebase/firestore');
-            const { db } = await import('@/firebase.config');
-            const userDoc = await getDoc(doc(db, "users", user.uid));
-
-            if (!userDoc.exists()) {
-                await auth.signOut();
-                throw new Error("Identity registry not found. Please contact network admin.");
-            }
-
-            const userData = userDoc.data();
-            
-            // Robust check: any of these fields indicate the user has data/onboarded
-            const hasData = userData.onboarded || 
-                            userData.phone || 
-                            userData.company || 
-                            userData.businessRole ||
-                            userData.businessName || 
-                            userData.companyName ||
-                            userData.job || 
-                            (userData.role === 'Admin' || user.email === 'admin@gmail.com');
-            
-            if (hasData) {
-                if (userData.role === 'Admin' || user.email === 'admin@gmail.com') {
-                    navigate('/admin/analytics');
+            try {
+                // Use the sync endpoint to get or create the user record in the backend
+                const { data: userData } = await axios.post(`${API_BASE_URL}/api/users/sync`, {
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: user.displayName
+                });
+                
+                // Robust check: any of these fields indicate the user has data/onboarded
+                const hasData = userData.onboarded || 
+                                userData.phone || 
+                                userData.company || 
+                                userData.businessRole ||
+                                userData.businessName || 
+                                userData.companyName ||
+                                userData.job || 
+                                (userData.role === 'Admin' || user.email === 'admin@gmail.com');
+                
+                if (hasData) {
+                    if (userData.role === 'Admin' || user.email === 'admin@gmail.com') {
+                        navigate('/admin/analytics');
+                    } else {
+                        navigate('/user/home');
+                    }
                 } else {
-                    navigate('/user/home');
+                    navigate('/user/complete-profile');
                 }
-            } else {
-                navigate('/user/complete-profile');
+            } catch (apiErr) {
+                console.error("[API_SYNC_ERROR]:", apiErr.message);
+                throw new Error("Failed to connect to identity network.");
             }
         } catch (err) {
             console.error("[AUTH_FAILURE]:", err.code, err.message);
@@ -75,7 +78,7 @@ const Login = () => {
                 message = "Identity suspended. Access to the network is restricted.";
             } else if (err.code === 'auth/too-many-requests') {
                 message = "Too many failed attempts. Identity locked temporarily.";
-            } else if (err.message.includes("registry not found")) {
+            } else if (err.message.includes("registry not found") || err.message.includes("network")) {
                 message = err.message;
             }
             
@@ -94,39 +97,29 @@ const Login = () => {
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
 
-            const { doc, getDoc, setDoc, serverTimestamp } = await import('firebase/firestore');
-            const { db } = await import('@/firebase.config');
-            const userDoc = await getDoc(doc(db, "users", user.uid));
+            // Use the sync endpoint to create the user if they don't exist, or get them if they do
+            const { data: userData } = await axios.post(`${API_BASE_URL}/api/users/sync`, {
+                uid: user.uid,
+                email: user.email,
+                displayName: user.displayName
+            });
 
-            if (!userDoc.exists()) {
-                await setDoc(doc(db, "users", user.uid), {
-                    uid: user.uid,
-                    displayName: user.displayName,
-                    email: user.email,
-                    role: 'User',
-                    createdAt: serverTimestamp(),
-                    status: 'Active'
-                });
-                navigate('/user/complete-profile');
-            } else {
-                const userData = userDoc.data();
-                const hasData = userData.onboarded || 
-                                userData.phone || 
-                                userData.company || 
-                                userData.businessRole ||
-                                userData.businessName || 
-                                userData.companyName ||
-                                userData.job;
-                
-                if (hasData) {
-                    if (userData.role === 'Admin') {
-                        navigate('/admin/analytics');
-                    } else {
-                        navigate('/user/home');
-                    }
+            const hasData = userData.onboarded || 
+                            userData.phone || 
+                            userData.company || 
+                            userData.businessRole ||
+                            userData.businessName || 
+                            userData.companyName ||
+                            userData.job;
+            
+            if (hasData) {
+                if (userData.role === 'Admin') {
+                    navigate('/admin/analytics');
                 } else {
-                    navigate('/user/complete-profile');
+                    navigate('/user/home');
                 }
+            } else {
+                navigate('/user/complete-profile');
             }
         } catch (err) {
             let message = "Google sign-in failed.";

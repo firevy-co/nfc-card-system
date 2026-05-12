@@ -6,7 +6,6 @@ import {
    FiMapPin,
    FiInstagram,
    FiTwitter,
-   FiYoutube,
    FiLinkedin,
    FiUserPlus,
    FiActivity,
@@ -15,8 +14,7 @@ import {
    FiClock,
    FiCheckCircle,
    FiChevronLeft,
-   FiChevronRight,
-} from "react-icons/fi";
+   FiChevronRight } from "react-icons/fi";
 import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
@@ -68,29 +66,24 @@ const NightConnect = ({ userData }) => {
       phone,
       website,
       address,
-      youtube,
       linkedin,
       twitter,
       instagram,
-      logo,
-   } = userData || {};
+      logo } = userData || {};
 
    const reviews = [
       {
          name: "Rohan Shah",
          text: "Excellent service and friendly staff. Very clean environment.",
-         rating: 5,
-      },
+         rating: 5 },
       {
          name: "Priya Patel",
          text: "Doctors are highly professional and helpful.",
-         rating: 5,
-      },
+         rating: 5 },
       {
          name: "Amit Joshi",
          text: "Quick response and premium facilities available.",
-         rating: 4,
-      },
+         rating: 4 },
    ];
 
    const [reviewIndex, setReviewIndex] = useState(0);
@@ -184,7 +177,7 @@ const NightConnect = ({ userData }) => {
                <div className="flex justify-center gap-3 flex-wrap">
                   <SocialIcon icon={FiInstagram} href={instagram || null} />
                   <SocialIcon icon={FiTwitter} href={twitter || null} />
-                  <SocialIcon icon={FiYoutube} href={youtube || null} />
+
                   <SocialIcon icon={FiLinkedin} href={linkedin || null} />
                </div>
             </div>

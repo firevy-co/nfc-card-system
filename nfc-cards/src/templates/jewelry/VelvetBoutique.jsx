@@ -14,8 +14,7 @@ export const StandardContactLink = ({
   icon: Icon,
   value,
   href,
-  label,
-}) => {
+  label }) => {
   if (
     !value ||
     value === "" ||
@@ -100,8 +99,7 @@ export const StandardContactLink = ({
 ========================================================= */
 export const JewelleryHeader = ({
   name,
-  subtitle,
-}) => {
+  subtitle }) => {
   return (
     <div className="w-full rounded-[30px] overflow-hidden border border-[#d4af37]/20 bg-[#17120f] shadow-2xl mb-6">
 

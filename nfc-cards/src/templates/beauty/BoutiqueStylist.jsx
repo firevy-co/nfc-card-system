@@ -1,11 +1,11 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiTwitter,
    FiUserPlus, FiChevronDown, FiStar, FiHeart, FiWind,
    FiSmile, FiCalendar, FiClock, FiShoppingBag, FiCamera
 } from 'react-icons/fi';
-import { FaTiktok, FaPinterest, FaWhatsapp } from 'react-icons/fa';
+import { FaPinterest, FaWhatsapp } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
 
@@ -65,7 +65,6 @@ const BoutiqueStylist = ({ userData }) => {
       businessName: "Lumière Skin Clinic",
       twitter: "lumiere_skin",
       instagram: "amelieroux.skin",
-      tiktok: "amelie.glow",
       pinterest: "lumierespa",
       whatsapp: "13105550000",
       bio: "Believing that true radiance begins beneath the surface. Specializing in holistic, non-invasive facial sculpting, botanical peels, and bespoke skincare regimens tailored to your skin's unique biome.",
@@ -128,15 +127,12 @@ const BoutiqueStylist = ({ userData }) => {
       instagram: userData?.instagram || fictionalData.instagram,
       facebook: userData?.facebook || fictionalData.facebook,
       github: userData?.github || fictionalData.github,
-      youtube: userData?.youtube || fictionalData.youtube,
-      tiktok: userData?.tiktok || fictionalData.tiktok,
       telegram: userData?.telegram || fictionalData.telegram,
       bio: userData?.bio || fictionalData.bio,
       profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
       avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
       logo: userData?.logo || userData?.profileImage || fictionalData.logo,
-      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
-   };
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage };
    const fadeUp = {
       hidden: { opacity: 0, y: 20 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -345,7 +341,7 @@ const BoutiqueStylist = ({ userData }) => {
                   <div className="flex justify-center gap-3">
                      {[
                         { val: data.instagram, icon: FiInstagram, link: `https://instagram.com/${data.instagram}` },
-                        { val: data.tiktok, icon: FaTiktok, link: `https://tiktok.com/@${data.tiktok}` },
+
                         { val: fictionalData.pinterest, icon: FaPinterest, link: `https://pinterest.com/${fictionalData.pinterest}` },
                         { val: data.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${data.whatsapp}` }
                      ].map((social, i) => social.val && (

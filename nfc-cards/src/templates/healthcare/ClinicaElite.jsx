@@ -14,8 +14,7 @@ import {
    FiActivity,
    FiInstagram,
    FiLinkedin,
-   FiTwitter,
-} from "react-icons/fi";
+   FiTwitter } from "react-icons/fi";
 import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
@@ -80,24 +79,20 @@ export const ClinicaElite = ({ userData }) => {
       logo,
       instagram,
       linkedin,
-      twitter,
-   } = userData || {};
+      twitter } = userData || {};
 
    const [open, setOpen] = useState(null);
 
    const faq = [
       {
          q: "Do you offer private dining?",
-         a: "Yes, private and corporate event bookings are available.",
-      },
+         a: "Yes, private and corporate event bookings are available." },
       {
          q: "Can I view the menu online?",
-         a: "Yes, our complete seasonal menu is available through our website.",
-      },
+         a: "Yes, our complete seasonal menu is available through our website." },
       {
          q: "Do you have vegetarian options?",
-         a: "Yes, we offer curated vegan and organic dishes.",
-      },
+         a: "Yes, we offer curated vegan and organic dishes." },
    ];
 
    return (

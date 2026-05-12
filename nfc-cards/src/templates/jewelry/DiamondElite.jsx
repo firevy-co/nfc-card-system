@@ -67,8 +67,7 @@ const DiamondElite = ({ userData }) => {
     twitter = "diamondelite",
     logo,
     avatar,
-    designation,
-  } = userData || {};
+    designation } = userData || {};
 
   const displayRole = designation || role;
   const finalAddress = address || city;
@@ -219,20 +218,16 @@ const DiamondElite = ({ userData }) => {
               {[
                 {
                   icon: FiIcons.FiInstagram,
-                  link: getSocialUrl("instagram", instagram),
-                },
+                  link: getSocialUrl("instagram", instagram) },
                 {
                   icon: FiIcons.FiFacebook,
-                  link: getSocialUrl("facebook", facebook),
-                },
+                  link: getSocialUrl("facebook", facebook) },
                 {
                   icon: FiIcons.FiLinkedin,
-                  link: getSocialUrl("linkedin", linkedin),
-                },
+                  link: getSocialUrl("linkedin", linkedin) },
                 {
                   icon: FiIcons.FiTwitter,
-                  link: getSocialUrl("twitter", twitter),
-                },
+                  link: getSocialUrl("twitter", twitter) },
               ].map((item, i) => (
                 <a
                   key={i}

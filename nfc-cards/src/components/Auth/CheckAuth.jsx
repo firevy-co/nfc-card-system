@@ -32,13 +32,22 @@ const ProtectedRoute = ({ children, user, userData, loading, adminOnly = false }
     // hasData: true if the user has completed onboarding in any meaningful way.
     const hasData = userData?.onboarded || 
                     userData?.phone || 
+                    userData?.mobileNumber ||
                     userData?.company || 
-                    userData?.businessRole ||
                     userData?.businessName || 
                     userData?.companyName || 
+                    userData?.organization ||
+                    userData?.businessRole ||
                     userData?.job || 
+                    userData?.jobTitle ||
+                    userData?.designation ||
                     userData?.bio ||
+                    userData?.address ||
+                    userData?.city ||
+                    userData?.country ||
                     isAdmin;
+
+    console.log("[CHECK_AUTH]: Evaluation", { email: user?.email, hasData, exists: userData?.exists });
 
     // CRITICAL: We only redirect to onboarding if we are CERTAIN the document does not exist.
     // If hasData is true, they definitely don't need to be on the onboarding page.

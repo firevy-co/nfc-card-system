@@ -7,7 +7,7 @@ import * as Fa from "react-icons/fa";
 import { HexColorPicker } from "react-colorful";
 import { auth, db } from "@/firebase.config";
 import { signOut, updateProfile } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
 import { API_BASE_URL } from "../../config/api";
 import axios from "axios";
@@ -18,8 +18,8 @@ const IconCard = ({ icon: _Icon, label, field, onClick, required, isFilled }) =>
     <div
         onClick={() => onClick(field)}
         className={`p-4 rounded-xl border cursor-pointer flex flex-col items-center justify-center transition-all active:scale-95 relative ${isFilled
-                ? "bg-black text-white border-black shadow-md"
-                : "bg-gray-50 text-gray-900 border-gray-100 hover:bg-gray-100"
+            ? "bg-black text-white border-black shadow-md"
+            : "bg-gray-50 text-gray-900 border-gray-100 hover:bg-gray-100"
             }`}
     >
         {required && !isFilled && <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-red-500 rounded-full" />}
@@ -392,8 +392,6 @@ const CardPreview = ({ formData }) => {
                                 { id: 'instagram', icon: Fa.FaInstagram, prefix: 'https://instagram.com/' },
                                 { id: 'twitter', icon: Fa.FaTwitter, prefix: 'https://twitter.com/' },
                                 { id: 'facebook', icon: Fa.FaFacebook, prefix: 'https://facebook.com/' },
-                                { id: 'youtube', icon: Fa.FaYoutube, prefix: 'https://youtube.com/' },
-                                { id: 'tiktok', icon: Fa.FaTiktok, prefix: 'https://tiktok.com/@' },
                                 { id: 'telegram', icon: Fa.FaTelegram, prefix: 'https://t.me/' },
                                 { id: 'discord', icon: Fi.FiMessageSquare, prefix: '' },
                                 { id: 'skype', icon: Fi.FiMessageCircle, prefix: 'skype:' },
@@ -460,8 +458,6 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
         twitter: "",
         instagram: "",
         facebook: "",
-        youtube: "",
-        tiktok: "",
         telegram: "",
         discord: "",
         skype: "",
@@ -471,8 +467,79 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
         stateCode: "",
         city: "",
         profileImage: "",
-        profileImageType: "file",
+        profileImageType: "file"
     });
+
+    // MERGE CLOUD DATA into form state via useEffect
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const currentUser = auth.currentUser;
+            if (!currentUser?.uid && !userData?.uid) return;
+
+            const uid = currentUser?.uid || userData?.uid;
+
+            try {
+                let mergedUserData = { ...(userData || {}) };
+                const userRef = doc(db, "users", uid);
+                const docSnap = await getDoc(userRef);
+                if (docSnap.exists()) {
+                    mergedUserData = { ...mergedUserData, ...docSnap.data() };
+                }
+
+                setFormData(prev => {
+                    let changed = false;
+                    const merged = { ...prev };
+
+                    const mapping = {
+                        companyName: 'company',
+                        organization: 'company',
+                        businessName: 'company',
+                        designation: 'businessRole',
+                        jobTitle: 'job',
+                        displayName: 'name',
+                        mobileNumber: 'phone',
+                        emailAddress: 'email',
+                        about: 'bio',
+                        description: 'bio',
+                        x: 'twitter',
+                        bannerImage: 'coverPhoto'
+                    };
+
+                    const getEffectiveValue = (key) => {
+                        if (mergedUserData[key] !== undefined && mergedUserData[key] !== null && mergedUserData[key] !== "") return mergedUserData[key];
+                        const mappedKeys = Object.keys(mapping).filter(k => mapping[k] === key);
+                        for (const mKey of mappedKeys) {
+                            if (mergedUserData[mKey] !== undefined && mergedUserData[mKey] !== null && mergedUserData[mKey] !== "") return mergedUserData[mKey];
+                        }
+                        return "";
+                    };
+
+                    Object.keys(merged).forEach(key => {
+                        if (key === 'exists' || key === 'uid') return;
+
+                        const dbValue = getEffectiveValue(key);
+                        // Only overwrite if we don't have it locally or local is empty
+                        if (dbValue !== "" && (!prev[key] || prev[key] === "")) {
+                            merged[key] = dbValue;
+                            changed = true;
+                        }
+                    });
+
+                    // Always force current user's email if available
+                    if (mergedUserData.email && merged.email !== mergedUserData.email) {
+                        merged.email = mergedUserData.email;
+                        changed = true;
+                    }
+
+                    return changed ? merged : prev;
+                });
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchUserData();
+    }, [userData]);
 
     // GUARD: If userData hasn't loaded from Firestore yet, show a loading skeleton.
     if (userData === null || userData === undefined) {
@@ -495,48 +562,25 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
 
     // REDIRECT (already-onboarded): Only redirect if the user has meaningful profile
     // data beyond just a displayName (which Google sets on every new account).
-    const hasData = userData?.onboarded || 
-                    userData?.phone || 
-                    userData?.company || 
-                    userData?.businessRole ||
-                    userData?.businessName ||
-                    userData?.companyName ||
-                    userData?.job || 
-                    userData?.bio;
+    const hasData = userData?.onboarded ||
+        userData?.phone ||
+        userData?.mobileNumber ||
+        userData?.company ||
+        userData?.businessName ||
+        userData?.companyName ||
+        userData?.organization ||
+        userData?.businessRole ||
+        userData?.job ||
+        userData?.jobTitle ||
+        userData?.designation ||
+        userData?.bio ||
+        userData?.address ||
+        userData?.city ||
+        userData?.country;
 
     if (hasData) {
         if (isAdmin) return <Navigate to="/admin/analytics" />;
         return <Navigate to="/user/home" />;
-    }
-
-    // MERGE CLOUD DATA into form state on first load and whenever userData changes.
-    if (userData && userData !== prevUserData) {
-        let changed = false;
-        const merged = { ...formData };
-        Object.keys(userData).forEach(key => {
-            // Internal state flags should NEVER be merged into the persistent form state
-            if (key === 'exists' || key === 'uid') return;
-
-            const isFirstLoad = prevUserData === null;
-            if (userData[key] !== undefined && userData[key] !== null && userData[key] !== "") {
-                if (isFirstLoad || (!formData[key] || formData[key] === "")) {
-                    merged[key] = userData[key];
-                    changed = true;
-                }
-            }
-        });
-        // Always force current user's email
-        if (userData.email && merged.email !== userData.email) {
-            merged.email = userData.email;
-            changed = true;
-        }
-        // Map displayName → name if name is not set
-        if (userData.displayName && !merged.name) {
-            merged.name = userData.displayName;
-            changed = true;
-        }
-        if (changed) setFormData(merged);
-        setPrevUserData(userData);
     }
 
     // NOTE: Form data is NOT persisted to localStorage.
@@ -626,7 +670,7 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
                 // This bypasses client-side Firestore rules and connection drops
                 // ─────────────────────────────────────────────────────────────
                 const response = await axios.post(`${API_BASE_URL}/api/users/onboard`, payload);
-                
+
                 if (!response.data || !response.data.success) {
                     throw new Error(response.data?.error || "Backend synchronization failed.");
                 }
@@ -642,10 +686,10 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
 
                 // 3. Global State Update (Triggers App re-render to reflect new status)
                 if (onUserDataChange) {
-                    onUserDataChange(prev => ({ 
-                        ...prev, 
+                    onUserDataChange(prev => ({
+                        ...prev,
                         ...payload,
-                        onboarded: true 
+                        onboarded: true
                     }));
                 }
 
@@ -984,7 +1028,7 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
                                     onChange={(e) =>
                                         setFormData({
                                             ...formData,
-                                            businessRole: e.target.value,
+                                            businessRole: e.target.value
                                         })
                                     }
                                 >

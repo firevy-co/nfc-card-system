@@ -6,6 +6,8 @@ import Layout from '../layout/layout';
 import logo from '../../assets/logo (2).png';
 import * as Fi from "react-icons/fi";
 import { motion } from 'framer-motion';
+import axios from 'axios';
+import { API_BASE_URL } from '../../config/api';
 
 const Signup = () => {
     const [name, setName] = useState('');
@@ -29,17 +31,11 @@ const Signup = () => {
 
             await updateProfile(user, { displayName: name });
 
-            // Sync to Firestore users collection
-            const { doc, setDoc, serverTimestamp } = await import('firebase/firestore');
-            const { db } = await import('@/firebase.config');
-
-            await setDoc(doc(db, "users", user.uid), {
+            // Sync to backend via API instead of direct Firestore
+            await axios.post(`${API_BASE_URL}/api/users/sync`, {
                 uid: user.uid,
-                displayName: name,
                 email: email,
-                role: 'User',
-                createdAt: serverTimestamp(),
-                status: 'Active'
+                displayName: name
             });
 
             navigate('/user/complete-profile');
@@ -59,33 +55,23 @@ const Signup = () => {
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user;
 
-            const { doc, getDoc, setDoc, serverTimestamp } = await import('firebase/firestore');
-            const { db } = await import('@/firebase.config');
-            const userDoc = await getDoc(doc(db, "users", user.uid));
+            // Use the sync endpoint to create the user if they don't exist, or get them if they do
+            const { data: userData } = await axios.post(`${API_BASE_URL}/api/users/sync`, {
+                uid: user.uid,
+                email: user.email,
+                displayName: user.displayName
+            });
 
-            if (!userDoc.exists()) {
-                await setDoc(doc(db, "users", user.uid), {
-                    uid: user.uid,
-                    displayName: user.displayName,
-                    email: user.email,
-                    role: 'User',
-                    createdAt: serverTimestamp(),
-                    status: 'Active'
-                });
-                navigate('/user/complete-profile');
-            } else {
-                const userData = userDoc.data();
-                const hasData = userData.onboarded || userData.phone || userData.company || userData.job;
-                
-                if (hasData) {
-                    if (userData.role === 'Admin') {
-                        navigate('/admin/analytics');
-                    } else {
-                        navigate('/user/home');
-                    }
+            const hasData = userData.onboarded || userData.phone || userData.company || userData.job;
+            
+            if (hasData) {
+                if (userData.role === 'Admin') {
+                    navigate('/admin/analytics');
                 } else {
-                    navigate('/user/complete-profile');
+                    navigate('/user/home');
                 }
+            } else {
+                navigate('/user/complete-profile');
             }
         } catch (err) {
             setError(err.message);

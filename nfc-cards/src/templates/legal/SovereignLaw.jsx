@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as FiIcons from "react-icons/fi";
-import { FaWhatsapp, FaFacebook, FaTwitter, FaYoutube, FaTelegram, FaGithub, FaTiktok, FaDiscord, FaSkype } from "react-icons/fa";
+import { FaWhatsapp, FaFacebook, FaTwitter, FaTelegram, FaGithub, FaDiscord, FaSkype } from "react-icons/fa";
 import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
@@ -21,10 +21,8 @@ const SovereignLaw = ({ userData }) => {
     whatsapp,
     facebook,
     twitter,
-    youtube,
     telegram,
     github,
-    tiktok,
     discord,
     skype,
     companyName,
@@ -237,10 +235,10 @@ const SovereignLaw = ({ userData }) => {
               { val: whatsapp, icon: FaWhatsapp, color: "text-emerald-400", url: whatsapp?.startsWith("http") ? whatsapp : `https://wa.me/${whatsapp?.replace(/\D/g, '')}` },
               { val: facebook, icon: FaFacebook, color: "text-blue-600", url: facebook?.startsWith("http") ? facebook : `https://facebook.com/${facebook}` },
               { val: twitter, icon: FaTwitter, color: "text-sky-400", url: twitter?.startsWith("http") ? twitter : `https://twitter.com/${twitter}` },
-              { val: youtube, icon: FaYoutube, color: "text-red-500", url: youtube?.startsWith("http") ? youtube : `https://youtube.com/${youtube}` },
+
               { val: telegram, icon: FaTelegram, color: "text-cyan-400", url: telegram?.startsWith("http") ? telegram : `https://t.me/${telegram}` },
               { val: github, icon: FaGithub, color: "text-white", url: github?.startsWith("http") ? github : `https://github.com/${github}` },
-              { val: tiktok, icon: FaTiktok, color: "text-pink-400", url: tiktok?.startsWith("http") ? tiktok : `https://tiktok.com/@${tiktok}` },
+
               { val: discord, icon: FaDiscord, color: "text-indigo-400", url: discord?.startsWith("http") ? discord : `https://discord.gg/${discord}` },
               { val: skype, icon: FaSkype, color: "text-sky-500", url: skype?.startsWith("http") ? skype : `skype:${skype}?chat` }
             ].map((social, i) => social.val && (

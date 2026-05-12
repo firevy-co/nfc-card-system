@@ -21,8 +21,7 @@ const ModernRealty = ({ userData }) => {
       twitter,
       bio,
       avatar,
-      logo,
-   } = userData || {};
+      logo } = userData || {};
 
    const displayPhone = mobileNumber || phone;
    const displayRole = designation || role || "Real Estate Consultant";
@@ -35,20 +34,17 @@ const ModernRealty = ({ userData }) => {
          title: "Luxury Villa",
          price: "₹1.2 Cr",
          image:
-            "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=900&q=80",
-      },
+            "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=900&q=80" },
       {
          title: "Modern Apartment",
          price: "₹65 Lakh",
          image:
-            "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=900&q=80",
-      },
+            "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=900&q=80" },
       {
          title: "Office Space",
          price: "₹95 Lakh",
          image:
-            "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80",
-      },
+            "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80" },
    ];
 
    return (

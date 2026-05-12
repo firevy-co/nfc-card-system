@@ -13,20 +13,20 @@ import CheckAuth from './components/Auth/CheckAuth';
 import AppSkeleton from './components/layout/AppSkeleton';
 
 // --- PERFORMANCE: DYNAMIC CODE SPLITTING (Lazy Loading) ---
-const Login = lazy(() => import('./components/Auth/Login'));
-const Signup = lazy(() => import('./components/Auth/Signup'));
-const CompleteProfile = lazy(() => import('./components/Auth/CompleteProfile'));
-const Profile = lazy(() => import('./components/Auth/Profile'));
-const Templates = lazy(() => import('./components/layout/Templates'));
-const Users = lazy(() => import('./components/layout/Users'));
-const Analytics = lazy(() => import('./pages/admin/Analytics'));
-const TemplatePreview = lazy(() => import('./pages/admin/TemplatePreview'));
-const Inquiry = lazy(() => import('./pages/admin/Inquiry'));
-const Settings = lazy(() => import('./pages/admin/Settings'));
-const Support = lazy(() => import('./pages/user/Support'));
-const Home = lazy(() => import('./pages/user/Home'));
-const UserSettings = lazy(() => import('./pages/user/Settings'));
-const IdentityLinkView = lazy(() => import('./pages/user/IdentityLinkView'));
+const Login = lazy(() => import('@/components/Auth/Login'));
+const Signup = lazy(() => import('@/components/Auth/Signup'));
+const CompleteProfile = lazy(() => import('@/components/Auth/CompleteProfile'));
+const Profile = lazy(() => import('@/components/Auth/Profile'));
+const Templates = lazy(() => import('@/components/layout/Templates'));
+const Users = lazy(() => import('@/components/layout/Users'));
+const Analytics = lazy(() => import('@/pages/admin/Analytics'));
+const TemplatePreview = lazy(() => import('@/pages/admin/TemplatePreview'));
+const Inquiry = lazy(() => import('@/pages/admin/Inquiry'));
+const Settings = lazy(() => import('@/pages/admin/Settings'));
+const Support = lazy(() => import('@/pages/user/Support'));
+const Home = lazy(() => import('@/pages/user/Home'));
+const UserSettings = lazy(() => import('@/pages/user/Settings'));
+const IdentityLinkView = lazy(() => import('@/pages/user/IdentityLinkView'));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -81,6 +81,8 @@ function App() {
     }, 15000); // 15 seconds safety (Render free tier can be slow)
 
     const initListener = async () => {
+      if (!mounted) return;
+
       // 1. Immediate Sync with Backend (Provides fast source of truth)
       try {
         const syncResponse = await axios.post(`${API_BASE_URL}/api/users/sync`, {
@@ -88,16 +90,26 @@ function App() {
           email: user.email,
           displayName: user.displayName
         });
-        
+
         if (mounted && syncResponse.data) {
           const syncedData = syncResponse.data;
           // IMPORTANT: If backend says they are onboarded, we can stop loading early.
-          const hasOnboardingData = syncedData.onboarded || 
-                                  syncedData.phone || 
-                                  syncedData.company || 
-                                  syncedData.job || 
-                                  syncedData.businessRole || 
-                                  (syncedData.role === 'Admin');
+          const hasOnboardingData = syncedData.onboarded ||
+            syncedData.phone ||
+            syncedData.mobileNumber ||
+            syncedData.company ||
+            syncedData.businessName ||
+            syncedData.companyName ||
+            syncedData.organization ||
+            syncedData.businessRole ||
+            syncedData.job ||
+            syncedData.jobTitle ||
+            syncedData.designation ||
+            syncedData.bio ||
+            syncedData.address ||
+            syncedData.city ||
+            syncedData.country ||
+            (syncedData.role === 'Admin');
 
           setUserData(prev => {
             const newData = { ...syncedData, uid: user.uid };
@@ -105,7 +117,7 @@ function App() {
             if (hasOnboardingData) newData.exists = true;
             return prev ? { ...newData, ...prev } : newData;
           });
-          
+
           if (hasOnboardingData) {
             console.log("[APP]: Backend confirmed onboarded status. Releasing UI.");
             setLoading(false);
@@ -118,46 +130,72 @@ function App() {
 
       if (!mounted) return;
 
+      // Small cooldown before starting Firestore listener to avoid "Internal Assertion" 
+      // errors caused by rapid state transitions during the sync phase.
+      await new Promise(resolve => setTimeout(resolve, 200));
+      if (!mounted) return;
+
       // 2. Start Real-time Firestore Listener (Authoritative Source)
       const userRef = doc(db, "users", user.uid);
-      
-      const unsub = onSnapshot(userRef, (docSnap) => {
-        if (!mounted) return;
-        
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setUserData({ ...data, uid: user.uid, exists: true });
-          setLoading(false);
-          clearTimeout(loadingTimeout);
-        } else {
-          // Document does not exist in Firestore. 
-          // Check if we already got data from the backend sync before calling them 'new'.
-          setUserData(prev => {
-            if (prev && (prev.onboarded || prev.phone || prev.company)) {
-              // Backend has data, so we don't mark exists: false
-              return { ...prev, exists: true };
-            }
-            console.log("[APP]: Identity doc missing (new user confirmed).");
-            return { exists: false, uid: user.uid };
-          });
-          setLoading(false);
-          clearTimeout(loadingTimeout);
-        }
-      }, (error) => {
-        if (mounted) {
-          console.warn("[APP]: Firestore listener error:", error.message);
-          // If Firestore fails, we rely on whatever we have (backend data or timeout)
-          setLoading(false);
-          clearTimeout(loadingTimeout);
-        }
-      });
 
-      // CRITICAL: If the component unmounted while the async sync was running, 
-      // we MUST immediately kill the new listener to prevent "Internal Assertion" errors.
-      if (!mounted) {
-        unsub();
-      } else {
-        unsubSnapshot = unsub;
+      try {
+        const unsub = onSnapshot(userRef, (docSnap) => {
+          if (!mounted) return;
+
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            setUserData({ ...data, uid: user.uid, exists: true });
+            setLoading(false);
+            clearTimeout(loadingTimeout);
+          } else {
+            // Document does not exist in Firestore. 
+            // Check if we already got data from the backend sync before calling them 'new'.
+            setUserData(prev => {
+              if (prev && (
+                prev.onboarded || 
+                prev.phone || 
+                prev.mobileNumber ||
+                prev.company || 
+                prev.businessName || 
+                prev.companyName || 
+                prev.organization ||
+                prev.businessRole ||
+                prev.job || 
+                prev.jobTitle ||
+                prev.designation ||
+                prev.bio ||
+                prev.address ||
+                prev.city ||
+                prev.country
+              )) {
+                // Backend has data, so we don't mark exists: false
+                return { ...prev, exists: true };
+              }
+              console.log("[APP]: Identity doc missing (new user confirmed).");
+              return { exists: false, uid: user.uid };
+            });
+            setLoading(false);
+            clearTimeout(loadingTimeout);
+          }
+        }, (error) => {
+          if (mounted) {
+            console.warn("[APP]: Firestore listener error:", error.message);
+            // If Firestore fails, we rely on whatever we have (backend data or timeout)
+            setLoading(false);
+            clearTimeout(loadingTimeout);
+          }
+        });
+
+        // CRITICAL: If the component unmounted while the async sync was running, 
+        // we MUST immediately kill the new listener to prevent "Internal Assertion" errors.
+        if (!mounted) {
+          unsub();
+        } else {
+          unsubSnapshot = unsub;
+        }
+      } catch (err) {
+        console.error("[APP]: Failed to initialize Firestore listener:", err.message);
+        setLoading(false);
       }
     };
 
@@ -225,18 +263,25 @@ function App() {
                   const isAdmin = userData?.role === 'Admin' || user?.email === 'admin@gmail.com';
                   // CRITICAL: Any of these fields indicate the user has data/onboarded.
                   // We also check for 'exists: true' to prevent premature redirects.
-                  const hasData = userData?.onboarded || 
-                                  userData?.phone || 
-                                  userData?.company || 
-                                  userData?.businessRole ||
-                                  userData?.businessName || 
-                                  userData?.companyName ||
-                                  userData?.job || 
-                                  userData?.bio ||
-                                  isAdmin;
-                                  
+                  const hasData = userData?.onboarded ||
+                    userData?.phone ||
+                    userData?.mobileNumber ||
+                    userData?.company ||
+                    userData?.businessName ||
+                    userData?.companyName ||
+                    userData?.organization ||
+                    userData?.businessRole ||
+                    userData?.job ||
+                    userData?.jobTitle ||
+                    userData?.designation ||
+                    userData?.bio ||
+                    userData?.address ||
+                    userData?.city ||
+                    userData?.country ||
+                    isAdmin;
+
                   if (hasData) {
-                    console.log("[AUTH]: User has data. Redirecting to home/analytics.");
+                    console.log("[AUTH]: User has data. Redirecting to home/analytics.", { uid: user.uid, email: user.email, hasData });
                     return isAdmin ? <Navigate to="/admin/analytics" /> : <Navigate to="/user/home" />;
                   }
 
@@ -258,20 +303,27 @@ function App() {
                   <Signup />
                 ) : (() => {
                   const isAdmin = userData?.role === 'Admin' || user?.email === 'admin@gmail.com';
-                  const hasData = userData?.onboarded || 
-                                  userData?.phone || 
-                                  userData?.company || 
-                                  userData?.businessRole ||
-                                  userData?.businessName || 
-                                  userData?.companyName ||
-                                  userData?.job || 
-                                  userData?.bio ||
-                                  isAdmin;
+                  const hasData = userData?.onboarded ||
+                    userData?.phone ||
+                    userData?.mobileNumber ||
+                    userData?.company ||
+                    userData?.businessName ||
+                    userData?.companyName ||
+                    userData?.organization ||
+                    userData?.businessRole ||
+                    userData?.job ||
+                    userData?.jobTitle ||
+                    userData?.designation ||
+                    userData?.bio ||
+                    userData?.address ||
+                    userData?.city ||
+                    userData?.country ||
+                    isAdmin;
 
                   if (hasData) {
                     return isAdmin ? <Navigate to="/admin/analytics" /> : <Navigate to="/user/home" />;
                   }
-                  
+
                   if (userData?.exists === false) {
                     return <Navigate to="/user/complete-profile" />;
                   }
@@ -306,15 +358,22 @@ function App() {
                 user ? (
                   (() => {
                     const isAdmin = userData?.role === 'Admin' || user?.email === 'admin@gmail.com';
-                    const hasData = userData?.onboarded || 
-                                    userData?.phone || 
-                                    userData?.company || 
-                                    userData?.businessRole ||
-                                    userData?.businessName || 
-                                    userData?.companyName ||
-                                    userData?.job || 
-                                    userData?.bio ||
-                                    isAdmin;
+                    const hasData = userData?.onboarded ||
+                      userData?.phone ||
+                      userData?.mobileNumber ||
+                      userData?.company ||
+                      userData?.businessName ||
+                      userData?.companyName ||
+                      userData?.organization ||
+                      userData?.businessRole ||
+                      userData?.job ||
+                      userData?.jobTitle ||
+                      userData?.designation ||
+                      userData?.bio ||
+                      userData?.address ||
+                      userData?.city ||
+                      userData?.country ||
+                      isAdmin;
 
                     if (hasData) {
                       return isAdmin ? <Navigate to="/admin/analytics" /> : <Navigate to="/user/home" />;

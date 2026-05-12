@@ -8,8 +8,7 @@ import Layout from "../../components/layout/layout";
 const Support = ({ userData }) => {
     const [formData, setFormData] = useState({
         category: "Technical Issue",
-        message: "",
-    });
+        message: "" });
 
     const [loading, setLoading] = useState(false);
     const [conversations, setConversations] = useState([]);
@@ -107,8 +106,7 @@ const Support = ({ userData }) => {
                 vector: formData.category,
                 brief: formData.message,
                 status: "Unread",
-                createdAt: serverTimestamp(),
-            });
+                createdAt: serverTimestamp() });
 
             toast.success("Support brief dispatched!");
             setFormData({ ...formData, message: "" });
@@ -130,8 +128,7 @@ const Support = ({ userData }) => {
                 text: msgText,
                 sender: "User",
                 senderName: userData?.displayName || "User",
-                createdAt: serverTimestamp(),
-            });
+                createdAt: serverTimestamp() });
 
             // Update main document for sorting/status
             await updateDoc(doc(db, "inquiries", convId), {

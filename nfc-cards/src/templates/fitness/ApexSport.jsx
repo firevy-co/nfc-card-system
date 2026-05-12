@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
    FiPhone, FiMail, FiGlobe, FiTarget, FiMapPin, FiInstagram, FiTwitter, FiLinkedin,
-   FiYoutube, FiUserPlus, FiActivity, FiPlay, FiMessageSquare, FiShare2, FiPlus,
+   FiUserPlus, FiActivity, FiPlay, FiMessageSquare, FiShare2, FiPlus,
    FiCalendar, FiDownload, FiHeart, FiAward, FiClock
 } from 'react-icons/fi';
 import { downloadVCard } from '../common/StandardComponents';
@@ -86,7 +86,7 @@ const ProductCard = ({ img, name, price }) => (
 const ApexSport = ({ userData }) => {
    const {
       displayName, email, phone, website, address,
-      youtube, linkedin, twitter, instagram, logo
+      linkedin, twitter, instagram, logo
    } = userData || {};
 
    const [selectedTime, setSelectedTime] = useState("");
@@ -138,7 +138,7 @@ const ApexSport = ({ userData }) => {
                         <SocialBtn icon={FiInstagram} href={instagram || null} />
                         <SocialBtn icon={FiTwitter} href={twitter || null} />
                         <SocialBtn icon={FiLinkedin} href={linkedin || null} />
-                        <SocialBtn icon={FiYoutube} href={youtube || null} />
+
                      </div>
                   </div>
                </div>

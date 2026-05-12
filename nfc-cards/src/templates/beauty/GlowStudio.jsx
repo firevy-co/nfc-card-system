@@ -1,11 +1,11 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiTwitter,
    FiUserPlus, FiChevronDown, FiStar, FiScissors, FiEye,
    FiCamera, FiClock, FiCalendar, FiMessageCircle, FiHeart
 } from 'react-icons/fi';
-import { FaTiktok, FaWhatsapp, FaPinterest } from 'react-icons/fa';
+import { FaWhatsapp, FaPinterest } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
 
@@ -65,7 +65,6 @@ const GlowStudio = ({ userData }) => {
       businessName: "The Foxhole Beauty Bar",
       twitter: "roxyfox_mua",
       instagram: "roxyfox.glam",
-      tiktok: "foxhole.beauty",
       pinterest: "roxyfoxglam",
       whatsapp: "12125550000",
       bio: "Unapologetic glamour for the modern muse. Specializing in editorial makeup, custom lash architecture, and red-carpet readiness. We don't just do makeup; we create icons.",
@@ -125,15 +124,12 @@ const GlowStudio = ({ userData }) => {
       instagram: userData?.instagram || fictionalData.instagram,
       facebook: userData?.facebook || fictionalData.facebook,
       github: userData?.github || fictionalData.github,
-      youtube: userData?.youtube || fictionalData.youtube,
-      tiktok: userData?.tiktok || fictionalData.tiktok,
       telegram: userData?.telegram || fictionalData.telegram,
       bio: userData?.bio || fictionalData.bio,
       profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
       avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
       logo: userData?.logo || userData?.profileImage || fictionalData.logo,
-      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
-   };
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage };
    const fadeUp = {
       hidden: { opacity: 0, y: 20 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -323,7 +319,7 @@ const GlowStudio = ({ userData }) => {
                   <div className="flex flex-wrap justify-center gap-3">
                      {[
                         { val: data.instagram, icon: FiInstagram, link: `https://instagram.com/${data.instagram}` },
-                        { val: data.tiktok, icon: FaTiktok, link: `https://tiktok.com/@${data.tiktok}` },
+
                         { val: fictionalData.pinterest, icon: FaPinterest, link: `https://pinterest.com/${fictionalData.pinterest}` },
                         { val: data.twitter, icon: FiTwitter, link: `https://twitter.com/${data.twitter}` },
                         { val: data.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${data.whatsapp}` }

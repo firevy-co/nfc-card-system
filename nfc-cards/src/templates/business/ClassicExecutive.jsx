@@ -134,15 +134,12 @@ const ClassicExecutive = ({ userData }) => {
       instagram: userData?.instagram || fictionalData.instagram,
       facebook: userData?.facebook || fictionalData.facebook,
       github: userData?.github || fictionalData.github,
-      youtube: userData?.youtube || fictionalData.youtube,
-      tiktok: userData?.tiktok || fictionalData.tiktok,
       telegram: userData?.telegram || fictionalData.telegram,
       bio: userData?.bio || fictionalData.bio,
       profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
       avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
       logo: userData?.logo || userData?.profileImage || fictionalData.logo,
-      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
-   };
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage };
    const fadeUp = {
       hidden: { opacity: 0, x: -10 },
       visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } }

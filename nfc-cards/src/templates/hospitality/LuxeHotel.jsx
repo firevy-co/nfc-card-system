@@ -17,8 +17,7 @@ const LuxeHotel = ({ userData }) => {
     twitter,
     coverImage,
     gallery,
-    bio,
-  } = userData || {};
+    bio } = userData || {};
 
   const [copied, setCopied] = useState(false);
 

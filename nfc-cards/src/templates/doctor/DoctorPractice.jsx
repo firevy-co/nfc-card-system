@@ -46,8 +46,7 @@ const HospitalCard = ({ userData }) => {
       address,
       linkedin,
       instagram,
-      logo,
-   } = userData || {};
+      logo } = userData || {};
 
    const services = [
       "Heart Care",

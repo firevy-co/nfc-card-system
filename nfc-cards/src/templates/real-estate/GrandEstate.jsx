@@ -21,8 +21,7 @@ const GrandEstate = ({ userData }) => {
       twitter,
       bio,
       avatar,
-      logo,
-   } = userData || {};
+      logo } = userData || {};
 
    const displayPhone = mobileNumber || phone || "+91 99999 99999";
    const displayRole = designation || role || "Luxury Broker";
@@ -33,20 +32,17 @@ const GrandEstate = ({ userData }) => {
          title: "Skyline Penthouse",
          price: "₹3.2 Cr",
          image:
-            "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=900&q=80",
-      },
+            "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=900&q=80" },
       {
          title: "Modern Villa",
          price: "₹2.1 Cr",
          image:
-            "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=900&q=80",
-      },
+            "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=900&q=80" },
       {
          title: "Luxury Apartment",
          price: "₹1.4 Cr",
          image:
-            "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80",
-      },
+            "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80" },
    ];
 
    return (

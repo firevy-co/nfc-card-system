@@ -1,11 +1,11 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   FiMail, FiGlobe, FiMapPin, FiInstagram, FiLinkedin,
   FiTwitter, FiUserPlus, FiChevronDown, FiHeadphones,
   FiMonitor, FiCode, FiCpu, FiPlay
 } from 'react-icons/fi';
-import { FaDiscord, FaSteam, FaTwitch, FaYoutube } from 'react-icons/fa';
+import { FaDiscord, FaSteam, FaTwitch } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
 
@@ -57,7 +57,6 @@ const BentoDashboard = ({ userData }) => {
     address: "Seattle, WA, United States",
     businessName: "Polygrid Studios",
     twitter: "marcusthorne_dev",
-    youtube: "polygrid",
     discord: "marcus_dev#1234",
     profileImage: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=400&h=400&fit=crop",
     bio: "Solo indie dev crafting atmospheric pixel-art adventures and synth-heavy soundtracks. Creator of 'Neon Drifter'.",
@@ -80,7 +79,7 @@ const BentoDashboard = ({ userData }) => {
     faqs: [
       { question: "Are you available for freelance sound design?", answer: "Currently, I am fully booked working on 'Cyber Hound', but I am accepting inquiries for Q3 2027." },
       { question: "What engine do you use?", answer: "I primarily use Unity for 3D/2.5D projects, and Godot for pure 2D pixel art games." },
-      { question: "Can I stream your games?", answer: "Absolutely! Streaming and monetization of my games on Twitch/YouTube is 100% permitted and encouraged." }
+      { question: "Can I stream your games?", answer: "Absolutely! Streaming and monetization of my games on streaming platforms is 100% permitted and encouraged." }
     ]
   };
 
@@ -100,15 +99,12 @@ const BentoDashboard = ({ userData }) => {
     instagram: userData?.instagram || fictionalData.instagram,
     facebook: userData?.facebook || fictionalData.facebook,
     github: userData?.github || fictionalData.github,
-    youtube: userData?.youtube || fictionalData.youtube,
-    tiktok: userData?.tiktok || fictionalData.tiktok,
     telegram: userData?.telegram || fictionalData.telegram,
     bio: userData?.bio || fictionalData.bio,
     profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
     avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
     logo: userData?.logo || userData?.profileImage || fictionalData.logo,
-    bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
-  };
+    bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage };
 
   return (
     <div className="w-full min-h-screen bg-[#F4F4F5] text-gray-900 font-['Outfit',sans-serif] pb-24 flex justify-center">
@@ -173,7 +169,7 @@ const BentoDashboard = ({ userData }) => {
             <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
               {[
                 { id: 'data.twitter', val: data.twitter, icon: FiTwitter, color: 'bg-[#1DA1F2]/10 text-[#1DA1F2]' },
-                { id: 'data.youtube', val: data.youtube, icon: FaYoutube, color: 'bg-[#ff0000]/10 text-[#ff0000]' },
+
                 { id: 'data.discord', val: data.discord, icon: FaDiscord, color: 'bg-[#5865f2]/10 text-[#5865f2]' },
                 { id: 'steam', val: "steam", icon: FaSteam, color: 'bg-slate-800/10 text-slate-800' },
                 { id: 'twitch', val: "twitch", icon: FaTwitch, color: 'bg-[#9146FF]/10 text-[#9146FF]' },

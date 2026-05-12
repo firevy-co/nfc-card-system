@@ -14,10 +14,8 @@ const EliteTrainer = ({ userData }) => {
       address,
       linkedin,
       instagram,
-      youtube,
       twitter,
-      logo,
-   } = userData || {};
+      logo } = userData || {};
 
    const gallery = [
       "https://images.unsplash.com/photo-1534438327276-14e5300c3a48",
@@ -30,14 +28,12 @@ const EliteTrainer = ({ userData }) => {
          name: "Dumbbells Set",
          price: "$19.99",
          image:
-            "https://images.unsplash.com/photo-1599058917765-a780eda07a3e",
-      },
+            "https://images.unsplash.com/photo-1599058917765-a780eda07a3e" },
       {
          name: "Kettlebell",
          price: "$29.99",
          image:
-            "https://images.unsplash.com/photo-1518611012118-696072aa579a",
-      },
+            "https://images.unsplash.com/photo-1518611012118-696072aa579a" },
    ];
 
    return (
@@ -76,7 +72,7 @@ const EliteTrainer = ({ userData }) => {
                      <div className="flex gap-3 mt-3 text-white/80">
                         <FiIcons.FiFacebook />
                         <FiIcons.FiInstagram />
-                        <FiIcons.FiYoutube />
+
                         <FiIcons.FiTwitter />
                      </div>
                   </div>

@@ -26,8 +26,7 @@ export default function CloudNexus({ userData = {} }) {
       linkedin = '',
       twitter = '',
       github = '',
-      logo,
-   } = userData;
+      logo } = userData;
 
    const socialLinks = [
       { key: 'whatsapp', icon: Fa.FaWhatsapp, url: `https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}`, color: 'from-green-400 to-green-600' },

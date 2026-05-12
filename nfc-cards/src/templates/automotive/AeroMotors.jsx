@@ -1,11 +1,11 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiLinkedin,
    FiTwitter, FiUserPlus, FiChevronDown, FiStar, FiClock, FiCalendar,
    FiImage, FiVideo, FiMessageSquare, FiSend, FiCreditCard
 } from 'react-icons/fi';
-import { FaWhatsapp, FaFacebook, FaYoutube, FaPinterest } from 'react-icons/fa';
+import { FaWhatsapp, FaFacebook, FaPinterest } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
 
@@ -73,7 +73,6 @@ const ModernVCard = ({ userData }) => {
       instagram: "sterling_events",
       linkedin: "sophiasterling",
       pinterest: "sterlingevents",
-      youtube: "sterlingevents",
       services: [
          { title: "Luxury Weddings", desc: "Full-service wedding planning, design, and coordination.", price: "Starts at $15k", img: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=300&fit=crop" },
          { title: "Corporate Galas", desc: "Brand launches, award ceremonies, and VIP corporate retreats.", price: "Custom Quote", img: "https://images.unsplash.com/photo-1505369711641-bc303b60c888?w=400&h=300&fit=crop" },
@@ -99,7 +98,7 @@ const ModernVCard = ({ userData }) => {
          accountName: "Sterling Events LLC",
          accountNumber: "XXXX-XXXX-8921",
          routingNumber: "122XXXXXX",
-         qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://paypal.me/sterlingevents"
+         qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://.me/sterlingevents"
       },
       faqs: [
          { question: "Do you travel for destination events?", answer: "Yes, we handle events globally. We have extensive experience executing seamless events across Europe, the Caribbean, and Asia." },
@@ -128,15 +127,12 @@ const ModernVCard = ({ userData }) => {
       instagram: userData?.instagram || fictionalData.instagram,
       facebook: userData?.facebook || fictionalData.facebook,
       github: userData?.github || fictionalData.github,
-      youtube: userData?.youtube || fictionalData.youtube,
-      tiktok: userData?.tiktok || fictionalData.tiktok,
       telegram: userData?.telegram || fictionalData.telegram,
       bio: userData?.bio || fictionalData.bio,
       profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
       avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
       logo: userData?.logo || userData?.profileImage || fictionalData.logo,
-      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
-   };
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage };
    return (
       <div className="w-full min-h-screen bg-[#F3F4F6] text-gray-800 font-['Inter',sans-serif] pb-24 flex justify-center">
 
@@ -256,7 +252,7 @@ const ModernVCard = ({ userData }) => {
                      {[
                         { icon: FiInstagram, link: `https://instagram.com/${data.instagram}`, color: 'bg-pink-50 text-pink-600 hover:bg-pink-600' },
                         { icon: FiLinkedin, link: `https://linkedin.com/in/${data.linkedin}`, color: 'bg-blue-50 text-blue-600 hover:bg-blue-600' },
-                        { icon: FaYoutube, link: `https://youtube.com/${data.youtube}`, color: 'bg-red-50 text-red-600 hover:bg-red-600' },
+
                         { icon: FaPinterest, link: `https://pinterest.com/${fictionalData.pinterest}`, color: 'bg-rose-50 text-rose-600 hover:bg-rose-600' }
                      ].map((social, idx) => (
                         <a key={idx} href={social.link || null} target="_blank" rel="noopener noreferrer" className={`w-14 h-14 rounded-full mx-auto flex items-center justify-center transition-colors group ${social.color.split(' ')[0]} ${social.color.split(' ')[1]} ${social.color.split(' ')[2]} hover:text-white`}>

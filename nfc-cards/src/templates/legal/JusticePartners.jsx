@@ -10,8 +10,7 @@ import {
    FiAward,
    FiCheckCircle,
    FiDownload,
-   FiUserPlus,
-} from "react-icons/fi";
+   FiUserPlus } from "react-icons/fi";
 import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
@@ -25,8 +24,7 @@ const JusticePartners = ({ userData }) => {
       country = "USA",
       website = "www.justicepartners.com",
       address = "District Court Avenue",
-      experience = "20+ Years Experience",
-   } = userData || {};
+      experience = "20+ Years Experience" } = userData || {};
 
    const location = [city, country].filter(Boolean).join(", ");
 

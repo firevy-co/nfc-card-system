@@ -10,12 +10,10 @@ import {
    FiHome,
    FiWind,
    FiDroplet,
-   FiDownload,
-} from "react-icons/fi";
+   FiDownload } from "react-icons/fi";
 import PoweredBy from "../PoweredBy";
 import {
-   StandardSaveContactButton,
-} from "../common/StandardComponents";
+   StandardSaveContactButton } from "../common/StandardComponents";
 
 const ServicePortfolio = ({ userData }) => {
    const {
@@ -26,8 +24,7 @@ const ServicePortfolio = ({ userData }) => {
       address = "Ahmedabad, Gujarat",
       website = "www.quickfixservices.in",
       experience = "8+ Years Experience",
-      timing = "9:00 AM - 9:00 PM",
-   } = userData || {};
+      timing = "9:00 AM - 9:00 PM" } = userData || {};
 
    const serviceCards = [
       {
@@ -35,44 +32,37 @@ const ServicePortfolio = ({ userData }) => {
          desc: "Cooling issue, gas filling & installation",
          icon: <FiWind />,
          image:
-            "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80",
-      },
+            "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=80" },
       {
          title: "Fridge Repairing",
          desc: "Compressor, cooling & leakage repair",
          icon: <FiHome />,
          image:
-            "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=800&q=80",
-      },
+            "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=800&q=80" },
       {
          title: "Washing Machine",
          desc: "Motor issue & maintenance service",
          icon: <FiDroplet />,
          image:
-            "https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?auto=format&fit=crop&w=800&q=80",
-      },
+            "https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?auto=format&fit=crop&w=800&q=80" },
       {
          title: "Microwave Repair",
          desc: "Heating & electrical fixing",
          icon: <FiTool />,
          image:
-            "https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?auto=format&fit=crop&w=800&q=80",
-      },
+            "https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?auto=format&fit=crop&w=800&q=80" },
    ];
 
    const reviews = [
       {
          name: "Rakesh Patel",
-         msg: "Very fast AC repair service. Highly recommended.",
-      },
+         msg: "Very fast AC repair service. Highly recommended." },
       {
          name: "Neha Shah",
-         msg: "Affordable price and technician was professional.",
-      },
+         msg: "Affordable price and technician was professional." },
       {
          name: "Amit Joshi",
-         msg: "My fridge repaired same day. Great support.",
-      },
+         msg: "My fridge repaired same day. Great support." },
    ];
 
    return (

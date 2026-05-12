@@ -25,7 +25,6 @@ const DigitalCreator = ({ userData }) => {
       email,
       phone,
       address,
-      youtube,
       linkedin,
       twitter,
       instagram,
@@ -167,7 +166,7 @@ const DigitalCreator = ({ userData }) => {
            SOCIAL
         =========================== */}
             <div className="px-5 mt-6 flex justify-between">
-               <Social icon={FiIcons.FiYoutube} link={youtube} />
+
                <Social icon={FiIcons.FiInstagram} link={instagram} />
                <Social icon={FiIcons.FiTwitter} link={twitter} />
                <Social icon={FiIcons.FiLinkedin} link={linkedin} />

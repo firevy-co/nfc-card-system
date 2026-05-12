@@ -4,7 +4,6 @@ import {
    FiPhone,
    FiMail,
    FiGlobe,
-   FiYoutube,
    FiTwitter,
    FiInstagram,
    FiLinkedin,
@@ -144,7 +143,6 @@ const StreamTemplate = ({ userData }) => {
       phone,
       website,
       address,
-      youtube,
       linkedin,
       twitter,
       twitch,
@@ -152,7 +150,7 @@ const StreamTemplate = ({ userData }) => {
       logo
    } = userData || {};
 
-   const mainStreamLink = twitch || youtube || website;
+   const mainStreamLink = twitch || website;
    const whatsappLink = phone ? `https://wa.me/${phone.replace(/\D/g, '')}` : null;
    const mapsLink = address ? `https://maps.google.com/?q=${encodeURIComponent(address)}` : null;
 
@@ -218,7 +216,7 @@ const StreamTemplate = ({ userData }) => {
             {mainStreamLink && (
                <div className="mb-10">
                   <a href={mainStreamLink} target="_blank" rel="noopener noreferrer" className="w-full py-4 bg-[#6441a5] text-white font-bold text-sm tracking-widest uppercase rounded-2xl flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all shadow-[0_0_20px_rgba(100,65,165,0.4)]">
-                     {twitch ? <FiTwitch size={18} /> : (youtube ? <FiYoutube size={18} /> : <FiGlobe size={18} />)} Watch Live Now
+                     {twitch ? <FiTwitch size={18} /> : <FiGlobe size={18} />} Watch Live Now
                   </a>
                </div>
             )}
@@ -257,7 +255,7 @@ const StreamTemplate = ({ userData }) => {
             {/* SOCIAL */}
             <div className="flex justify-center gap-8 mt-12 mb-10">
                <SocialIcon icon={FiTwitch} href={twitch} hoverColor="text-[#6441a5]" />
-               <SocialIcon icon={FiYoutube} href={youtube} hoverColor="text-red-500" />
+
                <SocialIcon icon={FiTwitter} href={twitter} hoverColor="text-blue-400" />
                <SocialIcon icon={FiInstagram} href={instagram} hoverColor="text-pink-500" />
                <SocialIcon icon={FiLinkedin} href={linkedin} hoverColor="text-blue-600" />

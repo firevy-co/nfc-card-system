@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiPhone, FiMail, FiGlobe, FiInstagram, FiLinkedin, FiTwitter, FiMapPin, FiUserPlus, FiGithub, FiChevronDown } from 'react-icons/fi';
-import { FaWhatsapp, FaFacebook, FaYoutube, FaTelegram } from 'react-icons/fa';
+import { FaWhatsapp, FaFacebook, FaTelegram } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
 
@@ -49,7 +49,7 @@ const AbstractMedia = ({ userData }) => {
     instagram: "", linkedin: "", twitter: "",
     address: "Brooklyn, NY, USA",
     bio: "Breaking the boundaries of digital expression through abstract visuals and experimental media.",
-    whatsapp: "", github: "", facebook: "", youtube: "", telegram: "",
+    whatsapp: "", github: "", facebook: "", telegram: "",
     faqs: [
       { question: "What is your design process?", answer: "We start with deep conceptualization followed by iterative abstract exploration." },
       { question: "Do you handle motion graphics?", answer: "Yes, motion is at the core of everything we build." }
@@ -72,15 +72,12 @@ const AbstractMedia = ({ userData }) => {
     instagram: userData?.instagram || fictionalData.instagram,
     facebook: userData?.facebook || fictionalData.facebook,
     github: userData?.github || fictionalData.github,
-    youtube: userData?.youtube || fictionalData.youtube,
-    tiktok: userData?.tiktok || fictionalData.tiktok,
     telegram: userData?.telegram || fictionalData.telegram,
     bio: userData?.bio || fictionalData.bio,
     profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
     avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
     logo: userData?.logo || userData?.profileImage || fictionalData.logo,
-    bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
-  };
+    bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage };
 
   const finalPhone = data.phone || data.mobileNumber;
 
@@ -253,7 +250,7 @@ const AbstractMedia = ({ userData }) => {
                 { id: 'data.github', val: data.github, icon: FiGithub, color: 'hover:bg-zinc-700 text-white' },
                 { id: 'data.twitter', val: data.twitter, icon: FiTwitter, color: 'hover:bg-[#1DA1F2] text-[#1DA1F2]' },
                 { id: 'data.facebook', val: data.facebook, icon: FaFacebook, color: 'hover:bg-[#1877f2] text-[#1877f2]' },
-                { id: 'data.youtube', val: data.youtube, icon: FaYoutube, color: 'hover:bg-[#ff0000] text-[#ff0000]' },
+
                 { id: 'data.telegram', val: data.telegram, icon: FaTelegram, color: 'hover:bg-[#0088cc] text-[#0088cc]' }
               ].map((social, i) => social.val && (
                 <motion.a

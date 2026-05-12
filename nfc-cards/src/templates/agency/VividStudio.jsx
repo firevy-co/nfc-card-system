@@ -5,7 +5,7 @@ import {
   FiTwitter, FiUserPlus, FiChevronDown, FiStar, FiCoffee,
   FiAward, FiClock, FiMessageSquare, FiImage, FiArrowRight
 } from 'react-icons/fi';
-import { FaWhatsapp, FaYoutube } from 'react-icons/fa';
+import { FaWhatsapp } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
 
@@ -116,13 +116,10 @@ const MonochromeTimeline = ({ userData }) => {
     instagram: userData?.instagram || fictionalData.instagram,
     facebook: userData?.facebook || fictionalData.facebook,
     github: userData?.github || fictionalData.github,
-    youtube: userData?.youtube || fictionalData.youtube,
-    tiktok: userData?.tiktok || fictionalData.tiktok,
     telegram: userData?.telegram || fictionalData.telegram,
     bio: userData?.bio || fictionalData.bio,
     profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage,
-    coverImage: userData?.coverPhoto || userData?.bannerImage || fictionalData.coverImage,
-  };
+    coverImage: userData?.coverPhoto || userData?.bannerImage || fictionalData.coverImage };
 
   // vCard still uses live userData for downloading
   const vCardData = { ...userData, ...data };

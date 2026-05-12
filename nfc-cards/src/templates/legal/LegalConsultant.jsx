@@ -12,8 +12,7 @@ import {
    FiBriefcase,
    FiClock,
    FiCheckCircle,
-   FiDownload,
-} from "react-icons/fi";
+   FiDownload } from "react-icons/fi";
 import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
@@ -25,8 +24,7 @@ const LegalConsultant = ({ userData }) => {
       phone = "+1 800-LAW-PRO",
       address = "One Attorney Plaza, Chicago",
       role = "Senior Legal Consultant",
-      experience = "15+ Years Experience",
-   } = userData || {};
+      experience = "15+ Years Experience" } = userData || {};
 
    return (
       <div className="min-h-screen bg-[#0b1120] text-white font-['Mulish'] overflow-hidden">

@@ -21,8 +21,7 @@ const PixelProperty = ({ userData }) => {
       twitter,
       bio,
       avatar,
-      logo,
-   } = userData || {};
+      logo } = userData || {};
 
    const displayPhone = mobileNumber || phone;
    const displayRole = designation || role || "Digital Agent";
@@ -32,23 +31,19 @@ const PixelProperty = ({ userData }) => {
       {
          icon: <FiIcons.FiHome size={20} />,
          title: "Smart Homes",
-         text: "Modern homes with premium facilities",
-      },
+         text: "Modern homes with premium facilities" },
       {
          icon: <FiIcons.FiMap size={20} />,
          title: "Area Scan",
-         text: "Best locations & investment zones",
-      },
+         text: "Best locations & investment zones" },
       {
          icon: <FiIcons.FiVideo size={20} />,
          title: "Virtual Tours",
-         text: "Live property walkthrough online",
-      },
+         text: "Live property walkthrough online" },
       {
          icon: <FiIcons.FiTrendingUp size={20} />,
          title: "Growth Deals",
-         text: "High ROI investment properties",
-      },
+         text: "High ROI investment properties" },
    ];
 
    return (

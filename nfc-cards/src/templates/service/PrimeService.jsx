@@ -7,14 +7,12 @@ import {
    FiMapPin,
    FiInstagram,
    FiTwitter,
-   FiYoutube,
    FiLinkedin,
    FiUserPlus,
    FiClock,
    FiShield,
    FiCheckCircle,
-   FiArrowRight,
-} from "react-icons/fi";
+   FiArrowRight } from "react-icons/fi";
 import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
@@ -73,14 +71,12 @@ const PrimeService = ({ userData }) => {
       phone = "+91 99999 99999",
       website = "https://www.primeservice.com",
       address = "Ahmedabad, Gujarat",
-      youtube,
       linkedin,
       twitter,
       instagram,
       logo,
       timing = "Open • 9 AM to 9 PM",
-      experience = "12+ Years Experience",
-   } = userData || {};
+      experience = "12+ Years Experience" } = userData || {};
 
    const services = [
       "AC Repairing",
@@ -216,7 +212,7 @@ const PrimeService = ({ userData }) => {
                <div className="flex justify-center gap-2 flex-wrap mt-6">
                   <PrimeSocial icon={FiInstagram} href={instagram || null} />
                   <PrimeSocial icon={FiTwitter} href={twitter || null} />
-                  <PrimeSocial icon={FiYoutube} href={youtube || null} />
+
                   <PrimeSocial icon={FiLinkedin} href={linkedin || null} />
                </div>
 

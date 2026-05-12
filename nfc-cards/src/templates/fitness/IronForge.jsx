@@ -8,7 +8,6 @@ import {
    FiInstagram,
    FiTwitter,
    FiLinkedin,
-   FiYoutube,
    FiUserPlus,
    FiActivity,
    FiArrowRight,
@@ -173,7 +172,6 @@ const IronForge = ({ userData }) => {
       phone,
       website,
       address,
-      youtube,
       linkedin,
       twitter,
       instagram,
@@ -241,7 +239,7 @@ const IronForge = ({ userData }) => {
 
                   <div className="flex gap-2 mt-4">
                      <SocialBtn icon={FiInstagram} href={instagram || null} />
-                     <SocialBtn icon={FiYoutube} href={youtube || null} />
+
                      <SocialBtn icon={FiTwitter} href={twitter || null} />
                      <SocialBtn icon={FiLinkedin} href={linkedin || null} />
                   </div>

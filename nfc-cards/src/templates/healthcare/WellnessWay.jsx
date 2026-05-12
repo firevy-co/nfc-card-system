@@ -8,15 +8,13 @@ import {
   FiInstagram,
   FiTwitter,
   FiLinkedin,
-  FiYoutube,
   FiUserPlus,
   FiSun,
   FiHeart,
   FiChevronLeft,
   FiChevronRight,
   FiStar,
-  FiCheckCircle,
-} from "react-icons/fi";
+  FiCheckCircle } from "react-icons/fi";
 import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
@@ -73,12 +71,10 @@ const WellnessWay = ({ userData }) => {
     phone,
     website,
     address,
-    youtube,
     linkedin,
     twitter,
     instagram,
-    logo,
-  } = userData || {};
+    logo } = userData || {};
 
   const services = [
     "Morning Yoga",
@@ -107,18 +103,15 @@ const WellnessWay = ({ userData }) => {
     {
       name: "Riya",
       text: "Morning yoga sessions changed my daily routine.",
-      rating: 5,
-    },
+      rating: 5 },
     {
       name: "Amit",
       text: "Very peaceful and refreshing wellness center.",
-      rating: 5,
-    },
+      rating: 5 },
     {
       name: "Neha",
       text: "Best place for fitness and stress relief.",
-      rating: 4,
-    },
+      rating: 4 },
   ];
 
   const [index, setIndex] = useState(0);
@@ -295,7 +288,7 @@ const WellnessWay = ({ userData }) => {
           {/* SOCIAL */}
           <div className="flex justify-center gap-3 mt-5">
             <WellnessSocial icon={FiInstagram} href={instagram || null} />
-            <WellnessSocial icon={FiYoutube} href={youtube || null} />
+
             <WellnessSocial icon={FiTwitter} href={twitter || null} />
             <WellnessSocial icon={FiLinkedin} href={linkedin || null} />
           </div>

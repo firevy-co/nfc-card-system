@@ -10,15 +10,14 @@ import {
    FiTwitter,
    FiGithub
 } from "react-icons/fi";
-import { FaGem, FaWhatsapp, FaYoutube, FaTiktok, FaDiscord, FaTelegram, FaSkype, FaPaypal } from "react-icons/fa";
+import { FaGem, FaWhatsapp, FaDiscord, FaTelegram, FaSkype } from "react-icons/fa";
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
 
 const JewelryLuxury = ({ userData }) => {
    const {
       displayName, website, email, phone, address, bio,
-      whatsapp, facebook, youtube, tiktok, discord, telegram, skype, paypal,
-      linkedin, instagram, twitter, github, company, businessName, logo, profileImage,
+      whatsapp, facebook, discord, telegram, skype, linkedin, instagram, twitter, github, company, businessName, logo, profileImage,
       role
    } = userData || {};
 
@@ -110,7 +109,7 @@ const JewelryLuxury = ({ userData }) => {
                      { id: 'facebook', val: facebook, icon: FiFacebook, color: 'hover:bg-[#1877f2]' },
                      { id: 'twitter', val: twitter, icon: FiTwitter, color: 'hover:bg-black' },
                      { id: 'whatsapp', val: whatsapp, icon: FaWhatsapp, color: 'hover:bg-[#25d366]' },
-                     { id: 'youtube', val: youtube, icon: FaYoutube, color: 'hover:bg-[#ff0000]' },
+
                      { id: 'telegram', val: telegram, icon: FaTelegram, color: 'hover:bg-[#0088cc]' },
                      { id: 'github', val: github, icon: FiGithub, color: 'hover:bg-zinc-800' }
                   ].map(social => social.val && (

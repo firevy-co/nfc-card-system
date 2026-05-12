@@ -9,15 +9,13 @@ import {
   FiInstagram,
   FiTwitter,
   FiFacebook,
-  FiYoutube,
   FiCheckCircle,
   FiClock,
   FiShield,
   FiDownload,
   FiArrowRight,
   FiStar,
-  FiZap,
-} from "react-icons/fi";
+  FiZap } from "react-icons/fi";
 import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
@@ -32,12 +30,10 @@ const SkillFlow = ({ userData }) => {
     instagram,
     facebook,
     twitter,
-    youtube,
     logo,
     role = "Service Architect",
     experience = "10+ Years Experience",
-    timing = "Open • 9 AM to 9 PM",
-  } = userData || {};
+    timing = "Open • 9 AM to 9 PM" } = userData || {};
 
   const services = [
     "Premium Consulting",
@@ -50,18 +46,15 @@ const SkillFlow = ({ userData }) => {
     {
       icon: <FiShield />,
       title: "Trusted Service",
-      text: "Reliable solutions with expert handling.",
-    },
+      text: "Reliable solutions with expert handling." },
     {
       icon: <FiZap />,
       title: "Fast Response",
-      text: "Quick communication & instant support.",
-    },
+      text: "Quick communication & instant support." },
     {
       icon: <FiCheckCircle />,
       title: "Quality Work",
-      text: "Professional standards in every project.",
-    },
+      text: "Professional standards in every project." },
   ];
 
   return (

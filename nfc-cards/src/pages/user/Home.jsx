@@ -50,7 +50,7 @@ const Home = ({ userData }) => {
             where("uid", "==", auth.currentUser.uid)
         );
 
-        let unsubscribe = () => {};
+        let unsubscribe = () => { };
         try {
             unsubscribe = onSnapshot(q, (snapshot) => {
                 if (!mounted) return;

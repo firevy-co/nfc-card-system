@@ -63,8 +63,7 @@ const OpalMinimal = ({ userData }) => {
     address = "CG Road, Ahmedabad, Gujarat, India",
     instagram = "aurelius.jewels",
     linkedin = "https://linkedin.com/company/aureliusjewels",
-    logo,
-  } = userData || {};
+    logo } = userData || {};
 
   const jewelleryImages = [
     "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=900&q=80",

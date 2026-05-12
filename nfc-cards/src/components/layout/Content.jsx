@@ -9,11 +9,15 @@ import {
   FiLink,
   FiChevronRight,
   FiX,
-} from "react-icons/fi";
+  FiEye } from "react-icons/fi";
+
+import PreviewModal from "./PreviewModal";
 import { TEMPLATES } from "../../templates/templateRegistry";
 import toast from 'react-hot-toast';
 import { API_BASE_URL } from "../../config/api";
 import ConfirmationModal from "./ConfirmationModal";
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '@/firebase.config';
 import axios from 'axios';
 
 
@@ -30,11 +34,14 @@ export default function Content({ userData }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [nodeToDelete, setNodeToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isSelecting, setIsSelecting] = useState(false);
 
   // Custom categories state
   const [customCategories, setCustomCategories] = useState([]);
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
+
+
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -216,23 +223,22 @@ export default function Content({ userData }) {
   };
 
   const handleSelectTemplate = async (templateId) => {
-    if (!userData?.uid) return;
+    if (!userData?.uid || isSelecting) return;
+    setIsSelecting(true);
     try {
-      const { doc, updateDoc } = await import('firebase/firestore');
-      const { db } = await import('@/firebase.config');
       const userRef = doc(db, "users", userData.uid);
 
-      await updateDoc(userRef, {
+      await setDoc(userRef, {
         templateId: templateId,
         lastTemplateUpdate: new Date().toISOString()
-      });
+      }, { merge: true });
 
-      // Local success feedback is handled by Firestore real-time listener in App.jsx
-      // which will update the global userData state and thus the header.
       toast.success("Identity node selected successfully!");
     } catch (error) {
       console.error("Select Template Failed:", error);
       toast.error("Failed to select node. Please try again.");
+    } finally {
+      setIsSelecting(false);
     }
   };
 
@@ -409,18 +415,35 @@ export default function Content({ userData }) {
                 )}
 
                 {!isAdmin && globalLink && (
-                  <>
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(globalLink);
-                        toast.success("Broadcast identity copied.");
-                      }}
-                      className="flex items-center justify-center gap-3 bg-white border border-border text-foreground cursor-pointer px-8 py-4 rounded-lg font-black text-[10px] uppercase tracking-[0.2em] hover:bg-gray-50 transition-all shadow-sm active:scale-95 group"
-                    >
-                      <FiLink size={16} className="text-accent" />
-                      Live Link
-                    </button>
-                  </>
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 bg-white/50 border border-border p-2 pl-6 rounded-xl shadow-sm">
+                    <div className="flex flex-col">
+                      <p className="text-[9px] font-black uppercase tracking-widest text-accent/60">Active Deployment</p>
+                      <p className="text-[11px] font-bold text-foreground truncate max-w-[200px] md:max-w-[300px]">
+                        {globalLink.replace('http://', '').replace('https://', '')}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(globalLink);
+                          toast.success("Broadcast identity copied.");
+                        }}
+                        className="flex items-center justify-center gap-2 bg-white border border-border text-foreground cursor-pointer px-5 py-3 rounded-lg font-black text-[9px] uppercase tracking-widest hover:bg-gray-50 transition-all shadow-sm active:scale-95 group"
+                        title="Copy Link"
+                      >
+                        <FiLink size={14} className="text-accent" />
+                        Copy
+                      </button>
+
+                      <button
+                        onClick={() => window.open(globalLink, '_blank')}
+                        className="flex items-center justify-center bg-black text-white cursor-pointer px-5 py-3 rounded-lg font-black text-[9px] uppercase tracking-widest hover:brightness-110 transition-all shadow-sm active:scale-95"
+                        title="Open in New Tab"
+                      >
+                        Open
+                      </button>
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
@@ -471,6 +494,7 @@ export default function Content({ userData }) {
                           onEdit={() => handleEditNode(template)}
                           onSelect={() => handleSelectTemplate(template.templateId || template.id)}
                           isSelected={userData?.templateId === (template.templateId || template.id)}
+                          isSelecting={isSelecting}
                         />
                       </motion.div>
                     ))}
@@ -499,6 +523,8 @@ export default function Content({ userData }) {
         confirmText="Retire Node"
         isLoading={isDeleting}
       />
+
+
     </div>
   );
 }

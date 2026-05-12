@@ -1,11 +1,11 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiPhone, FiMail, FiGlobe, FiMapPin, FiInstagram, FiLinkedin,
    FiChevronDown, FiShield, FiKey, FiCompass, FiStar,
    FiClock, FiUserPlus, FiArrowUpRight, FiSliders
 } from 'react-icons/fi';
-import { FaWhatsapp, FaYoutube, FaCar } from 'react-icons/fa';
+import { FaWhatsapp, FaCar } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
 
@@ -67,7 +67,6 @@ const ExoticAutoBroker = ({ userData }) => {
       businessName: "Apex Exotics & Acquisitions",
       twitter: "apex_exotics",
       instagram: "apex.exotics.la",
-      youtube: "apexexotics",
       linkedin: "juliancrossauto",
       whatsapp: "13105558900",
       bio: "Sourcing the world's most elusive hypercars and luxury vehicles for discerning collectors. From off-market allocations to bespoke custom commissions.",
@@ -126,15 +125,12 @@ const ExoticAutoBroker = ({ userData }) => {
       instagram: userData?.instagram || fictionalData.instagram,
       facebook: userData?.facebook || fictionalData.facebook,
       github: userData?.github || fictionalData.github,
-      youtube: userData?.youtube || fictionalData.youtube,
-      tiktok: userData?.tiktok || fictionalData.tiktok,
       telegram: userData?.telegram || fictionalData.telegram,
       bio: userData?.bio || fictionalData.bio,
       profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
       avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
       logo: userData?.logo || userData?.profileImage || fictionalData.logo,
-      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
-   };
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage };
    const fadeUp = {
       hidden: { opacity: 0, y: 20 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
@@ -319,7 +315,7 @@ const ExoticAutoBroker = ({ userData }) => {
                      {[
                         { val: data.instagram, icon: FiInstagram, link: `https://instagram.com/${data.instagram}` },
                         { val: data.linkedin, icon: FiLinkedin, link: `https://linkedin.com/in/${data.linkedin}` },
-                        { val: data.youtube, icon: FaYoutube, link: `https://youtube.com/${data.youtube}` },
+
                         { val: data.whatsapp, icon: FaWhatsapp, link: `https://wa.me/${data.whatsapp}` }
                      ].map((social, i) => social.val && (
                         <a

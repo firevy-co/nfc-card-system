@@ -105,10 +105,10 @@ exports.createInquiry = async (req, res) => {
         };
 
         const docRef = await db.collection('inquiries').add(newInquiry);
-        res.status(201).json({ 
-            success: true, 
-            id: docRef.id, 
-            message: "Inquiry successfully submitted to the network." 
+        res.status(201).json({
+            success: true,
+            id: docRef.id,
+            message: "Inquiry successfully submitted to the network."
         });
     } catch (error) {
         console.error("[INQUIRY CREATE ERROR]:", error);

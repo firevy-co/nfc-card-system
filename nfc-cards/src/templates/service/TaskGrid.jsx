@@ -10,13 +10,11 @@ import {
    FiInstagram,
    FiTwitter,
    FiFacebook,
-   FiYoutube,
    FiStar,
    FiClock,
    FiShield,
    FiDownload,
-   FiArrowRight,
-} from "react-icons/fi";
+   FiArrowRight } from "react-icons/fi";
 import { downloadVCard } from "../common/StandardComponents";
 import PoweredBy from "../PoweredBy";
 
@@ -37,11 +35,9 @@ const TaskGrid = ({ userData }) => {
       instagram,
       facebook,
       twitter,
-      youtube,
       logo,
       experience = "10+ Years Experience",
-      timing = "Open • 9 AM to 9 PM",
-   } = userData || {};
+      timing = "Open • 9 AM to 9 PM" } = userData || {};
 
    const services = [
       "Installation Services",
@@ -53,12 +49,10 @@ const TaskGrid = ({ userData }) => {
    const reviews = [
       {
          name: "Rakesh Patel",
-         msg: "Excellent service and professional team.",
-      },
+         msg: "Excellent service and professional team." },
       {
          name: "Neha Shah",
-         msg: "Quick response and affordable pricing.",
-      },
+         msg: "Quick response and affordable pricing." },
    ];
 
    return (
@@ -220,11 +214,7 @@ const TaskGrid = ({ userData }) => {
                         <FiTwitter />
                      </a>
                   )}
-                  {youtube && (
-                     <a href={youtube || null} className="p-3 bg-slate-100 rounded-xl">
-                        <FiYoutube />
-                     </a>
-                  )}
+
                </div>
 
                {/* REVIEWS */}

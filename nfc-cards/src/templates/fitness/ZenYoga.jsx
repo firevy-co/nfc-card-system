@@ -8,7 +8,6 @@ import {
   FiInstagram,
   FiTwitter,
   FiLinkedin,
-  FiYoutube,
   FiUserPlus,
   FiArrowRight,
   FiHeart,
@@ -148,7 +147,6 @@ const ZenYoga = ({ userData }) => {
     phone,
     website,
     address,
-    youtube,
     linkedin,
     twitter,
     instagram,
@@ -217,7 +215,7 @@ const ZenYoga = ({ userData }) => {
 
             <div className="flex gap-2 mt-4">
               <ZenSocial icon={FiInstagram} href={instagram || null} />
-              <ZenSocial icon={FiYoutube} href={youtube || null} />
+
               <ZenSocial icon={FiTwitter} href={twitter || null} />
               <ZenSocial icon={FiLinkedin} href={linkedin || null} />
             </div>

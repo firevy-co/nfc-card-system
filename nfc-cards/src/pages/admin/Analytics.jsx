@@ -6,8 +6,7 @@ import { collection, onSnapshot, query } from 'firebase/firestore';
 import {
    Users,
    CheckCircle2,
-   Clock,
-} from "lucide-react";
+   Clock } from "lucide-react";
 
 import {
    LineChart,
@@ -15,8 +14,7 @@ import {
    PieChart,
    Pie,
    Cell,
-   ResponsiveContainer,
-} from "recharts";
+   ResponsiveContainer } from "recharts";
 
 const Analytics = ({ user, userData }) => {
    const [stats, setStats] = useState({
@@ -52,112 +50,126 @@ const Analytics = ({ user, userData }) => {
    });
 
    useEffect(() => {
+      if (!db || !auth) return;
+
       let mounted = true;
       let unsubUsers = null;
       let unsubTemplates = null;
       let unsubInquiries = null;
 
-      // 1. Listen for Users
-      try {
-         unsubUsers = onSnapshot(collection(db, "users"), (snap) => {
-            if (!mounted) return;
-            const users = snap.docs.map(doc => doc.data());
-            const onboarded = users.filter(u => u.onboarded).length;
-            const devProgress = users.length > 0 ? Math.round((onboarded / users.length) * 100) : 0;
-            
-            setStats(prev => ({ 
-               ...prev, 
-               usersCount: snap.size,
-               onboardedCount: onboarded,
-               allUsers: users,
-               progress: {
-                  ...prev.progress,
-                  development: devProgress,
-                  total: Math.round((devProgress + prev.progress.design + prev.progress.testing) / 3)
-               }
-            }));
-         }, (_err) => { /* silently ignore permission / assertion errors */ });
-      } catch (_) { /* Firestore client in bad state — skip */ }
+      const startListeners = async () => {
+         // Small delay to ensure Firestore is stable after potential Auth state changes
+         await new Promise(resolve => setTimeout(resolve, 100));
+         if (!mounted) return;
 
-      // 2. Listen for Templates
-      try {
-         unsubTemplates = onSnapshot(collection(db, "templates"), (snap) => {
-            if (!mounted) return;
-            const totalPossibleTemplates = 50;
-            const designProgress = Math.min(100, Math.round((snap.size / totalPossibleTemplates) * 100));
-            
-            setStats(prev => ({ 
-               ...prev, 
-               templatesCount: snap.size,
-               progress: {
-                  ...prev.progress,
-                  design: designProgress,
-                  total: Math.round((prev.progress.development + designProgress + prev.progress.testing) / 3)
-               }
-            }));
-         }, (_err) => { /* silently ignore permission / assertion errors */ });
-      } catch (_) { /* Firestore client in bad state — skip */ }
-
-      // 3. Listen for Inquiries
-      try {
-         unsubInquiries = onSnapshot(collection(db, "inquiries"), (snap) => {
-            if (!mounted) return;
-            const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            
-            const resolved = data.filter(iq => iq.status === "Resolved").length;
-            const processing = data.filter(iq => iq.status === "Processing").length;
-            const unread = data.filter(iq => iq.status === "Unread").length;
-
-            const testingProgress = data.length > 0 ? Math.round((resolved / data.length) * 100) : 0;
-
-            const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-            const last5Days = [];
-            for(let i = 4; i >= 0; i--) {
-               const d = new Date();
-               d.setDate(d.getDate() - i);
-               const dayName = days[d.getDay()];
-               const dayStart = new Date(d.setHours(0,0,0,0));
-               const dayEnd = new Date(d.setHours(23,59,59,999));
+         try {
+            // 1. Listen for Users
+            unsubUsers = onSnapshot(collection(db, "users"), (snap) => {
+               if (!mounted) return;
+               const users = snap.docs.map(doc => doc.data());
+               const onboarded = users.filter(u => u.onboarded).length;
+               const devProgress = users.length > 0 ? Math.round((onboarded / users.length) * 100) : 0;
                
-               const activeInDay = data.filter(iq => {
-                  const created = iq.createdAt?.toDate?.() || new Date(iq.createdAt);
-                  return created >= dayStart && created <= dayEnd;
-               }).length;
+               setStats(prev => ({ 
+                  ...prev, 
+                  usersCount: snap.size,
+                  onboardedCount: onboarded,
+                  allUsers: users,
+                  progress: {
+                     ...prev.progress,
+                     development: devProgress,
+                     total: Math.round((devProgress + (prev.progress?.design || 0) + (prev.progress?.testing || 0)) / 3)
+                  }
+               }));
+            }, (err) => {
+               console.warn("[ANALYTICS]: Users listener error:", err.message);
+            });
 
-               last5Days.push({ day: dayName, active: activeInDay, pause: Math.max(0, activeInDay - 1) });
-            }
+            // 2. Listen for Templates
+            unsubTemplates = onSnapshot(collection(db, "templates"), (snap) => {
+               if (!mounted) return;
+               const totalPossibleTemplates = 50;
+               const designProgress = Math.min(100, Math.round((snap.size / totalPossibleTemplates) * 100));
+               
+               setStats(prev => ({ 
+                  ...prev, 
+                  templatesCount: snap.size,
+                  progress: {
+                     ...prev.progress,
+                     design: designProgress,
+                     total: Math.round(((prev.progress?.development || 0) + designProgress + (prev.progress?.testing || 0)) / 3)
+                  }
+               }));
+            }, (err) => {
+               console.warn("[ANALYTICS]: Templates listener error:", err.message);
+            });
 
-            const totalHours = data.length * 2.5;
-            const pulseHours = Math.floor(totalHours);
-            const pulseMinutes = Math.round((totalHours - pulseHours) * 60);
-            
-            setStats(prev => ({ 
-               ...prev, 
-               inquiriesCount: snap.size,
-               recentActivities: data.slice(0, 4).map(iq => ({
-                  label: `Inquiry from ${iq.name || 'Anonymous'}`,
-                  time: iq.createdAt?.toDate ? iq.createdAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now'
-               })),
-               projectData: [
-                  { name: "Completed", value: resolved, color: "#22c55e" },
-                  { name: "In Progress", value: processing, color: "#ec4899" },
-                  { name: "Upcoming", value: unread, color: "#3b82f6" },
-               ],
-               trendData: last5Days,
-               progress: {
-                  ...prev.progress,
-                  testing: testingProgress,
-                  total: Math.round((prev.progress.development + prev.progress.design + testingProgress) / 3)
-               },
-               productivity: {
-                  pulse: `${pulseHours}h ${pulseMinutes}m`,
-                  delay: `${Math.floor(unread * 0.5)}h ${Math.round((unread * 0.5 % 1) * 60)}m`,
-                  pulseChange: Math.round((resolved / (data.length || 1)) * 100),
-                  delayChange: Math.round((unread / (data.length || 1)) * 100)
+            // 3. Listen for Inquiries
+            unsubInquiries = onSnapshot(collection(db, "inquiries"), (snap) => {
+               if (!mounted) return;
+               const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+               
+               const resolved = data.filter(iq => iq.status === "Resolved").length;
+               const processing = data.filter(iq => iq.status === "Processing").length;
+               const unread = data.filter(iq => iq.status === "Unread").length;
+
+               const testingProgress = data.length > 0 ? Math.round((resolved / data.length) * 100) : 0;
+
+               const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+               const last5Days = [];
+               for(let i = 4; i >= 0; i--) {
+                  const d = new Date();
+                  d.setDate(d.getDate() - i);
+                  const dayName = days[d.getDay()];
+                  const dayStart = new Date(d.setHours(0,0,0,0));
+                  const dayEnd = new Date(d.setHours(23,59,59,999));
+                  
+                  const activeInDay = data.filter(iq => {
+                     const created = iq.createdAt?.toDate?.() || new Date(iq.createdAt);
+                     return created >= dayStart && created <= dayEnd;
+                  }).length;
+
+                  last5Days.push({ day: dayName, active: activeInDay, pause: Math.max(0, activeInDay - 1) });
                }
-            }));
-         }, (_err) => { /* silently ignore permission / assertion errors */ });
-      } catch (_) { /* Firestore client in bad state — skip */ }
+
+               const totalHours = data.length * 2.5;
+               const pulseHours = Math.floor(totalHours);
+               const pulseMinutes = Math.round((totalHours - pulseHours) * 60);
+               
+               setStats(prev => ({ 
+                  ...prev, 
+                  inquiriesCount: snap.size,
+                  recentActivities: data.slice(0, 4).map(iq => ({
+                     label: `Inquiry from ${iq.name || 'Anonymous'}`,
+                     time: iq.createdAt?.toDate ? iq.createdAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now'
+                  })),
+                  projectData: [
+                     { name: "Completed", value: resolved, color: "#22c55e" },
+                     { name: "In Progress", value: processing, color: "#ec4899" },
+                     { name: "Upcoming", value: unread, color: "#3b82f6" },
+                  ],
+                  trendData: last5Days,
+                  progress: {
+                     ...prev.progress,
+                     testing: testingProgress,
+                     total: Math.round(((prev.progress?.development || 0) + (prev.progress?.design || 0) + testingProgress) / 3)
+                  },
+                  productivity: {
+                     pulse: `${pulseHours}h ${pulseMinutes}m`,
+                     delay: `${Math.floor(unread * 0.5)}h ${Math.round((unread * 0.5 % 1) * 60)}m`,
+                     pulseChange: Math.round((resolved / (data.length || 1)) * 100),
+                     delayChange: Math.round((unread / (data.length || 1)) * 100)
+                  }
+               }));
+            }, (err) => {
+               console.warn("[ANALYTICS]: Inquiries listener error:", err.message);
+            });
+         } catch (err) {
+            console.error("[ANALYTICS]: Critical listener failure:", err.message);
+         }
+      };
+
+      startListeners();
 
       return () => {
          mounted = false;
@@ -167,7 +179,7 @@ const Analytics = ({ user, userData }) => {
             }
          });
       };
-   }, []);
+   }, [db, auth]);
 
    const handleLogout = () => signOut(auth);
 

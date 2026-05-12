@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
    FiMonitor, FiCamera, FiGlobe, FiMail, FiPhone, FiMapPin,
@@ -6,7 +6,7 @@ import {
    FiArrowRight, FiClock, FiStar, FiChevronDown, FiBriefcase,
    FiHome, FiImage, FiLayout, FiCode, FiCpu
 } from 'react-icons/fi';
-import { FaWhatsapp, FaYoutube, FaFacebook, FaTelegram } from 'react-icons/fa';
+import { FaWhatsapp, FaFacebook, FaTelegram } from 'react-icons/fa';
 import { downloadVCard } from '../common/StandardComponents';
 import PoweredBy from "../PoweredBy";
 
@@ -63,7 +63,7 @@ const CreativeAgency = ({ userData }) => {
       website: "www.studio-identity.com",
       address: "Tech District, Innovation Hub",
       businessName: "Digital Commerce Solutions",
-      instagram: "", linkedin: "", twitter: "", github: "developer", youtube: "", whatsapp: "15551234567", facebook: "", telegram: "",
+      instagram: "", linkedin: "", twitter: "", github: "developer", whatsapp: "15551234567", facebook: "", telegram: "",
       bio: "Specializing in high-end e-commerce architectures, seamless React interfaces, and intelligent web applications.",
       profileImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
       bannerImage: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&h=400&fit=crop",
@@ -108,15 +108,12 @@ const CreativeAgency = ({ userData }) => {
       instagram: userData?.instagram || fictionalData.instagram,
       facebook: userData?.facebook || fictionalData.facebook,
       github: userData?.github || fictionalData.github,
-      youtube: userData?.youtube || fictionalData.youtube,
-      tiktok: userData?.tiktok || fictionalData.tiktok,
       telegram: userData?.telegram || fictionalData.telegram,
       bio: userData?.bio || fictionalData.bio,
       profileImage: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
       avatar: userData?.profileImage || userData?.avatar || userData?.logo || fictionalData.profileImage || fictionalData.avatar || fictionalData.defaultAvatar,
       logo: userData?.logo || userData?.profileImage || fictionalData.logo,
-      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage,
-   };
+      bannerImage: userData?.coverPhoto || fictionalData.bannerImage || fictionalData.coverImage };
 
    const finalPhone = data.phone || data.mobileNumber;
 
@@ -320,7 +317,7 @@ const CreativeAgency = ({ userData }) => {
                      { id: 'data.github', val: data.github, icon: FiGithub, color: 'hover:bg-gray-900 hover:text-white text-gray-900' },
                      { id: 'data.twitter', val: data.twitter, icon: FiTwitter, color: 'hover:bg-[#1DA1F2] hover:text-white text-[#1DA1F2]' },
                      { id: 'data.facebook', val: data.facebook, icon: FaFacebook, color: 'hover:bg-[#1877f2] hover:text-white text-[#1877f2]' },
-                     { id: 'data.youtube', val: data.youtube, icon: FaYoutube, color: 'hover:bg-[#ff0000] hover:text-white text-[#ff0000]' },
+
                      { id: 'data.telegram', val: data.telegram, icon: FaTelegram, color: 'hover:bg-[#0088cc] hover:text-white text-[#0088cc]' }
                   ].map((social, i) => social.val && (
                      <a

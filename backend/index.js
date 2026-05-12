@@ -27,7 +27,7 @@ app.use(cors({
     origin: (origin, callback) => {
         // Allow requests with no origin (e.g., mobile apps, Postman)
         if (!origin) return callback(null, true);
-        if (allowedOrigins.some(o => origin.startsWith(o))) {
+        if (origin.startsWith('http://localhost:') || allowedOrigins.some(o => origin.startsWith(o))) {
             return callback(null, true);
         }
         // Allow all vercel.app subdomains for preview deployments

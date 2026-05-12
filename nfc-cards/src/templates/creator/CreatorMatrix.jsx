@@ -3,7 +3,6 @@ import {
    FiPhone,
    FiMail,
    FiGlobe,
-   FiYoutube,
    FiLinkedin,
    FiTwitter,
    FiInstagram,
@@ -113,7 +112,6 @@ const CreatorMatrix = ({ userData }) => {
       phone,
       website,
       address,
-      youtube,
       linkedin,
       twitter,
       instagram,
@@ -177,7 +175,7 @@ const CreatorMatrix = ({ userData }) => {
 
                {/* SOCIAL */}
                <div className="flex justify-around">
-                  <SocialCard icon={FiYoutube} href={youtube} />
+
                   <SocialCard icon={FiInstagram} href={instagram} />
                   <SocialCard icon={FiTwitter} href={twitter} />
                   <SocialCard icon={FiLinkedin} href={linkedin} />
@@ -190,7 +188,7 @@ const CreatorMatrix = ({ userData }) => {
                   </h2>
 
                   <div className="grid gap-2">
-                     <ContentCard title="YouTube Growth Tips" views="120K" likes="8K" img={contentImages[0]} />
+                     <ContentCard title="Video Growth Tips" views="120K" likes="8K" img={contentImages[0]} />
                      <ContentCard title="Instagram Strategy" views="90K" likes="6K" img={contentImages[1]} />
                      <ContentCard title="Content Planning" views="75K" likes="5K" img={contentImages[2]} />
                   </div>
