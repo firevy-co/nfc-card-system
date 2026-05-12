@@ -185,7 +185,7 @@ exports.markAsRead = async (req, res) => {
 
 /**
  * POST /api/inquiries
- * Create a new inquiry.
+ * Create a new inquiry or append to an existing one for the same user.
  */
 exports.createInquiry = async (req, res) => {
     const { name, email, brief, vector, uid } = req.body;
@@ -195,6 +195,41 @@ exports.createInquiry = async (req, res) => {
     }
 
     try {
+        // Check if an inquiry already exists for this user
+        const existingInquiries = await db.collection('inquiries').where('uid', '==', uid).limit(1).get();
+
+        if (!existingInquiries.empty) {
+            // Add message to existing inquiry thread
+            const existingDoc = existingInquiries.docs[0];
+            const inquiryId = existingDoc.id;
+
+            const newMessage = {
+                text: brief,
+                sender: "User",
+                senderName: name,
+                createdAt: new Date().toISOString()
+            };
+
+            await db.collection('inquiries').doc(inquiryId).collection('messages').add(newMessage);
+
+            // Update main inquiry document
+            await db.collection('inquiries').doc(inquiryId).update({
+                lastUpdated: new Date().toISOString(),
+                lastMessage: brief,
+                status: 'Unread',
+                adminUnread: true,
+                userUnread: false,
+                vector: vector || existingDoc.data().vector // Update vector optionally
+            });
+
+            return res.status(200).json({
+                success: true,
+                id: inquiryId,
+                message: "Added to existing inquiry thread."
+            });
+        }
+
+        // Create new inquiry if none exists
         const newInquiry = {
             name,
             email,
