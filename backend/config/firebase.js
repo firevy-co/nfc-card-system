@@ -12,16 +12,26 @@ try {
     if (rawKey) {
         let cleanKey = rawKey.trim();
         
-        // Strategy 1: Remove surrounding quotes if they exist (common in Render/Railway)
+        // Strategy 1: Remove surrounding quotes
         if (cleanKey.startsWith('"') && cleanKey.endsWith('"')) {
             cleanKey = cleanKey.substring(1, cleanKey.length - 1);
         }
         
-        // Strategy 2: Fix escaped newlines (very common)
+        // Strategy 4: AUTO-REPAIR - Missing curly braces (Identified via Debug Status)
+        // If it starts with "type": instead of {"type":, add the brace back.
+        if (!cleanKey.startsWith('{') && cleanKey.includes('"type":')) {
+            console.warn("[FIREBASE INIT]: Detected missing opening brace. Repairing...");
+            cleanKey = '{' + cleanKey;
+        }
+        if (!cleanKey.endsWith('}') && cleanKey.includes('"private_key":')) {
+            console.warn("[FIREBASE INIT]: Detected missing closing brace. Repairing...");
+            cleanKey = cleanKey + '}';
+        }
+
+        // Strategy 2: Fix escaped newlines
         cleanKey = cleanKey.replace(/\\n/g, '\n');
         
-        // Strategy 3: Unescape any escaped double quotes if the whole thing was stringified
-        // but only if it looks like it's double-escaped
+        // Strategy 3: Unescape double quotes
         if (cleanKey.includes('\\"')) {
             cleanKey = cleanKey.replace(/\\"/g, '"');
         }
