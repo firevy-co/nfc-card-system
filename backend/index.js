@@ -58,7 +58,10 @@ app.get('/api/status', (req, res) => {
     res.json({
         status: isOffline ? "STANDBY (MOCK)" : "ONLINE",
         identity_hub: isOffline ? "DISCONNECTED" : "SYNCED",
-        isOffline,
+        environment: process.env.NODE_ENV || 'development',
+        firebase_connected: !isOffline,
+        service_account_source: process.env.SERVICE_ACCOUNT_KEY ? 'env_var' : 'local_file',
+        cors_allowed_origins: allowedOrigins,
         handshake: true,
         timestamp: new Date().toISOString()
     });
