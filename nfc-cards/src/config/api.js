@@ -4,5 +4,6 @@ const envApiUrl = import.meta.env.VITE_API_BASE_URL;
 // If we have an env URL, use it. 
 // Otherwise, use localhost for development or the production Render URL.
 export const API_BASE_URL = envApiUrl || (isLocal ? 'http://localhost:4000' : 'https://cardynnn.onrender.com');
+export const APP_URL = import.meta.env.VITE_APP_URL || (isLocal ? window.location.origin : 'https://cardyn.shop');
 
 console.log(`[SYSTEM]: API Node established at ${API_BASE_URL}`);

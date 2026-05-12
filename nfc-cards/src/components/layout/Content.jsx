@@ -14,7 +14,7 @@ import {
 import PreviewModal from "./PreviewModal";
 import { TEMPLATES } from "../../templates/templateRegistry";
 import toast from 'react-hot-toast';
-import { API_BASE_URL } from "../../config/api";
+import { API_BASE_URL, APP_URL } from "../../config/api";
 import ConfirmationModal from "./ConfirmationModal";
 import axios from 'axios';
 
@@ -249,7 +249,7 @@ export default function Content({ userData }) {
   }).sort((a, b) => (b.restrictedAccess ? 1 : 0) - (a.restrictedAccess ? 1 : 0));
 
   const globalLink = userData?.templateId
-    ? `${window.location.origin}/url/${userData.templateId}?u=${userData?.uid}`
+    ? `${APP_URL}/url/${userData.templateId}?u=${userData?.uid}`
     : null;
 
 

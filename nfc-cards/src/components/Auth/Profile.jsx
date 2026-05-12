@@ -34,7 +34,7 @@ import MobileFooter from '../layout/MobileFooter';
 import toast from 'react-hot-toast';
 import { HexColorPicker } from "react-colorful";
 import * as Fa from 'react-icons/fa';
-import { API_BASE_URL } from '../../config/api';
+import { API_BASE_URL, APP_URL } from '../../config/api';
 import axios from 'axios';
 
 const isLight = (color) => {
@@ -889,13 +889,13 @@ const Profile = ({ userData, onUserDataChange }) => {
                                                             <div className="flex-1 min-w-0">
                                                                 <p className="text-[8px] font-black uppercase tracking-[0.2em] text-blue-600/60 mb-0.5">Live Identity Node</p>
                                                                 <p className="text-[10px] font-bold truncate text-zinc-500 font-mono">
-                                                                    {`${window.location.host}/url/${formData.templateId}?u=${user?.uid?.substring(0, 8)}...`}
+                                                                    {`${APP_URL.replace('https://', '').replace('http://', '')}/url/${formData.templateId}?u=${user?.uid?.substring(0, 8)}...`}
                                                                 </p>
                                                             </div>
                                                             <div className="flex items-center gap-1">
                                                                 <button
                                                                     onClick={() => {
-                                                                        const link = `${window.location.origin}/url/${formData.templateId}?u=${user?.uid}`;
+                                                                        const link = `${APP_URL}/url/${formData.templateId}?u=${user?.uid}`;
                                                                         navigator.clipboard.writeText(link);
                                                                         toast.success("Identity URL copied to clipboard!");
                                                                     }}
@@ -906,7 +906,7 @@ const Profile = ({ userData, onUserDataChange }) => {
                                                                 </button>
                                                                 <button
                                                                     onClick={() => {
-                                                                        const link = `${window.location.origin}/url/${formData.templateId}?u=${user?.uid}`;
+                                                                        const link = `${APP_URL}/url/${formData.templateId}?u=${user?.uid}`;
                                                                         window.open(link, '_blank');
                                                                     }}
                                                                     className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center hover:brightness-110 transition-all shadow-md active:scale-90"

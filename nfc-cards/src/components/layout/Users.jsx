@@ -14,7 +14,7 @@ import {
 
 import PreviewModal from './PreviewModal';
 
-import { API_BASE_URL } from "../../config/api";
+import { API_BASE_URL, APP_URL } from "../../config/api";
 import Layout from "./layout";
 import { useState, useEffect } from 'react';
 import ConfirmationModal from './ConfirmationModal';
@@ -599,7 +599,7 @@ const Users = ({ userData }) => {
                                                                 <div className="flex items-center gap-1 opacity-0 group-hover/node:opacity-100 transition-opacity">
                                                                     <button
                                                                         onClick={() => {
-                                                                            const link = `${window.location.origin}/url/${user.templateId}?u=${user.uid}`;
+                                                                            const link = `${APP_URL}/url/${user.templateId}?u=${user.uid}`;
                                                                             navigator.clipboard.writeText(link);
                                                                             showToast("Deployment URL copied.");
                                                                         }}
@@ -611,7 +611,7 @@ const Users = ({ userData }) => {
 
                                                                     <button
                                                                         onClick={() => {
-                                                                            const link = `${window.location.origin}/url/${user.templateId}?u=${user.uid}`;
+                                                                            const link = `${APP_URL}/url/${user.templateId}?u=${user.uid}`;
                                                                             window.open(link, '_blank');
                                                                         }}
                                                                         className="w-7 h-7 rounded-lg bg-white dark:bg-white/10 hover:bg-black hover:text-white transition-all flex items-center justify-center text-muted-foreground shadow-sm"
@@ -624,7 +624,7 @@ const Users = ({ userData }) => {
 
                                                             <div className="flex flex-col gap-1">
                                                                 <p className="text-[9px] font-mono text-muted-foreground/60 truncate">
-                                                                    {`${window.location.host}/url/${user.templateId}?u=${user.uid.substring(0, 8)}...`}
+                                                                    {`${APP_URL.replace('https://', '').replace('http://', '')}/url/${user.templateId}?u=${user.uid.substring(0, 8)}...`}
                                                                 </p>
                                                                 <p className="text-[8px] font-black uppercase tracking-widest text-primary/40">
                                                                     Active Deployment Node
