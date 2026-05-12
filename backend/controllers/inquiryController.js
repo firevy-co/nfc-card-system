@@ -16,12 +16,31 @@ const deleteSubcollection = async (collectionRef, batchSize = 100) => {
 
 /**
  * GET /api/inquiries
- * Fetch all inquiries ordered by newest first.
+ * Fetch inquiries. Supports optional ?uid filter for users.
  */
 exports.getAllInquiries = async (req, res) => {
+    const { uid } = req.query;
     try {
-        const snapshot = await db.collection('inquiries').orderBy('createdAt', 'desc').get();
-        const inquiries = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        let queryRef = db.collection('inquiries').orderBy('createdAt', 'desc');
+        
+        if (uid) {
+            queryRef = db.collection('inquiries')
+                .where('uid', '==', uid);
+            // Note: If using orderBy and where on different fields, a composite index is needed.
+            // For now, we'll fetch and sort in memory if uid is provided to avoid index errors for the user.
+        }
+
+        const snapshot = await queryRef.get();
+        let inquiries = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+        if (uid) {
+            inquiries.sort((a, b) => {
+                const timeA = new Date(a.createdAt).getTime() || 0;
+                const timeB = new Date(b.createdAt).getTime() || 0;
+                return timeB - timeA;
+            });
+        }
+
         res.json(inquiries);
     } catch (error) {
         console.error("[INQUIRY FETCH ERROR]:", error);
@@ -30,22 +49,71 @@ exports.getAllInquiries = async (req, res) => {
 };
 
 /**
+ * GET /api/inquiries/:id/messages
+ * Fetch the message thread for a specific inquiry.
+ */
+exports.getInquiryMessages = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const snapshot = await db.collection('inquiries').doc(id).collection('messages').orderBy('createdAt', 'asc').get();
+        const messages = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        res.json(messages);
+    } catch (error) {
+        console.error("[MESSAGES FETCH ERROR]:", error);
+        res.status(500).json({ error: "Failed to fetch messages", details: error.message });
+    }
+};
+
+/**
+ * POST /api/inquiries/:id/messages
+ * Add a message to an inquiry thread.
+ */
+exports.createMessage = async (req, res) => {
+    const { id } = req.params;
+    const { text, sender, senderName } = req.body;
+
+    if (!text || !sender) {
+        return res.status(400).json({ error: "Text and sender are required." });
+    }
+
+    try {
+        const newMessage = {
+            text,
+            sender,
+            senderName: senderName || sender,
+            createdAt: new Date().toISOString()
+        };
+
+        const docRef = await db.collection('inquiries').doc(id).collection('messages').add(newMessage);
+        
+        // Update the main inquiry doc for status and sorting
+        await db.collection('inquiries').doc(id).update({
+            lastUpdated: new Date().toISOString(),
+            status: sender === 'User' ? 'Processing' : 'Resolved'
+        });
+
+        res.status(201).json({
+            success: true,
+            id: docRef.id,
+            message: "Message dispatched."
+        });
+    } catch (error) {
+        console.error("[MESSAGE CREATE ERROR]:", error);
+        res.status(500).json({ error: "Failed to dispatch message", details: error.message });
+    }
+};
+
+/**
  * DELETE /api/inquiries/:id
  * Permanently deletes an inquiry AND all its messages subcollection.
- * Firestore does NOT auto-delete subcollections — must be done manually.
  */
 exports.deleteInquiry = async (req, res) => {
     const { id } = req.params;
 
     try {
-        // [PURGE] Stage 1: Delete all messages subcollection documents
         const messagesRef = db.collection('inquiries').doc(id).collection('messages');
         await deleteSubcollection(messagesRef);
-        console.log(`[PURGE] Messages subcollection deleted for inquiry: ${id}`);
-
-        // [PURGE] Stage 2: Delete the inquiry document itself
         await db.collection('inquiries').doc(id).delete();
-        console.log(`[PURGE] Inquiry document deleted: ${id}`);
 
         res.json({
             success: true,
@@ -87,10 +155,10 @@ exports.updateInquiryStatus = async (req, res) => {
  * Create a new inquiry.
  */
 exports.createInquiry = async (req, res) => {
-    const { name, email, brief, vector, targetUid } = req.body;
+    const { name, email, brief, vector, uid } = req.body;
 
-    if (!name || !email || !brief) {
-        return res.status(400).json({ error: "Name, email, and brief are required." });
+    if (!name || !email || !brief || !uid) {
+        return res.status(400).json({ error: "Name, email, brief, and uid are required." });
     }
 
     try {
@@ -98,8 +166,8 @@ exports.createInquiry = async (req, res) => {
             name,
             email,
             brief,
+            uid,
             vector: vector || 'General',
-            targetUid: targetUid || 'System',
             status: 'Unread',
             createdAt: new Date().toISOString()
         };

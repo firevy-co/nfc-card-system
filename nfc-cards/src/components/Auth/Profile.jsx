@@ -872,172 +872,174 @@ const Profile = ({ userData, onUserDataChange }) => {
                                     </div>
 
                                     {/* --- NEW IDENTITY STUDIO SECTION --- */}
-                                    <div className="md:col-span-2 mb-16">
-                                        <div className="bg-white p-4 md:p-8 rounded-[2rem] sm:rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden relative">
-                                            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-[100px] -mr-32 -mt-32 opacity-50" />
+                                    {!isAdmin && (
+                                        <div className="md:col-span-2 mb-16">
+                                            <div className="bg-white p-4 md:p-8 rounded-[2rem] sm:rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden relative">
+                                                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-[100px] -mr-32 -mt-32 opacity-50" />
 
-                                            <div className="flex items-center gap-4 mb-8 relative z-10">
-                                                <div className="p-3 rounded-2xl bg-blue-600 text-white shadow-lg">
-                                                    <FiLayout className="w-5 h-5" />
-                                                </div>
-                                                <div>
-                                                    <h3 className="text-xl font-black text-gray-900 tracking-tight">Identity Studio</h3>
-                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1 mb-4">Template & Branding Engine</p>
-                                                    
-                                                    {formData.templateId && (
-                                                        <div className="flex items-center gap-3 bg-zinc-50 border border-zinc-200/50 p-2 pl-4 rounded-2xl group transition-all hover:border-blue-200">
-                                                            <div className="flex-1 min-w-0">
-                                                                <p className="text-[8px] font-black uppercase tracking-[0.2em] text-blue-600/60 mb-0.5">Live Identity Node</p>
-                                                                <p className="text-[10px] font-bold truncate text-zinc-500 font-mono">
-                                                                    {`${APP_URL.replace('https://', '').replace('http://', '')}/url/${formData.templateId}?u=${user?.uid?.substring(0, 8)}...`}
-                                                                </p>
-                                                            </div>
-                                                            <div className="flex items-center gap-1">
-                                                                <button
-                                                                    onClick={() => {
-                                                                        const link = `${APP_URL}/url/${formData.templateId}?u=${user?.uid}`;
-                                                                        navigator.clipboard.writeText(link);
-                                                                        toast.success("Identity URL copied to clipboard!");
-                                                                    }}
-                                                                    className="w-8 h-8 rounded-xl bg-white border border-zinc-200 flex items-center justify-center text-zinc-400 hover:text-blue-600 hover:border-blue-200 transition-all shadow-sm active:scale-90"
-                                                                    title="Copy Link"
-                                                                >
-                                                                    <FiLink size={14} />
-                                                                </button>
-                                                                <button
-                                                                    onClick={() => {
-                                                                        const link = `${APP_URL}/url/${formData.templateId}?u=${user?.uid}`;
-                                                                        window.open(link, '_blank');
-                                                                    }}
-                                                                    className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center hover:brightness-110 transition-all shadow-md active:scale-90"
-                                                                    title="Open in New Tab"
-                                                                >
-                                                                    <FiGlobe size={14} />
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-
-                                            <div className="grid lg:grid-cols-2 gap-8 items-start relative z-10">
-                                                {/* LIVE PREVIEW */}
-                                                <div className="flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-white rounded-xl sm:rounded-xl p-2 md:p-2 border border-dashed border-gray-200 overflow-hidden">
-                                                    <CardPreview formData={formData} />
-                                                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-300 mt-2">Real-time Identity Preview</p>
-                                                </div>
-
-                                                {/* DESIGN CONTROLS */}
-                                                <div className="space-y-8">
-                                                    {/* THEME ENGINE */}
-                                                    <div className="space-y-4">
-                                                        <h4 className="text-sm font-black uppercase tracking-[0.3em] text-blue-600">01. Theme Engine</h4>
-                                                        <div className="flex flex-row items-center gap-6 sm:gap-10">
-                                                            <div className="react-colorful-container shadow-2xl rounded-[2rem] overflow-hidden border-8 border-white flex-shrink-0">
-                                                                <HexColorPicker color={formData.themeColor} onChange={(c) => handleInputChange('themeColor', c)} />
-                                                            </div>
-                                                            <div className="flex flex-col items-center gap-4 flex-1 min-w-0">
-                                                                <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-3xl shadow-2xl border-4 sm:border-8 border-white flex flex-col items-center justify-center overflow-hidden transition-all duration-500 ${isLight(formData.themeColor) ? "text-gray-900" : "text-white"}`} style={{ background: formData.themeColor }}>
-                                                                    {formData.profileImage ? (
-                                                                        <img src={formData.profileImage} className="w-full h-full object-cover" alt="Theme Preview" />
-                                                                    ) : (
-                                                                        <FiUser size={32} />
-                                                                    )}
+                                                <div className="flex items-center gap-4 mb-8 relative z-10">
+                                                    <div className="p-3 rounded-2xl bg-blue-600 text-white shadow-lg">
+                                                        <FiLayout className="w-5 h-5" />
+                                                    </div>
+                                                    <div>
+                                                        <h3 className="text-xl font-black text-gray-900 tracking-tight">Identity Studio</h3>
+                                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1 mb-4">Template & Branding Engine</p>
+                                                        
+                                                        {formData.templateId && (
+                                                            <div className="flex items-center gap-3 bg-zinc-50 border border-zinc-200/50 p-2 pl-4 rounded-2xl group transition-all hover:border-blue-200">
+                                                                <div className="flex-1 min-w-0">
+                                                                    <p className="text-[8px] font-black uppercase tracking-[0.2em] text-blue-600/60 mb-0.5">Live Identity Node</p>
+                                                                    <p className="text-[10px] font-bold truncate text-zinc-500 font-mono">
+                                                                        {`${APP_URL.replace('https://', '').replace('http://', '')}/url/${formData.templateId}?u=${user?.uid?.substring(0, 8)}...`}
+                                                                    </p>
                                                                 </div>
-                                                                <div className="flex flex-wrap justify-center gap-2">
-                                                                    {["#0f172a", "#3b82f6", "#ef4444", "#22c55e", "#f59e0b", "#6366f1"].map(c => (
-                                                                        <div key={c} onClick={() => handleInputChange('themeColor', c)} className={`w-5 h-5 rounded-full cursor-pointer border-2 border-white shadow-lg hover:scale-125 transition-all ${formData.themeColor === c ? 'scale-125 ring-2 ring-offset-2 ring-blue-500' : ''}`} style={{ background: c }} />
-                                                                    ))}
+                                                                <div className="flex items-center gap-1">
+                                                                    <button
+                                                                        onClick={() => {
+                                                                            const link = `${APP_URL}/url/${formData.templateId}?u=${user?.uid}`;
+                                                                            navigator.clipboard.writeText(link);
+                                                                            toast.success("Identity URL copied to clipboard!");
+                                                                        }}
+                                                                        className="w-8 h-8 rounded-xl bg-white border border-zinc-200 flex items-center justify-center text-zinc-400 hover:text-blue-600 hover:border-blue-200 transition-all shadow-sm active:scale-90"
+                                                                        title="Copy Link"
+                                                                    >
+                                                                        <FiLink size={14} />
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={() => {
+                                                                            const link = `${APP_URL}/url/${formData.templateId}?u=${user?.uid}`;
+                                                                            window.open(link, '_blank');
+                                                                        }}
+                                                                        className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center hover:brightness-110 transition-all shadow-md active:scale-90"
+                                                                        title="Open in New Tab"
+                                                                    >
+                                                                        <FiGlobe size={14} />
+                                                                    </button>
                                                                 </div>
-                                                                <input
-                                                                    type="text"
-                                                                    disabled={!isEditing}
-                                                                    value={formData.themeColor}
-                                                                    onChange={(e) => handleInputChange('themeColor', e.target.value)}
-                                                                    className="w-full max-w-[100px] px-3 py-2 rounded-xl bg-gray-50 border text-[9px] font-black text-center uppercase tracking-widest outline-none focus:ring-2 focus:ring-blue-500/10"
-                                                                />
                                                             </div>
-                                                        </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                <div className="grid lg:grid-cols-2 gap-8 items-start relative z-10">
+                                                    {/* LIVE PREVIEW */}
+                                                    <div className="flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-white rounded-xl sm:rounded-xl p-2 md:p-2 border border-dashed border-gray-200 overflow-hidden">
+                                                        <CardPreview formData={formData} />
+                                                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-300 mt-2">Real-time Identity Preview</p>
                                                     </div>
 
-                                                    {/* LAYOUT ARCHITECTURE */}
-                                                    <div className="space-y-4">
-                                                        <h4 className="text-sm font-black uppercase tracking-[0.3em] text-orange-500">02. Layout Architecture</h4>
-                                                        <div className="grid grid-cols-5 gap-4">
-                                                            {[
-                                                                { id: 'layout_1', name: 'Standard' },
-                                                                { id: 'layout_2', name: 'Hero' },
-                                                                { id: 'layout_3', name: 'Matrix' },
-                                                                { id: 'layout_4', name: 'Lead' },
-                                                                { id: 'layout_5', name: 'Ultra' },
-                                                            ].map((layout) => {
-                                                                const isSelected = formData.templateId === layout.id;
-                                                                return (
-                                                                    <div
-                                                                        key={layout.id}
-                                                                        onClick={() => {
-                                                                            if (!isEditing) setIsEditing(true);
-                                                                            handleInputChange('templateId', layout.id);
-                                                                        }}
-                                                                        className="cursor-pointer group"
-                                                                    >
-                                                                        <div className={`relative aspect-[3/4] rounded-xl overflow-hidden border-2 transition-all duration-300 ${isSelected ? 'border-blue-600 bg-white shadow-xl scale-105' : 'border-gray-100 bg-gray-50 opacity-60 group-hover:opacity-100'}`}>
-                                                                            <div className="w-full h-full p-2 flex flex-col gap-1 opacity-40">
-                                                                                {layout.id === 'layout_1' && (
-                                                                                    <div className="flex flex-col items-center gap-1">
-                                                                                        <div className="w-4 h-4 rounded-full bg-gray-400" />
-                                                                                        <div className="w-full h-1 bg-gray-300 rounded" />
-                                                                                        <div className="w-full h-4 bg-gray-200 rounded" />
-                                                                                        <div className="w-full h-4 bg-gray-200 rounded" />
-                                                                                    </div>
-                                                                                )}
-                                                                                {layout.id === 'layout_2' && (
-                                                                                    <div className="flex flex-col gap-1">
-                                                                                        <div className="w-full h-6 bg-gray-300 rounded" />
-                                                                                        <div className="w-4 h-4 rounded-full bg-gray-400 mx-auto -mt-3" />
-                                                                                        <div className="w-full h-4 bg-gray-200 rounded mt-1" />
-                                                                                    </div>
-                                                                                )}
-                                                                                {layout.id === 'layout_3' && (
-                                                                                    <div className="grid grid-cols-2 gap-1">
-                                                                                        <div className="aspect-square bg-gray-300 rounded" />
-                                                                                        <div className="aspect-square bg-gray-300 rounded" />
-                                                                                        <div className="col-span-2 h-4 bg-gray-200 rounded" />
-                                                                                    </div>
-                                                                                )}
-                                                                                {layout.id === 'layout_4' && (
-                                                                                    <div className="flex flex-col items-center gap-1">
-                                                                                        <div className="w-6 h-6 rounded-full bg-gray-300" />
-                                                                                        <div className="w-full h-2 bg-gray-200 rounded" />
-                                                                                        <div className="w-full h-6 bg-gray-400 rounded mt-1" />
-                                                                                    </div>
-                                                                                )}
-                                                                                {layout.id === 'layout_5' && (
-                                                                                    <div className="flex flex-col gap-1">
-                                                                                        <div className="flex gap-1 items-center">
-                                                                                            <div className="w-4 h-4 bg-gray-400 rounded" />
-                                                                                            <div className="flex-1 h-2 bg-gray-200 rounded" />
+                                                    {/* DESIGN CONTROLS */}
+                                                    <div className="space-y-8">
+                                                        {/* THEME ENGINE */}
+                                                        <div className="space-y-4">
+                                                            <h4 className="text-sm font-black uppercase tracking-[0.3em] text-blue-600">01. Theme Engine</h4>
+                                                            <div className="flex flex-row items-center gap-6 sm:gap-10">
+                                                                <div className="react-colorful-container shadow-2xl rounded-[2rem] overflow-hidden border-8 border-white flex-shrink-0">
+                                                                    <HexColorPicker color={formData.themeColor} onChange={(c) => handleInputChange('themeColor', c)} />
+                                                                </div>
+                                                                <div className="flex flex-col items-center gap-4 flex-1 min-w-0">
+                                                                    <div className={`w-20 h-20 sm:w-24 sm:h-24 rounded-3xl shadow-2xl border-4 sm:border-8 border-white flex flex-col items-center justify-center overflow-hidden transition-all duration-500 ${isLight(formData.themeColor) ? "text-gray-900" : "text-white"}`} style={{ background: formData.themeColor }}>
+                                                                        {formData.profileImage ? (
+                                                                            <img src={formData.profileImage} className="w-full h-full object-cover" alt="Theme Preview" />
+                                                                        ) : (
+                                                                            <FiUser size={32} />
+                                                                        )}
+                                                                    </div>
+                                                                    <div className="flex flex-wrap justify-center gap-2">
+                                                                        {["#0f172a", "#3b82f6", "#ef4444", "#22c55e", "#f59e0b", "#6366f1"].map(c => (
+                                                                            <div key={c} onClick={() => handleInputChange('themeColor', c)} className={`w-5 h-5 rounded-full cursor-pointer border-2 border-white shadow-lg hover:scale-125 transition-all ${formData.themeColor === c ? 'scale-125 ring-2 ring-offset-2 ring-blue-500' : ''}`} style={{ background: c }} />
+                                                                        ))}
+                                                                    </div>
+                                                                    <input
+                                                                        type="text"
+                                                                        disabled={!isEditing}
+                                                                        value={formData.themeColor}
+                                                                        onChange={(e) => handleInputChange('themeColor', e.target.value)}
+                                                                        className="w-full max-w-[100px] px-3 py-2 rounded-xl bg-gray-50 border text-[9px] font-black text-center uppercase tracking-widest outline-none focus:ring-2 focus:ring-blue-500/10"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* LAYOUT ARCHITECTURE */}
+                                                        <div className="space-y-4">
+                                                            <h4 className="text-sm font-black uppercase tracking-[0.3em] text-orange-500">02. Layout Architecture</h4>
+                                                            <div className="grid grid-cols-5 gap-4">
+                                                                {[
+                                                                    { id: 'layout_1', name: 'Standard' },
+                                                                    { id: 'layout_2', name: 'Hero' },
+                                                                    { id: 'layout_3', name: 'Matrix' },
+                                                                    { id: 'layout_4', name: 'Lead' },
+                                                                    { id: 'layout_5', name: 'Ultra' },
+                                                                ].map((layout) => {
+                                                                    const isSelected = formData.templateId === layout.id;
+                                                                    return (
+                                                                        <div
+                                                                            key={layout.id}
+                                                                            onClick={() => {
+                                                                                if (!isEditing) setIsEditing(true);
+                                                                                handleInputChange('templateId', layout.id);
+                                                                            }}
+                                                                            className="cursor-pointer group"
+                                                                        >
+                                                                            <div className={`relative aspect-[3/4] rounded-xl overflow-hidden border-2 transition-all duration-300 ${isSelected ? 'border-blue-600 bg-white shadow-xl scale-105' : 'border-gray-100 bg-gray-50 opacity-60 group-hover:opacity-100'}`}>
+                                                                                <div className="w-full h-full p-2 flex flex-col gap-1 opacity-40">
+                                                                                    {layout.id === 'layout_1' && (
+                                                                                        <div className="flex flex-col items-center gap-1">
+                                                                                            <div className="w-4 h-4 rounded-full bg-gray-400" />
+                                                                                            <div className="w-full h-1 bg-gray-300 rounded" />
+                                                                                            <div className="w-full h-4 bg-gray-200 rounded" />
+                                                                                            <div className="w-full h-4 bg-gray-200 rounded" />
                                                                                         </div>
-                                                                                        <div className="w-full h-10 bg-gray-200 rounded-xl mt-1" />
+                                                                                    )}
+                                                                                    {layout.id === 'layout_2' && (
+                                                                                        <div className="flex flex-col gap-1">
+                                                                                            <div className="w-full h-6 bg-gray-300 rounded" />
+                                                                                            <div className="w-4 h-4 rounded-full bg-gray-400 mx-auto -mt-3" />
+                                                                                            <div className="w-full h-4 bg-gray-200 rounded mt-1" />
+                                                                                        </div>
+                                                                                    )}
+                                                                                    {layout.id === 'layout_3' && (
+                                                                                        <div className="grid grid-cols-2 gap-1">
+                                                                                            <div className="aspect-square bg-gray-300 rounded" />
+                                                                                            <div className="aspect-square bg-gray-300 rounded" />
+                                                                                            <div className="col-span-2 h-4 bg-gray-200 rounded" />
+                                                                                        </div>
+                                                                                    )}
+                                                                                    {layout.id === 'layout_4' && (
+                                                                                        <div className="flex flex-col items-center gap-1">
+                                                                                            <div className="w-6 h-6 rounded-full bg-gray-300" />
+                                                                                            <div className="w-full h-2 bg-gray-200 rounded" />
+                                                                                            <div className="w-full h-6 bg-gray-400 rounded mt-1" />
+                                                                                        </div>
+                                                                                    )}
+                                                                                    {layout.id === 'layout_5' && (
+                                                                                        <div className="flex flex-col gap-1">
+                                                                                            <div className="flex gap-1 items-center">
+                                                                                                <div className="w-4 h-4 bg-gray-400 rounded" />
+                                                                                                <div className="flex-1 h-2 bg-gray-200 rounded" />
+                                                                                            </div>
+                                                                                            <div className="w-full h-10 bg-gray-200 rounded-xl mt-1" />
+                                                                                        </div>
+                                                                                    )}
+                                                                                </div>
+                                                                                {isSelected && (
+                                                                                    <div className="absolute inset-0 bg-blue-600/5 flex items-center justify-center">
+                                                                                        <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
                                                                                     </div>
                                                                                 )}
                                                                             </div>
-                                                                            {isSelected && (
-                                                                                <div className="absolute inset-0 bg-blue-600/5 flex items-center justify-center">
-                                                                                    <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                                                                                </div>
-                                                                            )}
+                                                                            <p className={`text-[7px] font-black uppercase text-center mt-2 tracking-widest ${isSelected ? 'text-blue-600' : 'text-gray-400'}`}>{layout.name}</p>
                                                                         </div>
-                                                                        <p className={`text-[7px] font-black uppercase text-center mt-2 tracking-widest ${isSelected ? 'text-blue-600' : 'text-gray-400'}`}>{layout.name}</p>
-                                                                    </div>
-                                                                );
-                                                            })}
+                                                                    );
+                                                                })}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    )}
 
                                     {/* IDENTITY SECTION */}
                                     <div className="md:col-span-2 mb-4">

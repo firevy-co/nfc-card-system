@@ -742,117 +742,119 @@ const CompleteProfile = ({ userData, onUserDataChange }) => {
                 </div>
 
                 {/* --- SIMPLIFIED IDENTITY STUDIO --- */}
-                <div className="bg-white p-4 sm:p-6 rounded-xl border shadow-sm grid lg:grid-cols-2 gap-8">
+                {!isAdmin && (
+                    <div className="bg-white p-4 sm:p-6 rounded-xl border shadow-sm grid lg:grid-cols-2 gap-8">
 
-                    {/* LEFT: THE LIVE PREVIEW */}
-                    <div className="flex flex-col items-center">
-                        <CardPreview formData={formData} />
-                    </div>
-
-                    {/* RIGHT: THE DESIGN CONTROLS */}
-                    <div className="space-y-8">
-
-                        {/* 1. BRANDING */}
-                        <div className="space-y-4">
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={() => setFormData({ ...formData, logoType: 'file' })}
-                                    className={`px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${formData.logoType === 'file' ? 'bg-black text-white' : 'bg-gray-100 text-black'}`}
-                                >
-                                    Upload
-                                </button>
-                                <button
-                                    onClick={() => setFormData({ ...formData, logoType: 'url' })}
-                                    className={`px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${formData.logoType === 'url' ? 'bg-black text-white' : 'bg-gray-100 text-black'}`}
-                                >
-                                    Remote URL
-                                </button>
-                            </div>
-
-                            {formData.logoType === 'file' ? (
-                                <div className="relative border-2 border-dashed p-10 text-center rounded-lg cursor-pointer hover:border-black/20 transition-all bg-gray-50/50">
-                                    <input type="file" accept="image/*" onChange={handleLogoUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
-                                        {formData.logo ? "Logo Loaded" : "+ Click to Dispatch Logo"}
-                                    </span>
-                                </div>
-                            ) : (
-                                <input
-                                    type="text"
-                                    placeholder="Paste Identity Logo URL..."
-                                    value={formData.logo}
-                                    onChange={(e) => setFormData({ ...formData, logo: e.target.value })}
-                                    className="w-full p-4 rounded-lg bg-gray-50 text-[11px] font-bold border border-transparent focus:border-black/5 outline-none"
-                                />
-                            )}
-                            <p className="text-[11px] font-bold text-zinc-500 leading-relaxed">
-                                <span className='text-red-500'>Note:</span> Logo should be without background or transparent background.
-                            </p>
+                        {/* LEFT: THE LIVE PREVIEW */}
+                        <div className="flex flex-col items-center">
+                            <CardPreview formData={formData} />
                         </div>
 
-                        {/* 2. THEME */}
-                        <div className="space-y-2">
-                            <h3 className="text-sm font-semibold opacity-60">Identity Theme</h3>
-                            <div className="flex items-center gap-4 sm:gap-6 overflow-hidden">
-                                <div className="react-colorful-container">
-                                    <HexColorPicker color={formData.themeColor} onChange={(c) => setFormData(prev => ({ ...prev, themeColor: c }))} />
-                                </div>
-                                <div className="flex flex-col items-center gap-4">
-                                    <div className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Live Result</div>
-                                    <div className={`w-20 h-20 rounded-2xl shadow-xl border-4 border-white flex flex-col items-center justify-center p-2 transition-all duration-300 ${isLight(formData.themeColor) ? "text-gray-900" : "text-white"}`} style={{ background: formData.themeColor }}>
-                                        <Fi.FiUser size={18} />
-                                    </div>
-                                    <div className="flex gap-2">
-                                        {["#0f172a", "#3b82f6", "#ef4444", "#22c55e"].map(c => (
-                                            <div key={c} onClick={() => setFormData(prev => ({ ...prev, themeColor: c }))} className="w-5 h-5 rounded-full cursor-pointer border border-white shadow-sm" style={{ background: c }} />
-                                        ))}
-                                    </div>
-                                    <input type="text" value={formData.themeColor} onChange={(e) => setFormData(prev => ({ ...prev, themeColor: e.target.value }))} className="w-24 px-3 py-2 rounded-lg bg-gray-50 border text-xs font-bold text-center uppercase" />
-                                </div>
-                            </div>
-                        </div>
+                        {/* RIGHT: THE DESIGN CONTROLS */}
+                        <div className="space-y-8">
 
-                        {/* 3. LAYOUT */}
-                        <div className="space-y-4">
-                            <div className="flex items-center justify-between">
-                                <h3 className="text-sm font-semibold opacity-60">Structural Architecture</h3>
-                                <span className="text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-gray-100 rounded text-gray-500">ID: {formData.templateId}</span>
+                            {/* 1. BRANDING */}
+                            <div className="space-y-4">
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => setFormData({ ...formData, logoType: 'file' })}
+                                        className={`px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${formData.logoType === 'file' ? 'bg-black text-white' : 'bg-gray-100 text-black'}`}
+                                    >
+                                        Upload
+                                    </button>
+                                    <button
+                                        onClick={() => setFormData({ ...formData, logoType: 'url' })}
+                                        className={`px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${formData.logoType === 'url' ? 'bg-black text-white' : 'bg-gray-100 text-black'}`}
+                                    >
+                                        Remote URL
+                                    </button>
+                                </div>
+
+                                {formData.logoType === 'file' ? (
+                                    <div className="relative border-2 border-dashed p-10 text-center rounded-lg cursor-pointer hover:border-black/20 transition-all bg-gray-50/50">
+                                        <input type="file" accept="image/*" onChange={handleLogoUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                                        <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">
+                                            {formData.logo ? "Logo Loaded" : "+ Click to Dispatch Logo"}
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <input
+                                        type="text"
+                                        placeholder="Paste Identity Logo URL..."
+                                        value={formData.logo}
+                                        onChange={(e) => setFormData({ ...formData, logo: e.target.value })}
+                                        className="w-full p-4 rounded-lg bg-gray-50 text-[11px] font-bold border border-transparent focus:border-black/5 outline-none"
+                                    />
+                                )}
+                                <p className="text-[11px] font-bold text-zinc-500 leading-relaxed">
+                                    <span className='text-red-500'>Note:</span> Logo should be without background or transparent background.
+                                </p>
                             </div>
-                            <div className="grid grid-cols-5 gap-2 sm:gap-3">
-                                {[
-                                    { id: 'layout_1', name: 'Standard' },
-                                    { id: 'layout_2', name: 'Hero' },
-                                    { id: 'layout_3', name: 'Matrix' },
-                                    { id: 'layout_4', name: 'Lead' },
-                                    { id: 'layout_5', name: 'Ultra' },
-                                ].map((layout) => {
-                                    const isSelected = formData.templateId === layout.id;
-                                    return (
-                                        <div key={layout.id} onClick={() => setFormData(prev => ({ ...prev, templateId: layout.id }))} className="cursor-pointer">
-                                            <div className={`relative aspect-[3/4] rounded-lg overflow-hidden border-2 transition-all ${isSelected ? 'border-black' : 'border-gray-100 bg-gray-50'}`}>
-                                                <div className="w-full h-full p-1.5 flex flex-col gap-1 opacity-20">
-                                                    <div className="w-4 h-4 rounded-full bg-gray-400 mx-auto" />
-                                                    <div className="w-full h-1 bg-gray-300 rounded" />
-                                                    <div className="w-full h-4 bg-white rounded" />
-                                                </div>
-                                            </div>
-                                            <p className={`text-[8px] font-black uppercase text-center mt-1 ${isSelected ? 'text-black' : 'text-gray-400'}`}>{layout.name}</p>
+
+                            {/* 2. THEME */}
+                            <div className="space-y-2">
+                                <h3 className="text-sm font-semibold opacity-60">Identity Theme</h3>
+                                <div className="flex items-center gap-4 sm:gap-6 overflow-hidden">
+                                    <div className="react-colorful-container">
+                                        <HexColorPicker color={formData.themeColor} onChange={(c) => setFormData(prev => ({ ...prev, themeColor: c }))} />
+                                    </div>
+                                    <div className="flex flex-col items-center gap-4">
+                                        <div className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Live Result</div>
+                                        <div className={`w-20 h-20 rounded-2xl shadow-xl border-4 border-white flex flex-col items-center justify-center p-2 transition-all duration-300 ${isLight(formData.themeColor) ? "text-gray-900" : "text-white"}`} style={{ background: formData.themeColor }}>
+                                            <Fi.FiUser size={18} />
                                         </div>
-                                    );
-                                })}
+                                        <div className="flex gap-2">
+                                            {["#0f172a", "#3b82f6", "#ef4444", "#22c55e"].map(c => (
+                                                <div key={c} onClick={() => setFormData(prev => ({ ...prev, themeColor: c }))} className="w-5 h-5 rounded-full cursor-pointer border border-white shadow-sm" style={{ background: c }} />
+                                            ))}
+                                        </div>
+                                        <input type="text" value={formData.themeColor} onChange={(e) => setFormData(prev => ({ ...prev, themeColor: e.target.value }))} className="w-24 px-3 py-2 rounded-lg bg-gray-50 border text-xs font-bold text-center uppercase" />
+                                    </div>
+                                </div>
                             </div>
 
-                            {/* Activate Design Architecture Button */}
-                            <button
-                                onClick={handleSave}
-                                className="w-full mt-6 py-4 bg-black text-white rounded-xl font-black text-[10px] uppercase tracking-widest shadow-xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
-                            >
-                                <Fi.FiCheckCircle size={14} />
-                                Activate Design Architecture
-                            </button>
+                            {/* 3. LAYOUT */}
+                            <div className="space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <h3 className="text-sm font-semibold opacity-60">Structural Architecture</h3>
+                                    <span className="text-[9px] font-black uppercase tracking-widest px-2 py-1 bg-gray-100 rounded text-gray-500">ID: {formData.templateId}</span>
+                                </div>
+                                <div className="grid grid-cols-5 gap-2 sm:gap-3">
+                                    {[
+                                        { id: 'layout_1', name: 'Standard' },
+                                        { id: 'layout_2', name: 'Hero' },
+                                        { id: 'layout_3', name: 'Matrix' },
+                                        { id: 'layout_4', name: 'Lead' },
+                                        { id: 'layout_5', name: 'Ultra' },
+                                    ].map((layout) => {
+                                        const isSelected = formData.templateId === layout.id;
+                                        return (
+                                            <div key={layout.id} onClick={() => setFormData(prev => ({ ...prev, templateId: layout.id }))} className="cursor-pointer">
+                                                <div className={`relative aspect-[3/4] rounded-lg overflow-hidden border-2 transition-all ${isSelected ? 'border-black' : 'border-gray-100 bg-gray-50'}`}>
+                                                    <div className="w-full h-full p-1.5 flex flex-col gap-1 opacity-20">
+                                                        <div className="w-4 h-4 rounded-full bg-gray-400 mx-auto" />
+                                                        <div className="w-full h-1 bg-gray-300 rounded" />
+                                                        <div className="w-full h-4 bg-white rounded" />
+                                                    </div>
+                                                </div>
+                                                <p className={`text-[8px] font-black uppercase text-center mt-1 ${isSelected ? 'text-black' : 'text-gray-400'}`}>{layout.name}</p>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+
+                                {/* Activate Design Architecture Button */}
+                                <button
+                                    onClick={handleSave}
+                                    className="w-full mt-6 py-4 bg-black text-white rounded-xl font-black text-[10px] uppercase tracking-widest shadow-xl transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
+                                >
+                                    <Fi.FiCheckCircle size={14} />
+                                    Activate Design Architecture
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
 
                 {/* CARD DETAILS */}
 

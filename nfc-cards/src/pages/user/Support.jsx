@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { db, auth } from '@/firebase.config';
-import { collection, addDoc, serverTimestamp, query, where, orderBy, onSnapshot, doc, updateDoc } from "firebase/firestore";
+import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
+import { auth } from '@/firebase.config';
 import { FiSend, FiMessageSquare, FiClock, FiCheckCircle, FiActivity } from 'react-icons/fi';
 import toast from "react-hot-toast";
 import Layout from "../../components/layout/layout";
+import { API_BASE_URL } from "../../config/api";
 
 const Support = ({ userData }) => {
     const [formData, setFormData] = useState({
         category: "Technical Issue",
-        message: "" });
+        message: ""
+    });
 
     const [loading, setLoading] = useState(false);
     const [conversations, setConversations] = useState([]);
@@ -16,100 +18,66 @@ const Support = ({ userData }) => {
     const [messages, setMessages] = useState([]);
     const [reply, setReply] = useState("");
 
-    useEffect(() => {
-        let mounted = true;
-        if (!auth.currentUser) return;
+    // --- DATA ORCHESTRATION ---
 
-        const q = query(
-            collection(db, "inquiries"),
-            where("uid", "==", auth.currentUser.uid)
-        );
-
-        let unsubscribe = () => {};
+    const fetchConversations = useCallback(async () => {
+        if (!auth.currentUser?.uid) return;
         try {
-            unsubscribe = onSnapshot(q, (snapshot) => {
-                if (!mounted) return;
-                let data = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-
-                // Memory-side sorting to bypass composite index requirements
-                data.sort((a, b) => {
-                    const timeA = a.createdAt?.toMillis?.() || 0;
-                    const timeB = b.createdAt?.toMillis?.() || 0;
-                    return timeB - timeA;
-                });
-
-                setConversations(data);
-            }, (error) => {
-                console.warn("[SUPPORT]: Inquiries listener error:", error.message);
+            const { data } = await axios.get(`${API_BASE_URL}/api/inquiries`, {
+                params: { uid: auth.currentUser.uid }
             });
+            setConversations(data);
         } catch (err) {
-            console.warn("[SUPPORT]: Failed to init inquiries listener:", err);
+            console.warn("[SUPPORT]: Failed to fetch inquiries", err);
         }
-
-        return () => {
-            mounted = false;
-            if (unsubscribe) {
-                try { unsubscribe(); } catch (e) { /* ignore cleanup fail */ }
-            }
-        };
     }, [auth.currentUser?.uid]);
 
+    const fetchMessages = useCallback(async (convId) => {
+        if (!convId) return;
+        try {
+            const { data } = await axios.get(`${API_BASE_URL}/api/inquiries/${convId}/messages`);
+            setMessages(data);
+        } catch (err) {
+            console.warn("[SUPPORT]: Failed to fetch messages", err);
+        }
+    }, []);
+
+    // Initial Fetch & Polling
     useEffect(() => {
-        let mounted = true;
+        fetchConversations();
+        const interval = setInterval(fetchConversations, 15000); // Poll every 15s
+        return () => clearInterval(interval);
+    }, [fetchConversations]);
+
+    // Message Polling when thread is open
+    useEffect(() => {
         if (!selectedConv) {
             setMessages([]);
             return;
         }
 
-        const q = query(
-            collection(db, "inquiries", selectedConv.id, "messages"),
-            orderBy("createdAt", "asc")
-        );
-
-        let unsubscribe = () => {};
-        try {
-            unsubscribe = onSnapshot(q, (snapshot) => {
-                if (!mounted) return;
-                const data = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-                setMessages(data);
-            }, (error) => {
-                console.warn("[SUPPORT]: Messages listener error:", error.message);
-            });
-        } catch (err) {
-            console.warn("[SUPPORT]: Failed to init messages listener:", err);
-        }
-
-        return () => {
-            mounted = false;
-            if (unsubscribe) {
-                try { unsubscribe(); } catch (e) { /* ignore cleanup fail */ }
-            }
-        };
-    }, [selectedConv]);
+        fetchMessages(selectedConv.id);
+        const interval = setInterval(() => fetchMessages(selectedConv.id), 5000); // Poll messages more frequently
+        return () => clearInterval(interval);
+    }, [selectedConv, fetchMessages]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!formData.message.trim()) return;
+        if (!formData.message.trim() || !auth.currentUser?.uid) return;
 
         setLoading(true);
         try {
-            await addDoc(collection(db, "inquiries"), {
-                uid: auth.currentUser?.uid || "anonymous",
+            await axios.post(`${API_BASE_URL}/api/inquiries`, {
+                uid: auth.currentUser.uid,
                 name: userData?.displayName || "User",
                 email: userData?.email || "unknown",
                 vector: formData.category,
-                brief: formData.message,
-                status: "Unread",
-                createdAt: serverTimestamp() });
+                brief: formData.message
+            });
 
             toast.success("Support brief dispatched!");
             setFormData({ ...formData, message: "" });
+            fetchConversations();
         } catch (err) {
             console.error(err);
             toast.error("Network synchronization failure.");
@@ -124,19 +92,15 @@ const Support = ({ userData }) => {
         setReply(""); // Optimistic UI clear
 
         try {
-            await addDoc(collection(db, "inquiries", convId, "messages"), {
+            await axios.post(`${API_BASE_URL}/api/inquiries/${convId}/messages`, {
                 text: msgText,
                 sender: "User",
-                senderName: userData?.displayName || "User",
-                createdAt: serverTimestamp() });
-
-            // Update main document for sorting/status
-            await updateDoc(doc(db, "inquiries", convId), {
-                lastUpdated: serverTimestamp(),
-                status: "Processing" // Re-activate thread if user replies
+                senderName: userData?.displayName || "User"
             });
 
             toast.success("Identity pulse dispatched!");
+            fetchMessages(convId);
+            fetchConversations(); // Update main list status
         } catch (err) {
             console.error("Chat Sync Error:", err);
             setReply(msgText); // Restore on error
@@ -256,7 +220,11 @@ const Support = ({ userData }) => {
                                         <div className="flex items-center justify-between pt-4 border-t border-slate-200/50 text-[9px] text-slate-300 font-bold">
                                             <div className="flex items-center gap-2">
                                                 <FiClock size={10} />
-                                                {conv.createdAt?.toDate ? conv.createdAt.toDate().toLocaleDateString() : 'Syncing...'}
+                                                {conv.createdAt ? (
+                                                    typeof conv.createdAt === 'string' 
+                                                        ? new Date(conv.createdAt).toLocaleDateString() 
+                                                        : conv.createdAt.toDate?.()?.toLocaleDateString() || 'Syncing...'
+                                                ) : 'Syncing...'}
                                             </div>
                                             <div className="text-[#7BB9D4] font-black uppercase tracking-widest invisible group-hover:visible">
                                                 View Thread →
@@ -299,8 +267,9 @@ const Support = ({ userData }) => {
 
                         <div className="flex-1 overflow-y-auto mb-8 space-y-6 pr-4 custom-scrollbar bg-slate-50/50 rounded-[2rem] p-6">
                             <div className="bg-white border border-slate-100 p-6 rounded-3xl rounded-tl-none shadow-sm max-w-[85%] self-start relative mb-4">
-                                <span className="absolute -top-3 left-0 text-[8px] font-black text-[#7BB9D4] uppercase tracking-widest">Initial Dispatch</span>
-                                <p className="text-sm font-bold text-slate-700 leading-relaxed italic">"{selectedConv.brief}"</p>
+                                <p className="text-sm font-bold text-slate-700 leading-relaxed">
+                                    {selectedConv.brief}
+                                </p>
                             </div>
 
                             {messages.map((msg) => (
@@ -312,7 +281,11 @@ const Support = ({ userData }) => {
                                         <p>{msg.text}</p>
                                     </div>
                                     <span className="text-[7px] font-black uppercase tracking-widest text-slate-400 mt-1.5 px-2">
-                                        {msg.sender} • {msg.createdAt?.toDate ? msg.createdAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Syncing...'}
+                                        {msg.sender} • {msg.createdAt ? (
+                                            typeof msg.createdAt === 'string'
+                                                ? new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                                                : msg.createdAt.toDate?.()?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || 'Syncing...'
+                                        ) : 'Syncing...'}
                                     </span>
                                 </div>
                             ))}

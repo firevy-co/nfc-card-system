@@ -9,7 +9,8 @@ import {
   FiLink,
   FiChevronRight,
   FiX,
-  FiEye } from "react-icons/fi";
+  FiEye
+} from "react-icons/fi";
 
 import PreviewModal from "./PreviewModal";
 import { TEMPLATES } from "../../templates/templateRegistry";

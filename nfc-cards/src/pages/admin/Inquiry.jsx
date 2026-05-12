@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { db } from '@/firebase.config';
-import { collection, query, orderBy, onSnapshot, doc, addDoc, serverTimestamp } from 'firebase/firestore';
+import { auth } from '@/firebase.config';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     FiMail, FiPhone, FiSearch, FiCheckCircle,
@@ -27,52 +26,55 @@ const Inquiry = ({ userData }) => {
     const [inquiryToDelete, setInquiryToDelete] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
 
-    // Fetch live inquiries
-    useEffect(() => {
-        const q = query(collection(db, "inquiries"), orderBy("createdAt", "desc"));
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const data = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
+    // --- DATA ORCHESTRATION ---
+
+    const fetchInquiries = async () => {
+        try {
+            const { data } = await axios.get(`${API_BASE_URL}/api/inquiries`);
             setInquiries(data);
             setLoading(false);
-        }, (error) => {
-            console.error("[INQUIRY]: Live inquiries listener error:", error.message);
+        } catch (err) {
+            console.error("[INQUIRY]: Failed to fetch inquiries", err);
             setLoading(false);
-        });
-        return () => unsubscribe();
+        }
+    };
+
+    const fetchMessages = async (id) => {
+        if (!id) return;
+        try {
+            const { data } = await axios.get(`${API_BASE_URL}/api/inquiries/${id}/messages`);
+            setMessages(data);
+        } catch (err) {
+            console.error("[INQUIRY]: Failed to fetch messages", err);
+        }
+    };
+
+    // Live sync polling
+    useEffect(() => {
+        fetchInquiries();
+        const interval = setInterval(fetchInquiries, 10000); // 10s polling for admin
+        return () => clearInterval(interval);
     }, []);
 
-    // Fetch messages for selected inquiry
+    // Thread polling
     useEffect(() => {
         if (!selectedInquiry) {
-            setTimeout(() => setMessages([]), 0);
+            setMessages([]);
             return;
         }
-
-        const q = query(
-            collection(db, "inquiries", selectedInquiry.id, "messages"),
-            orderBy("createdAt", "asc")
-        );
-
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            const data = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-            setMessages(data);
-        }, (error) => {
-            console.error("[INQUIRY]: Message thread listener error:", error.message);
-        });
-
-        return () => unsubscribe();
+        fetchMessages(selectedInquiry.id);
+        const interval = setInterval(() => fetchMessages(selectedInquiry.id), 5000);
+        return () => clearInterval(interval);
     }, [selectedInquiry]);
 
     const handleStatusUpdate = async (id, status) => {
         try {
             await axios.patch(`${API_BASE_URL}/api/inquiries/${id}/status`, { status });
             toast.success(`Status updated to ${status}`);
+            fetchInquiries(); // Sync immediately
+            if (selectedInquiry?.id === id) {
+                setSelectedInquiry(prev => ({ ...prev, status }));
+            }
         } catch (err) {
             toast.error("Status update failed.");
         }
@@ -90,7 +92,6 @@ const Inquiry = ({ userData }) => {
         try {
             await axios.delete(`${API_BASE_URL}/api/inquiries/${inquiryToDelete.id}`);
             toast.success("Inquiry and message thread purged.");
-            // OPTIMISTIC UI: Remove from local state immediately
             setInquiries(prev => prev.filter(iq => iq.id !== inquiryToDelete.id));
 
             if (selectedInquiry?.id === inquiryToDelete.id) setSelectedInquiry(null);
@@ -111,23 +112,22 @@ const Inquiry = ({ userData }) => {
         setReply(""); // Optimistic clear
 
         try {
-            // 1. Dispatch message to thread sub-collection
-            await addDoc(collection(db, "inquiries", selectedInquiry.id, "messages"), {
+            await axios.post(`${API_BASE_URL}/api/inquiries/${selectedInquiry.id}/messages`, {
                 text: messageText,
                 sender: "Admin",
-                senderName: userData?.displayName || "System Architect",
-                createdAt: serverTimestamp() });
-
-            // 2. Automate status transition via backend to keep logic centralized
-            if (selectedInquiry.status === "Unread") {
-                await handleStatusUpdate(selectedInquiry.id, "Processing");
-            }
+                senderName: userData?.displayName || "System Architect"
+            });
 
             toast.success("Security response dispatched.");
+            fetchMessages(selectedInquiry.id);
+            fetchInquiries(); // Update status in list
         } catch (err) {
             console.error("Transmission Error:", err);
             setReply(messageText); // Restore on failure
-            toast.error("Handshake failure. Sync re-check required.");
+            const errorMsg = err.response?.status === 404 
+                ? "Backend route not found. Cloud sync deployment required." 
+                : "Handshake failure. Sync re-check required.";
+            toast.error(errorMsg);
         }
     };
 
@@ -141,62 +141,68 @@ const Inquiry = ({ userData }) => {
         <div className="min-h-screen bg-[#F8EDEB] text-black flex flex-col overflow-x-hidden font-['Mulish']">
             <AdminNav />
 
-            <main className="flex-1 p-4 sm:p-8 lg:p-16 pb-28 lg:pb-8 max-w-[1600px] mx-auto w-full">
+            <main className="flex-1 p-4 sm:p-8 lg:p-12 pb-28 lg:pb-12 max-w-[1600px] mx-auto w-full">
                 {/* NAVIGATION SPACER */}
-                <div className="h-20 sm:h-24 lg:h-28" />
+                <div className="h-24 sm:h-28 lg:h-32" />
 
-                <header className="mb-10 sm:mb-16 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-10 animate-in fade-in slide-in-from-top-4 duration-1000">
-                    <div className="flex-1">
-                        <h2 className="text-2xl sm:text-4xl font-black text-black tracking-tighter capitalize">Inquiry Hub</h2>
+                <header className="mb-12 flex flex-col lg:flex-row lg:items-center justify-between gap-6 animate-in fade-in slide-in-from-top-4 duration-1000">
+                    <div className="space-y-1">
+                        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400">Communication Network</p>
+                        <h2 className="text-4xl sm:text-5xl font-black text-black tracking-tight leading-none capitalize">Inquiry Hub</h2>
                     </div>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
                         <div className="relative group w-full sm:w-auto">
-                            <FiSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-black transition-colors" />
+                            <FiSearch className="absolute left-6 top-1/2 -translate-y-1/2 text-zinc-300 group-focus-within:text-black transition-colors" />
                             <input
                                 type="text"
-                                placeholder="Audit Inbox..."
-                                className="pl-14 pr-6 py-4 rounded-2xl bg-white border border-zinc-100 text-sm font-bold focus:ring-4 focus:ring-black/5 focus:border-black/20 outline-none transition-all w-full sm:w-80 shadow-sm"
+                                placeholder="Audit identity stream..."
+                                className="pl-16 pr-8 py-5 rounded-2xl bg-white border border-zinc-100 text-sm font-bold focus:ring-[12px] focus:ring-black/5 focus:border-black/20 outline-none transition-all w-full sm:w-96 shadow-sm placeholder:text-zinc-300"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
+                        <div className="hidden sm:flex items-center gap-2 px-6 py-5 rounded-2xl bg-black text-white shadow-xl shadow-black/10">
+                            <FiActivity className="animate-pulse text-[#7BB9D4]" />
+                            <span className="text-[10px] font-black uppercase tracking-widest">{filteredInquiries.length} Active Nodes</span>
+                        </div>
                     </div>
                 </header>
 
-                <div className="w-full px-0 sm:px-0">
-                    <div className="bg-white border border-zinc-100 rounded-2xl sm:rounded-3xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] overflow-hidden">
+                <div className="w-full">
+                    <div className="bg-white border border-zinc-100 rounded-[2rem] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.08)] overflow-hidden">
 
                         {/* MOBILE CARDS (< md) */}
                         <div className="md:hidden divide-y divide-zinc-50">
                             {filteredInquiries.length > 0 ? (
                                 filteredInquiries.map((iq) => (
-                                    <div key={iq.id} className="p-4 hover:bg-zinc-50 transition-all">
-                                        <div className="flex items-start justify-between mb-2">
-                                            <div>
-                                                <p className="font-black text-black tracking-tighter">{iq.name}</p>
-                                                <p className="text-[10px] text-zinc-400 font-bold">{iq.email}</p>
+                                    <div key={iq.id} className="p-6 hover:bg-zinc-50 transition-all active:bg-zinc-100">
+                                        <div className="flex items-start justify-between mb-4">
+                                            <div className="space-y-1">
+                                                <p className="font-black text-lg text-black tracking-tight leading-none">{iq.name}</p>
+                                                <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">{iq.email}</p>
                                             </div>
-                                            <div className={`px-2 py-1 rounded-md text-[7px] font-black uppercase tracking-widest ${iq.status === 'Unread' ? 'bg-amber-500/10 text-amber-500' :
-                                                iq.status === 'Resolved' ? 'bg-emerald-500/10 text-emerald-500' :
-                                                    'bg-black/10 text-zinc-500'}`}>
+                                            <div className={`px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-widest ${
+                                                iq.status === 'Unread' ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/20' :
+                                                iq.status === 'Resolved' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' :
+                                                'bg-black text-white'}`}>
                                                 {iq.status}
                                             </div>
                                         </div>
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-[10px] font-black uppercase tracking-wider bg-zinc-50 border border-zinc-100 px-3 py-1 rounded-lg text-zinc-600">{iq.vector}</span>
+                                        <div className="flex items-center justify-between mt-6">
+                                            <span className="text-[9px] font-black uppercase tracking-widest bg-zinc-100 border border-zinc-200/50 px-3 py-2 rounded-xl text-zinc-500">{iq.vector}</span>
                                             <div className="flex items-center gap-2">
                                                 <button
                                                     onClick={() => setSelectedInquiry(iq)}
-                                                    className="px-4 py-1.5 rounded-lg bg-black text-white font-black uppercase tracking-wider text-[9px] active:scale-95 transition-all"
+                                                    className="px-6 py-2.5 rounded-xl bg-black text-white font-black uppercase tracking-widest text-[9px] active:scale-95 transition-all shadow-lg"
                                                 >
-                                                    View
+                                                    Audit
                                                 </button>
                                                 <button
                                                     onClick={() => confirmDelete(iq)}
-                                                    className="w-8 h-8 rounded-lg bg-red-50 text-red-400 flex items-center justify-center active:scale-95"
+                                                    className="w-10 h-10 rounded-xl bg-red-50 text-red-400 flex items-center justify-center active:scale-95 border border-red-100"
                                                 >
-                                                    <FiTrash2 size={14} />
+                                                    <FiTrash2 size={16} />
                                                 </button>
                                             </div>
                                         </div>
@@ -209,11 +215,11 @@ const Inquiry = ({ userData }) => {
                         <div className="hidden md:block overflow-x-auto">
                             <table className="w-full border-collapse">
                                 <thead>
-                                    <tr className="border-b border-zinc-100 bg-zinc-50">
-                                        <th className="px-8 py-5 text-left text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Origin Identity</th>
-                                        <th className="px-8 py-5 text-left text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Primary Vector</th>
-                                        <th className="px-8 py-5 text-left text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Status</th>
-                                        <th className="px-8 py-5 text-right text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400 whitespace-nowrap">Actions</th>
+                                    <tr className="border-b border-zinc-50 bg-[#fafafa]">
+                                        <th className="px-10 py-6 text-left text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400">Identity Origin</th>
+                                        <th className="px-10 py-6 text-left text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400">Primary Vector</th>
+                                        <th className="px-10 py-6 text-left text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400">Network Status</th>
+                                        <th className="px-10 py-6 text-right text-[10px] font-black uppercase tracking-[0.4em] text-zinc-400">Operational Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -222,44 +228,47 @@ const Inquiry = ({ userData }) => {
                                             {filteredInquiries.map((iq, idx) => (
                                                 <motion.tr
                                                     key={iq.id}
-                                                    initial={{ opacity: 0, y: 10 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    transition={{ delay: idx * 0.05 }}
+                                                    initial={{ opacity: 0, x: -10 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    transition={{ delay: idx * 0.03 }}
                                                     className="border-b border-zinc-50 last:border-0 hover:bg-zinc-50/50 transition-all group"
                                                 >
-                                                    <td className="px-8 py-6">
+                                                    <td className="px-10 py-8">
                                                         <div className="flex flex-col">
-                                                            <span className="text-black font-black tracking-tighter text-base whitespace-nowrap">{iq.name}</span>
-                                                            <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-[0.1em] mt-0.5">{iq.email}</span>
+                                                            <span className="text-black font-black tracking-tight text-lg leading-none">{iq.name}</span>
+                                                            <span className="text-[11px] text-zinc-400 font-bold tracking-tight mt-1.5">{iq.email}</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-8 py-6">
-                                                        <div className="inline-flex items-center px-3 py-1.5 rounded-lg bg-zinc-50 border border-zinc-100">
-                                                            <span className="text-[10px] font-black uppercase tracking-[0.15em] text-zinc-600 whitespace-nowrap">{iq.vector}</span>
+                                                    <td className="px-10 py-8">
+                                                        <div className="inline-flex items-center px-4 py-2 rounded-xl bg-white border border-zinc-100 shadow-sm">
+                                                            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-800">{iq.vector}</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-8 py-6">
+                                                    <td className="px-10 py-8">
                                                         <div className="flex items-center gap-3">
-                                                            <div className={`w-1.5 h-1.5 rounded-full ${iq.status === 'Unread' ? 'bg-amber-500 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.6)]' :
-                                                                iq.status === 'Resolved' ? 'bg-emerald-500' : 'bg-black'
-                                                                }`}></div>
-                                                            <span className={`text-[10px] font-black uppercase tracking-[0.15em] ${iq.status === 'Unread' ? 'text-amber-500' : 'text-zinc-500'
-                                                                }`}>{iq.status}</span>
+                                                            <div className={`w-2 h-2 rounded-full ${
+                                                                iq.status === 'Unread' ? 'bg-amber-500 animate-pulse shadow-[0_0_12px_rgba(245,158,11,0.5)]' :
+                                                                iq.status === 'Resolved' ? 'bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.3)]' : 
+                                                                'bg-black'
+                                                            }`}></div>
+                                                            <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${
+                                                                iq.status === 'Unread' ? 'text-amber-500' : 'text-zinc-500'
+                                                            }`}>{iq.status}</span>
                                                         </div>
                                                     </td>
-                                                    <td className="px-8 py-6 text-right">
-                                                        <div className="flex items-center justify-end gap-2">
+                                                    <td className="px-10 py-8 text-right">
+                                                        <div className="flex items-center justify-end gap-3">
                                                             <button
                                                                 onClick={() => setSelectedInquiry(iq)}
-                                                                className="px-5 py-2 rounded-lg bg-black text-white font-black uppercase tracking-[0.2em] text-[9px] hover:brightness-125 transition-all active:scale-95"
+                                                                className="px-6 py-3 rounded-xl bg-black text-white font-black uppercase tracking-widest text-[10px] hover:bg-zinc-800 transition-all active:scale-95 shadow-lg shadow-black/5"
                                                             >
                                                                 Audit Brief
                                                             </button>
                                                             <button
                                                                 onClick={() => confirmDelete(iq)}
-                                                                className="w-9 h-9 rounded-lg bg-red-50 text-red-400 hover:text-red-500 hover:bg-red-100 transition-all flex items-center justify-center active:scale-95"
+                                                                className="w-11 h-11 rounded-xl bg-red-50 text-red-400 hover:text-red-500 hover:bg-red-100 transition-all flex items-center justify-center active:scale-95 border border-red-100/50"
                                                             >
-                                                                <FiTrash2 size={16} />
+                                                                <FiTrash2 size={18} />
                                                             </button>
                                                         </div>
                                                     </td>
@@ -272,18 +281,20 @@ const Inquiry = ({ userData }) => {
                         </div>
 
                         {filteredInquiries.length === 0 && (
-                            <div className="px-10 py-32 text-center">
-                                <div className="opacity-30">
-                                    <FiMessageSquare size={48} className={`mx-auto mb-6 text-black ${loading ? 'animate-bounce' : 'animate-pulse'}`} />
-                                    <p className="font-black uppercase tracking-[0.4em] text-xs text-black">
-                                        {loading ? "Syncing identity network..." : "No active inquiries in priority buffer"}
+                            <div className="px-10 py-40 text-center">
+                                <div className="space-y-6">
+                                    <div className="w-20 h-20 bg-zinc-50 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-zinc-100">
+                                        <FiMessageSquare size={32} className={`text-zinc-200 ${loading ? 'animate-bounce' : ''}`} />
+                                    </div>
+                                    <p className="font-black uppercase tracking-[0.5em] text-sm text-zinc-300">
+                                        {loading ? "Initializing Identity Stream..." : "No Communication Nodes Found"}
                                     </p>
+                                    {loading && (
+                                        <div className="w-48 h-1 bg-zinc-100 rounded-full mx-auto overflow-hidden">
+                                            <div className="w-full h-full bg-black/10 animate-pulse"></div>
+                                        </div>
+                                    )}
                                 </div>
-                                {loading && (
-                                    <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mt-4 animate-pulse">
-                                        Handshaking with secure protocol...
-                                    </p>
-                                )}
                             </div>
                         )}
                     </div>
@@ -302,46 +313,48 @@ const Inquiry = ({ userData }) => {
                             onClick={() => setSelectedInquiry(null)}
                         />
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                            className="bg-white border border-zinc-100 w-full max-w-4xl rounded-[2rem] sm:rounded-[3.5rem] flex flex-col md:flex-row h-[90vh] sm:h-[85vh] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.1)] relative z-10 overflow-hidden font-['Mulish']"
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            className="bg-white border border-zinc-100 w-full max-w-5xl rounded-3xl flex flex-col md:flex-row h-[90vh] sm:h-[80vh] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] relative z-10 overflow-hidden font-['Mulish']"
                         >
                             {/* LEFT SIDE: DETAILS */}
-                            <div className="w-full md:w-80 bg-zinc-50/50 border-r border-zinc-100 p-10 flex flex-col justify-between">
+                            <div className="w-full md:w-80 bg-[#fbfbfb] border-r border-zinc-100 p-8 flex flex-col justify-between">
                                 <div className="space-y-10">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 rounded-2xl bg-black text-white flex items-center justify-center shadow-2xl">
+                                        <div className="w-12 h-12 rounded-xl bg-black text-white flex items-center justify-center shadow-xl">
                                             <FiMessageSquare size={20} />
                                         </div>
                                         <div>
-                                            <h3 className="text-xl font-black text-black tracking-tighter">Inquiry Hub</h3>
-                                            <p className="text-[8px] font-black uppercase tracking-[0.3em] text-zinc-400 mt-0.5">Audit: {selectedInquiry.id.slice(0, 8)}</p>
+                                            <h3 className="text-xl font-black text-black tracking-tight leading-none">Inquiry Hub</h3>
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mt-1">ID: {selectedInquiry.id.slice(0, 8)}</p>
                                         </div>
                                     </div>
 
-                                    <div className="space-y-6">
-                                        <div>
-                                            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-2">Subject Origin</p>
-                                            <p className="text-base font-black text-black">{selectedInquiry.name}</p>
-                                            <p className="text-[10px] font-bold text-zinc-500">{selectedInquiry.email}</p>
+                                    <div className="space-y-8">
+                                        <div className="space-y-1">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-zinc-300">Subject Origin</p>
+                                            <p className="text-xl font-black text-black leading-tight">{selectedInquiry.name}</p>
+                                            <p className="text-xs font-bold text-zinc-500">{selectedInquiry.email}</p>
                                         </div>
-                                        <div>
-                                            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-2">Vector</p>
-                                            <div className="inline-flex px-3 py-1 bg-white border border-zinc-100 rounded-lg font-black uppercase tracking-[0.1em] text-[9px] text-zinc-700">
+
+                                        <div className="space-y-2">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-zinc-300">Primary Vector</p>
+                                            <div className="inline-flex px-3 py-1.5 bg-white border border-zinc-100 rounded-lg font-black uppercase tracking-widest text-[9px] text-zinc-800 shadow-sm">
                                                 {selectedInquiry.vector}
                                             </div>
                                         </div>
-                                        <div>
-                                            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400 mb-2">System Status</p>
-                                            <div className="flex flex-wrap gap-2">
+
+                                        <div className="space-y-3">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-zinc-300">Network Status</p>
+                                            <div className="grid grid-cols-2 gap-2">
                                                 {['Unread', 'Processing', 'Resolved'].map(s => (
                                                     <button
                                                         key={s}
                                                         onClick={() => handleStatusUpdate(selectedInquiry.id, s)}
-                                                        className={`px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-widest transition-all ${selectedInquiry.status === s
+                                                        className={`px-3 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${selectedInquiry.status === s
                                                             ? 'bg-black text-white shadow-lg'
-                                                            : 'bg-white border border-zinc-100 text-zinc-400 hover:text-black'
+                                                            : 'bg-white border border-zinc-100 text-zinc-400 hover:text-black hover:border-black/20'
                                                             }`}
                                                     >
                                                         {s}
@@ -354,54 +367,81 @@ const Inquiry = ({ userData }) => {
 
                                 <button
                                     onClick={() => setSelectedInquiry(null)}
-                                    className="w-full py-4 rounded-2xl bg-zinc-100 text-zinc-400 font-black uppercase tracking-[0.2em] text-[9px] hover:bg-zinc-200 transition-all border border-zinc-200"
+                                    className="w-full py-4 rounded-xl bg-white text-zinc-400 font-black uppercase tracking-widest text-[10px] hover:bg-zinc-50 transition-all border border-zinc-100 shadow-sm"
                                 >
-                                    Close
+                                    Dismiss Brief
                                 </button>
                             </div>
 
                             {/* RIGHT SIDE: CHAT */}
                             <div className="flex-1 flex flex-col bg-white">
-                                <div className="flex-1 overflow-y-auto p-10 space-y-8 custom-scrollbar">
-                                    <div className="bg-zinc-50 border border-zinc-100 p-8 rounded-[2.5rem] rounded-tl-none relative mb-12">
-                                        <span className="absolute -top-3 left-0 bg-black text-white px-4 py-1 rounded-full text-[8px] font-black uppercase tracking-widest">Initialization Brief</span>
-                                        <p className="text-sm font-bold text-zinc-800 leading-relaxed italic">
-                                            "{selectedInquiry.brief}"
-                                        </p>
+                                {/* Chat Header (Mobile Only) */}
+                                <div className="md:hidden p-4 border-b border-zinc-100 flex items-center justify-between">
+                                    <span className="font-black text-sm uppercase tracking-widest">Communication Thread</span>
+                                    <button onClick={() => setSelectedInquiry(null)} className="text-zinc-400">✕</button>
+                                </div>
+
+                                <div className="flex-1 overflow-y-auto p-6 sm:p-10 space-y-8 custom-scrollbar">
+                                    {/* Initial Brief Bubble */}
+                                    <div className="flex flex-col items-start max-w-[90%] sm:max-w-[80%]">
+                                        <div className="bg-[#f3f4f6] border border-zinc-200/50 p-6 rounded-2xl rounded-tl-none relative shadow-sm">
+                                            <p className="text-sm font-bold text-zinc-800 leading-relaxed">
+                                                {selectedInquiry.brief}
+                                            </p>
+                                        </div>
+                                        <span className="text-[8px] font-black uppercase tracking-widest text-zinc-300 mt-2 ml-2">
+                                            Initial Sync • {selectedInquiry.createdAt ? new Date(selectedInquiry.createdAt).toLocaleDateString() : 'Historical'}
+                                        </span>
                                     </div>
 
+                                    {/* Thread Messages */}
                                     <div className="space-y-6">
                                         {messages.map((msg) => (
                                             <div key={msg.id} className={`flex flex-col ${msg.sender === 'Admin' ? 'items-end' : 'items-start'}`}>
-                                                <div className={`p-5 rounded-3xl max-w-[85%] text-sm font-bold shadow-sm ${msg.sender === 'Admin'
+                                                <div className={`p-4 px-6 rounded-2xl max-w-[85%] text-sm font-bold shadow-sm ${msg.sender === 'Admin'
                                                     ? 'bg-black text-white rounded-tr-none'
-                                                    : 'bg-zinc-50 border border-zinc-100 text-zinc-800 rounded-tl-none'
+                                                    : 'bg-white border border-zinc-100 text-zinc-800 rounded-tl-none'
                                                     }`}>
-                                                    <p>{msg.text}</p>
+                                                    <p className="leading-relaxed">{msg.text}</p>
                                                 </div>
-                                                <span className="text-[7px] font-black uppercase tracking-widest text-zinc-400 mt-1.5 px-2">
-                                                    {msg.sender} • {msg.createdAt?.toDate ? msg.createdAt.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Syncing...'}
+                                                <span className="text-[8px] font-black uppercase tracking-widest text-zinc-300 mt-2 px-2">
+                                                    {msg.sender === 'Admin' ? 'Identity Architect' : msg.sender} • {msg.createdAt ? (
+                                                        typeof msg.createdAt === 'string'
+                                                            ? new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                                                            : msg.createdAt.toDate?.()?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || 'Syncing'
+                                                    ) : 'Syncing'}
                                                 </span>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
 
-                                <form onSubmit={handleReply} className="p-8 border-t border-zinc-50 flex gap-4 items-center">
-                                    <input
-                                        type="text"
-                                        value={reply}
-                                        onChange={(e) => setReply(e.target.value)}
-                                        placeholder="Enter secure response..."
-                                        className="flex-1 bg-zinc-50 border border-zinc-100 px-8 py-5 rounded-2xl text-sm font-bold text-black outline-none focus:ring-4 focus:ring-black/5 focus:border-black/20 transition-all"
-                                    />
-                                    <button
-                                        type="submit"
-                                        className="w-14 h-14 rounded-2xl bg-black text-white flex items-center justify-center hover:brightness-125 transition-all shadow-xl active:scale-95"
-                                    >
-                                        <FiSend size={20} />
-                                    </button>
-                                </form>
+                                {/* Message Input Area */}
+                                <div className="p-6 sm:p-8 border-t border-zinc-50 bg-[#fbfbfb]/50">
+                                    <form onSubmit={handleReply} className="relative flex items-center gap-3">
+                                        <div className="relative flex-1">
+                                            <input
+                                                type="text"
+                                                value={reply}
+                                                onChange={(e) => setReply(e.target.value)}
+                                                placeholder="Enter secure response..."
+                                                className="w-full bg-white border border-zinc-200 px-6 py-5 rounded-2xl text-sm font-bold text-black outline-none focus:ring-4 focus:ring-black/5 focus:border-black/20 transition-all placeholder:text-zinc-300 shadow-sm"
+                                            />
+                                            <div className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center gap-2 opacity-20">
+                                                <FiActivity size={14} />
+                                            </div>
+                                        </div>
+                                        <button
+                                            type="submit"
+                                            className="w-14 h-14 rounded-2xl bg-black text-white flex items-center justify-center hover:bg-zinc-800 transition-all shadow-xl active:scale-95 flex-shrink-0"
+                                        >
+                                            <FiSend size={20} />
+                                        </button>
+                                    </form>
+                                    <p className="text-[8px] font-black uppercase tracking-[0.3em] text-zinc-300 mt-4 text-center">
+                                        Secure end-to-end identity transmission protocol active
+                                    </p>
+                                </div>
                             </div>
                         </motion.div>
                     </div>
