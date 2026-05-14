@@ -63,7 +63,7 @@ const Signup = () => {
             });
 
             const hasData = userData.onboarded || userData.phone || userData.company || userData.job;
-            
+
             if (hasData) {
                 if (userData.role === 'Admin') {
                     navigate('/admin/analytics');
@@ -270,15 +270,15 @@ const Signup = () => {
                                             { icon: <Fi.FiGlobe />, label: "Website", value: "cardyn.co" },
                                             { icon: <Fi.FiMapPin />, label: "Office Address", value: "Surat, Gujarat" }
                                         ].map((item, i) => (
-                                            <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-gray-100 text-left">
-                                                <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400">
+                                            <div key={i} className="flex items-center gap-3 p-3 rounded-2xl bg-white border border-gray-100 text-left">
+                                                <div className="w-10 h-10 shrink-0 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400">
                                                     {item.icon}
                                                 </div>
-                                                <div className="flex-1">
-                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{item.label}</p>
-                                                    <p className="text-xs font-bold text-gray-900">{item.value}</p>
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest truncate">{item.label}</p>
+                                                    <p className="text-xs font-bold text-gray-900 truncate">{item.value}</p>
                                                 </div>
-                                                <Fi.FiChevronRight size={16} className="text-gray-300" />
+                                                <Fi.FiChevronRight size={16} className="text-gray-300 shrink-0" />
                                             </div>
                                         ))}
                                     </div>

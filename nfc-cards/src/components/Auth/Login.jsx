@@ -19,7 +19,7 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        
+
         if (!email.trim() || !password.trim()) {
             setError("Identification coordinates required.");
             return;
@@ -41,17 +41,17 @@ const Login = () => {
                     email: user.email,
                     displayName: user.displayName
                 });
-                
+
                 // Robust check: any of these fields indicate the user has data/onboarded
-                const hasData = userData.onboarded || 
-                                userData.phone || 
-                                userData.company || 
-                                userData.businessRole ||
-                                userData.businessName || 
-                                userData.companyName ||
-                                userData.job || 
-                                (userData.role === 'Admin' || user.email === 'admin@gmail.com');
-                
+                const hasData = userData.onboarded ||
+                    userData.phone ||
+                    userData.company ||
+                    userData.businessRole ||
+                    userData.businessName ||
+                    userData.companyName ||
+                    userData.job ||
+                    (userData.role === 'Admin' || user.email === 'admin@gmail.com');
+
                 if (hasData) {
                     if (userData.role === 'Admin' || user.email === 'admin@gmail.com') {
                         navigate('/admin/analytics');
@@ -67,9 +67,9 @@ const Login = () => {
             }
         } catch (err) {
             console.error("[AUTH_FAILURE]:", err.code, err.message);
-            
+
             let message = "Handshake failed. Please verify credentials.";
-            
+
             if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
                 message = "Invalid access credentials. Unauthorized entry denied.";
             } else if (err.code === 'auth/invalid-email') {
@@ -81,7 +81,7 @@ const Login = () => {
             } else if (err.message.includes("registry not found") || err.message.includes("network")) {
                 message = err.message;
             }
-            
+
             setError(message);
         } finally {
             setLoading(false);
@@ -104,14 +104,14 @@ const Login = () => {
                 displayName: user.displayName
             });
 
-            const hasData = userData.onboarded || 
-                            userData.phone || 
-                            userData.company || 
-                            userData.businessRole ||
-                            userData.businessName || 
-                            userData.companyName ||
-                            userData.job;
-            
+            const hasData = userData.onboarded ||
+                userData.phone ||
+                userData.company ||
+                userData.businessRole ||
+                userData.businessName ||
+                userData.companyName ||
+                userData.job;
+
             if (hasData) {
                 if (userData.role === 'Admin') {
                     navigate('/admin/analytics');
@@ -213,11 +213,10 @@ const Login = () => {
                             <label className="flex items-center gap-3 cursor-pointer group mt-1">
                                 <div
                                     onClick={() => setRememberMe(!rememberMe)}
-                                    className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${
-                                        rememberMe
-                                            ? 'bg-gradient-to-r from-[#7c3aed] to-[#db2777] border-transparent'
-                                            : 'border-gray-200 bg-white'
-                                    }`}
+                                    className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${rememberMe
+                                        ? 'bg-gradient-to-r from-[#7c3aed] to-[#db2777] border-transparent'
+                                        : 'border-gray-200 bg-white'
+                                        }`}
                                 >
                                     {rememberMe && <Fi.FiCheck size={12} className="text-white" />}
                                 </div>
@@ -316,20 +315,20 @@ const Login = () => {
 
                                     <div className="mt-8 space-y-3">
                                         {[
-                                            { icon: <Fi.FiPhone />, label: "Call Mobile", value: "+91 70693 70623" },
+                                            { icon: <Fi.FiPhone />, label: "Call Mobile", value: "+91 7069370623" },
                                             { icon: <Fi.FiMail />, label: "Email", value: "getcardyn@gmail.com" },
                                             { icon: <Fi.FiGlobe />, label: "Website", value: "cardyn.shop" },
                                             { icon: <Fi.FiMapPin />, label: "Office Address", value: "Surat, Gujarat" }
                                         ].map((item, i) => (
-                                            <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-gray-100 text-left">
-                                                <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400">
+                                            <div key={i} className="flex items-center gap-3 p-3 rounded-2xl bg-white border border-gray-100 text-left">
+                                                <div className="w-10 h-10 shrink-0 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400">
                                                     {item.icon}
                                                 </div>
-                                                <div className="flex-1">
-                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{item.label}</p>
-                                                    <p className="text-xs font-bold text-gray-900">{item.value}</p>
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest truncate">{item.label}</p>
+                                                    <p className="text-xs font-bold text-gray-900 truncate">{item.value}</p>
                                                 </div>
-                                                <Fi.FiChevronRight size={16} className="text-gray-300" />
+                                                <Fi.FiChevronRight size={16} className="text-gray-300 shrink-0" />
                                             </div>
                                         ))}
                                     </div>
